@@ -18,7 +18,7 @@ import wepy from 'wepy';
 import api from '../API/api';
 import noorder from '../components/noOrder';
 import orderList from '../components/orderList';
-export default class Index extends wepy.page {
+export default class yizhanList extends wepy.page {
   config = {
     navigationBarTitleText: '吉采易站'
   };

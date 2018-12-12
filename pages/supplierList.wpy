@@ -349,7 +349,7 @@ var that
 import wepy from 'wepy';
 import api from '../API/api';
 import noorder from '../components/noOrder';
-export default class Index extends wepy.page {
+export default class suppliersList extends wepy.page {
   config = {
     navigationBarTitleText: '吉采易站'
   };
