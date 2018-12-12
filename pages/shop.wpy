@@ -819,7 +819,7 @@ form {
               <image data-adid="{{item.ad_id}}" src="{{item.img}}" class="slide-image">
               <view class="yizhan-name">
                 <view class="yizhan-name-titile">
-                  <text>{{item.suppliers_name}}</text>
+                  <text>{{yizhan.suppliers_name}}</text>
                   <button class="apply">会员</button>
                 </view>
                 <!-- <view class='yizhan-name-txt' wx:if="{{shenhe!=1}}"> 您还不是该店的会员，暂不能享受该店的会员权益</view> -->
@@ -856,7 +856,8 @@ export default class Index extends wepy.page {
   };
   components = {};
   data = {
-      yizhanBanner:[]
+      yizhanBanner:[],
+      yizhan:[]
   };
   computed = {};
   methods = {};
@@ -880,8 +881,10 @@ export default class Index extends wepy.page {
     });
     wx.hideLoading();
     this.yizhanBanner = res.data.data;
+    this.yizhan = res.data.yizhan;
     this.$apply();
     console.log("yizhanBanner",this.yizhanBanner);
+    console.log("yizhan",this.yizhan);
     
   }
   async onLoad() {
