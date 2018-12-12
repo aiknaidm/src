@@ -42,16 +42,16 @@ export default class my extends wepy.page {
 
   data = {
     userInfo: {}, 
-    tabList: [
+    tabList: [ 
       {
         icon: '../../images/icon-shopcar.png',
         text: '购物车',
-        url: '/pages/shopCart' 
+        url: '/packageA/pages/shopCart' 
       },
       {
         icon: '../../images/icon_normal.png',
         text: '帮助中心',
-        url: '/pages/my/myHelp'
+        url: '/packageA/pages/myHelp'
       },
       {
         icon: '../../images/shangcheng.png',

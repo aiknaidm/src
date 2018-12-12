@@ -1,0 +1,47 @@
+<style lang="less">
+</style>
+<template>
+  <view class="container">
+    <view class="banner">
+      <image src="/images/help.gif" mode="aspectFill">
+    </view>
+
+    <view class="droplist">
+      <block wx:for="{{articleArray}}" wx:key="{{index}}">
+        <view class="droplist-title" data-index="{{index}}" bindtap="clickTitle">
+          <view class="rotate {{helpList[index].isclick?'active':''}}">
+            <text class="iconfont icon-zhankai"></text>
+          </view>
+
+          {{title[index]}}
+        </view>
+        <view class="droplist-content {{helpList[index].isclick?'active':''}}">
+          <!-- <template is="wxParse" data="{{wxParseData:item}}"/> -->
+        </view>
+      </block>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '../../API/api';
+export default class myHelp extends wepy.page {
+  config = {
+    navigationBarTitleText: '帮助中心2'
+  };
+  components = {};
+
+  data = {};
+
+  computed = {};
+  methods = {};
+  events = {};
+
+  async onLoad() {
+    var userId = await this.$parent.loginInfo();
+    var userInfo = await this.$parent.getUserInfo(userId);
+    console.log("userInfo",userInfo);  
+  }
+}
+</script>

@@ -70,6 +70,12 @@ export default class extends wepy.app {
       'pages/supplierList',
       'pages/my'
     ],
+    subPackages: [
+      {
+        root: 'packageA',
+        pages: ['pages/shopCart','pages/myHelp']
+      }
+    ],
 
     window: {
       backgroundTextStyle: '#333',
@@ -205,16 +211,15 @@ export default class extends wepy.app {
         user_id: userId
       }
     });
-    if(userInfo.data.code=="0")
-    return userInfo.data.data;
+    if (userInfo.data.code == '0') return userInfo.data.data;
     else
-    wx.showToast({
-      title: '获取用户信息失败', //提示的内容,
-      icon: 'none', //图标,
-      duration: 2000, //延迟时间,
-      mask: true, //显示透明蒙层，防止触摸穿透,
-    });
-    return 0
+      wx.showToast({
+        title: '获取用户信息失败', //提示的内容,
+        icon: 'none', //图标,
+        duration: 2000, //延迟时间,
+        mask: true //显示透明蒙层，防止触摸穿透,
+      });
+    return 0;
   }
 }
 </script>

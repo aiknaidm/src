@@ -59,14 +59,6 @@
   border-radius: 0px 90px 90px 0px;
 }
 
-.container {
-  background-color: #fff;
-  min-height: 100%;
-  font-size: 30rpx;
-  font-family: '微软雅黑';
-  overflow: hidden;
-}
-
 .swiper_box {
   height: 100%;
 }
@@ -198,44 +190,6 @@
   top: 23rpx;
   background-color: #f43530;
   border-radius: 50%;
-}
-
-.no-order {
-  width: 100%;
-  text-align: center;
-  background-color: #f2f2f2;
-  padding-top: 80rpx;
-}
-
-.no-order-img {
-  width: 81rpx;
-  height: 96rpx;
-  margin-bottom: 31rpx;
-}
-
-.no-order .text {
-  font-size: 30rpx;
-  color: #999;
-  /* text-align: center */
-}
-
-.no-order {
-  width: 100%;
-  text-align: center;
-  background-color: #f2f2f2;
-  padding-top: 80rpx;
-}
-
-.no-order-img {
-  width: 81rpx;
-  height: 96rpx;
-  margin-bottom: 31rpx;
-}
-
-.no-order .text {
-  font-size: 30rpx;
-  color: #999;
-  /* text-align: center */
 }
 
 .goods-container {
@@ -820,9 +774,10 @@ form {
               <view class="yizhan-name">
                 <view class="yizhan-name-titile">
                   <text>{{yizhan.suppliers_name}}</text>
-                  <button class="apply">会员</button>
+                  <button class="apply" wx:if="{{yizhanIndex.shenhe}}">会员</button>
+                  <button class wx:else>申请中</button>
                 </view>
-                <!-- <view class='yizhan-name-txt' wx:if="{{shenhe!=1}}"> 您还不是该店的会员，暂不能享受该店的会员权益</view> -->
+                <view class="yizhan-name-txt" wx:if="{{!yizhanIndex.shenhe}}">您还不是该店的会员，暂不能享受该店的会员权益</view>
               </view>
             </swiper-item>
           </block>
@@ -831,16 +786,13 @@ form {
     </view>
     <view class="materials">
       <view class="materials-titile">商品分类</view>
-      <view class="no-order" wx:if="{{materialsList.length==0}}">
-        <view class="text">暂无分类</view>
-      </view>
+      <noorder show="2" :text.sync="text" wx:if="{{goodsKind.length==0||isguoqi}}"></noorder>
       <view class="materials-list" wx:else>
         <view
-          wx:for-items="{{materialsList}}"
+          wx:for-items="{{goodsKind}}"
           wx:key="{{index}}"
           data-name="{{item.cat_name}}"
-          data-id="{{item.cat_id}}"
-          @click="toFenLeiTap"
+          @tap="toFenLeiTap({{item.cat_id}},{{yizhanIndex.suppliers_id}},{{yizhanIndex.suppliers_desc}})"
         >{{item.cat_name}}</view>
       </view>
     </view>
@@ -850,47 +802,92 @@ form {
 <script>
 import wepy from 'wepy';
 import api from '../API/api';
+import noorder from '../components/noOrder';
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '吉采易站'
   };
-  components = {};
+  components = { noorder };
   data = {
-      yizhanBanner:[],
-      yizhan:[]
+    yizhanBanner: [],
+    yizhan: [],
+    goodsKind: [],
+    yizhanIndex: {},
+    isguoqi: false,
+    text: '暂无分类'
   };
   computed = {};
-  methods = {};
+  methods = {
+    // 分类跳转
+    toFenLeiTap(id,suppliers_id,suppliers_name) {
+      wx.navigateTo({
+        url:
+          '/pages/Shop/search-list/index?cat_id=' +
+          id +
+          '&suppliers_id=' +
+          suppliers_id +
+          '&navigationTitle=' +
+          suppliers_name +
+          '&type=2'
+      });
+    }
+  };
   events = {};
-  // 广告
-  async getShopIndex() {
-    var res = await wepy.request({
-      url: api.yizhanIndex
-    });
-    this.yizhanIndex = res.data.data;
 
+  // 分类
+  async getMaterialsList(suppliers_id = '') {
+    var res = await wepy.request({
+      url: api.goodsKind,
+      data: {
+        suppliers_id
+      }
+    });
+    this.goodsKind = res.data.data;
     this.$apply();
   }
-  async getShopBanner(userId,supplier_id="") {
+  // 我的易站 审核状态 店铺id
+  async getShopIndex(userId) {
+    var res = await wepy.request({
+      url: api.yizhanIndex,
+      data: {
+        user_id: userId
+      }
+    });
+    this.yizhanIndex = res.data.data;
+    var suppliers_id = res.data.data.suppliers_id
+      ? res.data.data.suppliers_id
+      : '';
+    this.getShopBanner(userId, suppliers_id);
+    this.getMaterialsList(suppliers_id);
+    this.$apply();
+    console.log('yizhanIndex', this.yizhanIndex);
+  }
+  // 顶部banner 店铺名字
+  async getShopBanner(userId, supplier_id = '') {
     var res = await wepy.request({
       url: api.yizhanBanner,
       data: {
-        userId: userId,
-        supplier_id:supplier_id
+        user_id: userId,
+        suppliers_id: supplier_id
       }
     });
     wx.hideLoading();
     this.yizhanBanner = res.data.data;
     this.yizhan = res.data.yizhan;
     this.$apply();
-    console.log("yizhanBanner",this.yizhanBanner);
-    console.log("yizhan",this.yizhan);
-    
+    var end_time = this.yizhan.end_time;
+    if (end_time !== 0 && new Date().getTime() - end_time * 1000) {
+      console.log('店铺已过期');
+      this.isguoqi = true;
+      this.text = '店铺已过期';
+    }
+    console.log('yizhanBanner', this.yizhanBanner);
+    console.log('yizhan', this.yizhan);
   }
   async onLoad() {
     var userId = await this.$parent.loginInfo();
-    var userInfo=await this.$parent.getUserInfo(userId);
-    this.getShopBanner(userId);
+    var userInfo = await this.$parent.getUserInfo(userId);
+    this.getShopIndex(userId);
     wx.showLoading({
       title: '加载中...', //提示的内容,
       mask: true, //显示透明蒙层，防止触摸穿透,

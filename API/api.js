@@ -10,6 +10,8 @@ const api = {
     yizhanBanner: `${host}/yzgg`, //首页广告
     orderList: `${host}/orderlist?order_status=4`, //进货记录（已完成订单）
     yizhanList: `${host}/yzlb_my`, //易站列表
+    goodsKind: `${host}/hyfl` //商品分类
+
 
 }
 export default api
