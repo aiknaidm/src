@@ -68,15 +68,26 @@ export default class extends wepy.app {
       'pages/shop',
       'pages/yizhanList',
       'pages/supplierList',
-      'pages/my'
+      'pages/my',
+      'pages/photodetail'
     ],
     subPackages: [
       {
-        root: 'packageA',
-        pages: ['pages/shopCart','pages/myHelp']
+        root: 'Shop',
+        pages: ['pages/shopCart', 'pages/myHelp', 'pages/searchList']
+      },
+      {
+        root: 'Index',
+        pages: ['pages/details']
       }
     ],
-
+    preloadRule: {
+      'pages/index': {
+        network: 'all',
+        packages: ['Shop']
+      }
+      
+    },
     window: {
       backgroundTextStyle: '#333',
       navigationBarTitleText: '吉采易站',

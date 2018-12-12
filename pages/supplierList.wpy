@@ -367,18 +367,6 @@ export default class suppliersList extends wepy.page {
   events = {};
   // 进货记录
   yizhanList(userId) {
-    // wepy.request({
-    //   url: api.yizhanList,
-    //   data: {
-    //     user_id: userId
-    //   },
-    //   success: res => {
-    //       console.log(res);
-    //     that.yizhanList = res.data.data;
-    //     that.$apply();
-    //     console.log('yizhanList', this.yizhanList);
-    //   }
-    // });
    wepy.request({
       url: api.yizhanList,
       data: { user_id: userId }
@@ -387,7 +375,6 @@ export default class suppliersList extends wepy.page {
            that.$apply();
       });
   }
-
   onLoad() {
       that=this
   }

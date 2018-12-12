@@ -46,12 +46,12 @@ export default class my extends wepy.page {
       {
         icon: '../../images/icon-shopcar.png',
         text: '购物车',
-        url: '/packageA/pages/shopCart' 
+        url: '/Shop/pages/shopCart' 
       },
       {
         icon: '../../images/icon_normal.png',
         text: '帮助中心',
-        url: '/packageA/pages/myHelp'
+        url: '/Shop/pages/myHelp'
       },
       {
         icon: '../../images/shangcheng.png',

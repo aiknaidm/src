@@ -1,0 +1,31 @@
+<style lang="less">
+</style>
+<template>
+  <view>
+     <htmlParser :parserName="name1" :parserContent.sync="content1"/>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import htmlParser from '../../components/htmlParser'
+export default class details extends wepy.page {
+  config = {
+    navigationBarTitleText: '帮助中心2'
+  };
+  components = { htmlParser};
+
+  data = { name1: 'myHtmlParserKiner1',
+      content1: '<text style=\'color: gray;\'>9999999999999999 </text>',};
+
+  computed = {};
+  methods = {};
+  events = {};
+
+  async onLoad() {
+    var userId = await this.$parent.loginInfo();
+    var userInfo = await this.$parent.getUserInfo(userId);
+    console.log("userInfo",userInfo);  
+  }
+}
+</script>

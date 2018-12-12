@@ -1,0 +1,102 @@
+<style lang="less">
+</style>
+<template>
+    <view class="container">
+        <search></search>
+        <statusTap :statusType.sync="statusType" :index.sync="index" @statusTap.user="statusTap"></statusTap>
+        <repeat for="{{goodsList}}" key="{{index}}">
+            <searchList :goods.sync="item"></searchList>
+        </repeat>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '../../API/api';
+import search from '../../components/search';
+import statusTap from '../../components/statusTap';
+import searchList from '../../components/searchList';
+export default class searchlist extends wepy.page {
+  config = {
+    navigationBarTitleText: '搜索列表'
+  };
+  components = { search, searchList, statusTap };
+
+  data = {
+    goodsList: [],
+    statusType: ['综合', '销量', '价格', '筛选'],
+    currentType: ''
+  };
+
+  computed = {};
+  methods = {
+    statusTap(index, evt) {
+      console.log('click index', index);
+      var data = this.initData();
+      switch (parseInt(index)) {
+        case 0:
+          break;
+        case 1:
+            data.keyword="1"
+          break;
+        case 2:
+         data.sort="dec"
+          break;
+        default:
+          break;
+      }
+      this.getGoodsList(data);
+    }
+  };
+  events = {};
+  async getGoodsList(data) {
+    wepy
+      .request({
+        url: api.goodsList,
+        data: data
+      })
+      .then(res => {
+        this.goodsList = res.data.data;
+        this.$apply();
+        console.log('订单列表', this.goodsList);
+      });
+  }
+  initData() {
+    var data = {
+      user_id: this.userId,
+      cat_id: this.cat_id,
+      keyword: '',
+      order: '', //
+      sort: '', //排序的方式
+      price_max: '', //加个
+      price_min: '',
+      brand: '',
+      attr_value: '',
+      page: 1,
+      suppliers_id: this.suppliers_id
+    };
+    return data;
+  }
+  async onLoad(option) {
+    console.log('传递的值', option);
+    this.userId = await this.$parent.loginInfo();
+    this.cat_id = option.cat_id ? option.cat_id : '';
+    this.suppliers_id = option.suppliers_id ? option.suppliers_id : '';
+    // this.data = {
+    //   user_id: userId,
+    //   cat_id: this.cat_id,
+    //   keyword: '',
+    //   order: '', //
+    //   sort: '', //排序的方式
+    //   price_max: '', //加个
+    //   price_min: '',
+    //   brand: '',
+    //   attr_value: '',
+    //   page: 1,
+    //   suppliers_id: this.suppliers_id
+    // };
+    var data = this.initData();
+    this.getGoodsList(data);
+  }
+}
+</script>

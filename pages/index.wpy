@@ -332,8 +332,7 @@ button::after {
         class="content"
         wx:key="{{index}}"
         wx:for-items="{{message}}"
-        bindtap="toZiXunDetailTap"
-        data-id="{{item.id}}"
+        @tap="toZiXunDetailTap({{item.id}})"
       >
         <view class="img">
           <image src="{{item.img}}"></image>
@@ -356,7 +355,6 @@ export default class Index extends wepy.page {
     navigationBarTitleText: '吉采易站'
   };
   components = {};
-
   data = {
     user_id: '',
 
@@ -428,7 +426,14 @@ export default class Index extends wepy.page {
   }
   computed = {};
 
-  methods = {};
+  methods = {
+    toZiXunDetailTap(id){
+        // wx.navigationBarTitleText
+         wx.navigateTo({
+      url: "/Index/pages/details?id=" + id
+    })
+    }
+  };
   events = {};
 
   async onLoad() {

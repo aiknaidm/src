@@ -822,7 +822,7 @@ export default class Index extends wepy.page {
     toFenLeiTap(id,suppliers_id,suppliers_name) {
       wx.navigateTo({
         url:
-          '/pages/Shop/search-list/index?cat_id=' +
+          '/Shop/pages/searchList?cat_id=' +
           id +
           '&suppliers_id=' +
           suppliers_id +
