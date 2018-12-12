@@ -1,0 +1,407 @@
+
+<style lang="less">
+.list-title {
+  padding: 20rpx 40rpx;
+  background-color: #f0f0f0;
+}
+
+.list-box {
+  display: flex;
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+  border-bottom: 1px solid #f0f0f0;
+  padding-right: 0;
+}
+
+.text {
+  height: 200px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.list-box-img {
+  width: 150rpx;
+  height: 150rpx;
+}
+
+.list-box-img image {
+  width: 100%;
+  height: 100%;
+}
+
+.list-box-content {
+  flex: 3;
+  padding-left: 20rpx;
+  line-height: 40rpx;
+}
+
+.list-box-content .list-box-title {
+  font-weight: bold;
+  line-height: 50rpx;
+  display: flex;
+  justify-content: space-between;
+  font-size: 30rpx;
+}
+
+.list-box-status {
+  font-weight: 100;
+  margin-right: 20rpx;
+  position: relative;
+  z-index: 10;
+  text-align: right;
+}
+
+.icon-youcecaidan {
+  padding-left: 30rpx;
+}
+
+.other {
+  border-top: 1px solid #f0f0f0;
+  margin-top: 15rpx;
+  padding-top: 5rpx;
+  line-height: 50rpx;
+}
+
+.orange {
+  padding: 0 5rpx;
+}
+
+.icon-shouji {
+  color: #e50015;
+}
+
+.icon-youcecaidan {
+}
+
+.xuanhuo {
+  color: #e50015;
+  text-decoration: blink;
+}
+
+view {
+  box-sizing: border-box;
+}
+
+.item-box {
+  width: 700rpx;
+  margin: 0auto;
+  padding: 40rpx 0;
+}
+
+.items {
+  width: 100%;
+}
+
+.item {
+  position: relative;
+  border-top: 2rpx solid#eee;
+  height: 120rpx;
+  line-height: 120rpx;
+  overflow: hidden;
+}
+
+.item:last-child {
+  border-bottom: 2rpx solid#eee;
+}
+
+.shenhe {
+  display: flex;
+}
+
+.order-list {
+  width: 100%;
+}
+
+.a-order {
+  width: 100%;
+  background-color: #fff;
+  border-top: 16rpx solid #f0f0f0;
+}
+
+.a-order .order-date {
+  padding: 0 30rpx;
+  height: 88rpx;
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #666;
+  align-items: center;
+  border-bottom: 1rpx solid #eee;
+}
+
+.a-order .order-date .red {
+  font-size: 24rpx;
+  color: #e50012;
+}
+
+.a-order .goods-info,
+.goods-img-container {
+  /* width: 720rpx; */
+  margin-left: 30rpx;
+  /* border-bottom: 1rpx solid #eee; */
+  padding: 30rpx 0;
+  display: flex;
+  align-items: center;
+  padding-bottom: 0px;
+}
+
+.goods-info .img-box {
+  width: 120rpx;
+  height: 120rpx;
+  overflow: hidden;
+  margin-right: 30rpx;
+  background-color: #f7f7f7;
+}
+
+.goods-info .img-box .goods-img,
+.goods-img-container .img-box .goods-img {
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.img-box1 {
+  display: flex;
+  /* align-items: center; */
+  font-size: 30rpx;
+  justify-content: space-between;
+  padding: 0 20rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.img-box1 .goods-img {
+  width: 120rpx;
+  height: 120rpx;
+  /* padding-left: 30rpx; */
+  margin-right: 30rpx;
+  padding: 20rpx 0 20rpx 30rpx;
+}
+
+.img-box1-2 {
+  font-size: 24rpx;
+  color: #797979;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 140rpx;
+}
+
+.img-box1-1 {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.goods-des {
+  /* width: 540rpx; */ /* height: 78rpx; */
+  line-height: 44rpx;
+  font-size: 26rpx;
+  color: #666;
+  overflow: hidden;
+}
+
+.goods-img-container {
+  height: 180rpx;
+  box-sizing: border-box;
+  white-space: nowrap;
+  /* display: flex; */
+}
+
+.img-box {
+  width: 130rpx;
+  height: 130rpx;
+  overflow: hidden;
+  margin-right: 20rpx;
+  background-color: #f7f7f7;
+  display: inline-block;
+}
+
+.a-order .price-box {
+  position: relative;
+  /* width: 720rpx; */
+  margin-left: 30rpx;
+  box-sizing: border-box;
+  padding: 20rpx 30rpx 20rpx 0;
+  /* align-items: center;  */ /* justify-content: space-between; */
+  font-size: 26rpx;
+  text-align: left;
+  overflow: hidden;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.a-order .price-box .total-price {
+  font-size: 26rpx;
+  color: #e50012;
+  flex: 2;
+}
+
+.btn-box {
+  padding: 20rpx 30rpx 20rpx 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 16rpx solid #f0f0f0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn {
+  /* flex: 1; */
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 60rpx;
+  border-radius: 6rpx;
+  margin-left: 20rpx;
+  width: 164rpx;
+  /* float: right; */
+}
+
+.cancel-btn {
+  background-color: #e50012;
+  color: #fff;
+}
+
+.topay-btn {
+  border: 1px solid #e50012;
+  color: #e50012;
+  float: right;
+}
+
+.order-price {
+  color: red;
+  font-size: 28rpx;
+}
+
+.order-txt {
+  padding: 0 30rpx;
+  font-size: 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.order-txt2 {
+  padding: 0 30rpx;
+  font-size: 28rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.img-box1-guige {
+  font-size: 26rpx;
+  color: #aaa;
+}
+button.ss-my-d {
+  margin: 0;
+  padding: 0;
+  border: 0px solid;
+  margin-left: 10rpx;
+}
+</style>
+<template>
+  <view class="container">
+    <block wx:if="{{yizhanList.length==0}}">
+      <noorder show="2"></noorder>
+    </block>
+    <view wx:else>
+      <view wx:for-items="{{yizhanList}}" wx:key="{{index}} ">
+        <view
+          class="list-box"
+          catchtap="viewYiZhanDetails"
+          data-supplier_id="{{item.suppliers_id}}"
+        >
+          <view class="list-box-img">
+            <image src="{{item.img}}">
+          </view>
+          <view class="list-box-content">
+            <view class="list-box-title">
+              {{item.suppliers_desc}}
+              <view class="shenhe">
+                <view class="list-box-status orange" wx:if="{{item.shenhe==0}}">审核中</view>
+                <view class="list-box-status orange" wx:if="{{item.xingji==1}}">商城首页店铺</view>
+
+                <view class="list-box-status orange">
+                  <text
+                    class="iconfont icon-youcecaidan"
+                    catchtap="changeSignStatus"
+                    data-id="{{item.suppliers_id}}"
+                    data-xingji="{{item.xingji}}"
+                    data-shenhe="{{item.shenhe}}"
+                  ></text>
+                </view>
+              </view>
+            </view>
+            <view>联系人：{{item.username}}</view>
+            <view catchtap="phoneCallTap" data-mobile="{{item.mobile}}">
+              手机号码：{{item.mobile}}
+              <text class="iconfont icon-shouji"></text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+var that
+import wepy from 'wepy';
+import api from '../API/api';
+import noorder from '../components/noOrder';
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '吉采易站'
+  };
+  components = {
+    noorder
+  };
+
+  data = {
+    yizhanList: []
+  };
+
+  computed = {};
+
+  methods = {};
+  events = {};
+  // 进货记录
+  yizhanList(userId) {
+    // wepy.request({
+    //   url: api.yizhanList,
+    //   data: {
+    //     user_id: userId
+    //   },
+    //   success: res => {
+    //       console.log(res);
+    //     that.yizhanList = res.data.data;
+    //     that.$apply();
+    //     console.log('yizhanList', this.yizhanList);
+    //   }
+    // });
+   wepy.request({
+      url: api.yizhanList,
+      data: { user_id: userId }
+      }).then((res) =>{
+           that.yizhanList=res.data.data
+           that.$apply();
+      });
+  }
+
+  onLoad() {
+      that=this
+  }
+  onShow() {
+     var userId = await this.$parent.loginInfo();
+    wepy.request({
+      url: api.yizhanList,
+      data: { user_id: userId }
+      }).then((res) =>{
+           that.yizhanList=res.data.data
+           that.$apply();
+      });
+
+    // });
+  }
+}
+</script>

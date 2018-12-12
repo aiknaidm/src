@@ -1,0 +1,385 @@
+<style lang="less">
+/* pages/yizhan-list/index.wxss */
+
+.list-title {
+  padding: 20rpx 40rpx;
+  background-color: #f0f0f0;
+}
+
+.list-box {
+  display: flex;
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+  border-bottom: 1px solid #f0f0f0;
+  padding-right: 0;
+}
+
+.text {
+  height: 200px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.list-box-img {
+  width: 150rpx;
+  height: 150rpx;
+}
+
+.list-box-img image {
+  width: 100%;
+  height: 100%;
+}
+
+.list-box-content {
+  flex: 3;
+  padding-left: 20rpx;
+  line-height: 40rpx;
+}
+
+.list-box-content .list-box-title {
+  font-weight: bold;
+  line-height: 50rpx;
+  display: flex;
+  justify-content: space-between;
+  font-size: 30rpx;
+}
+
+.list-box-status {
+  font-weight: 100;
+  margin-right: 20rpx;
+  position: relative;
+  z-index: 10;
+  text-align: right;
+}
+
+.icon-youcecaidan {
+  padding-left: 30rpx;
+}
+
+.other {
+  border-top: 1px solid #f0f0f0;
+  margin-top: 15rpx;
+  padding-top: 5rpx;
+  line-height: 50rpx;
+}
+
+.orange {
+  padding: 0 5rpx;
+}
+
+.icon-shouji {
+  color: #e50015;
+}
+
+.icon-youcecaidan {
+}
+
+.xuanhuo {
+  color: #e50015;
+  text-decoration: blink;
+}
+
+view {
+  box-sizing: border-box;
+}
+
+.item-box {
+  width: 700rpx;
+  margin: 0auto;
+  padding: 40rpx 0;
+}
+
+.items {
+  width: 100%;
+}
+
+.item {
+  position: relative;
+  border-top: 2rpx solid#eee;
+  height: 120rpx;
+  line-height: 120rpx;
+  overflow: hidden;
+}
+
+.item:last-child {
+  border-bottom: 2rpx solid#eee;
+}
+
+.shenhe {
+  display: flex;
+}
+
+.order-list {
+  width: 100%;
+}
+
+.a-order {
+  width: 100%;
+  background-color: #fff;
+  border-top: 16rpx solid #f0f0f0;
+}
+
+.a-order .order-date {
+  padding: 0 30rpx;
+  height: 88rpx;
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #666;
+  align-items: center;
+  border-bottom: 1rpx solid #eee;
+}
+
+.a-order .order-date .red {
+  font-size: 24rpx;
+  color: #e50012;
+}
+
+.a-order .goods-info,
+.goods-img-container {
+  /* width: 720rpx; */
+  margin-left: 30rpx;
+  /* border-bottom: 1rpx solid #eee; */
+  padding: 30rpx 0;
+  display: flex;
+  align-items: center;
+  padding-bottom: 0px;
+}
+
+.goods-info .img-box {
+  width: 120rpx;
+  height: 120rpx;
+  overflow: hidden;
+  margin-right: 30rpx;
+  background-color: #f7f7f7;
+}
+
+.goods-info .img-box .goods-img,
+.goods-img-container .img-box .goods-img {
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.img-box1 {
+  display: flex;
+  /* align-items: center; */
+  font-size: 30rpx;
+  justify-content: space-between;
+  padding: 0 20rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.img-box1 .goods-img {
+  width: 120rpx;
+  height: 120rpx;
+  /* padding-left: 30rpx; */
+  margin-right: 30rpx;
+  padding: 20rpx 0 20rpx 30rpx;
+}
+
+.img-box1-2 {
+  font-size: 24rpx;
+  color: #797979;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 140rpx;
+}
+
+.img-box1-1 {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.goods-des {
+  /* width: 540rpx; */ /* height: 78rpx; */
+  line-height: 44rpx;
+  font-size: 26rpx;
+  color: #666;
+  overflow: hidden;
+}
+
+.goods-img-container {
+  height: 180rpx;
+  box-sizing: border-box;
+  white-space: nowrap;
+  /* display: flex; */
+}
+
+.img-box {
+  width: 130rpx;
+  height: 130rpx;
+  overflow: hidden;
+  margin-right: 20rpx;
+  background-color: #f7f7f7;
+  display: inline-block;
+}
+
+.a-order .price-box {
+  position: relative;
+  /* width: 720rpx; */
+  margin-left: 30rpx;
+  box-sizing: border-box;
+  padding: 20rpx 30rpx 20rpx 0;
+  /* align-items: center;  */ /* justify-content: space-between; */
+  font-size: 26rpx;
+  text-align: left;
+  overflow: hidden;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.a-order .price-box .total-price {
+  font-size: 26rpx;
+  color: #e50012;
+  flex: 2;
+}
+
+.btn-box {
+  padding: 20rpx 30rpx 20rpx 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 16rpx solid #f0f0f0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn {
+  /* flex: 1; */
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 60rpx;
+  border-radius: 6rpx;
+  margin-left: 20rpx;
+  width: 164rpx;
+  /* float: right; */
+}
+
+.cancel-btn {
+  background-color: #e50012;
+  color: #fff;
+}
+
+.topay-btn {
+  border: 1px solid #e50012;
+  color: #e50012;
+  float: right;
+}
+
+.order-price {
+  color: red;
+  font-size: 28rpx;
+}
+
+.order-txt {
+  padding: 0 30rpx;
+  font-size: 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.order-txt2 {
+  padding: 0 30rpx;
+  font-size: 28rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.img-box1-guige {
+  font-size: 26rpx;
+  color: #aaa;
+}
+button.ss-my-d {
+  margin: 0;
+  padding: 0;
+  border: 0px solid;
+  margin-left: 10rpx;
+}
+</style>
+<template>
+  <view>
+    <view class="a-order" orderList="订单内容" goodsMap="商品内容">
+      <view class="order-date">
+        <view class="date-box">下单时间：{{orderList.add_time}}</view>
+        <view class="date-box">订单编号：{{orderList.order_sn}}</view>
+      </view>
+      <!-- <view class="goods-info" bindtap="orderDetail" data-id="{{item.id}}">
+        <view class="goods-des">
+          <view>订单号：{{item.order_sn}} </view>
+          <view wx:if="{{item.consignee && item.consignee != ''}}">收货人： {{item.consignee}}</view>
+          <view wx:if="{{item.other && item.other != ''}}">备注： {{item.other}}</view>
+        </view>
+      </view>-->
+      <view bindtap="orderDetail" data-id="{{orderList.id}}">
+        <view wx:if="{{goodsMap.length==1}}" class="img-box1">
+          <image src="{{goodsMap[0].goods_imgs}}" class="goods-img">
+          <view class="img-box1-1">
+            <view>{{goodsMap[0].goods_name}}</view>
+            <view class="img-box1-guige">{{goodsMap[0].goods_attr}}</view>
+          </view>
+          <view class="img-box1-2">
+            <view>￥{{goodsMap[0].goods_price}}</view>
+            <view>x{{goodsMap[0].goods_number}}</view>
+          </view>
+        </view>
+        <scroll-view class="goods-img-container" scroll-x="true" wx:else>
+          <view class="img-box" wx:for-items="{{goodsMap}}" wx:key="{{index2}}">
+            <image src="{{item.goods_imgs}}" class="goods-img">
+          </view>
+        </scroll-view>
+      </view>
+      <view class="price-box">
+        <view class="name">{{orderList.consignee}}</view>
+        <view class="total-price">共{{goodsMap.length}}件商品 合计：¥ {{orderList.order_amount}}</view>
+      </view>
+      <!-- <view class="address-box">
+        <text class='iconfont icon-icon-'></text>
+        <view>{{item.region}} {{item.address}}</view>
+      </view>-->
+      <view class="price-box">
+        <view
+          class="btn topay-btn"
+          @tap="toOrderAgain({{orderList.suppliers_id}},{{orderList.id}})"
+        >再来一单</view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+
+export default class List extends wepy.component {
+  props = {
+    orderList: {
+      type: Array,
+      default: [],
+      twoWay: true
+    },
+    goodsMap: {
+      type: Array,
+      default: [],
+      twoWay: true
+    },
+
+  };
+  data = {};
+
+  events = {};
+
+  methods = {
+    // 再来一单
+    async toOrderAgain(suppliersId, orderId) {
+       this.$emit('zlyd', suppliersId, orderId);
+    }
+  };
+
+  async onLoad() {
+    console.log('child orderList', this.orderList);
+    console.log('child goodsMap', this.goodsMap);
+  }
+}
+</script>

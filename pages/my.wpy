@@ -1,0 +1,44 @@
+<style lang="less">
+
+/* 内容 */
+</style>
+<template>
+  <view class="container">
+    
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '../API/api';
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的'
+  };
+  components = {};
+
+  data = {
+
+  };
+  
+  computed = {};
+  methods = {};
+  events = {};
+
+  async onLoad() {
+    wx.showLoading({
+      title: '加载中...', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+      success: res => {}
+    });
+    let that = this;
+    var userId = await this.$parent.loginInfo();
+    var userInfo = await this.$parent.getUserInfo(userId);
+    this.getMessage();
+    this.getAd();
+    this.getCarousel();
+    console.log('userId', userId);
+    console.log('userInfo', userInfo);
+  }
+}
+</script>

@@ -1,0 +1,214 @@
+<style lang="less">
+@import "./font/font.wxss";
+page{
+  position: relative; 
+  height: 100%;
+  background: #f0f0f0
+}
+
+ .hidden{
+   overflow: hidden;
+    /* height: 100%;  */
+   width: 100%;
+   padding: 0!important;
+    position: fixed; 
+ }
+.container {
+  background-color: #fff;
+  font-size: 30rpx;
+
+  word-break: break-all;
+}
+
+.body-bg {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 32rpx;
+}
+.red{
+ color:  #e50012
+}
+.green{
+  color: #14c09a
+}
+.bg-red{
+   background-color:  #e50012
+}
+.orange{
+  color: #f60
+}
+</style>
+
+<script>
+import wepy from 'wepy';
+import 'wepy-async-function';
+import { setStore } from 'wepy-redux';
+import configStore from './store';
+import api from './API/api';
+
+const store = configStore();
+setStore(store);
+
+export default class extends wepy.app {
+  config = {
+    pages: ['pages/index','pages/shop','pages/yizhanList','pages/supplierList','pages/my'],
+
+
+
+ window: {
+    "backgroundTextStyle": "#333",
+    "navigationBarTitleText": "吉采易站",
+    "navigationBarBackgroundColor": "#e50012",
+    "backgroundColor": "#F2f2f2",
+    "navigationBarTextStyle": "#fff",
+    "enablePullDownRefresh": false
+  },
+  tabBar: {
+    "color": "#707070",
+    "selectedColor": "#e50012",
+    "borderStyle": "white",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/index",
+        "iconPath": "images/footer-icon-01.png",
+        "selectedIconPath": "images/footer-icon-01-active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/shop",
+        "iconPath": "images/footer-icon-03.png",
+        "selectedIconPath": "images/footer-icon-03-active.png",
+        "text": "批发商城"
+      },
+      {
+        "pagePath": "pages/yizhanList",
+        "iconPath": "images/footer-icon-02.png",
+        "selectedIconPath": "images/footer-icon-02-active.png",
+        "text": "进货记录"
+      },
+      {
+        "pagePath": "pages/supplierList",
+        "iconPath": "images/footer-icon-05.png",
+        "selectedIconPath": "images/footer-icon-05-active.png",
+        "text": "供应商"
+      },
+      {
+        "pagePath": "pages/my",
+        "iconPath": "images/footer-icon-04.png",
+        "selectedIconPath": "images/footer-icon-04-active.png",
+        "text": "我的"
+      }
+    ]
+  },
+ 
+  navigateToMiniProgramAppIdList: [
+    "wx024ea505bcfdda8e",
+    "wx04135fb8cc44a57c",
+		"wxf48cdd6a7dae8c21"
+  ],
+   }
+  globalData = {
+    userInfo: null,
+    loginInfo: null
+  };
+
+  constructor() {
+    super();
+    this.use('promisify');
+    this.use('requestfix');
+  }
+
+  async onLaunch() {}
+
+  sleep(s) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('promise resolved');
+      }, s * 1000);
+    });
+  } 
+ async checkSettingStatus () {
+      // 判断是否是第一次授权，非第一次授权且授权失败则进行提醒
+      try {
+        let auth = await wepy.getSetting();
+
+        let authSetting = auth.authSetting;
+
+        if (authSetting['scope.userInfo'] === false) {
+
+          let confirm = await wepy.showModal({
+            title: '用户未授权',
+            content: '如需正常使用功能，请按确定并在授权管理中选中“用户信息”，然后点按确定。最后再重新进入小程序即可正常使用。',
+            showCancel: false,
+          });
+
+          if (confirm.confirm) {
+
+            var status=await wepy.openSetting();
+           console.log(status);
+
+          } else {
+            return false;
+          }
+
+        } else {
+          return true;
+        }
+
+      } catch (res) {
+
+      }
+
+    }
+  async testAsync() {
+    const data = await this.sleep(3);
+    console.log(data);
+  }
+
+  async loginInfo() {
+    let userId = this.globalData.userId;
+    if (userId) {
+      return userId;
+    }
+    userId = wx.getStorageSync('userId');
+    if (userId) {
+      this.globalData.userId = userId;
+      return userId;
+    }
+    let code = await wepy.login();
+    let loginInfo = await wepy.request({
+      url: api.login,
+      data: {
+        weixin: code.code,
+        sex: '未知',
+        avatar: 'https://lmbge.com/upload/avatar/weixin1.png'
+      }
+    });
+    wx.setStorageSync('userId', loginInfo.data.data.user_id);
+    this.globalData.userId = loginInfo.data.data.user_id;
+    return loginInfo.data.data.user_id;
+  }
+  async getUserInfo(userId) {
+    let userInfo = await wepy.request({
+      url: api.getUserInfo,
+      data:{
+        user_id:userId
+      }
+    });
+    return userInfo;
+  }
+}
+</script>
