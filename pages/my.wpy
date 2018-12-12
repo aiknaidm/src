@@ -1,43 +1,111 @@
 <style lang="less">
-
 /* 内容 */
 </style>
 <template>
   <view class="container">
-    
+    <userInfo :userData.sync="userInfo"></userInfo>
+    <view class="tab_list">
+      <repeat for="{{orderList}}" wx:key="{{index}}">
+        <myOrderList :tabItem="item"></myOrderList>
+      </repeat>
+    </view>
+    <view class="info_list">
+    <repeat for="{{tabList}}" wx:key="{{index}}">
+      <myList :tabItem="item"></myList>
+    </repeat>
+    </view>
+    <!-- <view class="info_list">
+      <myList :tabItem="myConsole"></myList>
+    </view>
+    <view class="info_list">
+      <myList :tabItem="myRenzheng"></myList>
+    </view> -->
   </view>
 </template>
 
 <script>
 import wepy from 'wepy';
 import api from '../API/api';
+import userInfo from '../components/userinfo';
+import myList from '../components/myList';
+import myOrderList from '../components/myOrderList';
+
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '我的'
   };
-  components = {};
+  components = {
+    userInfo,
+    myList,
+    myOrderList
+  };
 
   data = {
-
-  };
+    userInfo: {},
+    tabList: [
+      {
+        icon: '../../images/icon-shopcar.png',
+        text: '购物车',
+        url: '../Shop/shop-cart/index'
+      },
+      {
+        icon: '../../images/icon_normal.png',
+        text: '帮助中心',
+        url: '../my-help/index'
+      },
+      {
+        icon: '../../images/shangcheng.png',
+        text: '管理工作台',
+        url: '/pages/Shop/order-list/index?order_status=2',
+        type:1
+      },
+      {
+        icon: '../../images/iconfont-yzm.png',
+        text: '批发商认证',
+        url: '/pages/Shop/order-list/index?order_status=2',
+        type:1
+      }, 
+    ],
+    orderList: [
+      {
+        icon: '../../images/my/fukuan.png',
+        text: '待付款',
+        url: '/pages/Shop/order-list/index?order_status=1'
+      },
+      {
+        icon: '../../images/my/quanbu.png',
+        text: '待发货',
+        url: '/pages/Shop/order-list/index?order_status=2'
+      },
+      {
+        icon: '../../images/my/shouhuo.png',
+        text: '待收货',
+        url: '/pages/Shop/order-list/index?order_status=3'
+      },
+      {
+        icon: '../../images/my/wancheng.png',
+        text: '已完成',
+        url: '/pages/Shop/order-list/index?order_status=4'
+      }
+    ],
   
+  };
+
   computed = {};
   methods = {};
   events = {};
 
   async onLoad() {
-    wx.showLoading({
-      title: '加载中...', //提示的内容,
-      mask: true, //显示透明蒙层，防止触摸穿透,
-      success: res => {}
-    });
+    // wx.showLoading({
+    //   title: '加载中...', //提示的内容,
+    //   mask: true, //显示透明蒙层，防止触摸穿透,
+    //   success: res => {}
+    // });
     let that = this;
     var userId = await this.$parent.loginInfo();
     var userInfo = await this.$parent.getUserInfo(userId);
-    this.getMessage();
-    this.getAd();
-    this.getCarousel();
-    console.log('userId', userId);
+    this.userInfo = userInfo;
+    this.$apply();
     console.log('userInfo', userInfo);
   }
 }

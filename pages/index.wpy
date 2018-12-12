@@ -252,6 +252,7 @@ button::after {
   text-align: center;
   line-height: 80rpx;
   padding-bottom: 20rpx;
+  background: #fff
 }
 
 .img-box {
@@ -405,6 +406,7 @@ export default class Index extends wepy.page {
     this.message = res.data.data;
      wx.hideLoading();
     this.$apply();
+   
   }
   // 广告
   async getAd() {

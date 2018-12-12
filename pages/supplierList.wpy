@@ -391,7 +391,7 @@ export default class Index extends wepy.page {
   onLoad() {
       that=this
   }
-  onShow() {
+ async onShow() {
      var userId = await this.$parent.loginInfo();
     wepy.request({
       url: api.yizhanList,

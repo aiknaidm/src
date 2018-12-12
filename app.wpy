@@ -1,18 +1,18 @@
 <style lang="less">
-@import "./font/font.wxss";
-page{
-  position: relative; 
+@import './font/font.wxss';
+page {
+  position: relative;
   height: 100%;
-  background: #f0f0f0
+  background: #f0f0f0;
 }
 
- .hidden{
-   overflow: hidden;
-    /* height: 100%;  */
-   width: 100%;
-   padding: 0!important;
-    position: fixed; 
- }
+.hidden {
+  overflow: hidden;
+  /* height: 100%;  */
+  width: 100%;
+  padding: 0 !important;
+  position: fixed;
+}
 .container {
   background-color: #fff;
   font-size: 30rpx;
@@ -37,17 +37,17 @@ button {
   line-height: 80rpx;
   font-size: 32rpx;
 }
-.red{
- color:  #e50012
+.red {
+  color: #e50012;
 }
-.green{
-  color: #14c09a
+.green {
+  color: #14c09a;
 }
-.bg-red{
-   background-color:  #e50012
+.bg-red {
+  background-color: #e50012;
 }
-.orange{
-  color: #f60
+.orange {
+  color: #f60;
 }
 </style>
 
@@ -63,63 +63,67 @@ setStore(store);
 
 export default class extends wepy.app {
   config = {
-    pages: ['pages/index','pages/shop','pages/yizhanList','pages/supplierList','pages/my'],
+    pages: [
+      'pages/index',
+      'pages/shop',
+      'pages/yizhanList',
+      'pages/supplierList',
+      'pages/my'
+    ],
 
+    window: {
+      backgroundTextStyle: '#333',
+      navigationBarTitleText: '吉采易站',
+      navigationBarBackgroundColor: '#e50012',
+      backgroundColor: '#F2f2f2',
+      navigationBarTextStyle: '#fff',
+      enablePullDownRefresh: false
+    },
+    tabBar: {
+      color: '#707070',
+      selectedColor: '#e50012',
+      borderStyle: 'white',
+      backgroundColor: '#fff',
+      list: [
+        {
+          pagePath: 'pages/index',
+          iconPath: 'images/footer-icon-01.png',
+          selectedIconPath: 'images/footer-icon-01-active.png',
+          text: '首页'
+        },
+        {
+          pagePath: 'pages/shop',
+          iconPath: 'images/footer-icon-03.png',
+          selectedIconPath: 'images/footer-icon-03-active.png',
+          text: '批发商城'
+        },
+        {
+          pagePath: 'pages/yizhanList',
+          iconPath: 'images/footer-icon-02.png',
+          selectedIconPath: 'images/footer-icon-02-active.png',
+          text: '进货记录'
+        },
+        {
+          pagePath: 'pages/supplierList',
+          iconPath: 'images/footer-icon-05.png',
+          selectedIconPath: 'images/footer-icon-05-active.png',
+          text: '供应商'
+        },
+        {
+          pagePath: 'pages/my',
+          iconPath: 'images/footer-icon-04.png',
+          selectedIconPath: 'images/footer-icon-04-active.png',
+          text: '我的'
+        }
+      ]
+    },
 
-
- window: {
-    "backgroundTextStyle": "#333",
-    "navigationBarTitleText": "吉采易站",
-    "navigationBarBackgroundColor": "#e50012",
-    "backgroundColor": "#F2f2f2",
-    "navigationBarTextStyle": "#fff",
-    "enablePullDownRefresh": false
-  },
-  tabBar: {
-    "color": "#707070",
-    "selectedColor": "#e50012",
-    "borderStyle": "white",
-    "backgroundColor": "#fff",
-    "list": [
-      {
-        "pagePath": "pages/index",
-        "iconPath": "images/footer-icon-01.png",
-        "selectedIconPath": "images/footer-icon-01-active.png",
-        "text": "首页"
-      },
-      {
-        "pagePath": "pages/shop",
-        "iconPath": "images/footer-icon-03.png",
-        "selectedIconPath": "images/footer-icon-03-active.png",
-        "text": "批发商城"
-      },
-      {
-        "pagePath": "pages/yizhanList",
-        "iconPath": "images/footer-icon-02.png",
-        "selectedIconPath": "images/footer-icon-02-active.png",
-        "text": "进货记录"
-      },
-      {
-        "pagePath": "pages/supplierList",
-        "iconPath": "images/footer-icon-05.png",
-        "selectedIconPath": "images/footer-icon-05-active.png",
-        "text": "供应商"
-      },
-      {
-        "pagePath": "pages/my",
-        "iconPath": "images/footer-icon-04.png",
-        "selectedIconPath": "images/footer-icon-04-active.png",
-        "text": "我的"
-      }
+    navigateToMiniProgramAppIdList: [
+      'wx024ea505bcfdda8e',
+      'wx04135fb8cc44a57c',
+      'wxf48cdd6a7dae8c21'
     ]
-  },
- 
-  navigateToMiniProgramAppIdList: [
-    "wx024ea505bcfdda8e",
-    "wx04135fb8cc44a57c",
-		"wxf48cdd6a7dae8c21"
-  ],
-   }
+  };
   globalData = {
     userInfo: null,
     loginInfo: null
@@ -139,40 +143,33 @@ export default class extends wepy.app {
         resolve('promise resolved');
       }, s * 1000);
     });
-  } 
- async checkSettingStatus () {
-      // 判断是否是第一次授权，非第一次授权且授权失败则进行提醒
-      try {
-        let auth = await wepy.getSetting();
+  }
+  async checkSettingStatus() {
+    // 判断是否是第一次授权，非第一次授权且授权失败则进行提醒
+    try {
+      let auth = await wepy.getSetting();
 
-        let authSetting = auth.authSetting;
+      let authSetting = auth.authSetting;
 
-        if (authSetting['scope.userInfo'] === false) {
+      if (authSetting['scope.userInfo'] === false) {
+        let confirm = await wepy.showModal({
+          title: '用户未授权',
+          content:
+            '如需正常使用功能，请按确定并在授权管理中选中“用户信息”，然后点按确定。最后再重新进入小程序即可正常使用。',
+          showCancel: false
+        });
 
-          let confirm = await wepy.showModal({
-            title: '用户未授权',
-            content: '如需正常使用功能，请按确定并在授权管理中选中“用户信息”，然后点按确定。最后再重新进入小程序即可正常使用。',
-            showCancel: false,
-          });
-
-          if (confirm.confirm) {
-
-            var status=await wepy.openSetting();
-           console.log(status);
-
-          } else {
-            return false;
-          }
-
+        if (confirm.confirm) {
+          var status = await wepy.openSetting();
+          console.log(status);
         } else {
-          return true;
+          return false;
         }
-
-      } catch (res) {
-
+      } else {
+        return true;
       }
-
-    }
+    } catch (res) {}
+  }
   async testAsync() {
     const data = await this.sleep(3);
     console.log(data);
@@ -204,11 +201,20 @@ export default class extends wepy.app {
   async getUserInfo(userId) {
     let userInfo = await wepy.request({
       url: api.getUserInfo,
-      data:{
-        user_id:userId
+      data: {
+        user_id: userId
       }
     });
-    return userInfo;
+    if(userInfo.data.code=="0")
+    return userInfo.data.data;
+    else
+    wx.showToast({
+      title: '获取用户信息失败', //提示的内容,
+      icon: 'none', //图标,
+      duration: 2000, //延迟时间,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+    });
+    return 0
   }
 }
 </script>

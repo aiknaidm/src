@@ -8,7 +8,7 @@ const api = {
     yizhanIndex: `${host}/jicai/wdyz`, //商城首页
     yizhanBanner: `${host}/jicai/yzgg`, //首页广告
     orderList: `${host}/jicai/orderlist?order_status=4`, //进货记录（已完成订单）
-    yizhanList: `${host}/jicai/yzlb_my`, //进货记录（已完成订单）
+    yizhanList: `${host}/jicai/yzlb_my`, //易站列表
 
 }
 export default api
