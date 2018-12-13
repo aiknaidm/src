@@ -11,8 +11,14 @@ const api = {
     orderList: `${host}/orderlist?order_status=4`, //进货记录（已完成订单）
     yizhanList: `${host}/yzlb_my`, //易站列表
     goodsKind: `${host}/hyfl`, //商品分类
-    goodsList:`${host_test}/jicai/search`, //商品列表
-   
+    goodsList: `${host}/search`, //商品列表
+    helpList: `${host}/bangzhu`, //帮助中心
+    articleDetail: `${host}/ggnr`, //文章详情
+    newsKind: `${host}/ggfl`, //新闻分类
+    newsList: `${host}/gglb`, //新闻列表
+    unfriend: `${host}/jcgx`, //解除关系//取消申请
+    setIndex: `${host}/swxb`, //设为店铺首页
+    removeindex: `${host}/qxxb`, //取消店铺首页
 
 }
 export default api

@@ -854,7 +854,7 @@ export default class Index extends wepy.page {
       }
     });
     this.yizhanIndex = res.data.data;
-    var suppliers_id = res.data.data.suppliers_id
+    var suppliers_id = res.data.data&& res.data.data.suppliers_id
       ? res.data.data.suppliers_id
       : '';
     this.getShopBanner(userId, suppliers_id);
@@ -876,7 +876,7 @@ export default class Index extends wepy.page {
     this.yizhan = res.data.yizhan;
     this.$apply();
     var end_time = this.yizhan.end_time;
-    if (end_time !== 0 && new Date().getTime() - end_time * 1000) {
+    if (end_time !== 0 && new Date().getTime() - end_time * 1000>0) {
       console.log('店铺已过期');
       this.isguoqi = true;
       this.text = '店铺已过期';
@@ -884,7 +884,7 @@ export default class Index extends wepy.page {
     console.log('yizhanBanner', this.yizhanBanner);
     console.log('yizhan', this.yizhan);
   }
-  async onLoad() {
+  async onShow() {
     var userId = await this.$parent.loginInfo();
     var userInfo = await this.$parent.getUserInfo(userId);
     this.getShopIndex(userId);

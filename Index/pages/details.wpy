@@ -2,30 +2,57 @@
 </style>
 <template>
   <view>
-     <htmlParser :parserName="name1" :parserContent.sync="content1"/>
+    <htmlParser :parserName="name1" :parserContent.sync="articleDetail"/>
   </view>
 </template>
 
 <script>
 import wepy from 'wepy';
-import htmlParser from '../../components/htmlParser'
+import htmlParser from '../../components/htmlParser';
+import api from '../../API/api';
+import util from '../../utils/index';
 export default class details extends wepy.page {
   config = {
     navigationBarTitleText: '帮助中心2'
   };
-  components = { htmlParser};
-
-  data = { name1: 'myHtmlParserKiner1',
-      content1: '<text style=\'color: gray;\'>9999999999999999 </text>',};
-
+  components = { htmlParser };
+  data = {
+    articleDetail: {
+      post_content: "<text style='color: gray;'>暂无内容 </text>"
+    }
+  };
   computed = {};
-  methods = {};
-  events = {};
+  methods = {
 
-  async onLoad() {
-    var userId = await this.$parent.loginInfo();
-    var userInfo = await this.$parent.getUserInfo(userId);
-    console.log("userInfo",userInfo);  
+  };
+  events = {};
+  async getArticleDetail(id) {
+    wx.showLoading({
+      title: '加载中...', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+    });
+    wepy
+      .request({
+        url: api.articleDetail,
+        data: {
+          id: id
+        }
+      })
+      .then(res => {
+        wx.hideLoading();
+        this.articleDetail = res.data.data;
+        this.articleDetail.published_time = util.formatTime(
+          new Date(this.articleDetail.published_time * 1000),
+          'yyyy-MM-dd'
+        );
+
+        this.$apply();
+        console.log('文章详情', this.articleDetail);
+      });
+  }
+  async onLoad(option) {
+    console.log('id', option.id);
+    this.getArticleDetail(option.id);
   }
 }
 </script>

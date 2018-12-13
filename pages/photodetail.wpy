@@ -21,7 +21,7 @@
 <script>
   import wepy from 'wepy'
   import htmlParser from '../components/htmlParser'
-  import { API_URL, common, httpUtils } from '../config'
+  // import { API_URL, common, httpUtils } from '../config'
 
   export default class photodetail extends wepy.page {
 

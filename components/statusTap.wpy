@@ -1,5 +1,5 @@
 <style lang="less">
-.search-title{
+.search-title {
   display: flex;
   justify-content: space-around;
   line-height: 88rpx;
@@ -7,70 +7,71 @@
   border-bottom: 1px solid #eee;
   align-items: center;
 }
-.search-title .active{
+.search-title .active {
   color: #e50012;
 }
-.search-title image{
+.search-title image {
   width: 35rpx;
-  height:35rpx;
+  height: 35rpx;
   margin-left: 5rpx;
 }
-.search-title view{
+.search-title view {
   display: flex;
   align-items: center;
 }
-.search-title .up .img{
-transform: rotate(180deg);
--ms-transform: rotate(180deg); /* IE 9 */
--webkit-transform: rotate(180deg); /* Safari and Chrome */
+.search-title .up .img {
+  transform: rotate(180deg);
+  -ms-transform: rotate(180deg); /* IE 9 */
+  -webkit-transform: rotate(180deg); /* Safari and Chrome */
 }
 </style>
 <template>
-    <view class="search-title">
-        
-         <block wx:for="{{statusType}}" wx:key="{{index}}">
-<view class="status-label {{index == currentType ? 'active' : ''}} {{isclick?'down':'up'}}"  @tap="statusTap({{index}})" >
-{{item}}
-            <image wx:if="{{index==2&&index != currentType}}" src="/images/sanjiao.png"/>
-            <image
-                wx:if="{{index==2&&index == currentType}}"
-                src="/images/sanjiao-active.png"
-                class="img"
-            />
-            <image wx:if="{{index==3&&index != currentType}}" src="/images/shaixuan.png"/>
-            <image wx:if="{{index==3&&index == currentType}}" src="/images/shaixuan-active.png"/>
-        </view>
-         </block>
-    </view>
-   
+  <view class="search-title">
+    <block wx:for="{{statusType}}" wx:key="{{index}}">
+      <view
+        class="status-label {{index == currentType ? 'active' : ''}} {{isclick?'down':'up'}}"
+        @tap="statusTap({{index}})"
+      >
+        {{item}}
+        <block wx:if="{{type=='shop'}}">
+          <image wx:if="{{index==2&&index != currentType}}" src="/images/sanjiao.png">
+          <image
+            wx:if="{{index==2&&index == currentType}}"
+            src="/images/sanjiao-active.png"
+            class="img"
+          >
+          <image wx:if="{{index==3&&index != currentType}}" src="/images/shaixuan.png">
+          <image wx:if="{{index==3&&index == currentType}}" src="/images/shaixuan-active.png">
+        </block>
+      </view>
+    </block>
+  </view>
 </template>
 <script>
 import wepy from 'wepy';
 
 export default class statusTap extends wepy.component {
   props = {
-      statusType:{type: Object, default: []}
+    statusType: { type: Object, default: [] }
   };
   data = {
-      currentType:0,
-      isclick:false
+    currentType: 0,
+    isclick: false
   };
 
   events = {};
 
   methods = {
-    statusTap(index){
-        if(index==2){
-            this.isclick=!this.isclick
-        }
-        this.currentType=index
-        this.$apply();
-        this.$emit("statusTap",index)
+    statusTap(index) {
+      if (index == 2) {
+        this.isclick = !this.isclick;
+      }
+      this.currentType = index;
+      this.$apply();
+      this.$emit('statusTap', index);
     }
   };
 
-  onLoad() {
-
-  }
+  onLoad() {}
 }
 </script>

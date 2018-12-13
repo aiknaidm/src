@@ -302,7 +302,7 @@ button.ss-my-d {
 <template>
   <view class="container">
     <block wx:if="{{yizhanList.length==0}}">
-      <noorder show="2"></noorder>
+      <noorder show="2" text="暂无供应商"></noorder>
     </block>
     <view wx:else>
       <view wx:for-items="{{yizhanList}}" wx:key="{{index}} ">
@@ -324,10 +324,7 @@ button.ss-my-d {
                 <view class="list-box-status orange">
                   <text
                     class="iconfont icon-youcecaidan"
-                    catchtap="changeSignStatus"
-                    data-id="{{item.suppliers_id}}"
-                    data-xingji="{{item.xingji}}"
-                    data-shenhe="{{item.shenhe}}"
+                    @tap.stop="changeStatus({{item.suppliers_id}},{{item.xingji}},{{item.shenhe}})"
                   ></text>
                 </view>
               </view>
@@ -345,7 +342,7 @@ button.ss-my-d {
 </template>
 
 <script>
-var that
+var that;
 import wepy from 'wepy';
 import api from '../API/api';
 import noorder from '../components/noOrder';
@@ -363,32 +360,164 @@ export default class suppliersList extends wepy.page {
 
   computed = {};
 
-  methods = {};
+  methods = {
+    changeStatus(suppliers_id, xingji, shenhe) {
+      if (shenhe == 0) {
+        let itemLists = ['取消申请'];
+        this.showActionSheet(itemLists, suppliers_id);
+      } else if (shenhe && shenhe == 1 && xingji == 1) {
+        let itemLists = ['解除关系', '取消店铺首页'];
+        this.showActionSheet(itemLists, suppliers_id);
+      } else {
+        let itemLists = ['解除关系', '设为店铺首页'];
+        this.showActionSheet(itemLists, suppliers_id);
+      }
+    }
+  };
   events = {};
   // 进货记录
-  yizhanList(userId) {
-   wepy.request({
-      url: api.yizhanList,
-      data: { user_id: userId }
-      }).then((res) =>{
-           that.yizhanList=res.data.data
-           that.$apply();
-      });
-  }
+  // yizhanList(userId) {
+  //  wepy.request({
+  //     url: api.yizhanList,
+  //     data: { user_id: userId }
+  //     }).then((res) =>{
+  //          that.yizhanList=res.data.data
+  //          that.$apply();
+  //     });
+  // }
   onLoad() {
-      that=this
+    that = this;
   }
- async onShow() {
-     var userId = await this.$parent.loginInfo();
-    wepy.request({
-      url: api.yizhanList,
-      data: { user_id: userId }
-      }).then((res) =>{
-           that.yizhanList=res.data.data
-           that.$apply();
+  async showActionSheet(itemLists, suppliers_id) {
+    var user_id = await this.$parent.loginInfo();
+    var that = this;
+    wx.showActionSheet({
+      itemList: itemLists,
+      success: function(e) {
+        if (
+          itemLists[e.tapIndex] == '取消申请' ||
+          itemLists[e.tapIndex] == '解除关系'
+        ) {
+          that.changeSuppliersStatus(
+            api.unfriend,
+            user_id,
+            suppliers_id,
+            itemLists[e.tapIndex]
+          );
+        } else if (itemLists[e.tapIndex] == '取消店铺首页') {
+          that.changeSuppliersStatus(
+            api.removeindex,
+            user_id,
+            suppliers_id,
+            itemLists[e.tapIndex]
+          );
+        } else if (itemLists[e.tapIndex] == '设为店铺首页') {
+          that.changeSuppliersStatus(
+            api.setIndex,
+            user_id,
+            suppliers_id,
+            itemLists[e.tapIndex]
+          );
+        }
+      },
+      fail: function(res) {
+        console.log(res.errMsg);
+      }
+    });
+  }
+  async changeSuppliersStatus(url, user_id, suppliers_id, msg) {
+    // 解除关系
+    console.log('解除关系');
+    var res = await wepy.request({
+      url: url,
+      data: {
+        user_id,
+        suppliers_id
+      }
+    });
+    this.getyizhanList(user_id);
+    if (res.data.code == '0') {
+      wx.showToast({
+        title: msg + '成功', //提示的内容,
+        icon: 'none', //图标,
+        duration: 2000, //延迟时间,
+        mask: true //显示透明蒙层，防止触摸穿透,
       });
+    } else {
+      wx.showToast({
+        title: msg + '失败', //提示的内容,
+        icon: 'none', //图标,
+        duration: 2000, //延迟时间,
+        mask: true //显示透明蒙层，防止触摸穿透,
+      });
+    }
+  }
+  // async setIndex(user_id,suppliers_id){
+  //   console.log("设置店铺首页")
+  //    var res=await wepy.request({
+  //       url:api.setIndex,
+  //       data:{
+  //         user_id,suppliers_id
+  //       }
+  //     })
+  //     this.getyizhanList(user_id);
+  //     if(res.data.code=="0"){
+  //       wx.showToast({
+  //         title: msg+'成功', //提示的内容,
+  //         icon: 'none', //图标,
+  //         duration: 2000, //延迟时间,
+  //         mask: true, //显示透明蒙层，防止触摸穿透,
+  //       });
+  //     }else{
+  //       wx.showToast({
+  //         title: '失败', //提示的内容,
+  //         icon: 'none', //图标,
+  //         duration: 2000, //延迟时间,
+  //         mask: true, //显示透明蒙层，防止触摸穿透,
+  //       });
+  //     }
 
-    // });
+  // }
+  // async removeindex(user_id,suppliers_id){
+  //   console.log("解除店铺首页")
+  //    var res=await wepy.request({
+  //       url:api.removeindex,
+  //       data:{
+  //         user_id,suppliers_id
+  //       }
+  //     })
+  //     this.getyizhanList(user_id);
+  //     if(res.data.code=="0"){
+  //       wx.showToast({
+  //         title: '解除店铺首页成功', //提示的内容,
+  //         icon: 'none', //图标,
+  //         duration: 2000, //延迟时间,
+  //         mask: true, //显示透明蒙层，防止触摸穿透,
+  //       });
+  //     }else{
+  //       wx.showToast({
+  //         title: '解除店铺首页失败', //提示的内容,
+  //         icon: 'none', //图标,
+  //         duration: 2000, //延迟时间,
+  //         mask: true, //显示透明蒙层，防止触摸穿透,
+  //       });
+  //     }
+
+  // }
+  async getyizhanList(user_id) {
+    wepy
+      .request({
+        url: api.yizhanList,
+        data: { user_id }
+      })
+      .then(res => {
+        that.yizhanList = res.data.data;
+        that.$apply();
+      });
+  }
+  async onShow() {
+    var userId = await this.$parent.loginInfo();
+    this.getyizhanList(userId);
   }
 }
 </script>

@@ -342,7 +342,7 @@ button::after {
           <view class="txt-content">{{item.post_excerpt}}</view>
         </view>
       </view>
-      <view class="more" bindtap="toZiXunTap">查看更多</view>
+      <view class="more" @tap="toZiXunTap">查看更多</view>
     </view>
   </view>
 </template>
@@ -364,27 +364,27 @@ export default class Index extends wepy.page {
     bannerImg: ['/images/jcyz-index.jpg'],
     tabList: [
       {
-        icon: '../../images/gonggao.png',
+        icon: '/images/gonggao.png',
         text: '通知公告',
-        url: '/pages/index-zixun/index?id=5&name=通知公告',
+        url: '/Index/pages/newsList?id=5&name=通知公告',
         color: '#a68cd3'
       },
       {
-        icon: '../../images/zhengce.png',
+        icon: '/images/zhengce.png',
         text: '优惠政策',
-        url: '/pages/index-zixun/index?id=6&name=优惠政策',
+        url: '/Index/pages/newsList?id=6&name=优惠政策',
         color: '#f6bf31'
       },
       {
-        icon: '../../images/shangxin.png',
+        icon: '/images/shangxin.png',
         text: '联系易站',
-        url: '/pages/index-zixun/index?id=8&name=产品上新',
+        url: '/Index/pages/newsList?id=8&name=产品上新',
         color: '#10b3b0'
       },
       {
-        icon: '../../images/new.png',
+        icon: '/images/new.png',
         text: '厂家招商',
-        url: '/pages/index-zhaoshaoList/index?id=31&name=厂家招商',
+        url: '/Index/pages/newsList?id=31&name=厂家招商',
         color: '#fd7603'
       }
     ],
@@ -432,6 +432,11 @@ export default class Index extends wepy.page {
          wx.navigateTo({
       url: "/Index/pages/details?id=" + id
     })
+    },
+   toZiXunTap: function() {
+      wx.navigateTo({
+        url: '/Index/pages/newsList'
+      });
     }
   };
   events = {};

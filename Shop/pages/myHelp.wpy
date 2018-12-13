@@ -1,22 +1,87 @@
+
 <style lang="less">
+/* pages/my-help/index.wxss */
+
+.banner {
+  height: 300rpx;
+  width: 100%;
+}
+
+.banner image {
+  width: 100%;
+  height: 100%;
+}
+
+.droplist {
+  padding: 0 40rpx 40rpx 40rpx;
+}
+
+.droplist-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-top: 20rpx;
+  line-height: 60rpx;
+}
+
+.droplist-content {
+  height: 0rpx;
+  line-height: 55rpx;
+  overflow: hidden;
+  transition: height 1s;
+  -moz-transition: height 1s; /* Firefox 4 */
+  -webkit-transition: height 1s; /* Safari 和 Chrome */
+  -o-transition: height 1s;
+}
+.droplist-content.active{
+   height: auto;
+  /* overflow: scroll; */
+  transition: height 1s;
+  -moz-transition: height 1s; /* Firefox 4 */
+  -webkit-transition: height 1s; /* Safari 和 Chrome */
+  -o-transition: height 1s;
+}
+.rotate {
+  transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg); /* IE 9 */
+  -moz-transform: rotate(-90deg); /* Firefox */
+  -webkit-transform: rotate(-90deg); /* Safari 和 Chrome */
+  -o-transform: rotate(-90deg);
+  float: left;
+  margin-right: 10rpx;
+  
+
+}
+.icon-zhankai{
+  color: #f60;
+  font-size: 40rpx;
+}
+.rotate.active {
+  transform: rotate(0deg);
+  -ms-transform: rotate(0deg); /* IE 9 */
+  -moz-transform: rotate(0deg); /* Firefox */
+  -webkit-transform: rotate(0deg); /* Safari 和 Chrome */
+  -o-transform: rotate(0deg);
+  transition: transform 0.5s;
+  -moz-transition: transform 0.5s; /* Firefox 4 */
+  -webkit-transition: transform 0.5s; /* Safari 和 Chrome */
+  -o-transition: width 0.5s;
+}
 </style>
 <template>
   <view class="container">
     <view class="banner">
-      <image src="/images/help.gif" mode="aspectFill">
+      <image src="/images/help.gif" mode="aspectFill"></image>
     </view>
-
     <view class="droplist">
-      <block wx:for="{{articleArray}}" wx:key="{{index}}">
-        <view class="droplist-title" data-index="{{index}}" bindtap="clickTitle">
-          <view class="rotate {{helpList[index].isclick?'active':''}}">
+      <block wx:for="{{helpList}}" wx:key="{{index}}">
+        <view class="droplist-title"  @tap="clickTitle({{index}})">
+          <view class="rotate {{thisindex==index?'active':''}}">
             <text class="iconfont icon-zhankai"></text>
           </view>
-
-          {{title[index]}}
+          {{item.title}}
         </view>
-        <view class="droplist-content {{helpList[index].isclick?'active':''}}">
-          <!-- <template is="wxParse" data="{{wxParseData:item}}"/> -->
+        <view class="droplist-content {{thisindex==index?'active':''}}">
+          <rich-text type="node" nodes="{{item.content}}"></rich-text>
         </view>
       </block>
     </view>
@@ -30,18 +95,34 @@ export default class myHelp extends wepy.page {
   config = {
     navigationBarTitleText: '帮助中心2'
   };
-  components = {};
+  components = { };
 
-  data = {};
+  data = {
+    thisindex:0,
+    helpList:[]
+  };
 
   computed = {};
-  methods = {};
+  methods = {
+    clickTitle(index){
+       this.thisindex=index
+    }
+  };
   events = {};
-
-  async onLoad() {
-    var userId = await this.$parent.loginInfo();
-    var userInfo = await this.$parent.getUserInfo(userId);
-    console.log("userInfo",userInfo);  
+  async getHelpList() {
+    wepy
+      .request({
+        url: api.helpList,
+      })
+      .then(res => {
+        this.helpList = res.data.data;
+        this.$apply();
+        console.log('帮助中心', this.helpList);
+      });
+  }
+  
+  async onLoad(option) {
+    this.getHelpList();
   }
 }
 </script>
