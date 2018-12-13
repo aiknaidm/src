@@ -1,0 +1,64 @@
+
+<style lang="less">
+
+</style>
+<template>
+  <view class="container">
+    <view class="banner">
+      <image src="/images/help.gif" mode="aspectFill"></image>
+    </view>
+    <view class="droplist">
+      <block wx:for="{{helpList}}" wx:key="{{index}}">
+        <view class="droplist-title"  @tap="clickTitle({{index}})">
+          <view class="rotate {{thisindex==index?'active':''}}">
+            <text class="iconfont icon-zhankai"></text>
+          </view>
+          {{item.title}}
+        </view>
+        <view class="droplist-content {{thisindex==index?'active':''}}">
+          <rich-text type="node" nodes="{{item.content}}"></rich-text>
+        </view>
+      </block>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '../../API/api';
+
+export default class orderDetails extends wepy.page {
+  config = {
+    navigationBarTitleText: '订单列表'
+  };
+  components = { };
+
+  data = {
+    thisindex:0,
+    helpList:[]
+  };
+
+  computed = {};
+  methods = {
+    clickTitle(index){
+       this.thisindex=index
+    }
+  };
+  events = {};
+  async getHelpList() {
+    wepy
+      .request({
+        url: api.helpList,
+      })
+      .then(res => {
+        this.helpList = res.data.data;
+        this.$apply();
+        console.log('帮助中心', this.helpList);
+      });
+  }
+  
+  async onLoad(option) {
+    this.getHelpList();
+  }
+}
+</script>

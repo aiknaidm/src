@@ -49,6 +49,15 @@ button {
 .orange {
   color: #f60;
 }
+mask {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;;
+}
 </style>
 
 <script>
@@ -72,12 +81,12 @@ export default class extends wepy.app {
     ],
     subPackages: [
       {
-        root: 'Shop',
-        pages: ['pages/shopCart', 'pages/myHelp', 'pages/searchList']
+        root: 'Shop/',
+        pages: ['pages/shopCart', 'pages/myHelp', 'pages/searchList','pages/orderList']
       },
       {
-        root: 'Index',
-        pages: ['pages/details','pages/newsList']
+        root: 'Index/',
+        pages: ['pages/details', 'pages/newsList']
       }
     ],
 
@@ -158,23 +167,25 @@ export default class extends wepy.app {
     // 判断是否是第一次授权，非第一次授权且授权失败则进行提醒
     try {
       let auth = await wepy.getSetting();
-
       let authSetting = auth.authSetting;
-
-      if (authSetting['scope.userInfo'] === false) {
-        let confirm = await wepy.showModal({
-          title: '用户未授权',
-          content:
-            '如需正常使用功能，请按确定并在授权管理中选中“用户信息”，然后点按确定。最后再重新进入小程序即可正常使用。',
-          showCancel: false
-        });
-
-        if (confirm.confirm) {
-          var status = await wepy.openSetting();
-          console.log(status);
-        } else {
-          return false;
-        }
+      if (
+        authSetting['scope.userInfo'] === false ||
+        authSetting['scope.userInfo'] === undefined
+      ) {
+        // let confirm = await wepy.showModal({
+        //   title: '用户未授权',
+        //   content:
+        //     '如需正常使用功能，请按确定并在授权管理中选中“用户信息”，然后点按确定。最后再重新进入小程序即可正常使用。',
+        //   showCancel: false
+        // });
+        // if (confirm.confirm) {
+        //   var status = await wepy.openSetting();
+        //   console.log(status);
+        // } else {
+        //   return false;
+        // }
+        console.log('没有获取用户信息的权限');
+        return false;
       } else {
         return true;
       }

@@ -378,8 +378,7 @@ export default class List extends wepy.component {
   };
 
   async onLoad() {
-    console.log('child orderList', this.orderList);
-    console.log('child goodsMap', this.goodsMap);
+ 
   }
 }
 </script>

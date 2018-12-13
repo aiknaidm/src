@@ -1,5 +1,4 @@
 <style lang="less">
-
 </style>
 <template>
   <view class="container">
@@ -14,6 +13,10 @@
         <myList :tabItem="item"></myList>
       </repeat>
     </view>
+    <!-- 遮罩层 -->
+    <mask wx:if="{{isShowprompt}}"></mask>
+    <!-- 为获取用户信息的提示 -->
+    <prompt wx:if="{{isShowprompt}}" @gotUserInfo.user="getUserInfo"></prompt>
     <!-- <view class="info_list">
       <myList :tabItem="myConsole"></myList>
     </view>
@@ -29,6 +32,7 @@ import api from '../API/api';
 import userInfo from '../components/userinfo';
 import myList from '../components/myList';
 import myOrderList from '../components/myOrderList';
+import prompt from '../components/prompt';
 
 export default class my extends wepy.page {
   config = {
@@ -37,16 +41,17 @@ export default class my extends wepy.page {
   components = {
     userInfo,
     myList,
-    myOrderList
+    myOrderList,
+    prompt
   };
 
   data = {
-    userInfo: {}, 
-    tabList: [ 
+    userInfo: {},
+    tabList: [
       {
         icon: '../../images/icon-shopcar.png',
         text: '购物车',
-        url: '/Shop/pages/shopCart' 
+        url: '/Shop/pages/shopCart'
       },
       {
         icon: '../../images/icon_normal.png',
@@ -72,28 +77,39 @@ export default class my extends wepy.page {
       {
         icon: '../../images/my/fukuan.png',
         text: '待付款',
-        url: '/pages/shop/order-list/index?order_status=1'
+        url: '/Shop/pages/orderList?order_status=1'
       },
       {
         icon: '../../images/my/quanbu.png',
         text: '待发货',
-        url: '/pages/Shop/order-list/index?order_status=2'
+        url: '/Shop/pages/orderList?order_status=2'
       },
       {
         icon: '../../images/my/shouhuo.png',
         text: '待收货',
-        url: '/pages/Shop/order-list/index?order_status=3'
+        url: '/Shop/pages/orderList?order_status=3'
       },
       {
         icon: '../../images/my/wancheng.png',
         text: '已完成',
-        url: '/pages/Shop/order-list/index?order_status=4'
+        url: '/Shop/pages/orderList?order_status=4'
       }
-    ]
+    ],
+    isShowprompt: false
   };
 
   computed = {};
-  methods = {};
+  methods = {
+    getUserInfo(e, vet) {
+      if (e.userInfo) {
+        console.log('获取用户信息成功');
+        this.isShowprompt = false;
+        this.$apply();
+      } else {
+        console.log('获取用户信息失败');
+      }
+    }
+  };
   events = {};
 
   async onLoad() {
@@ -103,11 +119,21 @@ export default class my extends wepy.page {
     //   success: res => {}
     // });
     let that = this;
-    var userId = await this.$parent.loginInfo();
-    var userInfo = await this.$parent.getUserInfo(userId);
-    this.userInfo = userInfo;
-    this.$apply();
-    console.log('userInfo', userInfo);
+    let userId = await this.$parent.loginInfo();
+    let isSettingStatus = await this.$parent.checkSettingStatus();
+    // 是否有获取用户信息的权限
+    if (isSettingStatus) {
+      console.log('已获取权限');
+      var userInfo = await this.$parent.getUserInfo(userId);
+      this.userInfo = userInfo;
+      this.$apply();
+    } else {
+      this.isShowprompt = true;
+      this.$apply();
+      console.log('显示获取信息的提示未获取权限');
+    }
+
+    // console.log('userInfo', userInfo);
   }
 }
 </script>

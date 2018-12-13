@@ -46,8 +46,8 @@
       <image class="userinfo-avatar" src="{{userData.avatar}}" background-size="cover"/>
       <text
         class="userinfo-nickname"
-        wx:if="{{userData.user_nickname.length > 0}}"
-      >{{userData.user_nickname}}</text>
+        wx:if="{{userData.user_name.length > 0}}"
+      >{{userData.user_name}}</text>
       <text class="userinfo-nickname" wx:else>jc</text>
       <view class="userinfo-bg"></view>
     

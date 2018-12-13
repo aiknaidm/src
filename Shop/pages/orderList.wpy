@@ -1,0 +1,59 @@
+
+<style lang="less">
+
+</style>
+<template>
+  <view class="container">
+  <statusTap :statusType="statusType"></statusTap>
+  <noorder show="2" wx:if="{{orderList.length==0}}" text="暂无订单"></noorder>
+    <repeat for="{{orderList}}" wx:key="{{index}}">
+      <orderList
+        :orderList.sync="item"
+        :goodsMap.sync="goodsMap[index]"
+        @zlyd.user="toOrderAgain"
+      ></orderList>
+    </repeat>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '../../API/api';
+import statusTap from '../../components/statusTap';
+import noorder from '../../components/noOrder';
+import orderList from '../../components/shop/orderList';
+
+export default class orderlist extends wepy.page {
+  config = {
+    navigationBarTitleText: '订单列表'
+  };
+  components = {statusTap,noorder,orderList };
+
+  data = {
+    statusType: ["全部", "待付款", "待发货", "待收货", "已完成"]
+  };
+
+  computed = {};
+  methods = {
+    clickTitle(index){
+       this.thisindex=index
+    }
+  };
+  events = {};
+  async getHelpList() {
+    wepy
+      .request({
+        url: api.helpList,
+      })
+      .then(res => {
+        this.helpList = res.data.data;
+        this.$apply();
+        console.log('帮助中心', this.helpList);
+      });
+  }
+  
+  async onLoad(option) {
+    this.getHelpList();
+  }
+}
+</script>

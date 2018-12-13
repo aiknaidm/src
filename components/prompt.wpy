@@ -1,0 +1,29 @@
+<style lang="less">
+.prompt {
+  position: relative;
+  z-index: 10;
+}
+</style>
+<template>
+    <view class="prompt">
+        <button @getuserinfo="getUserInfo" open-type="getUserInfo">这是个按钮</button>
+    </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class List extends wepy.component {
+  props = {};
+  data = {};
+
+  events = {};
+
+  methods = {
+    getUserInfo(e) {
+
+      this.$emit('gotUserInfo', e.detail);
+    }
+  };
+
+  onLoad() {}
+}
+</script>

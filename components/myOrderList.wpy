@@ -55,7 +55,7 @@ flex-direction:column;
 <script>
 import wepy from 'wepy';
 
-export default class List extends wepy.component {
+export default class myOrderList extends wepy.component {
     props ={
          tabItem:{ type: Object, default: {}, twoWay: true }
     }
@@ -70,7 +70,7 @@ export default class List extends wepy.component {
   };
 
   onLoad() {
-      console.log("组件 订单数量",this.tabItem);
+
   }
 }
 </script>

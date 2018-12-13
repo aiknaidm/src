@@ -93,7 +93,7 @@ import wepy from 'wepy';
 import api from '../../API/api';
 export default class myHelp extends wepy.page {
   config = {
-    navigationBarTitleText: '帮助中心2'
+    navigationBarTitleText: '帮助中心'
   };
   components = { };
 

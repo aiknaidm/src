@@ -43,7 +43,7 @@
 <script>
 import wepy from 'wepy';
 
-export default class List extends wepy.component {
+export default class myList extends wepy.component {
   props = {
     tabItem: { type: Object, default: {}, twoWay: true }
   };
@@ -58,7 +58,6 @@ export default class List extends wepy.component {
         wx.navigateToMiniProgram({
           appId: this.tabItem.appId,
           path: url,
-
           // envVersion: 'release',
           envVersion: 'develop',
           success(res) {
@@ -72,7 +71,6 @@ export default class List extends wepy.component {
   };
 
   onLoad() {
-    console.log(this.tabItem);
   }
 }
 </script>

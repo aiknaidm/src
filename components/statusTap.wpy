@@ -26,7 +26,7 @@
 }
 </style>
 <template>
-  <view class="search-title">
+  <view class="search-title" statusType="一个tab名字的数组">
     <block wx:for="{{statusType}}" wx:key="{{index}}">
       <view
         class="status-label {{index == currentType ? 'active' : ''}} {{isclick?'down':'up'}}"
