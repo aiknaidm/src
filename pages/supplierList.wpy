@@ -298,6 +298,10 @@ button.ss-my-d {
   border: 0px solid;
   margin-left: 10rpx;
 }
+.search-title .active{
+  color: #e50012;
+  border-bottom: 1px solid #e50012
+}
 </style>
 <template>
   <view class="container">

@@ -819,7 +819,7 @@ export default class Index extends wepy.page {
   computed = {};
   methods = {
     // 分类跳转
-    toFenLeiTap(id,suppliers_id,suppliers_name) {
+    toFenLeiTap(id, suppliers_id, suppliers_name) {
       wx.navigateTo({
         url:
           '/Shop/pages/searchList?cat_id=' +
@@ -854,9 +854,10 @@ export default class Index extends wepy.page {
       }
     });
     this.yizhanIndex = res.data.data;
-    var suppliers_id = res.data.data&& res.data.data.suppliers_id
-      ? res.data.data.suppliers_id
-      : '';
+    var suppliers_id =
+      res.data.data && res.data.data.suppliers_id
+        ? res.data.data.suppliers_id
+        : '';
     this.getShopBanner(userId, suppliers_id);
     this.getMaterialsList(suppliers_id);
     this.$apply();
@@ -876,7 +877,7 @@ export default class Index extends wepy.page {
     this.yizhan = res.data.yizhan;
     this.$apply();
     var end_time = this.yizhan.end_time;
-    if (end_time !== 0 && new Date().getTime() - end_time * 1000>0) {
+    if (end_time !== 0 && new Date().getTime() - end_time * 1000 > 0) {
       console.log('店铺已过期');
       this.isguoqi = true;
       this.text = '店铺已过期';
@@ -886,8 +887,9 @@ export default class Index extends wepy.page {
   }
   async onShow() {
     var userId = await this.$parent.loginInfo();
-    var userInfo = await this.$parent.getUserInfo(userId);
     this.getShopIndex(userId);
+  }
+  onLoad() {
     wx.showLoading({
       title: '加载中...', //提示的内容,
       mask: true, //显示透明蒙层，防止触摸穿透,

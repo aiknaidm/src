@@ -71,7 +71,8 @@ export default class yizhanList extends wepy.page {
     var res = await wepy.request({
       url: api.orderList,
       data: {
-        user_id: userId
+        user_id: userId,
+        order_status:4
       }
     });
     this.orderList = res.data.data.orderList;

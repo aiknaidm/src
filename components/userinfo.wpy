@@ -43,12 +43,12 @@
 <template>
   <view @tap="upTouxiang" class="userinfo" userData="用户信息">
  
-      <image class="userinfo-avatar" src="{{userData.avatar}}" background-size="cover"/>
+      <image class="userinfo-avatar" src="{{userData.avatarUrl}}" background-size="cover"/>
       <text
         class="userinfo-nickname"
-        wx:if="{{userData.user_name.length > 0}}"
-      >{{userData.user_name}}</text>
-      <text class="userinfo-nickname" wx:else>jc</text>
+        wx:if="{{userData.nickName.length > 0}}"
+      >{{userData.nickName}}</text>
+      <text class="userinfo-nickname" wx:else>jc{{userId}}</text>
       <view class="userinfo-bg"></view>
     
   </view>
@@ -60,14 +60,19 @@ export default class List extends wepy.component {
   props = {
     userData: { type: Object, default: {}, twoWay: true }
   };
-  data = {};
+  data = {
+    userId:""
+  };
 
   events = {};
 
   methods = {};
 
-  onLoad() {
-    console.log('组件userinfo', this.userData);
+ async onLoad() {
+   console.log(this)
+  //  let userId = await this.$parent.loginInfo();
+  //  this.userId=userId;
+   this.$apply();
   }
 }
 </script>

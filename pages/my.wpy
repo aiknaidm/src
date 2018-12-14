@@ -100,18 +100,36 @@ export default class my extends wepy.page {
 
   computed = {};
   methods = {
-    getUserInfo(e, vet) {
-      if (e.userInfo) {
+    getUserInfo(e, evt) {
+      console.log(e.detail.userInfo);
+      if (e.detail.userInfo) {
         console.log('获取用户信息成功');
-        this.isShowprompt = false;
+        this.userInfo = e.detail.userInfo;
+        this.upUserInfo();
         this.$apply();
-      } else {
-        console.log('获取用户信息失败');
-      }
+      } else console.log('获取用户信息失败');
+      this.isShowprompt = false;
+      this.$apply();
     }
   };
   events = {};
-
+  upUserInfo() {
+    wepy
+      .request({
+        url: api.upUserInfo,
+        data: {
+          user_id: this.userId,
+          avatarUrl: this.userInfo.avatarUrl,
+          nickName: this.userInfo.nickName
+        }
+      })
+      .then(res => {
+        wx.showToast({
+          title: '提交信息成功', //提示的内容,
+          icon: 'none' //图标,
+        });
+      });
+  }
   async onLoad() {
     // wx.showLoading({
     //   title: '加载中...', //提示的内容,
@@ -119,13 +137,14 @@ export default class my extends wepy.page {
     //   success: res => {}
     // });
     let that = this;
-    let userId = await this.$parent.loginInfo();
+    this.userId = await this.$parent.loginInfo();
     let isSettingStatus = await this.$parent.checkSettingStatus();
+    let userInfo = await this.$parent.getUserInfo(this.userId);
+    this.userInfo = userInfo;
     // 是否有获取用户信息的权限
     if (isSettingStatus) {
       console.log('已获取权限');
-      var userInfo = await this.$parent.getUserInfo(userId);
-      this.userInfo = userInfo;
+      console.log('userInfo', this.userInfo);
       this.$apply();
     } else {
       this.isShowprompt = true;

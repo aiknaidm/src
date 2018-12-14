@@ -1,13 +1,37 @@
 <style lang="less">
+.search-title {
+  display: flex;
+  justify-content: space-around;
+  line-height: 88rpx;
+  font-size: 30rpx;
+  border-bottom: 0px solid #eee;
+  align-items: center;
+}
+.search-title .active {
+  color: #e50012;
+}
+
+.search-title image {
+  width: 35rpx;
+  height: 35rpx;
+  margin-left: 5rpx;
+}
+
+.search-title .up .img {
+  transform: rotate(180deg);
+  -ms-transform: rotate(180deg); /* IE 9 */
+  -webkit-transform: rotate(180deg); /* Safari and Chrome */
+}
 </style>
 <template>
-    <view class="container">
-        <search></search>
-        <statusTap :statusType.sync="statusType" :index.sync="index" @statusTap.user="statusTap"></statusTap>
-        <repeat for="{{goodsList}}" key="{{index}}">
-            <searchList :goods.sync="item"></searchList>
-        </repeat>
-    </view>
+  <view class="container">
+    <search></search>
+    <statusTap :statusType.sync="statusType" @statusTap.user="statusTap" type="shop"></statusTap>
+    <noOrder text="暂无商品" wx:if="{{goodsList.length==0}}" show="2" ></noOrder>
+    <repeat for="{{goodsList}}" key="{{index}}">
+      <searchList :goods.sync="item"></searchList>
+    </repeat>
+  </view>
 </template>
 
 <script>
@@ -16,16 +40,18 @@ import api from '../../API/api';
 import search from '../../components/search';
 import statusTap from '../../components/statusTap';
 import searchList from '../../components/searchList';
+import noOrder from '../../components/noOrder';
 export default class searchlist extends wepy.page {
   config = {
     navigationBarTitleText: '搜索列表'
   };
-  components = { search, searchList, statusTap };
+  components = { search, searchList, statusTap,noOrder };
 
   data = {
     goodsList: [],
     statusType: ['综合', '销量', '价格', '筛选'],
     currentType: ''
+
   };
 
   computed = {};
@@ -48,6 +74,7 @@ export default class searchlist extends wepy.page {
       this.getGoodsList(data);
     }
   };
+
   events = {};
   async getGoodsList(data) {
     wepy

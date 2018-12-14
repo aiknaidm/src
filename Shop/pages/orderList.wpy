@@ -1,17 +1,37 @@
 
 <style lang="less">
-
 </style>
 <template>
   <view class="container">
-  <statusTap :statusType="statusType"></statusTap>
-  <noorder show="2" wx:if="{{orderList.length==0}}" text="暂无订单"></noorder>
+    <statusTap :statusType="statusType" @statusTap.user="statusTap" :currentType.sync="currentType"></statusTap>
+    <noorder show="2" wx:if="{{orderList.length==0}}" text="暂无订单"></noorder>
     <repeat for="{{orderList}}" wx:key="{{index}}">
-      <orderList
-        :orderList.sync="item"
-        :goodsMap.sync="goodsMap[index]"
-        @zlyd.user="toOrderAgain"
-      ></orderList>
+      <orderList :orderList.sync="item" :goodsMap.sync="goodsMap[index]">
+        <view slot="btn">
+          <view class="price-box" wx:if="{{item.order_status<3}}">
+            <view
+              class="btn cancel-btn"
+              wx:if="{{item.order_status==1}}"
+              bindtap="cancelOrderTap"
+              data-id="{{item.id}}"
+            >取消订单</view>
+            <view
+              class="btn topay-btn"
+              wx:if="{{item.order_status==1}}"
+              bindtap="{{disable?'':'toPayTap'}}"
+              data-id="{{item.id}}"
+              data-money="{{item.order_amount}}"
+              data-index="{{index}}"
+            >马上付款</view> 
+            <view
+              class="btn topay-btn"
+              wx:if="{{item.order_status==2}}"
+              bindtap="confirmBtnTap"
+              data-id="{{item.id}}"
+            >确认收货</view>
+          </view>
+        </view>
+      </orderList>
     </repeat>
   </view>
 </template>
@@ -27,33 +47,56 @@ export default class orderlist extends wepy.page {
   config = {
     navigationBarTitleText: '订单列表'
   };
-  components = {statusTap,noorder,orderList };
+  components = { statusTap, noorder, orderList };
 
   data = {
-    statusType: ["全部", "待付款", "待发货", "待收货", "已完成"]
+    statusType: ['全部', '待付款', '待发货', '待收货', '已完成'],
+    orderList: [],
+    goodsMap: [],
+    currentType: '0'
   };
 
   computed = {};
   methods = {
-    clickTitle(index){
-       this.thisindex=index
+    statusTap(index) {
+      wx.showLoading({
+        title: '加载中', //提示的内容,
+        mask: true //显示透明蒙层，防止触摸穿透,
+      });
+      this.thisindex = index;
+      console.log('点击的是', index);
+      this.getOrderList(this.userId, this.thisindex);
     }
   };
   events = {};
-  async getHelpList() {
+  async getOrderList(user_id, order_status = '0') {
     wepy
       .request({
-        url: api.helpList,
+        url: api.orderList,
+        data: {
+          user_id,
+          order_status
+        }
       })
       .then(res => {
-        this.helpList = res.data.data;
+        wx.hideLoading();
+        this.orderList = res.data.data.orderList;
+        this.goodsMap = res.data.data.goodsMap;
         this.$apply();
-        console.log('帮助中心', this.helpList);
+        console.log('订单列表', this.orderList);
       });
   }
-  
   async onLoad(option) {
-    this.getHelpList();
+    wx.showLoading({
+      title: '加载中', //提示的内容,
+      mask: true //显示透明蒙层，防止触摸穿透,
+    });
+    let userId = await this.$parent.loginInfo();
+    this.userId = userId;
+    this.currentType = option.order_status;
+    console.log('option.order_status', option.order_status);
+    this.getOrderList(userId, option.order_status);
   }
 }
 </script>
+ 
