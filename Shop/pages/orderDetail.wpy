@@ -1,0 +1,67 @@
+
+<style lang="less">
+
+</style>
+<template>
+  <view class="container">
+   <orderDetail :orderDetail.sync="orderDetail" :goodsMap.sync="goodsMap"></orderDetail>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '../../API/api';
+import orderDetail from '../../components/shop/orderDetail';
+import util from '../../utils/index';
+
+export default class orderDetails extends wepy.page {
+  config = {
+    navigationBarTitleText: '订单列表'
+  };
+  components = { orderDetail};
+
+  data = {
+    orderDetail:{},
+    goodsMap:[]
+  };
+
+  computed = {};
+  methods = {
+   
+  };
+  events = {};
+  async getOrderDetail(id) {
+    wepy
+      .request({
+        url: api.orderDetail,
+        data:{
+          id
+        }
+      })
+      .then(res => {
+        this.orderDetail = res.data.data.orderList;
+        this.goodsMap = res.data.data.goodsMap;
+        this.orderDetail.add_time=util.formatTime(
+        new Date(this.orderDetail.add_time * 1000),
+        'yyyy-MM-dd hh:mm:ss'
+      );
+      this.orderDetail.pay_time=util.formatTime(
+        new Date(this.orderDetail.pay_time * 1000),
+        'yyyy-MM-dd hh:mm:ss'
+      );
+      this.orderDetail.confirm_time=util.formatTime(
+        new Date(this.orderDetail.confirm_time * 1000),
+        'yyyy-MM-dd hh:mm:ss'
+      );
+        this.$apply();
+        console.log('订单详情', this.orderDetail);
+      });
+  }
+  
+  async onLoad(option) {
+    var id=option.id
+    console.log(option)
+    this.getOrderDetail(id);
+  }
+}
+</script>

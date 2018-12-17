@@ -150,87 +150,205 @@
   margin-bottom: 0rpx;
   line-height: 40rpx;
 }
+.goods-info {
+  width: 100%;
+  background-color: #fff;
+  border-top: 1px solid #f0f0f0;
+  .row-box2 {
+    padding: 20rpx;
+    text-align: right;
+    border-top: 1px solid #f0f0f0;
+  }
+}
+.goods-info .row-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 20rpx;
+  font-size: 28rpx;
+  color: #000;
+}
+.goods-info .row-box .right-text {
+  text-align: right;
+  /* color: #e64340; */
+}
+.order-time {
+  font-size: 26rpx;
+  color: #888;
+  background-color: #fff;
+  padding: 30rpx 0 30rpx 30rpx;
+  line-height: 40rpx;
+}
+.btn-row {
+  text-align: right;
+}
+.confirm-btn {
+  background: #ffffff;
+  border: 1rpx solid #e50012;
+  border-radius: 6rpx;
+  width: 164rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  margin: 20rpx;
+  font-size: 26rpx;
+  color: #e50012;
+  display: inline-block;
+}
+.confirm-btn-quxiao {
+  border: 1px solid #ccc;
+  color: #333;
+}
 </style>
 <template>
-  <view class="sec-wrap">
-    <view class="order-status">
-      <view class="icon-box">
-        <slot name="orderStatus">
-          <view wx:if="{{orderDetail.order_status==-1}}"></view>
-          <view wx:elif="{{orderDetail.order_status==0}}"></view>
-          <view wx:elif="{{orderDetail.order_status==1}}" class="order-status-bg">买家待付款</view>
-          <view wx:elif="{{orderDetail.order_status==2}}" class="order-status-bg">待收货</view>
-          <view wx:elif="{{orderDetail.order_status==3}}" class="order-status-bg">已完成</view>
-        </slot>
-      </view>
-      <view class="right-text">
-        <!-- <view class="status red">{{orderDetail.order_status}}</view> -->
-        <view class="des" hidden="true">请于11时59分59秒内付款，超时订单将自动关闭</view>
-      </view>
-    </view>
-    <block>
-      <view class="wuliu-box">
-        <slot name="orderStatus2">
-          <view class="icon-box">
-            <text class="iconfont icon-xiaoxiwuliu"></text>
-          </view>
-          <view class="right-text">
+  <view>
+    <view class="sec-wrap">
+      <view class="order-status">
+        <view class="icon-box">
+          <slot name="orderStatus">
             <view wx:if="{{orderDetail.order_status==-1}}"></view>
             <view wx:elif="{{orderDetail.order_status==0}}"></view>
-            <view wx:elif="{{orderDetail.order_status==1}}" class="wuliu-text">买家待付款</view>
-            <view wx:elif="{{orderDetail.order_status==2}}" class="wuliu-text">待收货</view>
-            <view wx:elif="{{orderDetail.order_status==3}}" class="wuliu-text">已完成</view>
+            <view wx:elif="{{orderDetail.order_status==1}}" class="order-status-bg">待付款</view>
+            <view wx:elif="{{orderDetail.order_status==2}}" class="order-status-bg">待发货</view>
             <view
-              class="wuliu-text wuliu-date"
-              wx:if="{{orderDetail.order_status==1}}"
-            >{{orderDetail.add_time}}</view>
+              wx:elif="{{orderDetail.order_status==3&&orderDetail.shipping_status==0}}"
+              class="order-status-bg"
+            >待发货</view>
             <view
-              class="wuliu-text wuliu-date"
-              wx:if="{{orderDetail.order_status==2}}"
-            >{{orderDetail.pay_time}}</view>
-            <view
-              class="wuliu-text wuliu-date"
-              wx:if="{{orderDetail.order_status==3}}"
-            >{{orderDetail.confirm_time}}</view>
-          </view>
-        </slot>
+              wx:elif="{{orderDetail.order_status==3&&orderDetail.shipping_status==1}}"
+              class="order-status-bg"
+            >已完成</view>
+          </slot>
+        </view>
+        <view class="right-text">
+          <!-- <view class="status red">{{orderDetail.order_status}}</view> -->
+          <view class="des" hidden="true">请于11时59分59秒内付款，超时订单将自动关闭</view>
+        </view>
       </view>
-      <view class="address-sec">
-        <slot name="address">
-          <view class="icon-box">
-            <text class="iconfont icon-icon-"></text>
-          </view>
-          <view class="right-box">
-            <view class="name-tel">
-              <view>收货人：{{orderDetail.consignee}}</view>
-              <view>{{orderDetail.mobile}}</view>
+      <block>
+        <view class="wuliu-box">
+          <slot name="orderStatus2">
+            <view class="icon-box">
+              <text class="iconfont icon-xiaoxiwuliu"></text>
             </view>
-            <view class="text">收货地址：{{orderDetail.region}} {{orderDetail.address}}</view>
-          </view>
-        </slot>
+            <view class="right-text">
+              <view wx:if="{{orderDetail.order_status==-1}}"></view>
+              <view wx:elif="{{orderDetail.order_status==0}}"></view>
+              <view wx:elif="{{orderDetail.order_status==1}}" class="order-status-bg">待付款</view>
+              <view wx:elif="{{orderDetail.order_status==2}}" class="order-status-bg">待发货</view>
+              <view
+                wx:elif="{{orderDetail.order_status==3&&orderDetail.shipping_status==0}}"
+                class="order-status-bg"
+              >待发货</view>
+              <view
+                wx:elif="{{orderDetail.order_status==3&&orderDetail.shipping_status==1}}"
+                class="order-status-bg"
+              >已完成</view>
+
+              <view
+                class="wuliu-text wuliu-date"
+                wx:if="{{orderDetail.order_status==1}}"
+              >{{orderDetail.add_time}}</view>
+              <view
+                class="wuliu-text wuliu-date"
+                wx:if="{{orderDetail.order_status==2}}"
+              >{{orderDetail.pay_time}}</view>
+              <view
+                class="wuliu-text wuliu-date"
+                wx:if="{{orderDetail.order_status==3}}"
+              >{{orderDetail.confirm_time}}</view>
+            </view>
+          </slot>
+        </view>
+        <view class="address-sec">
+          <slot name="address">
+            <view class="icon-box">
+              <text class="iconfont icon-icon-"></text>
+            </view>
+            <view class="right-box">
+              <view class="name-tel">
+                <view>收货人：{{orderDetail.consignee}}</view>
+                <view>{{orderDetail.mobile}}</view>
+              </view>
+              <view class="text">收货地址：{{orderDetail.region}} {{orderDetail.address}}</view>
+            </view>
+          </slot>
+        </view>
+      </block>
+    </view>
+    <goodsList :goodsMap.sync="goodsMap"></goodsList>
+
+    <view class="goods-info">
+      <!-- <view class="row-box" wx:if="{{orderDetail.pay_id}}">
+      <view class='row-label'>支付方式：{{orderDetail.pay_id==2?"线下微信支付":"线下银行卡支付"}}</view>
+      <view class="right-text">{{orderDetail.pay_id==2?"微信昵称：":"银行卡号："}}{{orderDetail.pay_note}}</view>
+      </view>-->
+      <view class="row-box">
+        <view class="row-label">商品金额</view>
+        <view class="right-text">¥ {{orderDetail.order_amount}}</view>
       </view>
-    </block>
+      <view class="row-box">
+        <view class="row-label">运费</view>
+        <view class="right-text">+ ¥ {{orderDetail.yunfei}}</view>
+      </view>
+      <view class="row-box" wx:if="{{orderDetail.bonus_money}}">
+        <view class="row-label">优惠券</view>
+        <view class="right-text">- ¥ {{orderDetail.bonus_money}}</view>
+      </view>
+
+      <view class="row-box2 red">合计 ¥ {{orderDetail.shiji_money}}</view>
+    </view>
+    <orderButton :orderStatus.sync="orderDetail.order_status"></orderButton>
+    <!-- order_status 1.待付款 2.已付款 3.已确认收货 -->
+    <view class="order-time">
+      <view
+        class="wuliu-text wuliu-date"
+        wx:if="{{orderDetail.order_status>=1}}"
+      >订单编号：{{orderDetail.order_sn}}</view>
+      <view
+        class="wuliu-text wuliu-date"
+        wx:if="{{orderDetail.order_status>=1}}"
+      >创建时间：{{orderDetail.add_time}}</view>
+      <view
+        class="wuliu-text wuliu-date"
+        wx:if="{{orderDetail.order_status>=2}}"
+      >付款时间：{{orderDetail.pay_time}}</view>
+      <view
+        class="wuliu-text wuliu-date"
+        wx:if="{{orderDetail.order_status>=3}}"
+      >发货时间：{{orderDetail.confirm_time}}</view>
+    </view>
   </view>
 </template>
 <script>
 import wepy from 'wepy';
-
+import goodsList from '../shop/goodsList';
+import orderButton from '../shop/orderbutton';
 export default class List extends wepy.component {
   props = {
     orderDetail: {
       type: Object,
       default: {},
       twoWay: true
+    },
+    goodsMap: {
+      type: Array,
+      default: [],
+      twoWay: true
     }
   };
   data = {};
-
+  components = { goodsList, orderButton };
   events = {};
 
   methods = {
-    // 再来一单
-    async toOrderAgain(suppliersId, orderId) {
-      this.$emit('zlyd', suppliersId, orderId);
+    confirmBtnTap(id) {
+      $emit('confirmBtnTap', id);
+    },
+    cancelOrderTap(id) {
+      $emit('cancelOrderTap', id);
     }
   };
 

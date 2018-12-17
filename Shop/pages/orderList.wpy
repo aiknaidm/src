@@ -6,31 +6,12 @@
     <statusTap :statusType="statusType" @statusTap.user="statusTap" :currentType.sync="currentType"></statusTap>
     <noorder show="2" wx:if="{{orderList.length==0}}" text="暂无订单"></noorder>
     <repeat for="{{orderList}}" wx:key="{{index}}">
-      <orderList :orderList.sync="item" :goodsMap.sync="goodsMap[index]">
-        <view slot="btn">
-          <view class="price-box" wx:if="{{item.order_status<3}}">
-            <view
-              class="btn cancel-btn"
-              wx:if="{{item.order_status==1}}"
-              bindtap="cancelOrderTap"
-              data-id="{{item.id}}"
-            >取消订单</view>
-            <view
-              class="btn topay-btn"
-              wx:if="{{item.order_status==1}}"
-              bindtap="{{disable?'':'toPayTap'}}"
-              data-id="{{item.id}}"
-              data-money="{{item.order_amount}}"
-              data-index="{{index}}"
-            >马上付款</view> 
-            <view
-              class="btn topay-btn"
-              wx:if="{{item.order_status==2}}"
-              bindtap="confirmBtnTap"
-              data-id="{{item.id}}"
-            >确认收货</view>
-          </view>
-        </view>
+      <orderList
+        :orderList.sync="item"
+        :goodsMap.sync="goodsMap[index]"
+        @orderDetail.user="orderDetail"
+      > 
+       
       </orderList>
     </repeat>
   </view>
@@ -58,16 +39,85 @@ export default class orderlist extends wepy.page {
 
   computed = {};
   methods = {
+    // 选择
     statusTap(index) {
       wx.showLoading({
         title: '加载中', //提示的内容,
         mask: true //显示透明蒙层，防止触摸穿透,
       });
       this.thisindex = index;
-      console.log('点击的是', index);
-      this.getOrderList(this.userId, this.thisindex);
+      this.getOrderList(this.userId, index);
+    },
+    // 取消订单
+    cancelOrderTap(id) {
+      var that = this;
+      wx.showModal({
+        title: '提示', //提示的标题,
+        content: '你确定要取消订单吗', //提示的内容,
+        showCancel: true, //是否显示取消按钮,
+        cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+        cancelColor: '#000000', //取消按钮的文字颜色,
+        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+        confirmColor: '#e50012', //确定按钮的文字颜色,
+        success: res => {
+          if (res.confirm) {
+            that.toCancelOrder(id);
+          } else if (res.cancel) {
+          }
+        }
+      });
+    },
+    // 确认收货
+    confirmBtnTap(id) {
+      var that = this;
+      wx.showModal({
+        title: '提示', //提示的标题,
+        content: '你确定收货吗', //提示的内容,
+        showCancel: true, //是否显示取消按钮,
+        cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+        cancelColor: '#000000', //取消按钮的文字颜色,
+        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+        confirmColor: '#e50012', //确定按钮的文字颜色,
+        success: res => {
+          if (res.confirm) {
+            that.toConfirmBtn(id);
+          } else if (res.cancel) {
+          }
+        }
+      });
+    },
+    // 订单详情
+    orderDetail(id,evt) {
+      console.log('orderDetail?id=' + id)
+      wx.navigateTo({
+        url: 'orderDetail?id=' + id
+      });
     }
   };
+  // 取消订单
+  toCancelOrder(id) {
+    wepy
+      .request({
+        url: api.cancelOrder, //开发者服务器接口地址",
+        data: { id } //请求的参数",
+      })
+      .then(res => {
+        console.log('取消订单', res);
+        this.getOrderList(this.userId, this.thisindex);
+      });
+  }
+  // 确认收货
+  toConfirmBtn(id) {
+    wepy
+      .request({
+        url: api.confirmOrder, //开发者服务器接口地址",
+        data: { id } //请求的参数",
+      })
+      .then(res => {
+        console.log('确认收货', res);
+        this.getOrderList(this.userId, this.thisindex);
+      });
+  }
   events = {};
   async getOrderList(user_id, order_status = '0') {
     wepy
@@ -83,7 +133,7 @@ export default class orderlist extends wepy.page {
         this.orderList = res.data.data.orderList;
         this.goodsMap = res.data.data.goodsMap;
         this.$apply();
-        console.log('订单列表', this.orderList);
+        // console.log('订单列表', this.orderList);
       });
   }
   async onLoad(option) {

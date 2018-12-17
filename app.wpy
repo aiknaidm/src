@@ -82,7 +82,7 @@ export default class extends wepy.app {
     subPackages: [
       {
         root: 'Shop/',
-        pages: ['pages/shopCart', 'pages/myHelp', 'pages/searchList','pages/orderList']
+        pages: ['pages/shopCart', 'pages/myHelp', 'pages/searchList','pages/orderList','pages/orderDetail']
       },
       {
         root: 'Index/',

@@ -20,6 +20,8 @@ const api = {
     unfriend: `${host}/jcgx`, //解除关系//取消申请
     setIndex: `${host}/swxb`, //设为店铺首页
     removeindex: `${host}/qxxb`, //取消店铺首页
-
+    cancelOrder: `${host}/cancelorder`, //取消订单
+    confirmOrder: `${host}/confirmorder`, //确认收货
+    orderDetail: `${host}/orderinfo`, //订单详情
 }
 export default api
