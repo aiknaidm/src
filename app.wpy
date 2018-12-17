@@ -58,6 +58,30 @@ mask {
   left: 0;
   z-index: 5;
 }
+.price-box {
+  text-align: right;
+  padding: 20rpx;
+  font-size: 28rpx;
+  .btn {
+  /* flex: 1; */
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 60rpx;
+  border-radius: 6rpx;
+  margin-left: 20rpx;
+  width: 164rpx;
+  display: inline-block;
+}
+.cancel-btn {
+  border: 1rpx solid #ccc;
+  /* position: absolute; */ /* flex: 1; */
+}
+.topay-btn {
+  background-color: #e50012;
+  color: #fff;
+}
+}
+
 </style>
 
 <script>

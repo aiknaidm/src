@@ -87,7 +87,7 @@
     <view class="list-title">商品信息</view>
     <form bindsubmit="submitReputation">
       <block wx:for-items="{{goodsMap}}" wx:key="{{index}}">
-        <view class="a-goods" bindtap="toGoodDetailsTap" data-id="{{item.goods_id}}">
+        <view class="a-goods" @tap="toGoodDetailsTap" data-id="{{item.goods_id}}">
           <view class="img-box">
             <image src="{{item.goods_imgs}}" class="img" />
           </view>

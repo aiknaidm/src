@@ -1,63 +1,29 @@
 
-  <style lang="less">
-  .price-box{
+<style>
+/* 订单按钮 */
 
-  }
 </style>
 <template>
-  <view>
-    <view>{{orderStatus.order_status}}
-      <view
-        class="price-box"
-        wx:if="{{orderStatus.order_status==1||(orderStatus.order_status==2&&orderStatus.shipping_status==1)}}"
-      >
-        <view
-          class="btn cancel-btn"
-          wx:if="{{orderStatus.order_status==1}}"
-          @tap.stop="cancelOrderTap({{orderStatus.id}})"
-        >取消订单</view>
-        <view
-          class="btn topay-btn"
-          wx:if="{{orderStatus.order_status==1}}"
-          @tap.stop="{{disable?'':'toPayTap'}}"
-          data-id="{{orderStatus.id}}"
-          data-money="{{orderStatus.order_amount}}"
-          data-index="{{index}}"
-        >马上付款</view>
-        <view
-          class="btn topay-btn"
-          wx:elif="{{orderStatus.order_status==2&&orderStatus.shipping_status==1}}"
-          @tap.stop="confirmBtnTap({{orderStatus.id}})"
-        >确认收货1</view>
-         <view class="price-box" wx:else>
-          <view
-            class="btn topay-btn"
-            @tap="toOrderAgain({{orderList.suppliers_id}},{{orderList.id}})"
-          >再来一单1</view>
-        </view>
-      </view>
-    </view>
-  </view>
+  
 </template>
 <script>
 import wepy from 'wepy';
 
 export default class orderbutton extends wepy.component {
   props = {
-    goodsMap: {
-      type: Array,
-      default: []
-    },
-    orderStatus: {
-      type: Number,
-      default: 0
+    orderDetail: {
+      type: Object,
+      default: {},
+      twoWay: true
     }
   };
   data = {};
 
   events = {};
 
-  methods = {};
+  methods = {
+   
+  };
 
   async onLoad() {}
 }

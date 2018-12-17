@@ -4,7 +4,7 @@
 </style>
 <template>
   <view class="container">
-   <orderDetail :orderDetail.sync="orderDetail" :goodsMap.sync="goodsMap"></orderDetail>
+   <orderDetail :orderDetail.sync="orderDetail" :goodsMap.sync="goodsMap" @cancelOrderTap.user="cancelOrderTap" @confirmBtnTap.user="confirmBtnTap"></orderDetail>
   </view>
 </template>
 
@@ -27,7 +27,44 @@ export default class orderDetails extends wepy.page {
 
   computed = {};
   methods = {
-   
+    // 取消订单
+    cancelOrderTap(id) {
+      var that = this;
+      wx.showModal({
+        title: '提示', //提示的标题,
+        content: '你确定要取消订单吗', //提示的内容,
+        showCancel: true, //是否显示取消按钮,
+        cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+        cancelColor: '#000000', //取消按钮的文字颜色,
+        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+        confirmColor: '#e50012', //确定按钮的文字颜色,
+        success: res => {
+          if (res.confirm) {
+            that.toCancelOrder(id);
+          } else if (res.cancel) {
+          }
+        }
+      });
+    },
+    // 确认收货
+    confirmBtnTap(id) {
+      var that = this;
+      wx.showModal({
+        title: '提示', //提示的标题,
+        content: '你确定收货吗', //提示的内容,
+        showCancel: true, //是否显示取消按钮,
+        cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+        cancelColor: '#000000', //取消按钮的文字颜色,
+        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+        confirmColor: '#e50012', //确定按钮的文字颜色,
+        success: res => {
+          if (res.confirm) {
+            that.toConfirmBtn(id);
+          } else if (res.cancel) {
+          }
+        }
+      });
+    },
   };
   events = {};
   async getOrderDetail(id) {
@@ -57,11 +94,38 @@ export default class orderDetails extends wepy.page {
         console.log('订单详情', this.orderDetail);
       });
   }
-  
+   // 取消订单
+  toCancelOrder(id) {
+    wepy
+      .request({
+        url: api.cancelOrder, //开发者服务器接口地址",
+        data: { id } //请求的参数",
+      })
+      .then(res => {
+        console.log('取消订单', res);
+        this.getOrderDetail(this.id);
+       
+      });
+  }
+  // 确认收货
+  toConfirmBtn(id) {
+    wepy
+      .request({
+        url: api.confirmOrder, //开发者服务器接口地址",
+        data: { id } //请求的参数",
+      })
+      .then(res => {
+        console.log('确认收货', res);
+        this.getOrderDetail(this.id);
+      });
+  }
   async onLoad(option) {
-    var id=option.id
+    console.log(this.$parent.$pages['orderlist'])
+    console.log(this.$parent.$pages['/Shop/pages/orderList'])
+    console.log(this.$parent.$pages['/Shop/pages/orderList'].orderlist)
+    this.id=option.id
     console.log(option)
-    this.getOrderDetail(id);
+    this.getOrderDetail(this.id);
   }
 }
 </script>

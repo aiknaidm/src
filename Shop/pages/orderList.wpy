@@ -11,7 +11,30 @@
         :goodsMap.sync="goodsMap[index]"
         @orderDetail.user="orderDetail"
       > 
-       
+       <view slot="btn">
+          <view class="price-box" wx:if="{{item.order_status<3}}">
+            <view
+              class="btn cancel-btn"
+              wx:if="{{item.order_status==1}}"
+              @tap="cancelOrderTap({{item.id}})"
+        
+            >取消订单</view>
+            <view
+              class="btn topay-btn"
+              wx:if="{{item.order_status==1}}"
+              @tap="{{toPayTap}}"
+              data-id="{{item.id}}"
+              data-money="{{item.order_amount}}"
+              data-index="{{index}}"
+            >马上付款</view> 
+            <view
+              class="btn topay-btn"
+              wx:if="{{item.order_status==2&&item.shipping==1}}"
+              @tap="confirmBtnTap({{item.id}})"
+   
+            >确认收货</view>
+          </view>
+        </view>
       </orderList>
     </repeat>
   </view>

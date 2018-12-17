@@ -246,7 +246,6 @@
                 wx:elif="{{orderDetail.order_status==3&&orderDetail.shipping_status==1}}"
                 class="order-status-bg"
               >已完成</view>
-
               <view
                 class="wuliu-text wuliu-date"
                 wx:if="{{orderDetail.order_status==1}}"
@@ -279,12 +278,7 @@
       </block>
     </view>
     <goodsList :goodsMap.sync="goodsMap"></goodsList>
-
     <view class="goods-info">
-      <!-- <view class="row-box" wx:if="{{orderDetail.pay_id}}">
-      <view class='row-label'>支付方式：{{orderDetail.pay_id==2?"线下微信支付":"线下银行卡支付"}}</view>
-      <view class="right-text">{{orderDetail.pay_id==2?"微信昵称：":"银行卡号："}}{{orderDetail.pay_note}}</view>
-      </view>-->
       <view class="row-box">
         <view class="row-label">商品金额</view>
         <view class="right-text">¥ {{orderDetail.order_amount}}</view>
@@ -297,10 +291,29 @@
         <view class="row-label">优惠券</view>
         <view class="right-text">- ¥ {{orderDetail.bonus_money}}</view>
       </view>
-
       <view class="row-box2 red">合计 ¥ {{orderDetail.shiji_money}}</view>
     </view>
-    <orderButton :orderStatus.sync="orderDetail.order_status"></orderButton>
+    <view class="price-box" wx:if="{{orderDetail.order_status<3}}">
+      <view
+        wx:if="{{orderDetail.order_status==1||(orderDetail.order_status==2&&orderDetail.order_shipping==1)}}"
+      >
+        <view
+          class="btn cancel-btn"
+          wx:if="{{orderDetail.order_status==1}}"
+          @tap.stop="cancelOrderTap({{orderDetail.id}})"
+        >取消订单</view>
+        <view
+          class="btn topay-btn"
+          wx:if="{{orderDetail.order_status==1}}"
+          @tap.stop="toPayTap({{orderDetail.id}},{{orderDetail.id}},{{orderDetail.order_amount}},{{index}})"
+        >马上付款</view>
+        <view
+          class="btn topay-btn"
+          wx:if="{{orderDetail.order_status==2&&orderDetail.shipping}}"
+          @tap.stop="confirmBtnTap({{orderDetail.id}})"
+        >确认收货</view>
+      </view>
+    </view>
     <!-- order_status 1.待付款 2.已付款 3.已确认收货 -->
     <view class="order-time">
       <view
@@ -325,7 +338,6 @@
 <script>
 import wepy from 'wepy';
 import goodsList from '../shop/goodsList';
-import orderButton from '../shop/orderbutton';
 export default class List extends wepy.component {
   props = {
     orderDetail: {
@@ -340,15 +352,16 @@ export default class List extends wepy.component {
     }
   };
   data = {};
-  components = { goodsList, orderButton };
+  components = { goodsList };
   events = {};
 
   methods = {
     confirmBtnTap(id) {
-      $emit('confirmBtnTap', id);
+      this.$emit('confirmBtnTap', id);
     },
     cancelOrderTap(id) {
-      $emit('cancelOrderTap', id);
+      console.log('取消订单');
+      this.$emit('cancelOrderTap', id);
     }
   };
 
