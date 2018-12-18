@@ -127,13 +127,13 @@ button.ss-my-d {
 }
 </style>
 <template>
- <view>
-    <view class="a-order" orderList="订单内容" goodsMap="商品内容" >
+  <view>
+    <view class="a-order" orderList="订单内容" goodsMap="商品内容">
       <view class="order-date">
         <view class="date-box">下单时间：{{orderList.add_time}}</view>
         <view class="date-box">订单编号：{{orderList.order_sn}}</view>
       </view>
-      <view @tap="orderDetail({{orderList.id}})"  data-id="{{orderList.id}}">
+      <view @tap="orderDetail({{orderList.id}})" data-id="{{orderList.id}}">
         <view wx:if="{{goodsMap.length==1}}" class="img-box1">
           <image src="{{goodsMap[0].goods_imgs}}" class="goods-img">
           <view class="img-box1-1">
@@ -155,7 +155,7 @@ button.ss-my-d {
         <view class="name">{{orderList.consignee}}</view>
         <view class="total-price">共{{goodsMap.length}}件商品 合计：¥ {{orderList.order_amount}}</view>
       </view>
-<slot name="btn">
+      <slot name="btn">
         <view class="price-box">
           <view
             class="btn topay-btn"
@@ -163,7 +163,6 @@ button.ss-my-d {
           >再来一单</view>
         </view>
       </slot>
-    
     </view>
   </view>
 </template>
