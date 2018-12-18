@@ -406,14 +406,6 @@ export default class Index extends wepy.page {
     this.$apply();
    
   }
-  // 广告
-  async getAd() {
-    var res = await wepy.request({
-      url: api.ad
-    });
-    var ad = res.data.data;
-    this.$apply();
-  }
   // 轮播
   async getCarousel() {
     var res = await wepy.request({
@@ -451,7 +443,6 @@ export default class Index extends wepy.page {
     var userId = await this.$parent.loginInfo();
     var userInfo = await this.$parent.getUserInfo(userId);
     this.getMessage();
-    this.getAd();
     this.getCarousel();
     console.log('userId', userId);
     console.log('userInfo', userInfo);

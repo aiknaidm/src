@@ -73,7 +73,7 @@ overflow: hidden;
 </style>
 <template>
 
-    <view class="goods-box2"  @tap="toGoodDetailsTap" >
+    <view class="goods-box2"  @tap="toGoodDetailsTap({{goods.goods_id}})" >
       <view class="img-box2">
         <image src="http://maijia.jicaizx.com/{{goods.original_img}}" class="image" mode="aspectFill" lazy-load="true" />
       </view>
@@ -102,7 +102,11 @@ export default class searchList extends wepy.component {
   data = {};
   events = {};
   methods = {
-   
+    // 商品详情
+    toGoodDetailsTap(id) {
+      console.log('id', id);
+      this.$emit('goodDetail', id);
+    }
   };
   onLoad() {
   }

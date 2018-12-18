@@ -63,26 +63,25 @@ mask {
 
   font-size: 28rpx;
   .btn {
-  /* flex: 1; */
+    /* flex: 1; */
 
-  box-sizing: border-box;
-  text-align: center;
-  line-height: 60rpx;
-  border-radius: 6rpx;
-  margin: 20rpx;
-  width: 164rpx;
-  display: inline-block;
+    box-sizing: border-box;
+    text-align: center;
+    line-height: 60rpx;
+    border-radius: 6rpx;
+    margin: 20rpx;
+    width: 164rpx;
+    display: inline-block;
+  }
+  .cancel-btn {
+    border: 1rpx solid #ccc;
+    /* position: absolute; */ /* flex: 1; */
+  }
+  .topay-btn {
+    background-color: #e50012;
+    color: #fff;
+  }
 }
-.cancel-btn {
-  border: 1rpx solid #ccc;
-  /* position: absolute; */ /* flex: 1; */
-}
-.topay-btn {
-  background-color: #e50012;
-  color: #fff;
-}
-}
-
 </style>
 
 <script>
@@ -107,7 +106,15 @@ export default class extends wepy.app {
     subPackages: [
       {
         root: 'Shop/',
-        pages: ['pages/index','pages/shopCart', 'pages/myHelp', 'pages/searchList','pages/orderList','pages/orderDetail']
+        pages: [
+          'pages/index',
+          'pages/shopCart',
+          'pages/myHelp',
+          'pages/searchList',
+          'pages/goodDetail',
+          'pages/orderList',
+          'pages/orderDetail'
+        ]
       },
       {
         root: 'Index/',

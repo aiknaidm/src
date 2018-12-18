@@ -4,7 +4,6 @@ const api = {
     login: `${host}/denglu`, //登录
     getUserInfo: `${host}/get_user_info`, //用户信息
     upUserInfo: `${host}/up_user_info`,
-    ad: `${host}/guanggao`,
     message: `${host}/zixun`, //资讯
     carousel: `${host}/lunbo`, //轮播图
     yizhanIndex: `${host}/wdyz`, //商城首页
@@ -24,5 +23,8 @@ const api = {
     confirmOrder: `${host}/confirmorder`, //确认收货
     orderDetail: `${host}/orderinfo`, //订单详情
     applyMember: `${host}/sqdl`, //申请会员
+    SheheStauts: `${host}/shenhe`, //判断审核状态
+    GoodsInfo: `${host}/goodinfo`, //商品详情
+    addCart: `${host}/addcart`, //加入购物车
 }
 export default api

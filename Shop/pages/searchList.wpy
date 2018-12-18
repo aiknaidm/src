@@ -29,7 +29,7 @@
     <statusTap :statusType.sync="statusType" @statusTap.user="statusTap" type="shop"></statusTap>
     <noOrder text="暂无商品" wx:if="{{goodsList.length==0}}" show="2" ></noOrder>
     <repeat for="{{goodsList}}" key="{{index}}">
-      <searchList :goods.sync="item"></searchList>
+      <searchList :goods.sync="item" @goodDetail.user="toGoodDetailsTap"></searchList>
     </repeat>
   </view>
 </template>
@@ -72,6 +72,12 @@ export default class searchlist extends wepy.page {
           break;
       }
       this.getGoodsList(data);
+    },
+    // 商品详情
+    toGoodDetailsTap(id,evt) {
+      wx.navigateTo({
+        url: 'goodDetail?id=' + id 
+      });
     }
   };
 
