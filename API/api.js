@@ -23,5 +23,6 @@ const api = {
     cancelOrder: `${host}/cancelorder`, //取消订单
     confirmOrder: `${host}/confirmorder`, //确认收货
     orderDetail: `${host}/orderinfo`, //订单详情
+    applyMember: `${host}/sqdl`, //申请会员
 }
 export default api

@@ -12,20 +12,19 @@ view {
 }
 
 .a-order .order-date {
-  padding: 0 30rpx;
-  height: 88rpx;
-  display: flex;
-  justify-content: space-between;
-  font-size: 24rpx;
+  padding: 10rpx 30rpx;
+  line-height: 50rpx;
+  font-size: 26rpx;
   color: #666;
   align-items: center;
-  border-bottom: 1rpx solid #eee;
+   display: flex;
+    justify-content: space-between;
+  .date-box{
+   
+    color: #666
+  }
 }
 
-.a-order .order-date .red {
-  font-size: 24rpx;
-  color: #e50012;
-}
 
 .a-order .goods-info,
 .goods-img-container {
@@ -37,7 +36,12 @@ view {
   align-items: center;
   padding-bottom: 0px;
 }
-
+.price-box{
+  .name,.total-price{
+    padding: 0 30rpx;
+    line-height: 60rpx;
+  }
+}
 .goods-info .img-box {
   width: 120rpx;
   height: 120rpx;
@@ -57,8 +61,9 @@ view {
   /* align-items: center; */
   font-size: 30rpx;
   justify-content: space-between;
-  padding: 0 20rpx;
+  padding:20rpx 30rpx;
   border-bottom: 1px solid #f0f0f0;
+  background: #f9f9f9;
 }
 
 .img-box1 .goods-img {
@@ -125,13 +130,33 @@ button.ss-my-d {
   border: 0px solid;
   margin-left: 10rpx;
 }
+.shop-box{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:30rpx;
+  border-bottom: 1px solid #f0f0f0;
+  .icon-dianpu{
+    font-size: 40rpx;
+    color: #e50012;
+
+  }
+}
 </style>
 <template>
   <view>
     <view class="a-order" orderList="订单内容" goodsMap="商品内容">
+      <view class="shop-box" @tap="toshop({{item.suppliers_id}})">
+        <view>
+          <text class="iconfont icon-dianpu"></text>{{orderList.suppliers_name}}
+        </view>
+        <view>
+          <text class="iconfont icon-arrow-right"></text>
+        </view>
+      </view>
       <view class="order-date">
-        <view class="date-box">下单时间：{{orderList.add_time}}</view>
-        <view class="date-box">订单编号：{{orderList.order_sn}}</view>
+        <view class="date-box"><text>下单时间：</text><text>{{orderList.add_time}}</text></view>
+        <view class="date-box"><text>订单编号：</text><text>{{orderList.order_sn}}</text></view>
       </view>
       <view @tap="orderDetail({{orderList.id}})" data-id="{{orderList.id}}">
         <view wx:if="{{goodsMap.length==1}}" class="img-box1">
@@ -193,6 +218,10 @@ export default class List extends wepy.component {
     orderDetail(id) {
       console.log('id', id);
       this.$emit('orderDetail', id);
+    }
+    // 去店铺页面
+    toshop(){
+      wx.navigateTo({ url: 'url' });
     }
   };
 

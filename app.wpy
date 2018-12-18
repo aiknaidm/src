@@ -60,15 +60,16 @@ mask {
 }
 .price-box {
   text-align: right;
-  padding: 20rpx;
+
   font-size: 28rpx;
   .btn {
   /* flex: 1; */
+
   box-sizing: border-box;
   text-align: center;
   line-height: 60rpx;
   border-radius: 6rpx;
-  margin-left: 20rpx;
+  margin: 20rpx;
   width: 164rpx;
   display: inline-block;
 }
@@ -106,7 +107,7 @@ export default class extends wepy.app {
     subPackages: [
       {
         root: 'Shop/',
-        pages: ['pages/shopCart', 'pages/myHelp', 'pages/searchList','pages/orderList','pages/orderDetail']
+        pages: ['pages/index','pages/shopCart', 'pages/myHelp', 'pages/searchList','pages/orderList','pages/orderDetail']
       },
       {
         root: 'Index/',

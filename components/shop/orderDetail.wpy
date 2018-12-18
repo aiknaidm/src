@@ -211,15 +211,20 @@
             <view wx:if="{{orderDetail.order_status==-1}}"></view>
             <view wx:elif="{{orderDetail.order_status==0}}"></view>
             <view wx:elif="{{orderDetail.order_status==1}}" class="order-status-bg">待付款</view>
-            <view wx:elif="{{orderDetail.order_status==2}}" class="order-status-bg">待发货</view>
+
             <view
-              wx:elif="{{orderDetail.order_status==3&&orderDetail.shipping_status==0}}"
+              wx:elif="{{orderDetail.order_status==2&&orderDetail.shipping_status==0}}"
               class="order-status-bg"
             >待发货</view>
+            <view
+              wx:elif="{{orderDetail.order_status==2&&orderDetail.shipping_status==1}}"
+              class="order-status-bg"
+            >待收货</view>
             <view
               wx:elif="{{orderDetail.order_status==3&&orderDetail.shipping_status==1}}"
               class="order-status-bg"
             >已完成</view>
+            <!-- <view wx:else class="order-status-bg">已取消</view> -->
           </slot>
         </view>
         <view class="right-text">
@@ -237,11 +242,11 @@
               <view wx:if="{{orderDetail.order_status==-1}}"></view>
               <view wx:elif="{{orderDetail.order_status==0}}"></view>
               <view wx:elif="{{orderDetail.order_status==1}}" class="order-status-bg">待付款</view>
-              <view wx:elif="{{orderDetail.order_status==2}}" class="order-status-bg">待发货</view>
+              <view wx:elif="{{orderDetail.order_status==2&&orderDetail.shipping_status==0}}}" class="order-status-bg">待发货</view>
               <view
-                wx:elif="{{orderDetail.order_status==3&&orderDetail.shipping_status==0}}"
+                wx:elif="{{orderDetail.order_status==2&&orderDetail.shipping_status==1}}"
                 class="order-status-bg"
-              >待发货</view>
+              >待收货</view>
               <view
                 wx:elif="{{orderDetail.order_status==3&&orderDetail.shipping_status==1}}"
                 class="order-status-bg"
@@ -324,7 +329,9 @@ export default class List extends wepy.component {
   props = {
     orderDetail: {
       type: Object,
-      default: {},
+      default: {
+        
+      },
       twoWay: true
     },
     goodsMap: {

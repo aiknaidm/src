@@ -312,8 +312,7 @@ button.ss-my-d {
       <view wx:for-items="{{yizhanList}}" wx:key="{{index}} ">
         <view
           class="list-box"
-          catchtap="viewYiZhanDetails"
-          data-supplier_id="{{item.suppliers_id}}"
+          @tap="viewYiZhanDetails({{item.suppliers_id}})"
         >
           <view class="list-box-img">
             <image src="{{item.img}}">
@@ -376,6 +375,10 @@ export default class suppliersList extends wepy.page {
         let itemLists = ['解除关系', '设为店铺首页'];
         this.showActionSheet(itemLists, suppliers_id);
       }
+    },
+    // 店铺详情页面
+    viewYiZhanDetails(suppliers_id=""){
+      wx.navigateTo({ url: '/Shop/pages/index?suppliers_id='+suppliers_id });
     }
   };
   events = {};
@@ -456,58 +459,6 @@ export default class suppliersList extends wepy.page {
       });
     }
   }
-  // async setIndex(user_id,suppliers_id){
-  //   console.log("设置店铺首页")
-  //    var res=await wepy.request({
-  //       url:api.setIndex,
-  //       data:{
-  //         user_id,suppliers_id
-  //       }
-  //     })
-  //     this.getyizhanList(user_id);
-  //     if(res.data.code=="0"){
-  //       wx.showToast({
-  //         title: msg+'成功', //提示的内容,
-  //         icon: 'none', //图标,
-  //         duration: 2000, //延迟时间,
-  //         mask: true, //显示透明蒙层，防止触摸穿透,
-  //       });
-  //     }else{
-  //       wx.showToast({
-  //         title: '失败', //提示的内容,
-  //         icon: 'none', //图标,
-  //         duration: 2000, //延迟时间,
-  //         mask: true, //显示透明蒙层，防止触摸穿透,
-  //       });
-  //     }
-
-  // }
-  // async removeindex(user_id,suppliers_id){
-  //   console.log("解除店铺首页")
-  //    var res=await wepy.request({
-  //       url:api.removeindex,
-  //       data:{
-  //         user_id,suppliers_id
-  //       }
-  //     })
-  //     this.getyizhanList(user_id);
-  //     if(res.data.code=="0"){
-  //       wx.showToast({
-  //         title: '解除店铺首页成功', //提示的内容,
-  //         icon: 'none', //图标,
-  //         duration: 2000, //延迟时间,
-  //         mask: true, //显示透明蒙层，防止触摸穿透,
-  //       });
-  //     }else{
-  //       wx.showToast({
-  //         title: '解除店铺首页失败', //提示的内容,
-  //         icon: 'none', //图标,
-  //         duration: 2000, //延迟时间,
-  //         mask: true, //显示透明蒙层，防止触摸穿透,
-  //       });
-  //     }
-
-  // }
   async getyizhanList(user_id) {
     wepy
       .request({
