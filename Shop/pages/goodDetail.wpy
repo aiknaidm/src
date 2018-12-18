@@ -396,7 +396,7 @@ swiper-item image {
     <view class="goods-txt">
       <view wx:if="{{goodsDetail.shop_price&&status==2}}" >{{goodsDetail.set_number}}{{danwei}}起批发</view>
       <view>库存:{{goodsDetail.goods_number}}</view>
-      <view @tap='goToYiZhan({{goodsDetail.suppliers_id}})' >批发商:{{goodsDetail.suppliers_name}}</view>
+      <view @tap='viewYiZhanDetails({{goodsDetail.suppliers_id}})' >批发商:{{goodsDetail.suppliers_name}}</view>
     </view>
 
   </view>
@@ -538,6 +538,11 @@ export default class goodDetail extends wepy.page {
       });
     },
 
+    // 店铺详情页面
+    viewYiZhanDetails(suppliers_id = '') {
+      wx.navigateTo({ url: '/Shop/pages/index?suppliers_id=' + suppliers_id });
+    },
+
     goShopCar() {
       wx.navigateTo({
         url: '/pages/Shop/shop-cart/index'
@@ -633,13 +638,11 @@ export default class goodDetail extends wepy.page {
       //
       // 计算当前价格
       if (canSubmit) {
-        that.setData({
-          selectSizePrice: selectSizePrice,
-          guigePrice: guigePrice,
-          pifaPrice: pifaPrice,
-          guigeID: guigeId,
-          guige: guige
-        });
+        that.selectSizePrice = selectSizePrice;
+        that.guigePrice = guigePrice;
+        that.pifaPrice = pifaPrice;
+        that.guigeID = guigeId;
+        that.guige = guige;
       }
     },
 
@@ -700,7 +703,7 @@ export default class goodDetail extends wepy.page {
           showCancel: false
         });
         return;
-      } 
+      }
       this.addCart(
         that.userid,
         that.goodsDetail.goods_id,
@@ -710,7 +713,6 @@ export default class goodDetail extends wepy.page {
         that.selectSizePrice,
         that.goodsDetail.suppliers_id
       );
-      
     },
     /**
      * 立即购买
