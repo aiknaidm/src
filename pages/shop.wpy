@@ -151,11 +151,11 @@
               <view class="yizhan-name">
                 <view class="yizhan-name-titile">
                   <text>{{yizhan.suppliers_name}}</text>
-                  <button class="apply" wx:if="{{yizhanIndex.shenhe==2}}">会员</button>
-                  <button class wx:if="{{yizhanIndex.shenhe==1}}">申请中</button>
-                  <button class wx:if="{{yizhanIndex.shenhe==0}}">申请会员</button>
+                  <button class="apply" wx:if="{{shenhe==2}}">会员</button>
+                  <button class wx:if="{{shenhe==1}}">申请中</button>
+                  <button class wx:if="{{shenhe==0}}">申请会员</button>
                 </view>
-                <view class="yizhan-name-txt" wx:if="{{!yizhanIndex.shenhe}}">您还不是该店的会员，暂不能享受该店的会员权益</view>
+                <view class="yizhan-name-txt" wx:if="{{shenhe!=2}}">您还不是该店的会员，暂不能享受该店的会员权益</view>
               </view>
             </swiper-item>
           </block>
@@ -192,7 +192,8 @@ export default class Index extends wepy.page {
     goodsKind: [],
     yizhanIndex: {},
     isguoqi: false,
-    text: '暂无分类'
+    text: '暂无分类',
+    shenhe:0
   };
   computed = {};
   methods = {
@@ -253,6 +254,7 @@ export default class Index extends wepy.page {
     wx.hideLoading();
     this.yizhanBanner = res.data.data;
     this.yizhan = res.data.yizhan;
+    this.shenhe=res.data.shenhe
     this.$apply();
     var end_time = this.yizhan.end_time;
     if (end_time !== 0 && new Date().getTime() - end_time * 1000 > 0) {

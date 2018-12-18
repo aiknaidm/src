@@ -168,7 +168,7 @@
           wx:for-items="{{goodsKind}}"
           wx:key="{{index}}"
           data-name="{{item.cat_name}}"
-          @tap="toFenLeiTap({{item.cat_id}},{{yizhanIndex.suppliers_id}},{{yizhanIndex.suppliers_desc}})"
+          @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_name}})"
         >{{item.cat_name}}</view>
       </view>
     </view>
@@ -196,13 +196,13 @@ export default class Index extends wepy.page {
   computed = {};
   methods = {
     // 分类跳转
-    toFenLeiTap(id, suppliers_id, suppliers_name) {
+    toFenLeiTap(id, suppliers_name) {
       wx.navigateTo({
         url:
           '/Shop/pages/searchList?cat_id=' +
           id +
           '&suppliers_id=' +
-          suppliers_id +
+          this.suppliers_id +
           '&navigationTitle=' +
           suppliers_name +
           '&type=2'
