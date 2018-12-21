@@ -1,0 +1,212 @@
+<style lang="less">
+/* pages/Shop/search-shaixuan/index.wxss */
+.container {
+  font-size: 30rpx;
+}
+.shaixuan-jiage {
+  padding: 40rpx;
+  border-bottom: 1px solid #eee;
+}
+.shaixuan-ipt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  color: #ddd;
+}
+.shaixuan-ipt input {
+  background-color: #f2f2f2;
+  /* width: 40%; */
+  height: 66rpx;
+  text-align: center;
+  color: #666;
+  margin: 0 10rpx;
+}
+.shaixuan-list {
+  padding: 0 20rpx;
+  display: flex;
+  justify-content: space-between;
+  line-height: 88rpx;
+  border-bottom: 1px solid #eee;
+  border-top: 4px solid #eee;
+}
+.shaixuan-button {
+  position: fixed;
+  bottom: 0px;
+  display: flex;
+  width: 100%;
+  border: 1px solid #eee;
+}
+.shaixuan-button button {
+  flex: 1;
+  text-align: center;
+  line-height: 108rpx;
+  background-color: #fff;
+}
+.shaixuan-button button:first-child {
+  border-right: 1px solid #eee;
+}
+/* pages/Shop/search-shaixuan-gongzhonglist/index.wxss */
+.container {
+  font-size: 30rpx;
+}
+.gongzhong-active,
+.pinpai-active {
+  padding: 20rpx;
+  border-bottom: 1px solid #eee;
+}
+.radio-group label {
+  padding: 0 40rpx;
+  display: flex;
+  justify-content: space-between;
+  line-height: 88rpx;
+  border-top: 1px solid #eee;
+}
+checkbox-group {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 20rpx;
+}
+checkbox-group label {
+  width: 31%;
+  font-size: 28rpx;
+}
+checkbox-group label {
+  display: flex;
+  justify-content: space-between;
+  line-height: 60rpx;
+}
+checkbox-group.pinpai-check {
+  padding-bottom: 138rpx;
+}
+.title {
+  color: #e50012;
+}
+</style>
+<template>
+<form @submit="okSubmit">
+  <view class='container'>
+  <view class='shaixuan-jiage'>
+    <view class='title'>价格区间</view>
+    <view class='shaixuan-ipt'>
+      <input type='number' placeholder="最低价" bindinput="listenerLowInput" name="priceMin" value="{{initdata.price_min}}"></input>
+      ——
+      <input type='number' placeholder="最高价" bindinput="listenerHighInput" name="priceMax" value="{{initdata.price_max}}"></input>
+    </view>
+  </view>
+  <!--工种选择  -->
+  <view class='shaixuan-list'>
+    <view class='title'>品牌</view>
+    <!-- <view>全部></view> -->
+  </view>
+  <view class='gongzhong-active'>已选择：{{pinpainame}}</view>
+  <checkbox-group name="brand" > 
+    <label class="checkbox" wx:for="{{pinpailist}}" wx:key="{{index}}" @tap="getName({{index}})">
+      {{item.brand_name}}
+      <checkbox checked='{{item.active}}' value="{{item.brand_id}}" />
+    </label>
+  </checkbox-group>
+  <!--品牌选择  -->
+  <!-- <view class='shaixuan-list'>
+    <view class='title'>类目</view>
+     <view>全部></view> 
+  </view>
+
+  <view class='pinpai-active'>已选择：{{leimuname}}</view>
+  <checkbox-group bindchange="checkboxLeiMuChange" class="pinpai-check">
+    <label class="checkbox" wx:for="{{leimulist}}" wx:key="{{leimulist}}">
+      {{item.cat_name}}
+      <checkbox value="{{item.cat_id}}" />
+    </label>
+  </checkbox-group> -->
+
+  <view class='shaixuan-button'>
+    <button @tap='reset' form-type="reset">重置</button>
+    <button @tap='ok' form-type="submit">确认</button>
+  </view>
+</view>
+</form>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '../../API/api';
+export default class filtrate extends wepy.page {
+  config = {
+    navigationBarTitleText: '购物车'
+  };
+  components = {};
+  data = {
+    pinpailist: [],
+    pinpainame: '无',
+    initdata: {}
+  };
+  computed = {};
+  methods = {
+    getName(index) {
+      this.pinpainame = [];
+      this.pinpailist[index].active = !this.pinpailist[index].active;
+      this.pinpailist.forEach((item, index) => {
+        if (item.active) {
+          this.pinpainame.push(item.brand_name);
+        }
+      });
+      console.log(this.$parent.$pages['/Shop/pages/searchList'].initdata);
+    },
+    okSubmit(e) {
+      var initdata = this.$parent.$pages['/Shop/pages/searchList'].initdata;
+      wx.setStorageSync('pinpainame', this.pinpainame);
+      wx.setStorageSync('pinpailist', this.pinpailist);
+      initdata.brand = e.detail.value.brand.toString();
+      initdata.price_max = e.detail.value.priceMax;
+      initdata.price_min = e.detail.value.priceMin;
+      this.$parent.$pages['/Shop/pages/searchList'].initdata = initdata;
+      this.$parent.$pages['/Shop/pages/searchList'].getGoodsList(initdata);
+      wx.navigateBack({
+        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+      });
+    },
+    reset() {
+      this.pinpainame = '';
+      this.pinpailist.forEach((item, index) => {
+        this.pinpailist[index].active = false;
+      });
+    }
+  };
+  //获取品牌list
+  //http://lmbge.com/wxapi//pinpai?keyword=%E9%97%A8&cat_id=811    keyword  关键词   cat_id  商品分类
+  getPinPaiList(cat_id, suppliers_id) {
+    var that = this;
+    console.log('cat_id.:', cat_id);
+    wepy
+      .request({
+        url: api.goodsBrand,
+        data: {
+          cat_id,
+          suppliers_id
+        }
+      })
+      .then(res => {
+        if (res.data.code == '0') this.pinpailist = res.data.data;
+        console.log('品牌列表', this.pinpailist);
+        this.$apply();
+      });
+  }
+  events = {};
+  onLoad(options) {
+    var cat_id = options.cat_id;
+    var suppliers_id = options.suppliers_id;
+    var pinpainame = wx.getStorageSync('pinpainame');
+    var pinpailist = wx.getStorageSync('pinpailist');
+    this.initdata = this.$parent.$pages['/Shop/pages/searchList'].initdata;
+    if (pinpainame && pinpailist) {
+      this.pinpainame = pinpainame;
+      this.pinpailist = pinpailist;
+    } else {
+      this.getPinPaiList(cat_id, suppliers_id);
+    }
+  }
+}
+</script>

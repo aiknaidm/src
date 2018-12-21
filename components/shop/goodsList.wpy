@@ -1,114 +1,109 @@
 
   <style lang="less">
-.goods-list{
-    width:100%;
-    background-color: #fff;
+.goods-list {
+  width: 100%;
+  background-color: #fff;
 }
-.goods-list .list-title{
-    font-size: 28rpx;
-    color: #000;
-    padding: 30rpx 0 25rpx 30rpx;
-    border-top:16rpx solid #f0f0f0; 
+.goods-list .list-title {
+  font-size: 28rpx;
+  color: #000;
+  padding: 30rpx 0 25rpx 30rpx;
+  border-top: 16rpx solid #f0f0f0;
 }
-.goods-list  .a-goods{
-    /* width: 720rpx; */
-    /* margin-left: 30rpx; */
-    display: flex;
-    justify-content: space-between;
-    border-top: 1px solid #eee;
-    padding: 30rpx 30rpx 30rpx 0;
-    background-color: #f0f0f0;
+.goods-list .a-goods {
+  /* width: 720rpx; */
+  /* margin-left: 30rpx; */
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #eee;
+  padding: 30rpx 30rpx 30rpx 0;
+  background-color: #f0f0f0;
 }
-.goods-list  .a-goods .img-box{
-    width: 160rpx;
-    height:160rpx;
-    /* overflow: hidden; */
-    margin-right: 20rpx;
-    /* background-color: #d8d8d8; */
-    padding-left: 30rpx;
-}
-
-.goods-list .img-box .img{
-    width: 160rpx;
-    height:160rpx;
-}
-.goods-list  .a-goods .text-box{
-    /* width: 510rpx; */
-    display: flex;
-    box-sizing: border-box;
-    padding-top: 10rpx;
-    flex: 10;
-}
-.a-goods .text-box .arow02{
-   font-size: 23rpx;
-   color: #888;
-   width: 120rpx;
-   text-align: right;
-   display: flex;
-   flex-direction: column;
-    justify-content: space-between;
-   
- }
-.a-goods .text-box .arow .goods-name{
-     /* width: 360rpx; */
-     font-size:26rpx;
-     height: 74rpx;
-     color:#000000;
-     line-height: 1.6;
-     overflow: hidden;
-     
- }
-.a-goods .text-box .arow01{
-
-    flex: 1;
-    color: #333;
-    font-size: 30rpx;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.goods-list .a-goods .img-box {
+  width: 160rpx;
+  height: 160rpx;
+  /* overflow: hidden; */
+  margin-right: 20rpx;
+  /* background-color: #d8d8d8; */
+  padding-left: 30rpx;
 }
 
-.a-goods .text-box .arow02 .goods-price{
-    font-size:26rpx;
-    color:#000000;
+.goods-list .img-box .img {
+  width: 160rpx;
+  height: 160rpx;
 }
-.a-goods .text-box .arow01 .goods-label{
-    font-size: 26rpx;
-    color: #999;
+.goods-list .a-goods .text-box {
+  /* width: 510rpx; */
+  display: flex;
+  box-sizing: border-box;
+  padding-top: 10rpx;
+  flex: 10;
 }
-.a-goods .text-box .arow .goods-num{
-    font-size: 26rpx;
-    color: #999;
+.a-goods .text-box .arow02 {
+  font-size: 23rpx;
+  color: #888;
+  width: 120rpx;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.a-goods .text-box .arow .goods-name {
+  /* width: 360rpx; */
+  font-size: 26rpx;
+  height: 74rpx;
+  color: #000000;
+  line-height: 1.6;
+  overflow: hidden;
+}
+.a-goods .text-box .arow01 {
+  flex: 1;
+  color: #333;
+  font-size: 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.a-goods .text-box .arow02 .goods-price {
+  font-size: 26rpx;
+  color: #000000;
+}
+.a-goods .text-box .arow01 .goods-label {
+  font-size: 26rpx;
+  color: #999;
+}
+.a-goods .text-box .arow .goods-num {
+  font-size: 26rpx;
+  color: #999;
 }
 </style>
 <template>
- <view>
-<view class="goods-list">
-    <view class="list-title">商品信息</view>
-    <form bindsubmit="submitReputation">
-      <block wx:for-items="{{goodsMap}}" wx:key="{{index}}">
-        <view class="a-goods" @tap="toGoodDetailsTap" data-id="{{item.goods_id}}">
-          <view class="img-box">
-            <image src="{{item.goods_imgs}}" class="img" />
-          </view>
-          <view class="text-box">
-            <view class="arow01">
-              <view class="goods-name">{{item.goods_name}}</view>
-              <view class="goods-label">{{item.goods_attr}}</view>
+  <view>
+    <view class="goods-list">
+      <!-- <view class="list-title">商品信息</view> -->
+      <form bindsubmit="submitReputation">
+        <view class="list-title">{{goodsMap[0].suppliers_name}}</view>
+        <block wx:for-items="{{goodsMap}}" wx:key="{{index}}">
+          <view class="a-goods" @tap="toGoodDetailsTap" data-id="{{item.goods_id}}">
+            <view class="img-box">
+              <image src="{{item.goods_imgs}}" class="img">
             </view>
-            <view class="arow02">
-              <view class="goods-price">¥ {{item.goods_price}}</view>
-              <view class="goods-num">x {{item.goods_number}}</view>
+            <view class="text-box">
+              <view class="arow01">
+                <view class="goods-name">{{item.goods_name}}</view>
+                <view class="goods-label">{{item.goods_attr}}</view>
+              </view>
+              <view class="arow02">
+                <view class="goods-price">¥ {{item.goods_price}}</view>
+                <view class="goods-num">x {{item.goods_number}}</view>
+              </view>
             </view>
           </view>
-        </view>
-
-      </block>
-    </form>
-   
-
-  </view>
-  <!-- <view class="peisong-way" hidden="true">
+        </block>
+      </form>
+    </view>
+    <!-- <view class="peisong-way" hidden="true">
     <view class="row-box">
       <view class="row-label">配送方式</view>
       <view class="right-text">顺丰快递</view>
@@ -119,10 +114,8 @@
         <input name="remark" type="text" class="liuyan" placeholder="如需留言请输入" />
       </view>
     </view>
-  </view> -->
-
-
- </view>
+    </view>-->
+  </view>
 </template>
 <script>
 import wepy from 'wepy';
@@ -131,19 +124,15 @@ export default class goodslist extends wepy.component {
   props = {
     goodsMap: {
       type: Array,
-      default:[]
-    },
+      default: []
+    }
   };
   data = {};
 
   events = {};
 
-  methods = {
-   
-  };
+  methods = {};
 
-  async onLoad() {
-
-  }
+  async onLoad() {}
 }
 </script>

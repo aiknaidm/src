@@ -1,0 +1,236 @@
+<style lang="less">
+/**index.wxss**/
+
+.overflow {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /* position: absolute; */
+}
+
+.swiper_box {
+  height: 100%;
+}
+
+.swiper-container {
+  height: 300rpx;
+}
+
+.swiper-item {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper_box image {
+  width: 100%;
+  height: 100%;
+}
+
+.apply {
+  line-height: 88rpx;
+  text-align: center;
+  margin: auto;
+  background-color: #fff;
+  border-radius: 5rpx;
+  font-size: 30rpx;
+}
+
+.yizhan-name {
+  position: absolute;
+  top: 60rpx;
+  left: 0px;
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 50rpx;
+  color: #fff;
+}
+
+.yizhan-name-titile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 50rpx;
+  flex-wrap: wrap;
+}
+
+.yizhan-name-titile button {
+  display: inline;
+  margin: 0;
+  line-height: 50rpx;
+  padding: 0 20rpx;
+  height: 50rpx;
+  border-radius: 50px;
+  font-size: 28rpx;
+}
+
+.apply {
+  background-color: #f7bf30;
+  color: #fff;
+}
+
+.yizhan-name-txt {
+  font-size: 28rpx;
+  text-align: left;
+  padding: 10rpx 50rpx;
+  width: 60%;
+}
+
+.type-navbar {
+  white-space: nowrap;
+  height: 88rpx;
+  width: 100%;
+  background-color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+/*显示  */
+
+.move-goods-container2 {
+  height: auto;
+}
+
+.fixed {
+  position: fixed;
+  top: 0;
+  z-index: 10;
+}
+
+.materials {
+  position: relative;
+}
+
+.materials-list {
+  display: flex;
+  /* justify-content: space-between;
+   */
+  flex-wrap: wrap;
+  padding: 40rpx;
+  color: #797979;
+  padding-top: 15rpx;
+  border-bottom: 8rpx solid #f6f6f6;
+}
+
+.materials-list view {
+  width: 30%;
+  padding: 15rpx 0;
+  text-align: center;
+  background-color: #f2f2f2;
+  margin-top: 15rpx;
+  margin-left: 15rpx;
+}
+
+.red {
+  color: #e50012;
+}
+
+.materials-titile {
+  padding: 30rpx;
+  font-weight: bold;
+}
+</style>
+<template>
+  <view class="container">
+    <view id="top">
+      <view class="swiper-container">
+        <swiper
+          class="swiper_box"
+          autoplay="{{autoplay}}"
+          interval="{{interval}}"
+          duration="{{duration}}"
+        >
+          <block wx:for="{{yizhanBanner}}" wx:key="{{index}}">
+            <swiper-item>
+              <image data-adid="{{item.ad_id}}" src="{{item.img}}" class="slide-image">
+              <view class="yizhan-name">
+                <view class="yizhan-name-titile">
+                  <text>{{yizhan.suppliers_name}}</text>
+                  <button class="apply" wx:if="{{shenhe==2}}">会员</button>
+                  <button class wx:if="{{shenhe==1}}">申请中</button>
+                  <button class wx:if="{{shenhe==0}}">申请会员</button>
+                </view>
+                <view class="yizhan-name-txt" wx:if="{{shenhe!=2}}">您还不是该店的会员，暂不能享受该店的会员权益</view>
+              </view>
+            </swiper-item>
+          </block>
+        </swiper>
+      </view>
+    </view>
+    <view class="materials">
+      <view class="materials-titile">商品分类</view>
+      <noorder show="2" :text.sync="text" wx:if="{{goodsKind.length==0||isguoqi}}"></noorder>
+      <view class="materials-list" wx:else>
+        <view
+          wx:for-items="{{goodsKind}}"
+          wx:key="{{index}}"
+          @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})"
+        >{{item.cat_name}}</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+let that;
+import wepy from 'wepy';
+import api from '../../API/api';
+import noorder from '../../components/noOrder';
+export default class shop extends wepy.component {
+  components = { noorder };
+  props = {
+    yizhanBanner: {
+      type: Array,
+      default: [],
+      twoWay: true
+    },
+    yizhan: {
+      type: Array,
+      default: [],
+      twoWay: true
+    },
+    goodsKind: {
+      type: Array,
+      default: [],
+      twoWay: true
+    },
+    yizhanIndex: {
+      type: Object,
+      default: {},
+      twoWay: true
+    },
+    isguoqi: {
+      type: Boolean,
+      default: false,
+      twoWay: true
+    },
+    text: {
+      type: String,
+      default: '暂无分类',
+      twoWay: true
+    },
+    shenhe: {
+      type: Number,
+      default: 0 ,
+      twoWay: true
+    },
+  };
+  methods = {
+        // 分类跳转
+        toFenLeiTap(id, suppliers_id, suppliers_name,cat_name) {
+            wx.navigateTo({
+                url: '/Shop/pages/searchList?cat_id=' +
+                    id +
+                    '&suppliers_id=' +
+                    suppliers_id +
+                    '&navigationTitle=' +
+                    suppliers_name +"-"+cat_name+
+                    '&type=2'
+            });
+        }
+    };
+}
+</script>

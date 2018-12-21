@@ -1,302 +1,50 @@
 <style lang="less">
-/**index.wxss**/
-
-.overflow {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  /* position: absolute; */
-}
-
-.swiper_box {
-  height: 100%;
-}
-
-.swiper-container {
-  height: 300rpx;
-}
-
-.swiper-item {
-  width: 100%;
-  height: 100%;
-}
-.swiper_box image {
-  width: 100%;
-  height: 100%;
-}
-
-.apply {
-  line-height: 88rpx;
-  text-align: center;
-  margin: auto;
-  background-color: #fff;
-  border-radius: 5rpx;
-  font-size: 30rpx;
-}
-
-.yizhan-name {
-  position: absolute;
-  top: 60rpx;
-  left: 0px;
-  display: block;
-  width: 100%;
-  text-align: center;
-  font-size: 50rpx;
-  color: #fff;
-}
-
-.yizhan-name-titile {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 50rpx;
-  flex-wrap: wrap;
-}
-
-.yizhan-name-titile button {
-  display: inline;
-  margin: 0;
-  line-height: 50rpx;
-  padding: 0 20rpx;
-  height: 50rpx;
-  border-radius: 50px;
-  font-size: 28rpx;
-}
-
-.apply {
-  background-color: #f7bf30;
-  color: #fff;
-}
-
-.yizhan-name-txt {
-  font-size: 28rpx;
-  text-align: left;
-  padding: 10rpx 50rpx;
-  width: 60%;
-}
-
-.type-navbar {
-  white-space: nowrap;
-  height: 88rpx;
-  width: 100%;
-  background-color: #fff;
-}
-
-::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-  color: transparent;
-}
-/*显示  */
-
-.move-goods-container2 {
-  height: auto;
-}
-
-.fixed {
-  position: fixed;
-  top: 0;
-  z-index: 10;
-}
-
-.materials {
-  position: relative;
-}
-
-.materials-list {
-  display: flex;
-  /* justify-content: space-between;
-   */
-  flex-wrap: wrap;
-  padding: 40rpx;
-  color: #797979;
-  padding-top: 15rpx;
-  border-bottom: 8rpx solid #f6f6f6;
-}
-
-.materials-list view {
-  width: 30%;
-  padding: 15rpx 0;
-  text-align: center;
-  background-color: #f2f2f2;
-  margin-top: 15rpx;
-  margin-left: 15rpx;
-}
-.red {
-  color: #e50012;
-}
-.materials-titile {
-  padding: 30rpx;
-  font-weight: bold;
-}
 </style>
 <template>
-  <view class="container">
-    <view id="top">
-      <view class="swiper-container">
-        <swiper
-          class="swiper_box"
-          autoplay="{{autoplay}}"
-          interval="{{interval}}"
-          duration="{{duration}}"
-        >
-          <block wx:for="{{yizhanBanner}}" wx:key="{{index}}">
-            <swiper-item>
-              <image data-adid="{{item.ad_id}}" src="{{item.img}}" class="slide-image">
-              <view class="yizhan-name">
-                <view class="yizhan-name-titile">
-                  <text>{{yizhan.suppliers_name}}</text>
-                  <button class="apply" wx:if="{{yizhan.suppliers_name&&shenhe==2}}">会员</button>
-                  <button class="apply" wx:elif="{{yizhan.suppliers_name&&shenhe==1}}">申请中</button>
-                  <button @tap="toApply" wx:else>申请会员</button>
-                </view>
-                <view
-                  class="yizhan-name-txt"
-                  wx:if="{{shenhe==0||shenhe==1}}"
-                >您还不是该店的会员，暂不能享受该店的会员权益</view>
-              </view>
-            </swiper-item>
-          </block>
-        </swiper>
-      </view>
-    </view>
-    <view class="materials">
-      <view class="materials-titile">商品分类</view>
-      <noorder show="2" :text.sync="text" wx:if="{{goodsKind.length==0||isguoqi}}"></noorder>
-      <view class="materials-list" wx:else>
-        <view
-          wx:for-items="{{goodsKind}}"
-          wx:key="{{index}}"
-          data-name="{{item.cat_name}}"
-          @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_name}})"
-        >{{item.cat_name}}</view>
-      </view>
-    </view>
-  </view>
+  <shopIndexc :yizhan.sync="yizhan" :yizhanBanner.sync="yizhanBanner" :shenhe.sync="shenhe" :goodsKind.sync="goodsKind" :isguoqi.sync="isguoqi"></shopIndexc>
 </template>
+
 
 <script>
 import wepy from 'wepy';
-import api from '../../API/api';
+
 import noorder from '../../components/noOrder';
-export default class Index extends wepy.page {
+import shopIndexc from '../../components/shop/shopIndex';
+import shopIndex from '../../mixins/shopIndex';
+export default class shop extends wepy.page {
   config = {
     navigationBarTitleText: '吉采易站'
   };
-  components = { noorder };
   data = {
     yizhanBanner: [],
     yizhan: [],
     goodsKind: [],
-    yizhanIndex: {},
     isguoqi: false,
     text: '暂无分类',
     shenhe: 0
   };
+  components = { shopIndexc };
+  
+  mixins = [shopIndex];
   computed = {};
-  methods = {
-    // 分类跳转
-    toFenLeiTap(id, suppliers_name) {
-      wx.navigateTo({
-        url:
-          '/Shop/pages/searchList?cat_id=' +
-          id +
-          '&suppliers_id=' +
-          this.suppliers_id +
-          '&navigationTitle=' +
-          suppliers_name +
-          '&type=2'
-      });
-    },
-    // 申请会员
-    async toApply() {
-      // userInfomobile_phone 手机号 没有填过资料  0 没有申请代理    1 申请了还在审核    2 审核通过可以购买
-      var shenhe = this.shenhe;
-      if (this.userInfo.mobile_phone == '') {
-        //   跳转认证页面
-        wx.navigateTo({ url: '/' });
-        return;
-      }
-      var showModalRes = await wepy.showModal({
-        title: '提示',
-        content: '是否要申请批发权限？'
-      });
-      //   发送申请请求
-      if (showModalRes.confirm) {
-        console.log('用户点击确定');
-        var res = await wepy.request({
-          url: api.applyMember,
-          data: {
-            user_id: this.userId,
-            suppliers_id:this.suppliers_id
-          }
-        });
-
-        if (res.data.code == 0) {
-          wx.showModal({
-            title: '提示',
-            content: '发送成功，等待易站经理审核'
-          });
-        } else {
-          wx.showToast({
-            title: res.data.message,
-            icon: 'none'
-          });
-        }
-      }
-    }
-  };
+  methods = {};
   events = {};
-
-  // 分类
-  async getMaterialsList(suppliers_id = '') {
-    var res = await wepy.request({
-      url: api.goodsKind,
-      data: {
-        suppliers_id
-      }
-    });
-    this.goodsKind = res.data.data;
-    this.$apply();
-  }
-
-  // 顶部banner 店铺名字
-  async getShopBanner(userId, suppliers_id = '') {
-    var res = await wepy.request({
-      url: api.yizhanBanner,
-      data: {
-        user_id: userId,
-        suppliers_id
-      }
-    });
-    wx.hideLoading();
-    this.yizhanBanner = res.data.data;
-    this.yizhan = res.data.yizhan;
-    this.shenhe = res.data.shenhe;
-
-    var end_time = this.yizhan.end_time;
-    if (end_time !== 0 && new Date().getTime() - end_time * 1000 > 0) {
-      console.log('店铺已过期');
-      this.isguoqi = true;
-      this.text = '店铺已过期';
+  async onShow() {
+    this.userId = await this.$parent.loginInfo();
+    if (this.suppliers_id) {
+      this.getShopBanner(this.userId, this.suppliers_id);
+      this.getMaterialsList(this.suppliers_id);
+    } else {
+      this.getShopIndex(this.userId);
     }
-    this.$apply();
-  }
-  async onShow() {}
-  async onLoad(options) {
-    let userId = await this.$parent.loginInfo();
-    this.userInfo = await this.$parent.getUserInfo();
-    this.userId = userId;
-    let suppliers_id = options.suppliers_id;
-    this.suppliers_id = suppliers_id;
-    this.getShopBanner(userId, suppliers_id);
-    this.getMaterialsList(suppliers_id);
+
     wx.showLoading({
       title: '加载中...', //提示的内容,
       mask: true, //显示透明蒙层，防止触摸穿透,
       success: res => {}
-    });
+    });}
+  async onLoad(options) {
+    this.suppliers_id=options.suppliers_id
   }
 }
 </script>
- 

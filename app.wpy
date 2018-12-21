@@ -33,9 +33,21 @@ page {
 }
 
 button {
-  height: 80rpx;
-  line-height: 80rpx;
+
   font-size: 32rpx;
+  background: transparent;
+  border: 0px solid;
+  display: block;
+  padding: 0;
+  margin: 0
+}
+button::after{
+border:none;
+}
+input{
+outline:none;
+border:none;
+list-style: none;
 }
 .red {
   color: #e50012;
@@ -113,7 +125,9 @@ export default class extends wepy.app {
           'pages/searchList',
           'pages/goodDetail',
           'pages/orderList',
-          'pages/orderDetail'
+          'pages/orderDetail',
+          'pages/toPayOrder',
+          'pages/filtrate'
         ]
       },
       {

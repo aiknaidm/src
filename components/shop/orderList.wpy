@@ -218,7 +218,7 @@ export default class List extends wepy.component {
     orderDetail(id) {
       console.log('id', id);
       this.$emit('orderDetail', id);
-    }
+    },
     // 去店铺页面
     toshop(){
       wx.navigateTo({ url: 'url' });

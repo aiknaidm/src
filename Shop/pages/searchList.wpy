@@ -16,7 +16,6 @@
   height: 35rpx;
   margin-left: 5rpx;
 }
-
 .search-title .up .img {
   transform: rotate(180deg);
   -ms-transform: rotate(180deg); /* IE 9 */
@@ -25,7 +24,9 @@
 </style>
 <template>
   <view class="container">
-    <search></search>
+    <search @buttonTap.user="buttonTap">
+
+    </search>
     <statusTap :statusType.sync="statusType" @statusTap.user="statusTap" type="shop"></statusTap>
     <noOrder text="暂无商品" wx:if="{{goodsList.length==0}}" show="2" ></noOrder>
     <repeat for="{{goodsList}}" key="{{index}}">
@@ -45,57 +46,94 @@ export default class searchlist extends wepy.page {
   config = {
     navigationBarTitleText: '搜索列表'
   };
-  components = { search, searchList, statusTap,noOrder };
+  components = { search, searchList, statusTap, noOrder };
 
   data = {
     goodsList: [],
     statusType: ['综合', '销量', '价格', '筛选'],
-    currentType: ''
-
+    currentType: '',
+    isMoreDara:true
   };
 
   computed = {};
   methods = {
+    // 选择
     statusTap(index, evt) {
       console.log('click index', index);
-      var data = this.initData();
+
       switch (parseInt(index)) {
         case 0:
+          this.initdata.order = '';
+          this.initdata.sort = '';
           break;
         case 1:
-            data.keyword="1"
+          // 销量
+          this.initdata.order = '';
+          this.data.sort = 'salenum';
           break;
         case 2:
-         data.sort="dec"
+          this.initdata.sort = 'shop_price';
+          this.isasc = !this.isasc;
+          this.initdata.order = this.isasc ? 'asc' : 'desc';
+
+          break;
+        case 3:
+          wx.navigateTo({
+            url:
+              'filtrate?cat_id=' +
+              this.initdata.cat_id +
+              '&suppliers_id=' +
+              this.initdata.suppliers_id
+          });
           break;
         default:
           break;
       }
-      this.getGoodsList(data);
+      this.initdata.page = 1;
+      this.getGoodsList(this.initdata);
     },
     // 商品详情
-    toGoodDetailsTap(id,evt) {
+    toGoodDetailsTap(id, evt) {
       wx.navigateTo({
-        url: 'goodDetail?id=' + id 
+        url: 'goodDetail?id=' + id
       });
+    },
+    // 点击确定 搜索商品
+    buttonTap(keyword) {
+      this.initdata.keyword = keyword;
+      this.initdata.page = 1;
+
+      this.getGoodsList(this.initdata);
     }
   };
 
   events = {};
+  // 获取商品列表信息
   async getGoodsList(data) {
     wepy
       .request({
         url: api.goodsList,
-        data: data
+        data: data,
+        method: 'get'
       })
       .then(res => {
-        this.goodsList = res.data.data;
+        wx.hideLoading();
+        if (res.data.data.length == 0) {
+          this.isMoreDara = false;
+          return
+        } 
+        if (data.page == 1) {
+          this.goodsList = res.data.data;
+        } else {
+          this.goodsList.push(...res.data.data);
+        }
+
         this.$apply();
         console.log('订单列表', this.goodsList);
       });
   }
   initData() {
-    var data = {
+    var initdata = {
       user_id: this.userId,
       cat_id: this.cat_id,
       keyword: '',
@@ -103,33 +141,38 @@ export default class searchlist extends wepy.page {
       sort: '', //排序的方式
       price_max: '', //加个
       price_min: '',
-      brand: '',
+      brand: "",
       attr_value: '',
       page: 1,
       suppliers_id: this.suppliers_id
     };
-    return data;
+    this.isasc = true;
+    return initdata;
+  }
+  onReachBottom() {
+    console.log('page');
+    if (this.isMoreDara) {
+      wx.showLoading({
+        title: '加载中', //提示的内容,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
+      this.initdata.page = this.initdata.page + 1;
+      this.getGoodsList(this.initdata);
+    }
   }
   async onLoad(option) {
     console.log('传递的值', option);
+    wx.removeStorageSync('pinpainame');
+    wx.removeStorageSync('pinpailist');
     this.userId = await this.$parent.loginInfo();
     this.cat_id = option.cat_id ? option.cat_id : '';
+    if (option.navigationTitle) {
+      wx.setNavigationBarTitle({ title: option.navigationTitle });
+    }
     this.suppliers_id = option.suppliers_id ? option.suppliers_id : '';
-    // this.data = {
-    //   user_id: userId,
-    //   cat_id: this.cat_id,
-    //   keyword: '',
-    //   order: '', //
-    //   sort: '', //排序的方式
-    //   price_max: '', //加个
-    //   price_min: '',
-    //   brand: '',
-    //   attr_value: '',
-    //   page: 1,
-    //   suppliers_id: this.suppliers_id
-    // };
-    var data = this.initData();
-    this.getGoodsList(data);
+    this.initdata = this.initData();
+    this.getGoodsList(this.initdata);
   }
 }
 </script>

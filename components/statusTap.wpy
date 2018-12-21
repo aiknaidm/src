@@ -75,6 +75,8 @@ export default class statusTap extends wepy.component {
     statusTap(index) {
       if (index == 2) {
         this.isclick = !this.isclick;
+      }else{
+        this.isclick=false
       }
       this.currentType = index;
       this.$apply();

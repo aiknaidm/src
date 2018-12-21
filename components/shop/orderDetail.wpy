@@ -242,7 +242,7 @@
               <view wx:if="{{orderDetail.order_status==-1}}"></view>
               <view wx:elif="{{orderDetail.order_status==0}}"></view>
               <view wx:elif="{{orderDetail.order_status==1}}" class="order-status-bg">待付款</view>
-              <view wx:elif="{{orderDetail.order_status==2&&orderDetail.shipping_status==0}}}" class="order-status-bg">待发货</view>
+              <view wx:elif="{{orderDetail.order_status==2&&orderDetail.shipping_status==0}}" class="order-status-bg">待发货</view>
               <view
                 wx:elif="{{orderDetail.order_status==2&&orderDetail.shipping_status==1}}"
                 class="order-status-bg"

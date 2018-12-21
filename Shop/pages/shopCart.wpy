@@ -1,10 +1,385 @@
 <style lang="less">
+page {
+  height: 100%;
+  background-color: #fff;
+}
+/* .container{
+    justify-content:initial;
+    display: flex;
+     overflow: hidden; height: 100%;
+}
+.list{
+  flex: 1;
+ overflow: hidden;
+ width: 100%;
+} */
+.jiesuan-box {
+  /* flex: 1; */
+}
+.title {
+  line-height: 80rpx;
+  padding-left: 80rpx;
+  position: relative;
+  font-family: 'iconfont';
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+.title::before {
+  content: '\e619';
+  position: absolute;
+  width: 40rpx;
+  height: 40rpx;
+  color: #e50012;
+  font-size: 40rpx;
+  left: 30rpx;
+}
+.title::after {
+  content: '\e646';
+  width: 40rpx;
+  height: 40rpx;
+  margin-left: 40rpx;
+  color: #aaa;
+}
+.title-box {
+  width: 100%;
+  padding-top: 330rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #999;
+  background: url(https://cdn.it120.cc/images/weappshop/icon-cart.png) no-repeat
+    center 205rpx;
+  background-size: 100rpx auto;
+  margin-bottom: 50rpx;
+}
+.to-index-btn {
+  color: #fff;
+  background: #e50012;
+  border-radius: 6px;
+  width: 300rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  text-align: center;
+  font-size: 28rpx;
+  margin: auto;
+}
+.list-top {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30rpx;
+  font-size: 28rpx;
+  align-items: center;
+}
+.list-top .label {
+  color: #000;
+}
+.list-top .edit-btn {
+  color: #999;
+  height: 100%;
+}
 
+.goodsList {
+  width: 100%;
+  padding-bottom: 150rpx;
+  /* height: 100%; */
+}
+.a-gooods {
+  width: 100%;
+  /* width: 100%; */
+  background-color: #fff;
+  overflow: hidden;
+  margin-bottom: 2px;
+}
+.a-gooods-title {
+  padding: 20rpx 40rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+.a-goods-conts {
+  display: flex;
+  justify-content: space-between;
+  /* padding-left: 30rpx; */
+  width: 100%;
+  box-sizing: border-box;
+  transition: margin-left 0.2s ease-in-out;
+  background: url(https://cdn.it120.cc/images/weappshop/gou.png) no-repeat 30rpx
+    center;
+  background-size: 40rpx auto;
+}
+.a-goods-conts.active {
+  background: url(https://cdn.it120.cc/images/weappshop/gou-red.png) no-repeat
+    30rpx center;
+  background-size: 40rpx auto;
+}
+.goods-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 30rpx 0 30rpx 90rpx;
+  flex: 11;
+  box-sizing: border-box;
+  position: relative;
+}
+.goods-info .img-box {
+  width: 160rpx;
+  height: 160rpx;
+  overflow: hidden;
+  margin-right: 20rpx;
+  /* background-color: #d8d8d8; */
+}
+.goods-info .text-box {
+  flex: 1;
+  position: relative;
+  font-size: 30rpx;
+  justify-content: space-around;
+  /* display: flex; */
+  flex-direction: column;
+  padding-right: 15rpx;
+}
+.goods-info .text-box .goods-title {
+  width: 100%;
+}
+.nolist {
+  margin: 20rpx 0;
+  height: 1px;
+}
+.xunze view {
+  display: inline-block;
+}
+.text-box .xunze {
+  display: inline-block;
+  border: 1px solid #f5f5f9;
+  padding: 10rpx 25rpx;
+  border-radius: 5px;
+  font-size: 24rpx;
+  margin: 20rpx 0;
+}
+.text-box .xunze:after {
+}
+.goods-info .text-box .goods-label {
+}
+.goods-info .text-box .goods-price {
+  display: flex;
+  color: #e50112;
+  font-size: 26rpx;
+  justify-content: space-between;
+}
+.goods-info .text-box .goods-count {
+  display: flex;
+  justify-content: flex-end;
+}
+.goods-info .buy-num {
+  width: 200rpx;
+  height: 48rpx;
+  line-height: 48rpx;
+  display: flex;
+  /*justify-content: space-between;*/
+  font-size: 24rpx;
+  text-align: center;
+}
+.goods-info .buy-num .jian-btn {
+  width: 48rpx;
+  height: 100%;
+  border-left: 1rpx solid #ccc;
+  border-bottom: 1rpx solid #ccc;
+  border-top: 1rpx solid #ccc;
+  border-bottom-left-radius: 6rpx;
+  border-top-left-radius: 6rpx;
+  /* padding: 10rpx; */
+}
+.goods-info .buy-num .jian-btn.disabled {
+  background-color: #f5f5f9;
+  border-left: 1rpx solid #eee;
+  border-bottom: 1rpx solid #eee;
+  border-top: 1rpx solid #eee;
+  color: #ccc;
+}
+.goods-info .buy-num .jia-btn {
+  width: 48rpx;
+  height: 100%;
+  border-right: 1rpx solid #ccc;
+  border-bottom: 1rpx solid #ccc;
+  border-top: 1rpx solid #ccc;
+  border-bottom-right-radius: 6rpx;
+  border-top-right-radius: 6rpx;
+}
+.goods-info .buy-num .jia-btn.disabled {
+  background-color: #f5f5f9;
+  border-right: 1rpx solid #eee;
+  border-bottom: 1rpx solid #eee;
+  border-top: 1rpx solid #eee;
+  color: #ccc;
+}
+.goods-info .buy-num input {
+  /* width: 68rpx; */
+  height: 48rpx;
+  min-height: 48rpx;
+  line-height: 48rpx;
+  text-align: center;
+  font-size: 24rpx;
+  border: 1rpx solid #ccc;
+  flex: 1;
+}
 
+.goods-info .img-box .img {
+  width: 160rpx;
+  height: 100%;
+  margin-left: 10rpx;
+}
+.a-goods-conts {
+  position: relative;
+}
+
+.delete-btn {
+  width: 120rpx;
+  line-height: 290rpx;
+  text-align: center;
+  background: #e64340;
+  font-size: 24rpx;
+  color: #fff;
+  position: absolute;
+  right: -120rpx;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.jiesuan-box2 {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100rpx;
+  position: fixed;
+  bottom: 100rpx;
+  left: 0;
+  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
+  background-color: #fff;
+  z-index: 10;
+}
+.jiesuan-box {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100rpx;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
+  background-color: #fff;
+  z-index: 10;
+}
+.jiesuan-box .to-pay-btn {
+  width: 240rpx;
+  text-align: center;
+  line-height: 100rpx;
+  background-color: #e64340;
+  font-size: 32rpx;
+  color: #ffffff;
+}
+.jiesuan-box .to-pay-btn.no-select {
+  background-color: #ccc;
+}
+
+.jiesuan-box .left-price {
+  display: flex;
+  width: 510rpx;
+  justify-content: space-between;
+  line-height: 100rpx;
+  padding: 0 30rpx 0 0;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+.jiesuan-box .all-selected {
+  padding-left: 90rpx;
+  color: #000000;
+  background: url(https://cdn.it120.cc/images/weappshop/gou.png) no-repeat 30rpx
+    center;
+  background-size: 40rpx auto;
+}
+.jiesuan-box .all-selected.active {
+  background: url(https://cdn.it120.cc/images/weappshop/gou-red.png) no-repeat
+    30rpx center;
+  background-size: 40rpx auto;
+}
+.jiesuan-box .total {
+  color: #e64340;
+}
+.toaddgoods {
+  color: #e50012;
+}
+.huiyuanlabel {
+  background: #e50012;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 5rpx;
+  margin-left: 10rpx;
+  border-radius: 5rpx;
+}
 </style>
 <template>
   <view class="container">
+   
+  <view class="list-top">
+    <!-- <view bindtap="toAddGoods" class='toaddgoods'>
+      +添加其他商品
+    </view> -->
+    <view class="label"></view>
 
+    <view class="edit-btn"  @tap="saveTap">{{saveHidden?"编辑":"完成"}}</view>
+  </view>
+  <view class="goodsList">
+    <view class='shopList' wx:for="{{list}}" wx:key="{{indexx}}" wx:for-item="item1" wx:for-index="indexx">
+      <view class='title' bindtap='toShop' data-supplierid='{{item1.suppliers_id}}'>{{item1.suppliers_name}}
+        <text class='huiyuanlabel' wx:if="{{item1.is_hy==1}}">会员</text>
+      </view>
+      <view class="a-gooods" wx:for="{{item1.goodsList}}" wx:key="{{indexy}}" wx:for-item="item" wx:for-index="indexy">
+        <view class="a-goods-conts {{item.active? 'active':''}}" @tap="selectTap({{indexx}},{{indexy}})" >
+          <view class="goods-info">
+            <view class="img-box" catchtap="toGoodDetailsTap" >
+
+
+              <image src='{{item.goods_img}}' wx:if="{{item.goods_img}}" class="img" mode="aspectFit"></image>
+              <image src="http://wsc.jicaizx.com/images/no_picture.gif" class="img" mode="aspectFit" wx:else/>
+            </view>
+            <view class="text-box" bindtap="toGoodDetailsTap" >
+              <view class="goods-title">{{item.goods_name}}
+              </view>
+
+              <view @tap.stop='toAddShopCar({{indexx}},{{indexy}})' class="{{item.properties.length>0 ? 'xunze':''}}"> {{item.goods_attr}}
+              </view> 
+
+              <view hidden="{{item.properties.length>0?true:false}}" class='nolist'></view>
+              <view class="goods-price" catchtap="noclick" >
+                <view> ¥ {{item.goods_price}}</view>
+                <view class="buy-num">
+                  <view class="jian-btn {{item.buy_number <= 1}}" @tap.stop="jianBtnTap({{indexx}},{{indexy}})" >-</view>
+                  <input type="number" value="{{item.buy_number}}" @input="shopNumChange({{indexx}},{{indexy}})" />
+                  <view class="jia-btn" @tap.stop="jiaBtnTap({{indexx}},{{indexy}})" >+</view>
+                </view>
+              </view>
+      
+            </view>
+
+          </view>
+          <view class="delete-btn" data-index="{{index}}" catchtap="delItem">
+            删除
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+  <view class="jiesuan-box">
+    <view class="left-price">
+      <view class="all-selected  {{allSelect?'active':''}}" @tap="bindAllSelect">全选</view>
+      <view class="total main-color" hidden="{{noSelect}}">合计：¥ {{totalPrice}}</view>
+    </view>
+    <view class="to-pay-btn {{noSelect?'no-select':'main-bgcolor'}}" wx:if="{{saveHidden}}" bindtap="toPayOrder">去结算</view>
+    <view class="to-pay-btn {{noSelect?'no-select':'main-bgcolor'}}" wx:if="{{!saveHidden}}" bindtap="deleteSelected">删除</view>
+  </view>
   </view>
 </template>
 
@@ -16,12 +391,133 @@ export default class shopCart extends wepy.page {
     navigationBarTitleText: '购物车'
   };
   components = {};
-  data = {};
+  data = {
+    list: [],
+    totalPrice: 0,
+    allSelect: false,
+    saveHidden: true
+  };
   computed = {};
-  methods = {};
+  methods = {
+    //单选选择商品
+    selectTap(x, y) {
+      var list = this.list;
+      console.log('大类小类index:', x, y);
+      list[parseInt(x)].goodsList[parseInt(y)].active = !list[parseInt(x)]
+        .goodsList[parseInt(y)].active;
+      this.allSelect = true;
+      //判断是否全选
+      for (var i = 0; i < list.length; i++) {
+        for (var j = 0; j < list[i].goodsList.length; j++) {
+          if (!list[i].goodsList[j].active) {
+            this.allSelect = false;
+            break;
+          }
+        }
+      }
+      // 计算价格
+      this.allPrice();
+      console.log('list', list);
+      // this.totalPrice();
+    },
+    // 点击全选
+    bindAllSelect() {
+      var list = this.list;
+      this.allSelect = !this.allSelect;
+      for (var i = 0; i < list.length; i++) {
+        for (var j = 0; j < list[i].goodsList.length; j++) {
+          list[i].goodsList[j].active = this.allSelect;
+        }
+      }
+      // 计算价格
+      this.allPrice();
+    },
+    // 数量加减
+    jianBtnTap(x, y) {
+      var list = this.list;
+      var buy_number = list[x].goodsList[y].buy_number; //购买数量
+
+      if (buy_number > 0) {
+        list[x].goodsList[y].buy_number = buy_number - 1;
+      }else{
+         wx.showToast({
+          title: '不能小于零', //提示的内容,
+          icon: 'none', //图标,
+          duration: 2000, //延迟时间,
+          mask: true, //显示透明蒙层，防止触摸穿透,
+          success: res => {}
+        });
+      }
+    },
+    jiaBtnTap(x, y) {
+      var list = this.list;
+      var buy_number = list[x].goodsList[y].buy_number; //购买数量
+      var goods_number = list[x].goodsList[y].goods_number; //库存
+      if (buy_number<goods_number) {
+        list[x].goodsList[y].buy_number = buy_number + 1;
+      }else{
+        wx.showToast({
+          title: '不能大于库存', //提示的内容,
+          icon: 'none', //图标,
+          duration: 2000, //延迟时间,
+          mask: true, //显示透明蒙层，防止触摸穿透,
+          success: res => {}
+        });
+      }
+    },
+    saveTap() {
+      this.saveHidden = !this.saveHidden;
+    }
+  };
   events = {};
-  onLoad(){
-  
+  async getShopCartInfo(user_id) {
+    var res = await wepy.request({
+      url: 'https://lmbge.com/wxapi/pifaban/showcart_new?',
+      data: {
+        user_id
+      }
+    });
+    console.log('购物车数据：', res.data.data);
+    if (res.data.code == 0) {
+      this.list = res.data.data;
+      this.totalPrice = 0;
+      this.$apply();
+    }
+
+    console.log('购物车数据，取消选择：', this.list);
+    //可见的时候，取消全选状态，隐藏合计金额
+    // that.setGoodsList(
+    //   that.getSaveHide(),
+    //   that.totalPrice(),
+    //   false,
+    //   true,
+    //   that.data.list,
+    //   true,
+    //   0,
+    //   0
+    // );
+  }
+  allPrice() {
+    var list = this.list;
+    this.totalPrice = 0;
+    list.forEach((item, index) => {
+      list[index].totalPrice = 0;
+      item.goodsList.forEach((item2, index2) => {
+        if (item2.active) {
+          list[index].totalPrice +=
+            parseFloat(item2.goods_price).toFixed(2) *
+            parseFloat(item2.buy_number).toFixed(2);
+        }
+      });
+      this.totalPrice += list[index].totalPrice;
+    });
+    console.log(list.totalPrice);
+  }
+
+  async onLoad() {}
+  async onShow() {
+    this.user_id = await this.$parent.loginInfo();
+    this.getShopCartInfo(this.user_id);
   }
 }
 </script>

@@ -21,7 +21,7 @@ const formatTime = function(time, fmt) {
     }
     // orderId 订单id redirectUrl 跳转url failUrl 失败跳转
 
-var wxpay1 = async function(orderId, redirectUrl, failUrl) {
+var wxpay1 = async function(orderId) {
     //   let remark = "在线充值";
     //   let nextAction = {};
     //   if (orderId != 0) {
@@ -68,15 +68,19 @@ var wxpay1 = async function(orderId, redirectUrl, failUrl) {
                     id: orderId
                 },
             })
-            wx.redirectTo({
-                url: redirectUrl
-            });
+
+            // wx.redirectTo({
+            //     url: redirectUrl
+            // });
             return {
+
                 code: 1,
                 msg: "支付成功"
             };
+
         } catch (err) {
             // 取消支付 
+            console.log("取消支付")
             return {
                 code: 2,
                 msg: "取消支付"
