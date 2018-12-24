@@ -5,7 +5,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 4;
+  z-index: 15;
 }
 
 .popup-mask {
@@ -183,7 +183,7 @@
           <view class="pop-goods-price">¥ {{goodsDetail.selectPrice}}</view>
           <view class="goods-txt">
             <view>批发起订量:{{goodsDetail.qidingliang}}</view>
-            <view>库存:{{goodsDetail.goods_number}}</view>
+            <view>库存:{{goodsDetail.property.goods_number}}</view>
           </view>
         </view>
         <view class="pop-goods-close" @tap="closePopupTap"></view>
@@ -198,17 +198,17 @@
             wx:for-item="property"
             wx:key="{{index}}"
             @tap="labelItemTap({{property}})"
-            class="label-item {{property.goods_attr_id==goodsDetail.goods_attr_id?'active':''}}"
+            class="label-item {{property.goods_attr_id==goodsDetail.property.goods_attr_id?'active':''}}"
           >{{property.attr_value}}</view>
         </view>
       </view>
 
-      <view class="buy-num-box">
+      <view class="buy-num-box" wx:if="{{goodsDetail.shopType =='tobuy'||goodsDetail.shopType =='addShopCar'}}">
         <view class="num-label">购买数量</view>
         <view class="num-box">
-          <view class="num-jian {{goodsDetail.buyNumber == 1 ? 'hui': ''}}" @tap="numJianTap">-</view>
+          <view class="num-jian {{goodsDetail.buy_number == 1 ? 'hui': ''}}" @tap="numJianTap">-</view>
           <view class="num-input">
-            <input type="number" value="{{goodsDetail.buyNumber}}" @input="shopNumChange">
+            <input type="number" value="{{goodsDetail.buy_number}}" @input="shopNumChange">
           </view>
           <view class="num-jia" @tap="numJiaTap">+</view>
         </view>
@@ -218,7 +218,9 @@
         wx:if="{{goodsDetail.shopType =='addShopCar'}}"
         @tap="addShopCar"
       >加入购物车</view>
-      <view class="popup-join-btn" wx:if="{{goodsDetail.shopType =='tobuy'}}" @tap="addShopCar">立即购买</view>
+      <view class="popup-join-btn" wx:elif="{{goodsDetail.shopType =='tobuy'}}" @tap="addShopCar">立即购买</view>
+      <view class="popup-join-btn" wx:else @tap="addShopCar">确定</view>
+      
     </view>
   </view>
 </template>
@@ -235,39 +237,27 @@ export default class shopCart extends wepy.component {
   };
   methods = {
     labelItemTap(property) {
-      var price =
-        this.goodsDetail.status == 2 &&
-        this.goodsDetail.qidingliang <= this.goodsDetail.buyNumber
-          ? property.attr_price
-          : property.floor_price;
-
-      this.goodsDetail.goods_attr_id = property.goods_attr_id;
-      this.goodsDetail.selectPrice = price;
-      this.goodsDetail.goods_number = property.goods_number;
-      this.goodsDetail.property = property;
-      // this.$emit('labelItemTap', this.goodsDetail);
+      this.$emit('labelItemTap', property);
     },
     numJiaTap() {
       var buyNumMax = this.goodsDetail.goods_number; //库存
-      var buyNumber = this.goodsDetail.buyNumber; //购买数量
+      var buy_number = this.goodsDetail.buy_number; //购买数量
       var qidingliang = this.goodsDetail.qidingliang;
-
-      if (buyNumber < buyNumMax) {
-        buyNumber++;
-        this.goodsDetail.buyNumber = buyNumber;
-
+      if (buy_number < buyNumMax) {
+        buy_number++;
+        this.goodsDetail.buy_number = buy_number;
         this.showPrice();
       }
-      // this.$emit('numJiaTap', this.goodsDetail);
+      this.$emit('numJiaTap', buy_number);
     },
     numJianTap() {
-      var buyNumber = this.goodsDetail.buyNumber; //购买数量
-      if (buyNumber > 1) {
-        buyNumber--;
-        this.goodsDetail.buyNumber = buyNumber;
+      var buy_number = this.goodsDetail.buy_number; //购买数量
+      if (buy_number > 1) {
+        buy_number--;
+        this.goodsDetail.buy_number = buy_number;
         this.showPrice();
       }
-      // this.$emit('numJianTap', this.goodsDetail);
+      this.$emit('numJianTap', buy_number);
     },
     // 关闭
     closePopupTap() {
@@ -275,7 +265,7 @@ export default class shopCart extends wepy.component {
     },
     // 是否可以加入购物车
     addShopCar() {
-      var buyNumber = this.goodsDetail.buyNumber; //购买数
+      var buy_number = this.goodsDetail.buy_number; //购买数
       var goods_number = this.goodsDetail.goods_number; //库存
       var price = this.goodsDetail.selectSizePrice; //价格
       var properties = this.goodsDetail.properties; //规则
@@ -287,7 +277,7 @@ export default class shopCart extends wepy.component {
         });
         return;
       }
-      if (buyNumber > goods_number) {
+      if (buy_number > goods_number) {
         wx.showModal({
           title: '提示',
           content: '购买量不能大于库存！',
@@ -303,7 +293,7 @@ export default class shopCart extends wepy.component {
         });
         return;
       }
-      if (buyNumber < 1) {
+      if (buy_number < 1) {
         wx.showModal({
           title: '提示',
           content: '购买数量不能为0！',
@@ -320,11 +310,11 @@ export default class shopCart extends wepy.component {
     // 直接修改数量
     shopNumChange(e) {
       console.log('e', e);
-      var buyNumber = e.detail.value;
-      if (buyNumber > this.goodsDetail.goods_number) {
-        buyNumber = this.goodsDetail.goods_number;
+      var buy_number = e.detail.value;
+      if (buy_number > this.goodsDetail.goods_number) {
+        buy_number = this.goodsDetail.goods_number;
       }
-      this.goodsDetail.buyNumber = buyNumber;
+      this.goodsDetail.buy_number = buy_number;
     }
   };
   // 显示价格
@@ -335,7 +325,7 @@ export default class shopCart extends wepy.component {
       // 没有规格的价格
       var price =
         goodsDetail.status == 2 &&
-        goodsDetail.qidingliang <= goodsDetail.buyNumber
+        goodsDetail.qidingliang <= goodsDetail.buy_number
           ? goodsDetail.shop_price
           : goodsDetail.floor_price;
       goodsDetail.selectPrice = price;
@@ -343,7 +333,7 @@ export default class shopCart extends wepy.component {
       // 有规格的
       var price =
         goodsDetail.status == 2 &&
-        goodsDetail.qidingliang <= goodsDetail.buyNumber
+        goodsDetail.qidingliang <= goodsDetail.buy_number
           ? property.attr_price
           : property.floor_price;
       goodsDetail.selectPrice = price;

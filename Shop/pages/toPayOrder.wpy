@@ -367,7 +367,10 @@ label.label text {
         <view class="goods-list goods-list2">
           <view class="list-title">商品列表</view>
           <repeat class="shopList" for="{{shopCarList}}" wx:key="{{index}}">
-            <goodsList :goodsMap.sync="item.goodsList"></goodsList>
+          
+            <goodsList :goodsMap.sync="item.goodsList">
+              <view slot="suppliers">{{item.suppliers_name}}</view>
+            </goodsList>
             <!-- <goodsList :goodsMap.sync="item"></goodsList> -->
           </repeat>
         </view>
@@ -643,7 +646,7 @@ export default class toPayOrder extends wepy.page {
   count(shopCarList) {
     shopCarList.forEach((item, index) => {
       this.shopCarList[index].order_amount = 0;
-      this.yunPrice += parseFloaFloat(item.yunfei);
+      this.yunPrice += parseFloat(item.yunfei);
       item.goodsList.forEach((item2, index2) => {
         this.allGoodsPrice += parseFloat(item2.goods_price);
         this.shopCarList[index].order_amount +=

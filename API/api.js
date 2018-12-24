@@ -29,5 +29,10 @@ const api = {
     addCart: `${host}/addcart`, //加入购物车
     getAddress: `${host}/dizhi`,
     createOrder: `${host}/order_new`,
+    //参数user_id  用户ID   goods_id  商品ID  goods_number   购买数量 goods_attr_id  规格ID   没有的话传空
+    updateCart: `${host}/updatecart`,
+    delCart: `${host}/delcart`,
+    zlyd: `${host}/zlyd`,
+
 }
 export default api

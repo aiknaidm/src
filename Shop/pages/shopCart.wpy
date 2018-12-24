@@ -338,13 +338,13 @@ page {
       <view class="a-gooods" wx:for="{{item1.goodsList}}" wx:key="{{indexy}}" wx:for-item="item" wx:for-index="indexy">
         <view class="a-goods-conts {{item.active? 'active':''}}" @tap="selectTap({{indexx}},{{indexy}})" >
           <view class="goods-info">
-            <view class="img-box" catchtap="toGoodDetailsTap" >
+            <view class="img-box" @tap.stop="toGoodDetailsTap" >
 
 
               <image src='{{item.goods_img}}' wx:if="{{item.goods_img}}" class="img" mode="aspectFit"></image>
               <image src="http://wsc.jicaizx.com/images/no_picture.gif" class="img" mode="aspectFit" wx:else/>
             </view>
-            <view class="text-box" bindtap="toGoodDetailsTap" >
+            <view class="text-box" @tap="toGoodDetailsTap" >
               <view class="goods-title">{{item.goods_name}}
               </view>
 
@@ -352,12 +352,12 @@ page {
               </view> 
 
               <view hidden="{{item.properties.length>0?true:false}}" class='nolist'></view>
-              <view class="goods-price" catchtap="noclick" >
+              <view class="goods-price" >
                 <view> ¥ {{item.goods_price}}</view>
                 <view class="buy-num">
-                  <view class="jian-btn {{item.buy_number <= 1}}" @tap.stop="jianBtnTap({{indexx}},{{indexy}})" >-</view>
+                  <view class="jian-btn {{item.buy_number <= 1}}" @tap.stop="jianBtnTap({{indexx}},{{indexy}},{{item.buy_number}})" >-</view>
                   <input type="number" value="{{item.buy_number}}" @input="shopNumChange({{indexx}},{{indexy}})" />
-                  <view class="jia-btn" @tap.stop="jiaBtnTap({{indexx}},{{indexy}})" >+</view>
+                  <view class="jia-btn" @tap.stop="jiaBtnTap({{indexx}},{{indexy}},{{item.buy_number}})" >+</view>
                 </view>
               </view>
       
@@ -380,25 +380,42 @@ page {
     <view class="to-pay-btn {{noSelect?'no-select':'main-bgcolor'}}" wx:if="{{saveHidden}}" bindtap="toPayOrder">去结算</view>
     <view class="to-pay-btn {{noSelect?'no-select':'main-bgcolor'}}" wx:if="{{!saveHidden}}" bindtap="deleteSelected">删除</view>
   </view>
+   <shopCartPopup
+      :goodsDetail.sync="goodsDetail"
+      wx:if="{{ishideShopPopup}}"
+      @labelItemTap.user="labelItemTap"
+      @numJiaTap.user="numJiaTap"
+      @numJianTap.user="numJianTap"
+      @closePopupTap.user="closePopupTap"
+      @addShopCar.user="addShopCar"
+      @buyNow.user="buyNow"
+    ></shopCartPopup>
   </view>
+  
 </template>
 
 <script>
 import wepy from 'wepy';
 import api from '../../API/api';
+import shopCartPopup from '../../components/shop/shopCartPopup';
 export default class shopCart extends wepy.page {
   config = {
     navigationBarTitleText: '购物车'
   };
-  components = {};
+  components = { shopCartPopup };
   data = {
     list: [],
     totalPrice: 0,
     allSelect: false,
-    saveHidden: true
+    saveHidden: true,
+    ishideShopPopup: false,
+    goodsDetail: {}
   };
   computed = {};
   methods = {
+    closePopupTap() {
+      this.ishideShopPopup = false;
+    },
     //单选选择商品
     selectTap(x, y) {
       var list = this.list;
@@ -433,35 +450,153 @@ export default class shopCart extends wepy.page {
       this.allPrice();
     },
     // 数量加减
-    jianBtnTap(x, y) {
-      var list = this.list;
-      var buy_number = list[x].goodsList[y].buy_number; //购买数量
-
-      if (buy_number > 0) {
-        list[x].goodsList[y].buy_number = buy_number - 1;
-      }else{
-         wx.showToast({
+    jianBtnTap(x, y, buy_number) {
+      if (buy_number > 1) {
+        buy_number--;
+      } else {
+        wx.showToast({
           title: '不能小于零', //提示的内容,
           icon: 'none', //图标,
           duration: 2000, //延迟时间,
-          mask: true, //显示透明蒙层，防止触摸穿透,
-          success: res => {}
+          mask: true //显示透明蒙层，防止触摸穿透,
         });
       }
+      this.changeCartNum(x, y, buy_number);
     },
-    jiaBtnTap(x, y) {
+    jiaBtnTap(x, y, buy_number) {
       var list = this.list;
-      var buy_number = list[x].goodsList[y].buy_number; //购买数量
       var goods_number = list[x].goodsList[y].goods_number; //库存
-      if (buy_number<goods_number) {
-        list[x].goodsList[y].buy_number = buy_number + 1;
-      }else{
+      //零售价
+      if (buy_number < goods_number) {
+        buy_number++;
+      } else {
         wx.showToast({
           title: '不能大于库存', //提示的内容,
           icon: 'none', //图标,
           duration: 2000, //延迟时间,
-          mask: true, //显示透明蒙层，防止触摸穿透,
-          success: res => {}
+          mask: true //显示透明蒙层，防止触摸穿透,
+        });
+      }
+      this.changeCartNum(x, y, buy_number);
+    },
+
+    // 直接修改数量
+    shopNumChange(x, y, e) {
+      console.log('e', e);
+      var buy_number = e.detail.value;
+      var goods_number = list[x].goodsList[y].goods_number; //库存
+      if (buy_number >= goods_number) {
+        buy_number = goods_number;
+      }
+      if (buy_number <= 0) {
+        buy_number = 1;
+      }
+      this.changeCartNum(x, y, buy_number);
+    },
+    // 删除商品
+    async deleteSelected(x, y) {
+      var showRes = await wepy.showModal({
+        title: '提示', //提示的标题,
+        content: '你确定要删除吗', //提示的内容,
+        cancelColor: '#000000', //取消按钮的文字颜色,
+        confirmColor: '#e50012' //确定按钮的文字颜色,
+      });
+      if (showRes.confirm) {
+        console.log('用户确认删除');
+        var list = this.list;
+        var idList = [];
+        for (var i = 0; i < list.length; i++) {
+          var goodsList = list[i].goodsList;
+          for (var j = 0; j < goodsList.length; j++) {
+            if (goodsList[j].active) {
+              idList.push(goodsList[j].id);
+            }
+          }
+        }
+        this.delCartGoods(idList);
+      }
+    },
+    // 显示规格
+    toAddShopCar(x, y) {
+      this.goodsDetail = this.list[x].goodsList[y];
+      this.goodsDetail.selectPrice = this.goodsDetail.goods_price;
+      this.goodsDetail.property = {};
+      this.goodsDetail.property.goods_attr_id = this.goodsDetail.goods_attr_id;
+      this.goodsDetail.property.goods_number = this.goodsDetail.goods_number;
+      this.ishideShopPopup = true;
+      this.x = x;
+    },
+    // 选择规格
+    labelItemTap(property) {
+      var price =
+        this.list[this.x].is_hy &&
+        this.goodsDetail.qidingliang <= this.goodsDetail.buy_number
+          ? property.attr_price
+          : property.floor_price;
+
+      this.goodsDetail.property = property;
+      this.goodsDetail.selectPrice = price;
+    },
+    // 点击确定
+    buyNow() {
+      var property = this.goodsDetail.property;
+      this.list[this.x].goodsList.forEach((item, index) => {
+        if (
+          item.id != this.goodsDetail.id &&
+          item.goods_attr_id == property.goods_attr_id
+        ) {
+          var idList = [];
+          idList[0] = this.goodsDetail.id;
+          this.delCartGoods(idList);
+          return;
+        }
+      });
+      // delCartGoods
+      this.goodsDetail.goods_attr_id = property.goods_attr_id;
+      this.goodsDetail.goods_number = property.goods_number;
+      this.goodsDetail.goods_price = this.goodsDetail.selectPrice;
+      this.goodsDetail.goods_attr = this.goodsDetail.property.attr_value;
+      this.ishideShopPopup = false;
+    },
+    //去结算
+    toPayOrder: function() {
+      //判断是否选择了商品
+      var list = this.list;
+      var goodsList = [];
+      var index = 0;
+      for (var i = 0; i < list.length; i++) {
+        var goods = [];
+        var curItemx = list[i];
+        for (var j = 0; j < list[i].goodsList.length; j++) {
+          var curItemy = list[i].goodsList[j];
+          if (curItemy.active) {
+            if (!goodsList[index]) {
+              goodsList[index] = {};
+              goodsList[index].goodsList = [];
+            }
+            list[i].goodsList[j].goods_imgs = list[i].goodsList[j].original_img
+              ? 'http://maijia.jicaizx.com/' + original_img
+              : 'http://wsc.jicaizx.com/images/no_picture.gif';
+            goodsList[index].goodsList.push(list[i].goodsList[j]);
+            goodsList[index].suppliers_name = list[i].suppliers_name;
+            goodsList[index].suppliers_id = list[i].suppliers_id;
+            goodsList[index].yunfei = list[i].yunfei ? list[i].yunfei : 0;
+          }
+        }
+        if (goodsList[index]) {
+          index++;
+        }
+      }
+      wx.setStorageSync('shopCarInfo', goodsList);
+      if (goodsList.length <= 0) {
+        wx.showToast({
+          title: '请先选择商品',
+          icon: 'none',
+          duration: 2000
+        });
+      } else {
+        wx.navigateTo({
+          url: '/Shop/pages/toPayOrder?orderType='
         });
       }
     },
@@ -470,6 +605,70 @@ export default class shopCart extends wepy.page {
     }
   };
   events = {};
+  // 删除购物车商品
+  async delCartGoods(idList) {
+    wx.showLoading({
+      title: '加载中', //提示的内容,
+      mask: true //显示透明蒙层，防止触摸穿透,
+    });
+    var res = await wepy.request({
+      url: api.delCart,
+      data: {
+        id: idList
+      },
+      method: 'post'
+    });
+    if (res.data.code == '0') {
+      this.getShopCartInfo(this.user_id);
+      wx.showToast({
+        title: '删除成功', //提示的内容,
+        icon: 'none', //图标,
+        mask: true //显示透明蒙层，防止触摸穿透,
+      });
+    } else {
+      wx.showToast({
+        title: '删除失败', //提示的内容,
+        icon: 'none', //图标,
+        mask: true //显示透明蒙层，防止触摸穿透,
+      });
+    }
+  }
+  // 改变购物车数量
+  async changeCartNum(x, y, buy_number) {
+    var user_id = this.user_id;
+    var list = this.list;
+    var goodsDetail = list[x].goodsList[y];
+    var is_hy = list[x].is_hy; //是否是会员
+    var goods_attr_id = goodsDetail.goods_attr_id;
+    var goods_price = goodsDetail.goods_attr_id;
+    var goods_id = goodsDetail.goods_id;
+    var attr_value = goodsDetail.goods_attr;
+    var id = goodsDetail.id;
+    goodsDetail.buy_number = buy_number;
+
+    var res = await wepy.request({
+      url: api.updateCart,
+      data: {
+        user_id,
+        goods_id,
+        buy_number,
+        goods_attr_id,
+        is_hy,
+        attr_value,
+        id
+      }
+    });
+    if (res.data.code != '0') {
+      wx.showToast({
+        title: '修改失败', //提示的内容,
+        icon: 'none', //图标,
+        mask: true //显示透明蒙层，防止触摸穿透,
+      });
+    } else {
+      goodsDetail.goods_price = res.data.data;
+    }
+    console.log(res);
+  }
   async getShopCartInfo(user_id) {
     var res = await wepy.request({
       url: 'https://lmbge.com/wxapi/pifaban/showcart_new?',
@@ -483,8 +682,6 @@ export default class shopCart extends wepy.page {
       this.totalPrice = 0;
       this.$apply();
     }
-
-    console.log('购物车数据，取消选择：', this.list);
     //可见的时候，取消全选状态，隐藏合计金额
     // that.setGoodsList(
     //   that.getSaveHide(),
@@ -511,6 +708,7 @@ export default class shopCart extends wepy.page {
       });
       this.totalPrice += list[index].totalPrice;
     });
+    this.totalPrice = this.totalPrice.toFixed(2);
     console.log(list.totalPrice);
   }
 

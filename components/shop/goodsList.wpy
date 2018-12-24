@@ -83,7 +83,11 @@
     <view class="goods-list">
       <!-- <view class="list-title">商品信息</view> -->
       <form bindsubmit="submitReputation">
-        <view class="list-title">{{goodsMap[0].suppliers_name}}</view>
+        <view class="list-title">
+          <slot name="suppliers">
+            {{goodsMap[0].suppliers_name}}
+          </slot>
+        </view>
         <block wx:for-items="{{goodsMap}}" wx:key="{{index}}">
           <view class="a-goods" @tap="toGoodDetailsTap" data-id="{{item.goods_id}}">
             <view class="img-box">
@@ -96,7 +100,7 @@
               </view>
               <view class="arow02">
                 <view class="goods-price">¥ {{item.goods_price}}</view>
-                <view class="goods-num">x {{item.goods_number}}</view>
+                <view class="goods-num">x {{item.buy_number}}</view>
               </view>
             </view>
           </view>

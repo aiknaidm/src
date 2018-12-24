@@ -7,8 +7,17 @@
       <orderList
         :orderList.sync="item"
         :goodsMap.sync="goodsMap[index]"
-        @zlyd.user="toOrderAgain"
-      ></orderList>
+      >
+       <view slot="btn" >
+         <view class="price-box">
+          <view
+            class="btn topay-btn"
+            @tap="toOrderAgain({{item.suppliers_id}},{{item.id}})"
+          >再来一单</view>
+    
+         </view>
+        </view>
+      </orderList>
     </repeat>
   </view>
 </template>
@@ -29,25 +38,23 @@ export default class yizhanList extends wepy.page {
 
   data = {
     orderList: [],
-    goodsMap: [],
+    goodsMap: []
   };
 
   computed = {};
 
   methods = {
-   async  toOrderAgain(suppliersId, orderId) {
-    console.log("父组件再来一单");
-    wx.showLoading({
+   async toOrderAgain(suppliersId, orderId) {
+      console.log('父组件再来一单',suppliersId,orderId);
+      wx.showLoading({
         title: '', //提示的内容,
         mask: true, //显示透明蒙层，防止触摸穿透,
-        success: res => {}
       });
       var res = await wepy.request({
-        url: 'https://lmbge.com/wxapi/jicai/zlyd',
+        url: api.zlyd,
         data: {
           order_id: orderId,
-          user_id: this.userId,
-          suppliers_id: suppliersId
+          user_id: this.userId
         }
       });
       wx.hideLoading();
@@ -61,18 +68,20 @@ export default class yizhanList extends wepy.page {
         });
       }
       console.log('再来一单', suppliersId, orderId, res);
-  
-  }
+    }
   };
-  events = {};
+  events = {
+
+  };
   // 进货记录
   async onShow() {
     var userId = await this.$parent.loginInfo();
+    this.userId=userId
     var res = await wepy.request({
       url: api.orderList,
       data: {
         user_id: userId,
-        order_status:4
+        order_status: 4
       }
     });
     this.orderList = res.data.data.orderList;

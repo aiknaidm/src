@@ -17,14 +17,12 @@ view {
   font-size: 26rpx;
   color: #666;
   align-items: center;
-   display: flex;
-    justify-content: space-between;
-  .date-box{
-   
-    color: #666
+  display: flex;
+  justify-content: space-between;
+  .date-box {
+    color: #666;
   }
 }
-
 
 .a-order .goods-info,
 .goods-img-container {
@@ -36,8 +34,9 @@ view {
   align-items: center;
   padding-bottom: 0px;
 }
-.price-box{
-  .name,.total-price{
+.price-box {
+  .name,
+  .total-price {
     padding: 0 30rpx;
     line-height: 60rpx;
   }
@@ -61,7 +60,7 @@ view {
   /* align-items: center; */
   font-size: 30rpx;
   justify-content: space-between;
-  padding:20rpx 30rpx;
+  padding: 20rpx 30rpx;
   border-bottom: 1px solid #f0f0f0;
   background: #f9f9f9;
 }
@@ -130,16 +129,15 @@ button.ss-my-d {
   border: 0px solid;
   margin-left: 10rpx;
 }
-.shop-box{
+.shop-box {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding:30rpx;
+  padding: 30rpx;
   border-bottom: 1px solid #f0f0f0;
-  .icon-dianpu{
+  .icon-dianpu {
     font-size: 40rpx;
     color: #e50012;
-
   }
 }
 </style>
@@ -181,12 +179,7 @@ button.ss-my-d {
         <view class="total-price">共{{goodsMap.length}}件商品 合计：¥ {{orderList.order_amount}}</view>
       </view>
       <slot name="btn">
-        <view class="price-box">
-          <view
-            class="btn topay-btn"
-            @tap="toOrderAgain({{orderList.suppliers_id}},{{orderList.id}})"
-          >再来一单</view>
-        </view>
+       
       </slot>
     </view>
   </view>
@@ -211,8 +204,9 @@ export default class List extends wepy.component {
 
   methods = {
     // 再来一单
-    async toOrderAgain(suppliersId, orderId) {
-      this.$emit('zlyd', suppliersId, orderId);
+    toOrderAgain(suppliersId, orderId) {
+      console.log(111111111111111111);
+      this.$emit('toOrderAgain', suppliersId, orderId);
     },
     // 订单详情
     orderDetail(id) {
@@ -220,7 +214,7 @@ export default class List extends wepy.component {
       this.$emit('orderDetail', id);
     },
     // 去店铺页面
-    toshop(){
+    toshop() {
       wx.navigateTo({ url: 'url' });
     }
   };

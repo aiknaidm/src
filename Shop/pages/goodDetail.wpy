@@ -310,10 +310,28 @@ export default class goodDetail extends wepy.page {
     goodsDetail: {},
     shopNum: 0,
     ishideShopPopup: false,
-    buyNumber: 1,
+    buy_number: 1,
     status: 1
   };
   methods = {
+    // 规格被点击
+    labelItemTap(property) {
+      var price =
+        this.goodsDetail.status == 2 &&
+        this.goodsDetail.qidingliang <= this.goodsDetail.buy_number
+          ? property.attr_price
+          : property.floor_price;
+      this.goodsDetail.goods_attr_id = property.goods_attr_id;
+      this.goodsDetail.selectPrice = price;
+      this.goodsDetail.goods_number = property.goods_number;
+      this.goodsDetail.property = property;
+    },
+    numJiaTap(buy_number) {
+      this.goodsDetail.buy_number = buy_number;
+    },
+    numJianTap(buy_number) {
+      this.goodsDetail.buy_number = buy_number;
+    },
     callTel() {
       console.log('电话列表-', this.goodsDetail.kefu);
       var kefu = this.goodsDetail.kefu;
@@ -348,13 +366,12 @@ export default class goodDetail extends wepy.page {
     viewYiZhanDetails(suppliers_id = '') {
       wx.navigateTo({ url: '/Shop/pages/index?suppliers_id=' + suppliers_id });
     },
-
+    // 跳转购物车
     goShopCar() {
       wx.navigateTo({
         url: '/pages/Shop/shop-cart/index'
       });
     },
-
     // 直接购买
     tobuy() {
       var goodsDetail = this.goodsDetail;
@@ -375,7 +392,6 @@ export default class goodDetail extends wepy.page {
       var goodsDetail = goodsDetail;
       this.buliduBuyNowInfo();
       this.closePopupTap();
-
       wx.navigateTo({
         url: '/Shop/pages/toPayOrder?orderType=buyNow'
       });
@@ -400,8 +416,8 @@ export default class goodDetail extends wepy.page {
       var goodsDetail = goodsDetail;
       var user_id = this.userId;
       var goods_id = goodsDetail.goods_id;
-      var goods_number = goodsDetail.buyNumber;
-      var goods_name= goodsDetail.goods_name
+      var buy_number = goodsDetail.buy_number;
+      var goods_name = goodsDetail.goods_name;
       var goods_attr_id = goodsDetail.property
         ? goodsDetail.property.goods_attr_id
         : '';
@@ -416,7 +432,7 @@ export default class goodDetail extends wepy.page {
           data: {
             user_id,
             goods_id,
-            goods_number,
+            buy_number,
             goods_name,
             goods_attr_id,
             attr_value,
@@ -434,12 +450,12 @@ export default class goodDetail extends wepy.page {
               duration: 2000
             });
             this.shopNum = res.data.data.gouwuche;
-          }else{
+          } else {
             wx.showToast({
               title: res.data.message, //提示的内容,
               icon: 'none', //图标,
               duration: 2000, //延迟时间,
-              mask: true, //显示透明蒙层，防止触摸穿透,
+              mask: true //显示透明蒙层，防止触摸穿透,
             });
           }
         });
@@ -448,7 +464,7 @@ export default class goodDetail extends wepy.page {
     // 商品价格
     shopNumChange: function(e) {
       //var index = e.currentTarget.dataset.index;
-      this.buyNumber = e.detail.value;
+      this.buy_number = e.detail.value;
       this.showPrice();
     }
   };
@@ -461,7 +477,7 @@ export default class goodDetail extends wepy.page {
       // 没有规格的价格
       var price =
         goodsDetail.status == 2 &&
-        goodsDetail.qidingliang <= goodsDetail.buyNumber
+        goodsDetail.qidingliang <= goodsDetail.buy_number
           ? goodsDetail.shop_price
           : goodsDetail.floor_price;
       goodsDetail.selectPrice = price;
@@ -470,7 +486,7 @@ export default class goodDetail extends wepy.page {
 
       var price =
         goodsDetail.status == 2 &&
-        goodsDetail.qidingliang <= goodsDetail.buyNumber
+        goodsDetail.qidingliang <= goodsDetail.buy_number
           ? property.attr_price
           : property.floor_price;
       goodsDetail.selectPrice = price;
@@ -498,7 +514,7 @@ export default class goodDetail extends wepy.page {
       ? 'http://maijia.jicaizx.com/' + this.goodsDetail.original_img
       : 'http://wsc.jicaizx.com/images/no_picture.gif';
     goodsList[0].goods_price = this.goodsDetail.selectPrice;
-    goodsList[0].goods_number = this.goodsDetail.buyNumber;
+    goodsList[0].goods_number = this.goodsDetail.buy_number;
     goodsList[0].goods_name = this.goodsDetail.goods_name;
     goodsList[0].goods_attr_id = this.goodsDetail.property
       ? this.goodsDetail.property.goods_attr_id
@@ -543,14 +559,16 @@ export default class goodDetail extends wepy.page {
     this.goodsDetail = res.data.data;
     this.shopNum = res.data.data.gouwuche;
     this.status = await this.getSheheStauts(userId, id);
-    this.goodsDetail.buyNumber = 1;
+    this.goodsDetail.buy_number = 1;
     if (
       this.status == 2 &&
-      this.goodsDetail.qidingliang <= this.goodsDetail.buyNumber
+      this.goodsDetail.qidingliang <= this.goodsDetail.buy_number
     )
       this.goodsDetail.selectPrice = this.goodsDetail.shop_price;
     else this.goodsDetail.selectPrice = this.goodsDetail.floor_price;
-
+    this.goodsDetail.property = {};
+    this.goodsDetail.property.goods_attr_id = this.goodsDetail.goods_attr_id;
+    this.goodsDetail.property.goods_number = this.goodsDetail.goods_number;
     this.goodsDetail.status = this.status;
     console.log('用户会员状态', this.goodsDetail);
     this.$apply();
