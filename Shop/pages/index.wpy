@@ -44,6 +44,7 @@ export default class shop extends wepy.page {
       success: res => {}
     });}
   async onLoad(options) {
+    console.log("options",options)
     this.suppliers_id=options.suppliers_id
   }
 }

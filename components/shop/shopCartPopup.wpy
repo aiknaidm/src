@@ -236,6 +236,7 @@ export default class shopCart extends wepy.component {
     }
   };
   methods = {
+ 
     labelItemTap(property) {
       this.$emit('labelItemTap', property);
     },

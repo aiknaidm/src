@@ -4,18 +4,11 @@
   <view class="container">
     <noorder show="1" wx:if="{{orderList.length==0}}"></noorder>
     <repeat for="{{orderList}}" wx:key="{{index}}">
-      <orderList
-        :orderList.sync="item"
-        :goodsMap.sync="goodsMap[index]"
-      >
-       <view slot="btn" >
-         <view class="price-box">
-          <view
-            class="btn topay-btn"
-            @tap="toOrderAgain({{item.suppliers_id}},{{item.id}})"
-          >再来一单</view>
-    
-         </view>
+      <orderList :orderList.sync="item" :goodsMap.sync="goodsMap[index]">
+        <view slot="btn">
+          <view class="price-box">
+            <view class="btn topay-btn" @tap="toOrderAgain({{item.suppliers_id}},{{item.id}})">再来一单</view>
+          </view>
         </view>
       </orderList>
     </repeat>
@@ -44,11 +37,11 @@ export default class yizhanList extends wepy.page {
   computed = {};
 
   methods = {
-   async toOrderAgain(suppliersId, orderId) {
-      console.log('父组件再来一单',suppliersId,orderId);
+    async toOrderAgain(suppliersId, orderId) {
+      console.log('父组件再来一单', suppliersId, orderId);
       wx.showLoading({
         title: '', //提示的内容,
-        mask: true, //显示透明蒙层，防止触摸穿透,
+        mask: true //显示透明蒙层，防止触摸穿透,
       });
       var res = await wepy.request({
         url: api.zlyd,
@@ -70,13 +63,11 @@ export default class yizhanList extends wepy.page {
       console.log('再来一单', suppliersId, orderId, res);
     }
   };
-  events = {
-
-  };
+  events = {};
   // 进货记录
   async onShow() {
     var userId = await this.$parent.loginInfo();
-    this.userId=userId
+    this.userId = userId;
     var res = await wepy.request({
       url: api.orderList,
       data: {
@@ -84,10 +75,17 @@ export default class yizhanList extends wepy.page {
         order_status: 4
       }
     });
+    wepy.hideLoading();
     this.orderList = res.data.data.orderList;
     this.goodsMap = res.data.data.goodsMap;
     this.$apply();
     console.log('orderList', this.orderList);
+  }
+  onLoad() {
+    wepy.showLoading({
+      title: '加载中', //提示的内容,
+      mask: true //显示透明蒙层，防止触摸穿透,
+    });
   }
 }
 </script>

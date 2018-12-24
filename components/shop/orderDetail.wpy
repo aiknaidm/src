@@ -282,7 +282,9 @@
         </view>
       </block>
     </view>
-    <goodsList :goodsMap.sync="goodsMap"></goodsList>
+    <goodsList :goodsMap.sync="goodsMap">
+      <view slot="suppliers">{{orderDetail.suppliers_name}}</view>
+    </goodsList>
     <view class="goods-info">
       <view class="row-box">
         <view class="row-label">商品金额</view>

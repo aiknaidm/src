@@ -619,8 +619,15 @@ export default class toPayOrder extends wepy.page {
         });
         return;
       }
+      // 刷新购物车
+     this.$parent.$pages["/Shop/pages/shopCart"].getShopCartInfo(this.userId)
       if (res.data.data == '' || res.data.data == null) {
         wx.navigateTo({ url: '/Shop/pages/orderList?order_status=1' });
+        return
+      }
+      if(pay_id==2){
+         wx.navigateTo({ url: '/Shop/pages/orderList?order_status=2' });
+         return
       }
       // 调起支付
       var payResult = await wxpay1.wxpay1(res.data.data);
@@ -655,6 +662,7 @@ export default class toPayOrder extends wepy.page {
       });
     });
   }
+  // 获取地址信息
   async getAddress(user_id) {
     wepy
       .request({

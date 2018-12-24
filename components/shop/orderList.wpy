@@ -144,7 +144,7 @@ button.ss-my-d {
 <template>
   <view>
     <view class="a-order" orderList="订单内容" goodsMap="商品内容">
-      <view class="shop-box" @tap="toshop({{item.suppliers_id}})">
+      <view class="shop-box" @tap="toshop({{orderList.suppliers_id}})">
         <view>
           <text class="iconfont icon-dianpu"></text>{{orderList.suppliers_name}}
         </view>
@@ -214,8 +214,9 @@ export default class List extends wepy.component {
       this.$emit('orderDetail', id);
     },
     // 去店铺页面
-    toshop() {
-      wx.navigateTo({ url: 'url' });
+    toshop(id) {
+      console.log("id",id);
+      wx.navigateTo({ url: '/Shop/pages/index?suppliers_id='+id });
     }
   };
 

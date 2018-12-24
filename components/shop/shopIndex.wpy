@@ -152,7 +152,7 @@
                   <text>{{yizhan.suppliers_name}}</text>
                   <button class="apply" wx:if="{{shenhe==2}}">会员</button>
                   <button class wx:if="{{shenhe==1}}">申请中</button>
-                  <button class wx:if="{{shenhe==0}}">申请会员</button>
+                  <button class wx:if="{{shenhe==0}}" @tap="apply">申请会员</button>
                 </view>
                 <view class="yizhan-name-txt" wx:if="{{shenhe!=2}}">您还不是该店的会员，暂不能享受该店的会员权益</view>
               </view>
@@ -213,6 +213,7 @@ export default class shop extends wepy.component {
       default: '暂无分类',
       twoWay: true
     },
+ 
     shenhe: {
       type: Number,
       default: 0 ,
@@ -231,7 +232,22 @@ export default class shop extends wepy.component {
                     suppliers_name +"-"+cat_name+
                     '&type=2'
             });
+        },
+       async apply(){
+          console.log("申请");
+        var res=await wepy.request({
+            url: api.applyMember, //开发者服务器接口地址",
+            data: {
+              user_id:this.user_id
+            }, //请求的参数",
+          });
+          
+
         }
     };
+   async onLoad(){
+      this.user_id=await this.$parent.$parent.loginInfo();
+      console.log("userId2",this.user_id)
+    }
 }
 </script>

@@ -1,7 +1,6 @@
 <style lang="less">
 page {
   height: 100%;
-  background-color: #fff;
 }
 /* .container{
     justify-content:initial;
@@ -13,8 +12,8 @@ page {
  overflow: hidden;
  width: 100%;
 } */
-.jiesuan-box {
-  /* flex: 1; */
+.container {
+  background: #f0f0f0
 }
 .title {
   line-height: 80rpx;
@@ -318,11 +317,22 @@ page {
   margin-left: 10rpx;
   border-radius: 5rpx;
 }
+.shopList{
+  background: #fff;
+}
 </style>
 <template>
   <view class="container">
-   
-  <view class="list-top">
+       <view wx:if="{{list.length==0}}">
+       <view class="title-box">
+    购物车空空如也～
+  </view>
+  <view class="to-index-btn" bindtap="toIndexPage">
+    去逛逛
+  </view>
+  </view>
+  <view wx:else> 
+    <view class="list-top">
     <!-- <view bindtap="toAddGoods" class='toaddgoods'>
       +添加其他商品
     </view> -->
@@ -331,20 +341,19 @@ page {
     <view class="edit-btn"  @tap="saveTap">{{saveHidden?"编辑":"完成"}}</view>
   </view>
   <view class="goodsList">
+
     <view class='shopList' wx:for="{{list}}" wx:key="{{indexx}}" wx:for-item="item1" wx:for-index="indexx">
-      <view class='title' bindtap='toShop' data-supplierid='{{item1.suppliers_id}}'>{{item1.suppliers_name}}
+      <view class='title' @tap='toShop({{item1.suppliers_id}})' data-supplierid='{{item1.suppliers_id}}'>{{item1.suppliers_name}}
         <text class='huiyuanlabel' wx:if="{{item1.is_hy==1}}">会员</text>
       </view>
       <view class="a-gooods" wx:for="{{item1.goodsList}}" wx:key="{{indexy}}" wx:for-item="item" wx:for-index="indexy">
         <view class="a-goods-conts {{item.active? 'active':''}}" @tap="selectTap({{indexx}},{{indexy}})" >
           <view class="goods-info">
-            <view class="img-box" @tap.stop="toGoodDetailsTap" >
-
-
+            <view class="img-box" @tap.stop="toGoodDetailsTap({{item.goods_id}})" >
               <image src='{{item.goods_img}}' wx:if="{{item.goods_img}}" class="img" mode="aspectFit"></image>
               <image src="http://wsc.jicaizx.com/images/no_picture.gif" class="img" mode="aspectFit" wx:else/>
             </view>
-            <view class="text-box" @tap="toGoodDetailsTap" >
+            <view class="text-box" @tap.stop="toGoodDetailsTap({{item.goods_id}})" >
               <view class="goods-title">{{item.goods_name}}
               </view>
 
@@ -380,6 +389,7 @@ page {
     <view class="to-pay-btn {{noSelect?'no-select':'main-bgcolor'}}" wx:if="{{saveHidden}}" bindtap="toPayOrder">去结算</view>
     <view class="to-pay-btn {{noSelect?'no-select':'main-bgcolor'}}" wx:if="{{!saveHidden}}" bindtap="deleteSelected">删除</view>
   </view>
+  </view>
    <shopCartPopup
       :goodsDetail.sync="goodsDetail"
       wx:if="{{ishideShopPopup}}"
@@ -413,6 +423,11 @@ export default class shopCart extends wepy.page {
   };
   computed = {};
   methods = {
+    toShop(id){
+      wx.navigateTo({
+        "url":"/Shop/pages/index?suppliers_id="+id
+      })
+    },
     closePopupTap() {
       this.ishideShopPopup = false;
     },
@@ -575,7 +590,7 @@ export default class shopCart extends wepy.page {
               goodsList[index].goodsList = [];
             }
             list[i].goodsList[j].goods_imgs = list[i].goodsList[j].original_img
-              ? 'http://maijia.jicaizx.com/' + original_img
+              ? 'http://maijia.jicaizx.com/' + list[i].goodsList[j].original_img
               : 'http://wsc.jicaizx.com/images/no_picture.gif';
             goodsList[index].goodsList.push(list[i].goodsList[j]);
             goodsList[index].suppliers_name = list[i].suppliers_name;
@@ -602,6 +617,12 @@ export default class shopCart extends wepy.page {
     },
     saveTap() {
       this.saveHidden = !this.saveHidden;
+    },
+    toGoodDetailsTap (id){
+      console.log("跳转到详情")
+      wx.navigateTo({
+        "url":"/Shop/pages/goodDetail?id="+id
+      })
     }
   };
   events = {};
@@ -712,8 +733,7 @@ export default class shopCart extends wepy.page {
     console.log(list.totalPrice);
   }
 
-  async onLoad() {}
-  async onShow() {
+  async onLoad() {
     this.user_id = await this.$parent.loginInfo();
     this.getShopCartInfo(this.user_id);
   }
