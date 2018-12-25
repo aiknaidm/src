@@ -21,6 +21,9 @@
   -ms-transform: rotate(180deg); /* IE 9 */
   -webkit-transform: rotate(180deg); /* Safari and Chrome */
 }
+.status-box .status-label.active{
+  border-bottom: 6rpx solid #eee
+}
 </style>
 <template>
   <view class="container">
@@ -52,7 +55,7 @@ export default class searchlist extends wepy.page {
     goodsList: [],
     statusType: ['综合', '销量', '价格', '筛选'],
     currentType: '',
-    isMoreDara:true
+    isMoreData: true
   };
 
   computed = {};
@@ -63,15 +66,18 @@ export default class searchlist extends wepy.page {
 
       switch (parseInt(index)) {
         case 0:
+          this.isasc = true;
           this.initdata.order = '';
           this.initdata.sort = '';
           break;
         case 1:
           // 销量
+          this.isasc = true;
           this.initdata.order = '';
           this.data.sort = 'salenum';
           break;
         case 2:
+          // 价格
           this.initdata.sort = 'shop_price';
           this.isasc = !this.isasc;
           this.initdata.order = this.isasc ? 'asc' : 'desc';
@@ -119,9 +125,9 @@ export default class searchlist extends wepy.page {
       .then(res => {
         wx.hideLoading();
         if (res.data.data.length == 0) {
-          this.isMoreDara = false;
-          return
-        } 
+          this.isMoreData = false;
+          return;
+        }
         if (data.page == 1) {
           this.goodsList = res.data.data;
         } else {
@@ -141,7 +147,7 @@ export default class searchlist extends wepy.page {
       sort: '', //排序的方式
       price_max: '', //加个
       price_min: '',
-      brand: "",
+      brand: '',
       attr_value: '',
       page: 1,
       suppliers_id: this.suppliers_id
@@ -151,7 +157,7 @@ export default class searchlist extends wepy.page {
   }
   onReachBottom() {
     console.log('page');
-    if (this.isMoreDara) {
+    if (this.isMoreData) {
       wx.showLoading({
         title: '加载中', //提示的内容,
         mask: true, //显示透明蒙层，防止触摸穿透,

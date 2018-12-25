@@ -30,6 +30,7 @@ export default class testMixin extends wepy.mixin {
                 res.data.data && res.data.data.suppliers_id ?
                 res.data.data.suppliers_id :
                 '';
+
             this.getShopBanner(userId, suppliers_id);
             this.getMaterialsList(suppliers_id);
             // this.$apply();
@@ -49,6 +50,9 @@ export default class testMixin extends wepy.mixin {
         this.yizhan = res.data.yizhan;
         this.yizhan.suppliers_id = suppliers_id
         this.shenhe = res.data.shenhe
+        wx.setNavigationBarTitle({
+            title: res.data.yizhan.suppliers_name
+        });
         this.$apply();
         var end_time = this.yizhan.end_time;
         if (end_time !== 0 && new Date().getTime() - end_time * 1000 > 0) {

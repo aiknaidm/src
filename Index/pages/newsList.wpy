@@ -69,6 +69,10 @@ export default class newslist extends wepy.page {
   }
 
   async onLoad(option) {
+    if (option.name)
+      wx.setNavigationBarTitle({
+        title: option.name
+      });
     if (option.id) {
       this.getNewsList(option.id);
     } else {

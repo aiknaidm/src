@@ -156,6 +156,11 @@
 .buy-num-box .num-box .hui {
   background-color: #f5f5f9;
 }
+.goods-txt {
+  font-size: 24rpx;
+  color: #999;
+  line-height: 30rpx;
+}
 </style>
 <template>
   <view class="show-popup">
@@ -189,8 +194,8 @@
         <view class="pop-goods-close" @tap="closePopupTap"></view>
       </view>
 
-      <view class="size-label-box">
-        <view class="label">默认规格</view>
+      <view class="size-label-box" wx:if="{{goodsDetail.properties.length!=0}}">
+        <view class="label">规格</view>
 
         <view class="label-item-box">
           <view
@@ -236,7 +241,6 @@ export default class shopCart extends wepy.component {
     }
   };
   methods = {
- 
     labelItemTap(property) {
       this.$emit('labelItemTap', property);
     },
@@ -271,29 +275,35 @@ export default class shopCart extends wepy.component {
       var price = this.goodsDetail.selectSizePrice; //价格
       var properties = this.goodsDetail.properties; //规则
       var property = this.goodsDetail.property; //选择的规则
-      if (price == 0) {
-        wx.showToast({
-          title: '该商品暂无价格不能购买',
-          icon: 'none'
-        });
-        return;
+      if (
+        this.goodsDetail.shopType == 'addShopCar' ||
+        this.goodsDetail.shopType == 'buyNow'
+      ) {
+        if (price == 0) {
+          wx.showToast({
+            title: '该商品暂无价格不能购买',
+            icon: 'none'
+          });
+          return;
+        }
+        if (buy_number > goods_number) {
+          wx.showModal({
+            title: '提示',
+            content: '购买量不能大于库存！',
+            showCancel: false
+          });
+          return;
+        }
+        if (properties.length != 0 && !property) {
+          wx.showModal({
+            title: '提示',
+            content: '请选择商品规格！',
+            showCancel: false
+          });
+          return;
+        }
       }
-      if (buy_number > goods_number) {
-        wx.showModal({
-          title: '提示',
-          content: '购买量不能大于库存！',
-          showCancel: false
-        });
-        return;
-      }
-      if (properties.length != 0 && !property) {
-        wx.showModal({
-          title: '提示',
-          content: '请选择商品规格！',
-          showCancel: false
-        });
-        return;
-      }
+
       if (buy_number < 1) {
         wx.showModal({
           title: '提示',

@@ -534,6 +534,7 @@ export default class toPayOrder extends wepy.page {
         var res = await wepy.showActionSheet({
           itemList: this.itemList
         });
+
         console.log('res', res);
         this.payIndex = res.tapIndex;
         this.payId = res.tapIndex == 0 ? '0' : '2';
@@ -545,6 +546,19 @@ export default class toPayOrder extends wepy.page {
 
     // 提交订单
     async createOrder(e) {
+      var msg = this.itemList[this.payIndex];
+      var showRes = await wepy.showModal({
+        title: '提示', //提示的标题,
+        content: '你确定使用' + msg + '吗？', //提示的内容,
+        showCancel: true, //是否显示取消按钮,
+        cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+        cancelColor: '#000000', //取消按钮的文字颜色,
+        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+        confirmColor: '#3CC51F' //确定按钮的文字颜色,
+      });
+      if (showRes.cancel) {
+        return;
+      }
       console.log('订单内容', e);
       wx.showLoading({
         title: '提交订单中...', //提示的内容,
@@ -563,6 +577,7 @@ export default class toPayOrder extends wepy.page {
       var bonus_id = that.youhuiId ? that.youhuiId : '';
       var pay_id = that.payId;
       var goodsList = that.shopCarList;
+
       var pay_note = pay_id == 2 ? e.detail.value.paynote1 : '';
       if (consignee == '' || mobile == undefined) {
         wx.showModal({
@@ -620,14 +635,18 @@ export default class toPayOrder extends wepy.page {
         return;
       }
       // 刷新购物车
-     this.$parent.$pages["/Shop/pages/shopCart"].getShopCartInfo(this.userId)
+      this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo(this.userId);
       if (res.data.data == '' || res.data.data == null) {
-        wx.navigateTo({ url: '/Shop/pages/orderList?order_status=1' });
-        return
+        wx.redirectTo({ url: '/Shop/pages/orderList?order_status=1' });
+        return;
       }
-      if(pay_id==2){
-         wx.navigateTo({ url: '/Shop/pages/orderList?order_status=2' });
-         return
+      if (pay_id == 2) {
+        wx.redirectTo({ url: '/Shop/pages/orderList?order_status=2' });
+        return;
+      }
+      if (this.shopCarList.length > 1) {
+        wx.redirectTo({ url: '/Shop/pages/orderList?order_status=1' });
+        return;
       }
       // 调起支付
       var payResult = await wxpay1.wxpay1(res.data.data);
@@ -640,11 +659,11 @@ export default class toPayOrder extends wepy.page {
       });
       // 取消支付
       if (payResult.code == 2) {
-        wx.navigateTo({ url: '/Shop/pages/orderList?order_status=1' });
+        wx.redirectTo({ url: '/Shop/pages/orderList?order_status=1' });
       }
       // 支付成功
       if (payResult.code == 1) {
-        wx.navigateTo({ url: '/Shop/pages/orderList?order_status=2' });
+        wx.redirectTo({ url: '/Shop/pages/orderList?order_status=2' });
       }
     }
   };
@@ -655,10 +674,10 @@ export default class toPayOrder extends wepy.page {
       this.shopCarList[index].order_amount = 0;
       this.yunPrice += parseFloat(item.yunfei);
       item.goodsList.forEach((item2, index2) => {
-        this.allGoodsPrice += parseFloat(item2.goods_price);
-        this.shopCarList[index].order_amount +=
+        this.allGoodsPrice += parseFloat(item2.goods_price)*parseFloat(item2.buy_number);
+        this.shopCarList[index].order_amount =
           parseFloat(this.shopCarList[index].order_amount) +
-          parseFloat(item2.goods_price);
+          parseFloat(item2.goods_price)*parseFloat(item2.buy_number);
       });
     });
   }

@@ -13,7 +13,7 @@ import shopIndexc from '../components/shop/shopIndex';
 import shopIndex from '../mixins/shopIndex';
 export default class shop extends wepy.page {
   config = {
-    navigationBarTitleText: '吉采易站'
+    navigationBarTitleText: '批发商城'
   };
   data = {
     yizhanBanner: [],
@@ -24,7 +24,7 @@ export default class shop extends wepy.page {
     shenhe: 0
   };
   components = { shopIndexc };
-  
+
   mixins = [shopIndex];
   computed = {};
   methods = {};
@@ -37,14 +37,15 @@ export default class shop extends wepy.page {
     } else {
       this.getShopIndex(this.userId);
     }
- 
+
     wx.showLoading({
       title: '加载中...', //提示的内容,
       mask: true, //显示透明蒙层，防止触摸穿透,
       success: res => {}
-    });}
+    });
+  }
   async onLoad(options) {
-    this.suppliers_id=options.suppliers_id
+    this.suppliers_id = options.suppliers_id;
   }
 }
 </script>

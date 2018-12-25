@@ -22,7 +22,7 @@ import noorder from '../components/noOrder';
 import orderList from '../components/shop/orderList';
 export default class yizhanList extends wepy.page {
   config = {
-    navigationBarTitleText: '吉采易站'
+    navigationBarTitleText: '进货记录'
   };
   components = {
     noorder,

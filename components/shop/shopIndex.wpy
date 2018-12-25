@@ -26,14 +26,7 @@
   height: 100%;
 }
 
-.apply {
-  line-height: 88rpx;
-  text-align: center;
-  margin: auto;
-  background-color: #fff;
-  border-radius: 5rpx;
-  font-size: 30rpx;
-}
+
 
 .yizhan-name {
   position: absolute;
@@ -62,14 +55,15 @@
   height: 50rpx;
   border-radius: 50px;
   font-size: 28rpx;
-  background-color: #fff
+  background-color: #fff;
 }
-
-.apply {
+.yizhan-name-titile button.apply {
+  text-align: center;
   background-color: #f7bf30;
   color: #fff;
+  border-radius: 50rpx;
+  font-size: 30rpx;
 }
-
 .yizhan-name-txt {
   font-size: 28rpx;
   text-align: left;
@@ -213,41 +207,71 @@ export default class shop extends wepy.component {
       default: '暂无分类',
       twoWay: true
     },
- 
+
     shenhe: {
       type: Number,
-      default: 0 ,
+      default: 0,
       twoWay: true
-    },
+    }
   };
   methods = {
-        // 分类跳转
-        toFenLeiTap(id, suppliers_id, suppliers_name,cat_name) {
-            wx.navigateTo({
-                url: '/Shop/pages/searchList?cat_id=' +
-                    id +
-                    '&suppliers_id=' +
-                    suppliers_id +
-                    '&navigationTitle=' +
-                    suppliers_name +"-"+cat_name+
-                    '&type=2'
-            });
-        },
-       async apply(){
-          console.log("申请");
-        var res=await wepy.request({
+    // 分类跳转
+    toFenLeiTap(id, suppliers_id, suppliers_name, cat_name) {
+      wx.navigateTo({
+        url:
+          '/Shop/pages/searchList?cat_id=' +
+          id +
+          '&suppliers_id=' +
+          suppliers_id +
+          '&navigationTitle=' +
+          suppliers_name +
+          '-' +
+          cat_name +
+          '&type=2'
+      });
+    },
+    async apply() {
+      console.log('申请');
+      if (this.user_info.mobile_phone == '') {
+        wx.navigateTo({
+          url: '/Shop/pages/renzheng?suppliers_id=' + this.yizhan.suppliers_id
+        });
+      } else {
+        var res = await wepy.showModal({
+          title: '提示', //提示的标题,
+          content: '你确定要申请该店的会员吗', //提示的内容,
+          showCancel: true, //是否显示取消按钮,
+          confirmColor: '#e50012' //确定按钮的文字颜色,
+        });
+        if (res.confirm) {
+          var res1 = await wepy.request({
             url: api.applyMember, //开发者服务器接口地址",
             data: {
-              user_id:this.user_id
-            }, //请求的参数",
+              user_id: this.user_id,
+              suppliers_id: this.yizhan.suppliers_id
+            } //请求的参数",
           });
-          
-
+          if (res1.data.data) {
+            wx.showModal({
+              title: '提示', //提示的标题,
+              content: '申请发送成功', //提示的内容,
+              showCancel: false, //是否显示取消按钮,
+              confirmColor: '#e50012', //确定按钮的文字颜色,
+              success: res => {}
+            });
+            this.shenhe=1
+            this.$apply();
+          }
+        } else if (res.cancel) {
+          console.log('用户点击取消');
         }
-    };
-   async onLoad(){
-      this.user_id=await this.$parent.$parent.loginInfo();
-      console.log("userId2",this.user_id)
+      }
     }
+  };
+  async onLoad() {
+    this.user_id = await this.$parent.$parent.loginInfo();
+    this.user_info = await this.$parent.$parent.getUserInfo();
+    console.log('userId2', this.user_info);
+  }
 }
 </script>

@@ -26,6 +26,25 @@
   .weui_cell_hd {
     margin-right: 10rpx;
   }
+  
+}
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  height: 15px;
+  min-width: 5px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-color: #fff;
+  font-size: 20rpx;
+  font-weight: bold;
+  border: 2px solid #f60;
+  color: #f60;
+  text-align: center;
+  padding: 0 5px;
+  line-height: 15px;
+  border-radius: 50px;
 }
 </style>
 <template>

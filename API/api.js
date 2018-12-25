@@ -23,16 +23,17 @@ const api = {
     cancelOrder: `${host}/cancelorder`, //取消订单
     confirmOrder: `${host}/confirmorder`, //确认收货
     orderDetail: `${host}/orderinfo`, //订单详情
-    applyMember: `${host}/sqdl`, //申请会员
+    applyMember: `${host}/sqhy`, //申请会员
     SheheStauts: `${host}/shenhe`, //判断审核状态
     GoodsInfo: `${host}/goodinfo`, //商品详情
     addCart: `${host}/addcart`, //加入购物车
-    getAddress: `${host}/dizhi`,
-    createOrder: `${host}/order_new`,
+    getAddress: `${host}/dizhi`, //获取上一次地址
+    createOrder: `${host}/order_new`, //创建订单
     //参数user_id  用户ID   goods_id  商品ID  goods_number   购买数量 goods_attr_id  规格ID   没有的话传空
     updateCart: `${host}/updatecart`,
     delCart: `${host}/delcart`,
-    zlyd: `${host}/zlyd`,
+    zlyd: `${host}/zlyd`, //再来一单
+    orderNum: `${host}/order_num` //订单数量
 
 }
 export default api

@@ -33,6 +33,23 @@
     border-radius: 50%;
   }
 }
+.goodsListnum{
+  border:1px solid #e50012;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  color: #e50012;
+  width: 35rpx;
+  height: 35rpx;
+  text-align: center;
+  line-height: 35rpx;
+  margin-left: 10rpx;
+  border-radius: 50%;
+  font-size: 20rpx;
+  position: absolute;
+  top: 15rpx;
+  right: -5rpx;
+}
 </style>
 <template>
   <view class="status-box search-title" statusType="一个tab名字的数组">
@@ -41,7 +58,7 @@
         class="status-label {{index == currentType ? 'active' : ''}} {{isclick?'down':'up'}}"
         @tap="statusTap({{index}})"
       >
-        {{item}}
+        {{item}}<text class='goodsListnum' wx:if="{{goodsListnum[index]&&goodsListnum[index]!=0}}">{{goodsListnum[index]}}</text>
         <block wx:if="{{type=='shop'}}">
           <image wx:if="{{index==2&&index != currentType}}" src="/images/sanjiao.png">
           <image
@@ -63,7 +80,8 @@ export default class statusTap extends wepy.component {
   props = {
     statusType: { type: Object, default: [] },
     currentType: { type: String, default: "0" },
-    type:{ type: String, default: "txt" }
+    type:{ type: String, default: "txt" },
+    goodsListnum:{ type: Array, default: []}
   };
   data = {
     isclick: false
@@ -84,8 +102,5 @@ export default class statusTap extends wepy.component {
     }
   };
 
-  onLoad() {
-    console.log(this.type);
-  }
 }
 </script>

@@ -5,4 +5,5 @@ export default class shopcart extends wepy.mixin {
 
     };
 
+
 }

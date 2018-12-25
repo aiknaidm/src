@@ -252,7 +252,7 @@ swiper-item image {
         <view class>销量：{{goodsDetail.salenum}}</view>
       </view>
       <view class="goods-txt">
-        <view wx:if="{{status>1}}">{{goodsDetail.set_number}}{{danwei}}起批发</view>
+        <view wx:if="{{status>1}}">{{goodsDetail.qidingliang}}{{danwei}}起批发</view>
         <view>库存:{{goodsDetail.goods_number}}</view>
         <view
           @tap="viewYiZhanDetails({{goodsDetail.suppliers_id}})"
@@ -311,7 +311,8 @@ export default class goodDetail extends wepy.page {
     shopNum: 0,
     ishideShopPopup: false,
     buy_number: 1,
-    status: 1
+    status: 1,
+    danwei:"件"
   };
   methods = {
     // 规格被点击
@@ -369,7 +370,7 @@ export default class goodDetail extends wepy.page {
     // 跳转购物车
     goShopCar() {
       wx.navigateTo({
-        url: '/pages/Shop/shop-cart/index'
+        url: '/Shop/pages/shopCart'
       });
     },
     // 直接购买
@@ -418,10 +419,11 @@ export default class goodDetail extends wepy.page {
       var goods_id = goodsDetail.goods_id;
       var buy_number = goodsDetail.buy_number;
       var goods_name = goodsDetail.goods_name;
-      var goods_attr_id = goodsDetail.property
+      console.log("goodsDetail.property",goodsDetail.property.length)
+      var goods_attr_id = goodsDetail.properties.length
         ? goodsDetail.property.goods_attr_id
         : '';
-      var attr_value = goodsDetail.property
+      var attr_value = goodsDetail.properties.length
         ? goodsDetail.property.attr_value
         : '';
       var attr_price = goodsDetail.selectPrice;
@@ -512,16 +514,16 @@ export default class goodDetail extends wepy.page {
     var goodsList = [{}];
     console.log(this.goodsDetail);
     goodsList[0].goods_id = this.goodsDetail.goods_id;
-    goodsList[0].goods_img = this.goodsDetail.original_img
+    goodsList[0].goods_imgs = this.goodsDetail.original_img
       ? 'http://maijia.jicaizx.com/' + this.goodsDetail.original_img
       : 'http://wsc.jicaizx.com/images/no_picture.gif';
     goodsList[0].goods_price = this.goodsDetail.selectPrice;
-    goodsList[0].goods_number = this.goodsDetail.buy_number;
+    goodsList[0].buy_number = this.goodsDetail.buy_number;
     goodsList[0].goods_name = this.goodsDetail.goods_name;
-    goodsList[0].goods_attr_id = this.goodsDetail.property
+    goodsList[0].goods_attr_id = this.goodsDetail.properties.length
       ? this.goodsDetail.property.goods_attr_id
       : '';
-    goodsList[0].goods_attr = this.goodsDetail.property
+    goodsList[0].goods_attr = this.goodsDetail.properties.length
       ? this.goodsDetail.property.goods_attr
       : '';
     goodsList[0].suppliers_name = this.goodsDetail.suppliers_name;

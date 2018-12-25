@@ -13,7 +13,7 @@ page {
  width: 100%;
 } */
 .container {
-  background: #f0f0f0
+  background: #f0f0f0;
 }
 .title {
   line-height: 80rpx;
@@ -317,7 +317,7 @@ page {
   margin-left: 10rpx;
   border-radius: 5rpx;
 }
-.shopList{
+.shopList {
   background: #fff;
 }
 </style>
@@ -327,7 +327,7 @@ page {
        <view class="title-box">
     购物车空空如也～
   </view>
-  <view class="to-index-btn" bindtap="toIndexPage">
+  <view class="to-index-btn" @tap="toIndexPage">
     去逛逛
   </view>
   </view>
@@ -357,7 +357,7 @@ page {
               <view class="goods-title">{{item.goods_name}}
               </view>
 
-              <view @tap.stop='toAddShopCar({{indexx}},{{indexy}})' class="{{item.properties.length>0 ? 'xunze':''}}"> {{item.goods_attr}}
+              <view @tap.stop='toAddShopCar({{indexx}},{{indexy}})' class="{{item.properties.length>0 ? 'xunze':''}}"> {{item.properties.length!=0&&item.goods_attr==""?"请选择商品规格": item.goods_attr}}
               </view> 
 
               <view hidden="{{item.properties.length>0?true:false}}" class='nolist'></view>
@@ -423,10 +423,14 @@ export default class shopCart extends wepy.page {
   };
   computed = {};
   methods = {
-    toShop(id){
+    // 去逛逛
+    toIndexPage() {
+      wx.switchTab({ url: '/pages/shop' });
+    },
+    toShop(id) {
       wx.navigateTo({
-        "url":"/Shop/pages/index?suppliers_id="+id
-      })
+        url: '/Shop/pages/index?suppliers_id=' + id
+      });
     },
     closePopupTap() {
       this.ishideShopPopup = false;
@@ -553,7 +557,8 @@ export default class shopCart extends wepy.page {
       this.goodsDetail.selectPrice = price;
     },
     // 点击确定
-    buyNow() {
+   async buyNow() {
+      console.log("点击的回个",this.goodsDetail.property);
       var property = this.goodsDetail.property;
       this.list[this.x].goodsList.forEach((item, index) => {
         if (
@@ -565,13 +570,37 @@ export default class shopCart extends wepy.page {
           this.delCartGoods(idList);
           return;
         }
+       
       });
       // delCartGoods
       this.goodsDetail.goods_attr_id = property.goods_attr_id;
       this.goodsDetail.goods_number = property.goods_number;
       this.goodsDetail.goods_price = this.goodsDetail.selectPrice;
       this.goodsDetail.goods_attr = this.goodsDetail.property.attr_value;
+      this.goodsDetail.buy_number=this.goodsDetail.buy_number>this.goodsDetail.goods_number?this.goodsDetail.goods_number:this.goodsDetail.buy_number
       this.ishideShopPopup = false;
+       var res = await wepy.request({
+          url: api.updateCart,
+          data: {
+            user_id:this.user_id,
+            goods_id:this.goodsDetail.goods_id,
+            buy_number:this.goodsDetail.buy_number,
+            goods_attr_id:this.goodsDetail.goods_attr_id,
+            is_hy: this.list[this.x].is_hy,
+            attr_value:this.goodsDetail.goods_attr,
+            id:this.goodsDetail.id,
+   
+          }
+        });
+        if (res.data.code != '0') {
+          wx.showToast({
+            title: '修改失败', //提示的内容,
+            icon: 'none', //图标,
+            mask: true //显示透明蒙层，防止触摸穿透,
+          });
+        } else {
+          this.goodsDetail.goods_price = res.data.data;
+        }
     },
     //去结算
     toPayOrder: function() {
@@ -618,11 +647,11 @@ export default class shopCart extends wepy.page {
     saveTap() {
       this.saveHidden = !this.saveHidden;
     },
-    toGoodDetailsTap (id){
-      console.log("跳转到详情")
+    toGoodDetailsTap(id) {
+      console.log('跳转到详情');
       wx.navigateTo({
-        "url":"/Shop/pages/goodDetail?id="+id
-      })
+        url: '/Shop/pages/goodDetail?id=' + id
+      });
     }
   };
   events = {};
@@ -735,6 +764,7 @@ export default class shopCart extends wepy.page {
 
   async onLoad() {
     this.user_id = await this.$parent.loginInfo();
+    this.allSelect=false;
     this.getShopCartInfo(this.user_id);
   }
 }

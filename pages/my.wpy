@@ -77,22 +77,26 @@ export default class my extends wepy.page {
       {
         icon: '../../images/my/fukuan.png',
         text: '待付款',
-        url: '/Shop/pages/orderList?order_status=1'
+        url: '/Shop/pages/orderList?order_status=1',
+        unreadNum: 0
       },
       {
         icon: '../../images/my/quanbu.png',
         text: '待发货',
-        url: '/Shop/pages/orderList?order_status=2'
+        url: '/Shop/pages/orderList?order_status=2',
+        unreadNum: 0
       },
       {
         icon: '../../images/my/shouhuo.png',
         text: '待收货',
-        url: '/Shop/pages/orderList?order_status=3'
+        url: '/Shop/pages/orderList?order_status=3',
+        unreadNum: 0
       },
       {
         icon: '../../images/my/wancheng.png',
         text: '已完成',
-        url: '/Shop/pages/orderList?order_status=4'
+        url: '/Shop/pages/orderList?order_status=4',
+        unreadNum: 0
       }
     ],
     isShowprompt: false
@@ -130,6 +134,22 @@ export default class my extends wepy.page {
         });
       });
   }
+  orderNum(user_id) {
+    wepy
+      .request({
+        url: api.orderNum,
+        data: {
+          user_id
+        }
+      })
+      .then(res => {
+        console.log('订单数量', res);
+        this.orderList[0].unreadNum = res.data.data.daifukuan;
+        this.orderList[1].unreadNum = res.data.data.daifahuo;
+        this.orderList[2].unreadNum = res.data.data.yifahuo;
+        this.orderList[3].unreadNum = res.data.data.chenggong;
+      });
+  }
   async onLoad() {
     // wx.showLoading({
     //   title: '加载中...', //提示的内容,
@@ -138,6 +158,7 @@ export default class my extends wepy.page {
     // });
     let that = this;
     this.userId = await this.$parent.loginInfo();
+    this.orderNum(this.userId);
     let isSettingStatus = await this.$parent.checkSettingStatus();
     let userInfo = await this.$parent.getUserInfo(this.userId);
     this.userInfo = userInfo;
