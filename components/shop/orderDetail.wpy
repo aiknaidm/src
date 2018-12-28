@@ -154,23 +154,24 @@
   width: 100%;
   background-color: #fff;
   border-top: 1px solid #f0f0f0;
-  .row-box2 {
-    padding: 20rpx;
-    text-align: right;
-    border-top: 1px solid #f0f0f0;
-  }
 }
-.goods-info .row-box {
+.row-box2 {
+  padding: 20rpx;
+  text-align: right;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.row-box {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  padding: 20rpx;
+  padding: 20rpx 30rpx;
   font-size: 28rpx;
   color: #000;
 }
-.goods-info .row-box .right-text {
+.row-box .right-text {
   text-align: right;
   /* color: #e64340; */
 }
@@ -285,6 +286,12 @@
     <goodsList :goodsMap.sync="goodsMap">
       <view slot="suppliers">{{orderDetail.suppliers_name}}</view>
     </goodsList>
+ 
+    <view class="row-box row-box2" wx:if="{{orderDetail.other}}" >
+        <view class="row-label">买家留言：</view>
+        <view class="right-text"> {{orderDetail.other}}</view>
+      </view>
+
     <view class="goods-info">
       <view class="row-box">
         <view class="row-label">商品金额</view>
@@ -300,9 +307,8 @@
       </view>
       <view class="row-box2 red">合计 ¥ {{orderDetail.shiji_money}}</view>
     </view>
-    <!-- 按钮 -->
-    <orderbutton :orderDetail.sync="orderDetail"></orderbutton>
-    <!-- order_status 1.待付款 2.已付款 3.已确认收货 -->
+    
+        <!-- order_status 1.待付款 2.已付款 3.已确认收货 -->
     <view class="order-time">
       <view
         class="wuliu-text wuliu-date"
@@ -320,7 +326,18 @@
         class="wuliu-text wuliu-date"
         wx:if="{{orderDetail.order_status>=3}}"
       >发货时间：{{orderDetail.confirm_time}}</view>
+      
+       <view class="wuliu-text wuliu-date" >支付方式：{{orderDetail.pay_id==2?"线下支付":"微信支付"}}</view>
+       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.pay_note}}">备注：{{orderDetail.pay_note}}</view>
+        <view
+        class="wuliu-text wuliu-date red" @tap="showFahuodan({{orderDetail.fahuodan}})" wx:if="{{orderDetail.fahuodan!=''}}"
+       
+      >查看发货单</view>
     </view>
+    <!-- 按钮 -->
+    <orderbutton :orderDetail.sync="orderDetail"></orderbutton>
+
+
   </view>
 </template>
 <script>
@@ -331,9 +348,7 @@ export default class List extends wepy.component {
   props = {
     orderDetail: {
       type: Object,
-      default: {
-        
-      },
+      default: {},
       twoWay: true
     },
     goodsMap: {
@@ -347,7 +362,15 @@ export default class List extends wepy.component {
   events = {};
 
   methods = {
-   
+    showFahuodan(url) {
+      console.log("img",url)
+      var img=new Array();
+      img[0]=url
+      wx.previewImage({
+        current: url, // 当前显示图片的http链接
+        urls:img
+      });
+    }
   };
 
   async onLoad() {}

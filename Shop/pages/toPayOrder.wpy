@@ -244,11 +244,15 @@ form {
   padding: 20rpx 30rpx;
   background: #fff;
 }
+.beizhu input {
+  padding-left: 10rpx;
+}
 .address-group .right-text {
   margin-left: 10rpx;
 }
 .address-group .row-label {
   width: 120rpx;
+  font-size: 28rpx;
 }
 .address-group .right-text {
   flex: 1;
@@ -287,11 +291,16 @@ label.label {
   align-items: center;
 }
 label.label text {
-  width: 180rpx;
-  text-align-last: justify;
+  width: 120rpx;
+  // text-align-last: justify;
 }
 .address-list {
   text-align: left;
+	flex: 1;
+	padding-left: 20rpx;
+}
+.address-title {
+  width: 120rpx;
 }
 // .order-adress{
 //    font-size: 28rpx;
@@ -324,14 +333,7 @@ label.label text {
         </button>
 
         <!-- </radio-group> -->
-        <view class="address-group beizhu">
-          <view class="row-box">
-            <view class="row-label">备注:</view>
-            <view class="right-text">
-              <input name="remark" type="text" class="liuyan" placeholder="如需备注请输入"></input>
-            </view>
-          </view>
-        </view>
+     
         <!-- <view class="peisong-way">
       <view class="row-box">
         <view class="row-label">姓　　名</view>
@@ -372,6 +374,14 @@ label.label text {
               <view slot="suppliers">{{item.suppliers_name}}</view>
             </goodsList>
             <!-- <goodsList :goodsMap.sync="item"></goodsList> -->
+               <view class="address-group beizhu">
+                <view class="row-box">
+                  <view class="row-label">买家留言</view>
+                  <view class="right-text">
+                    <input name="remark" type="text" class="liuyan" placeholder="如需备注请输入" @input="changeRemark({{index}})"></input>
+                  </view>
+                </view>
+        </view>
           </repeat>
         </view>
         <view class="goods-info">
@@ -463,6 +473,9 @@ export default class toPayOrder extends wepy.page {
   };
   computed = {};
   methods = {
+    changeRemark(index, e) {
+      this.shopCarList[index].remark = e.detail.value;
+    },
     //   获取微信地址
     async getWxAddress() {
       //  let auth = wepy.getSetting();
@@ -630,8 +643,13 @@ export default class toPayOrder extends wepy.page {
         wx.showModal({
           title: '错误',
           content: res.data.message,
-          showCancel: false
+          showCancel: false,
+          success: res => {
+            if(res.confirm)
+            wx.navigateBack({});
+          }
         });
+
         return;
       }
       // 刷新购物车
@@ -674,10 +692,11 @@ export default class toPayOrder extends wepy.page {
       this.shopCarList[index].order_amount = 0;
       this.yunPrice += parseFloat(item.yunfei);
       item.goodsList.forEach((item2, index2) => {
-        this.allGoodsPrice += parseFloat(item2.goods_price)*parseFloat(item2.buy_number);
+        this.allGoodsPrice +=
+          parseFloat(item2.goods_price) * parseFloat(item2.buy_number);
         this.shopCarList[index].order_amount =
           parseFloat(this.shopCarList[index].order_amount) +
-          parseFloat(item2.goods_price)*parseFloat(item2.buy_number);
+          parseFloat(item2.goods_price) * parseFloat(item2.buy_number);
       });
     });
   }

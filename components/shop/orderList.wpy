@@ -38,6 +38,7 @@ view {
   .name,
   .total-price {
     padding: 0 30rpx;
+    padding-top: 20rpx;
     line-height: 60rpx;
   }
 }
@@ -62,7 +63,7 @@ view {
   justify-content: space-between;
   padding: 20rpx 30rpx;
   border-bottom: 1px solid #f0f0f0;
-  background: #f9f9f9;
+  background: #f0f0f0;
 }
 
 .img-box1 .goods-img {
@@ -133,29 +134,38 @@ button.ss-my-d {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 30rpx;
+  padding:30rpx;
   border-bottom: 1px solid #f0f0f0;
   .icon-dianpu {
     font-size: 40rpx;
     color: #e50012;
   }
 }
+ .list-title {
+  font-size: 28rpx;
+  color: #000;
+  padding: 30rpx 0 25rpx 30rpx;
+  border-top: 16rpx solid #f0f0f0;
+  display: flex;
+}
+.list-title text{
+  color: #e50012;
+  font-size: 45rpx;
+  margin-right: 10rpx;
+}
 </style>
 <template>
   <view>
     <view class="a-order" orderList="订单内容" goodsMap="商品内容">
       <view class="shop-box" @tap="toshop({{orderList.suppliers_id}})">
-        <view>
+        <view class="list_title">
           <text class="iconfont icon-dianpu"></text>{{orderList.suppliers_name}}
         </view>
         <view>
           <text class="iconfont icon-arrow-right"></text>
         </view>
       </view>
-      <view class="order-date">
-        <view class="date-box"><text>下单时间：</text><text>{{orderList.add_time}}</text></view>
-        <view class="date-box"><text>订单编号：</text><text>{{orderList.order_sn}}</text></view>
-      </view>
+   
       <view @tap="orderDetail({{orderList.id}})" data-id="{{orderList.id}}">
         <view wx:if="{{goodsMap.length==1}}" class="img-box1">
           <image src="{{goodsMap[0].goods_imgs}}" class="goods-img">
@@ -175,8 +185,8 @@ button.ss-my-d {
         </scroll-view>
       </view>
       <view class="price-box">
-        <view class="name">{{orderList.consignee}}</view>
-        <view class="total-price">共{{goodsMap.length}}件商品 合计：¥ {{orderList.order_amount}}</view>
+        <!-- <view class="name">{{orderList.consignee}}</view> -->
+        <view class="total-price">共{{goodsMap.length}}件商品 合计：<text class="red">¥ {{orderList.order_amount}}</text></view>
       </view>
       <slot name="btn">
        

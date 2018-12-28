@@ -26,8 +26,6 @@
   height: 100%;
 }
 
-
-
 .yizhan-name {
   position: absolute;
   top: 60rpx;
@@ -157,7 +155,9 @@
     </view>
     <view class="materials">
       <view class="materials-titile">商品分类</view>
-      <noorder show="2" :text.sync="text" wx:if="{{goodsKind.length==0||isguoqi}}"></noorder>
+      <loadingOrder  wx:if="{{isLoading}}"></loadingOrder>
+      <noorder show="2" :text.sync="text" wx:elif="{{(goodsKind.length==0&&!isLoading)||isguoqi}}"></noorder>
+    
       <view class="materials-list" wx:else>
         <view
           wx:for-items="{{goodsKind}}"
@@ -174,8 +174,9 @@ let that;
 import wepy from 'wepy';
 import api from '../../API/api';
 import noorder from '../../components/noOrder';
+import loadingOrder from '../../components/loadingOrder';
 export default class shop extends wepy.component {
-  components = { noorder };
+  components = { noorder, loadingOrder };
   props = {
     yizhanBanner: {
       type: Array,
@@ -183,7 +184,7 @@ export default class shop extends wepy.component {
       twoWay: true
     },
     yizhan: {
-      type: Array,
+      type: Object,
       default: [],
       twoWay: true
     },
@@ -211,6 +212,11 @@ export default class shop extends wepy.component {
     shenhe: {
       type: Number,
       default: 0,
+      twoWay: true
+    },
+    isLoading: {
+      type: Boolean,
+      default: true,
       twoWay: true
     }
   };
@@ -259,7 +265,7 @@ export default class shop extends wepy.component {
               confirmColor: '#e50012', //确定按钮的文字颜色,
               success: res => {}
             });
-            this.shenhe=1
+            this.shenhe = 1;
             this.$apply();
           }
         } else if (res.cancel) {
@@ -270,7 +276,7 @@ export default class shop extends wepy.component {
   };
   async onLoad() {
     this.user_id = await this.$parent.$parent.loginInfo();
-    this.user_info = await this.$parent.$parent.getUserInfo();
+    this.user_info = await this.$parent.$parent.getUserInfo(this.user_id);
     console.log('userId2', this.user_info);
   }
 }

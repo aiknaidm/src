@@ -7,15 +7,25 @@ export default class testMixin extends wepy.mixin {
 
     // 分类
     async getMaterialsList(suppliers_id = '') {
-            var res = await wepy.request({
-                url: api.goodsKind,
-                data: {
-                    suppliers_id
+            try {
+                var res = await wepy.request({
+                    url: api.goodsKind,
+                    data: {
+                        suppliers_id
+                    }
+                });
+                this.isLoading = false;
+                if (res.data.code == "0") {
+                    this.goodsKind = res.data.data;
+                    console.log("goodsKind", this.goodsKind);
+                    this.$apply();
+                } else {
+                    this.text = "获取失败";
+
                 }
-            });
-            this.goodsKind = res.data.data;
-            console.log("goodsKind", this.goodsKind);
-            this.$apply();
+            } catch (error) {
+                this.text = "获取失败";
+            }
         }
         // 我的易站 审核状态 店铺id
     async getShopIndex(userId) {

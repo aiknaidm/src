@@ -49,24 +49,24 @@ export default class my extends wepy.page {
     userInfo: {},
     tabList: [
       {
-        icon: '../../images/icon-shopcar.png',
+        icon: '/images/icon-shopcar.png',
         text: '购物车',
         url: '/Shop/pages/shopCart'
       },
       {
-        icon: '../../images/icon_normal.png',
+        icon: '/images/icon_normal.png',
         text: '帮助中心',
         url: '/Shop/pages/myHelp'
       },
       {
-        icon: '../../images/shangcheng.png',
+        icon: '/images/shangcheng.png',
         text: '管理工作台',
         url: 'pages/my-console/index',
         appId: 'wx024ea505bcfdda8e',
         type: 1
       },
       {
-        icon: '../../images/iconfont-yzm.png',
+        icon: '/images/iconfont-yzm.png',
         text: '批发商认证',
         url: 'pages/my-renzheng/index',
         appId: 'wx024ea505bcfdda8e',
@@ -75,25 +75,25 @@ export default class my extends wepy.page {
     ],
     orderList: [
       {
-        icon: '../../images/my/fukuan.png',
+        icon: '/images/my/fukuan.png',
         text: '待付款',
         url: '/Shop/pages/orderList?order_status=1',
         unreadNum: 0
       },
       {
-        icon: '../../images/my/quanbu.png',
+        icon: '/images/my/quanbu.png',
         text: '待发货',
         url: '/Shop/pages/orderList?order_status=2',
         unreadNum: 0
       },
       {
-        icon: '../../images/my/shouhuo.png',
+        icon: '/images/my/shouhuo.png',
         text: '待收货',
         url: '/Shop/pages/orderList?order_status=3',
         unreadNum: 0
       },
       {
-        icon: '../../images/my/wancheng.png',
+        icon: '/images/my/wancheng.png',
         text: '已完成',
         url: '/Shop/pages/orderList?order_status=4',
         unreadNum: 0
@@ -147,7 +147,7 @@ export default class my extends wepy.page {
         this.orderList[0].unreadNum = res.data.data.daifukuan;
         this.orderList[1].unreadNum = res.data.data.daifahuo;
         this.orderList[2].unreadNum = res.data.data.yifahuo;
-        this.orderList[3].unreadNum = res.data.data.chenggong;
+        // this.orderList[3].unreadNum = res.data.data.chenggong;
       });
   }
   async onLoad() {

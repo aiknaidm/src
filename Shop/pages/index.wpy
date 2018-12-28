@@ -1,7 +1,7 @@
 <style lang="less">
 </style>
 <template>
-  <shopIndexc :yizhan.sync="yizhan" :yizhanBanner.sync="yizhanBanner" :shenhe.sync="shenhe" :goodsKind.sync="goodsKind" :isguoqi.sync="isguoqi"></shopIndexc>
+  <shopIndexc :yizhan.sync="yizhan" :yizhanBanner.sync="yizhanBanner" :shenhe.sync="shenhe" :goodsKind.sync="goodsKind" :isguoqi.sync="isguoqi" :isLoading.sync="isLoading"></shopIndexc>
 </template>
 
 
@@ -21,7 +21,8 @@ export default class shop extends wepy.page {
     goodsKind: [],
     isguoqi: false,
     text: '暂无分类',
-    shenhe: 0
+    shenhe: 0,
+    isLoading:true
   };
   components = { shopIndexc };
   

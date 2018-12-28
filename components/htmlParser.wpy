@@ -54,7 +54,6 @@
 
 <script>
 import wepy from 'wepy';
-import WxParse from '../plugins/wxParse/wxParse';
 
 export default class HTMLParser extends wepy.component {
   props = {

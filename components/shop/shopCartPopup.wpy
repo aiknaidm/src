@@ -277,7 +277,7 @@ export default class shopCart extends wepy.component {
       var property = this.goodsDetail.property; //选择的规则
       if (
         this.goodsDetail.shopType == 'addShopCar' ||
-        this.goodsDetail.shopType == 'buyNow'
+        this.goodsDetail.shopType == 'tobuy'
       ) {
         if (price == 0) {
           wx.showToast({
@@ -294,7 +294,7 @@ export default class shopCart extends wepy.component {
           });
           return;
         }
-        if (properties.length != 0 && !property) {
+        if (properties.length != 0 &&property&& !property.goods_attr_id) {
           wx.showModal({
             title: '提示',
             content: '请选择商品规格！',

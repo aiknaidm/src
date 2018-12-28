@@ -33,21 +33,20 @@ page {
 }
 
 button {
-
   font-size: 32rpx;
   background: transparent;
   border: 0px solid;
   display: block;
   padding: 0;
-  margin: 0
+  margin: 0;
 }
-button::after{
-border:none;
+button::after {
+  border: none;
 }
-input{
-outline:none;
-border:none;
-list-style: none;
+input {
+  outline: none;
+  border: none;
+  list-style: none;
 }
 .red {
   color: #e50012;
@@ -136,7 +135,24 @@ export default class extends wepy.app {
         pages: ['pages/details', 'pages/newsList']
       }
     ],
-
+      preloadRule: {
+        'pages/index': {
+          network: 'all',
+          packages: ['Index']
+        },
+        'pages/shop': {
+          network: 'all',
+          packages: ['Shop']
+        },
+        'pages/my': {
+          network: 'all',
+          packages: ['Shop']
+        },
+         'pages/supplierList': {
+          network: 'all',
+          packages: ['Shop']
+        }
+      },
     window: {
       backgroundTextStyle: '#333',
       navigationBarTitleText: '吉采易站',
@@ -182,6 +198,7 @@ export default class extends wepy.app {
           text: '我的'
         }
       ]
+
     },
 
     navigateToMiniProgramAppIdList: [

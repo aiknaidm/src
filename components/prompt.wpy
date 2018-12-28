@@ -24,38 +24,38 @@
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-	box-shadow: 0 0 5px #333 ;
+  box-shadow: 0 0 5px #333;
 }
-.getinfo .title{
-	width: 100%;
-	padding: 0;
-	text-align: center;
-	font-size: 40rpx;
-	border-bottom: 2px solid #e50012;
-	line-height: 120rpx;
-	border-top: 0 solid;
-	color: #e50012
+.getinfo .title {
+  width: 100%;
+  padding: 0;
+  text-align: center;
+  font-size: 40rpx;
+  border-bottom: 2px solid #aaa;
+  line-height: 120rpx;
+  border-top: 0 solid;
+  color: #666;
 }
 .getinfo button {
   position: relative;
   z-index: 100;
-	background: transparent;
-	border: 0 solid;
-	margin-bottom: 30rpx;
+  background: transparent;
+  border: 1px solid #aaa;
+  padding: 0 10rpx;
+  margin-bottom: 30rpx;
 }
 
 .getinfo .txt {
   font-size: 30rpx;
   padding: 30rpx;
-	color: #666;
-
+  color: #666;
 }
-.txt text{
-	display: block;
-	font-size: 40px;
-	color:  #e50012;
-	text-align: center;
-	margin-bottom: 20rpx;
+.txt text {
+  display: block;
+  font-size: 40px;
+  color: #e50012;
+  text-align: center;
+  margin-bottom: 20rpx;
 }
 </style>
 <template>

@@ -90,7 +90,7 @@ page {
   /* width: 100%; */
   background-color: #fff;
   overflow: hidden;
-  margin-bottom: 2px;
+  margin-bottom: 12rpx;
 }
 .a-gooods-title {
   padding: 20rpx 40rpx;
@@ -148,7 +148,7 @@ page {
 }
 .text-box .xunze {
   display: inline-block;
-  border: 1px solid #f5f5f9;
+  border: 1px solid #f0f0f0;
   padding: 10rpx 25rpx;
   border-radius: 5px;
   font-size: 24rpx;
@@ -323,7 +323,8 @@ page {
 </style>
 <template>
   <view class="container">
-       <view wx:if="{{list.length==0}}">
+    <loadingOrder show="2"  wx:if="{{isLoading}}"></loadingOrder>
+       <view wx:elif="{{list.length==0}}">
        <view class="title-box">
     购物车空空如也～
   </view>
@@ -340,6 +341,7 @@ page {
 
     <view class="edit-btn"  @tap="saveTap">{{saveHidden?"编辑":"完成"}}</view>
   </view>
+  
   <view class="goodsList">
 
     <view class='shopList' wx:for="{{list}}" wx:key="{{indexx}}" wx:for-item="item1" wx:for-index="indexx">
@@ -408,18 +410,21 @@ page {
 import wepy from 'wepy';
 import api from '../../API/api';
 import shopCartPopup from '../../components/shop/shopCartPopup';
+import loadingOrder from '../../components/loadingOrder';
+
 export default class shopCart extends wepy.page {
   config = {
     navigationBarTitleText: '购物车'
   };
-  components = { shopCartPopup };
+  components = { shopCartPopup,loadingOrder };
   data = {
     list: [],
     totalPrice: 0,
     allSelect: false,
     saveHidden: true,
     ishideShopPopup: false,
-    goodsDetail: {}
+    goodsDetail: {},
+    isLoading:true
   };
   computed = {};
   methods = {
@@ -557,8 +562,8 @@ export default class shopCart extends wepy.page {
       this.goodsDetail.selectPrice = price;
     },
     // 点击确定
-   async buyNow() {
-      console.log("点击的回个",this.goodsDetail.property);
+    async buyNow() {
+      console.log('点击的回个', this.goodsDetail.property);
       var property = this.goodsDetail.property;
       this.list[this.x].goodsList.forEach((item, index) => {
         if (
@@ -570,37 +575,38 @@ export default class shopCart extends wepy.page {
           this.delCartGoods(idList);
           return;
         }
-       
       });
       // delCartGoods
       this.goodsDetail.goods_attr_id = property.goods_attr_id;
       this.goodsDetail.goods_number = property.goods_number;
       this.goodsDetail.goods_price = this.goodsDetail.selectPrice;
       this.goodsDetail.goods_attr = this.goodsDetail.property.attr_value;
-      this.goodsDetail.buy_number=this.goodsDetail.buy_number>this.goodsDetail.goods_number?this.goodsDetail.goods_number:this.goodsDetail.buy_number
+      this.goodsDetail.buy_number =
+        this.goodsDetail.buy_number > this.goodsDetail.goods_number
+          ? this.goodsDetail.goods_number
+          : this.goodsDetail.buy_number;
       this.ishideShopPopup = false;
-       var res = await wepy.request({
-          url: api.updateCart,
-          data: {
-            user_id:this.user_id,
-            goods_id:this.goodsDetail.goods_id,
-            buy_number:this.goodsDetail.buy_number,
-            goods_attr_id:this.goodsDetail.goods_attr_id,
-            is_hy: this.list[this.x].is_hy,
-            attr_value:this.goodsDetail.goods_attr,
-            id:this.goodsDetail.id,
-   
-          }
-        });
-        if (res.data.code != '0') {
-          wx.showToast({
-            title: '修改失败', //提示的内容,
-            icon: 'none', //图标,
-            mask: true //显示透明蒙层，防止触摸穿透,
-          });
-        } else {
-          this.goodsDetail.goods_price = res.data.data;
+      var res = await wepy.request({
+        url: api.updateCart,
+        data: {
+          user_id: this.user_id,
+          goods_id: this.goodsDetail.goods_id,
+          buy_number: this.goodsDetail.buy_number,
+          goods_attr_id: this.goodsDetail.goods_attr_id,
+          is_hy: this.list[this.x].is_hy,
+          attr_value: this.goodsDetail.goods_attr,
+          id: this.goodsDetail.id
         }
+      });
+      if (res.data.code != '0') {
+        wx.showToast({
+          title: '修改失败', //提示的内容,
+          icon: 'none', //图标,
+          mask: true //显示透明蒙层，防止触摸穿透,
+        });
+      } else {
+        this.goodsDetail.goods_price = res.data.data;
+      }
     },
     //去结算
     toPayOrder: function() {
@@ -716,6 +722,7 @@ export default class shopCart extends wepy.page {
       });
     } else {
       goodsDetail.goods_price = res.data.data;
+      this.$apply();
     }
     console.log(res);
   }
@@ -726,11 +733,14 @@ export default class shopCart extends wepy.page {
         user_id
       }
     });
+    this.isLoading=false;
     console.log('购物车数据：', res.data.data);
     if (res.data.code == 0) {
       this.list = res.data.data;
       this.totalPrice = 0;
       this.$apply();
+    }else{
+      this.text="出错了！";
     }
     //可见的时候，取消全选状态，隐藏合计金额
     // that.setGoodsList(
@@ -764,7 +774,7 @@ export default class shopCart extends wepy.page {
 
   async onLoad() {
     this.user_id = await this.$parent.loginInfo();
-    this.allSelect=false;
+    this.allSelect = false;
     this.getShopCartInfo(this.user_id);
   }
 }

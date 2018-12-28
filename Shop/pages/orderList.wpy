@@ -129,7 +129,7 @@ export default class orderlist extends wepy.page {
         this.goodsListnum[1] = res.data.data.daifukuan;
         this.goodsListnum[2] = res.data.data.daifahuo;
         this.goodsListnum[3] = res.data.data.yifahuo;
-        this.goodsListnum[4] = res.data.data.chenggong;
+        this.goodsListnum[4] = 0;
             this.$apply();
       });
   }

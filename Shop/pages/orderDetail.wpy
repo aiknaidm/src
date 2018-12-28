@@ -20,7 +20,7 @@ import util from '../../utils/index';
 
 export default class orderDetails extends wepy.page {
   config = {
-    navigationBarTitleText: '订单列表'
+    navigationBarTitleText: '订单详情'
   };
   components = { orderDetail };
 
@@ -54,6 +54,7 @@ export default class orderDetails extends wepy.page {
         }
       })
       .then(res => {
+        wx.hideLoading();
         this.orderDetail = res.data.data.orderList;
         this.goodsMap = res.data.data.goodsMap;
         this.orderDetail.add_time = util.formatTime(
@@ -76,6 +77,10 @@ export default class orderDetails extends wepy.page {
   async onLoad(option) {
     this.id = option.id;
     this.getOrderDetail(this.id);
+    wx.showLoading({
+      title: '加载中...', //提示的内容,
+
+    });
   }
 }
 </script>

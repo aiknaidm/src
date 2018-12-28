@@ -371,14 +371,14 @@ export default class Index extends wepy.page {
       },
       {
         icon: '/images/zhengce.png',
-        text: '优惠政策',
-        url: '/Index/pages/newsList?id=6&name=优惠政策',
+        text: '产品上新',
+        url: '/Index/pages/newsList?id=6&name=产品上新',
         color: '#f6bf31'
       },
       {
         icon: '/images/shangxin.png',
         text: '联系易站',
-        url: '/Index/pages/newsList?id=8&name=产品上新',
+        url: '/Index/pages/newsList?id=8&name=联系易站',
         color: '#10b3b0'
       },
       {
