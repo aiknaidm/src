@@ -146,6 +146,10 @@ page {
 .xunze view {
   display: inline-block;
 }
+.xunze .iconfont{
+  color:#aaa;
+  font-size: 30rpx;
+}
 .text-box .xunze {
   display: inline-block;
   border: 1px solid #f0f0f0;
@@ -176,6 +180,8 @@ page {
   /*justify-content: space-between;*/
   font-size: 24rpx;
   text-align: center;
+  z-index: 10;
+  position: relative;
 }
 .goods-info .buy-num .jian-btn {
   width: 48rpx;
@@ -355,19 +361,19 @@ page {
               <image src='{{item.goods_img}}' wx:if="{{item.goods_img}}" class="img" mode="aspectFit"></image>
               <image src="http://wsc.jicaizx.com/images/no_picture.gif" class="img" mode="aspectFit" wx:else/>
             </view>
-            <view class="text-box" @tap.stop="toGoodDetailsTap({{item.goods_id}})" >
-              <view class="goods-title">{{item.goods_name}}
+            <view class="text-box" >
+              <view class="goods-title" @tap.stop="toGoodDetailsTap({{item.goods_id}})">{{item.goods_name}}
               </view>
 
-              <view @tap.stop='toAddShopCar({{indexx}},{{indexy}})' class="{{item.properties.length>0 ? 'xunze':''}}"> {{item.properties.length!=0&&item.goods_attr==""?"请选择商品规格": item.goods_attr}}
+              <view @tap.stop='toAddShopCar({{indexx}},{{indexy}})' class="{{item.properties.length>0 ? 'xunze':''}}" wx:if="{{item.properties.length}}"> {{item.properties.length!=0&&item.goods_attr==""?"请选择商品规格": item.goods_attr}}              <text class="iconfont icon-xiala"></text>
               </view> 
 
               <view hidden="{{item.properties.length>0?true:false}}" class='nolist'></view>
-              <view class="goods-price" >
+              <view class="goods-price" catchtap="noclick" >
                 <view> ¥ {{item.goods_price}}</view>
                 <view class="buy-num">
                   <view class="jian-btn {{item.buy_number <= 1}}" @tap.stop="jianBtnTap({{indexx}},{{indexy}},{{item.buy_number}})" >-</view>
-                  <input type="number" value="{{item.buy_number}}" @input="shopNumChange({{indexx}},{{indexy}})" />
+                  <input type="number" value="{{item.buy_number}}"  @input="shopNumChange({{indexx}},{{indexy}})" />
                   <view class="jia-btn" @tap.stop="jiaBtnTap({{indexx}},{{indexy}},{{item.buy_number}})" >+</view>
                 </view>
               </view>
@@ -416,7 +422,7 @@ export default class shopCart extends wepy.page {
   config = {
     navigationBarTitleText: '购物车'
   };
-  components = { shopCartPopup,loadingOrder };
+  components = { shopCartPopup, loadingOrder };
   data = {
     list: [],
     totalPrice: 0,
@@ -424,7 +430,7 @@ export default class shopCart extends wepy.page {
     saveHidden: true,
     ishideShopPopup: false,
     goodsDetail: {},
-    isLoading:true
+    isLoading: true
   };
   computed = {};
   methods = {
@@ -507,6 +513,7 @@ export default class shopCart extends wepy.page {
     // 直接修改数量
     shopNumChange(x, y, e) {
       console.log('e', e);
+      var list = this.list;
       var buy_number = e.detail.value;
       var goods_number = list[x].goodsList[y].goods_number; //库存
       if (buy_number >= goods_number) {
@@ -547,6 +554,7 @@ export default class shopCart extends wepy.page {
       this.goodsDetail.property = {};
       this.goodsDetail.property.goods_attr_id = this.goodsDetail.goods_attr_id;
       this.goodsDetail.property.goods_number = this.goodsDetail.goods_number;
+      this.goodsDetail.property.attr_value = this.goodsDetail.goods_attr;
       this.ishideShopPopup = true;
       this.x = x;
     },
@@ -624,6 +632,19 @@ export default class shopCart extends wepy.page {
               goodsList[index] = {};
               goodsList[index].goodsList = [];
             }
+            if (
+              list[i].goodsList[j].properties.length != 0 &&
+              list[i].goodsList[j].goods_attr_id == ''
+            ) {
+              wx.showToast({
+                title: '请选择规格', //提示的内容,
+                icon: 'none',
+                duration: 1000, //延迟时间,
+                mask: true, //显示透明蒙层，防止触摸穿透,
+                success: res => {}
+              });
+              return;
+            }
             list[i].goodsList[j].goods_imgs = list[i].goodsList[j].original_img
               ? 'http://maijia.jicaizx.com/' + list[i].goodsList[j].original_img
               : 'http://wsc.jicaizx.com/images/no_picture.gif';
@@ -642,7 +663,7 @@ export default class shopCart extends wepy.page {
         wx.showToast({
           title: '请先选择商品',
           icon: 'none',
-          duration: 2000
+          duration: 1000
         });
       } else {
         wx.navigateTo({
@@ -733,14 +754,14 @@ export default class shopCart extends wepy.page {
         user_id
       }
     });
-    this.isLoading=false;
+    this.isLoading = false;
     console.log('购物车数据：', res.data.data);
     if (res.data.code == 0) {
       this.list = res.data.data;
       this.totalPrice = 0;
       this.$apply();
-    }else{
-      this.text="出错了！";
+    } else {
+      this.text = '出错了！';
     }
     //可见的时候，取消全选状态，隐藏合计金额
     // that.setGoodsList(

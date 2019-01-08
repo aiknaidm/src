@@ -21,8 +21,8 @@
   -ms-transform: rotate(180deg); /* IE 9 */
   -webkit-transform: rotate(180deg); /* Safari and Chrome */
 }
-.status-box .status-label.active{
-  border-bottom: 6rpx solid #eee
+.status-box .status-label.active {
+  border-bottom: 6rpx solid #eee;
 }
 </style>
 <template>
@@ -34,6 +34,7 @@
     <noOrder text="暂无商品" wx:if="{{goodsList.length==0}}" show="2" ></noOrder>
     <repeat for="{{goodsList}}" key="{{index}}">
       <searchList :goods.sync="item" @goodDetail.user="toGoodDetailsTap"></searchList>
+      <searchList2 :goods.sync="item" @goodDetail.user="toGoodDetailsTap"></searchList2>
     </repeat>
   </view>
 </template>
@@ -44,6 +45,7 @@ import api from '../../API/api';
 import search from '../../components/search';
 import statusTap from '../../components/statusTap';
 import searchList from '../../components/searchList';
+import searchList2 from '../../components/searchList2';
 import noOrder from '../../components/noOrder';
 export default class searchlist extends wepy.page {
   config = {
@@ -88,6 +90,8 @@ export default class searchlist extends wepy.page {
             url:
               'filtrate?cat_id=' +
               this.initdata.cat_id +
+               '&cat_name=' +
+               this.cat_name +
               '&suppliers_id=' +
               this.initdata.suppliers_id
           });
@@ -124,16 +128,18 @@ export default class searchlist extends wepy.page {
       })
       .then(res => {
         wx.hideLoading();
-        if (res.data.data.length == 0) {
-          this.isMoreData = false;
-          return;
-        }
+
         if (data.page == 1) {
           this.goodsList = res.data.data;
         } else {
           this.goodsList.push(...res.data.data);
         }
 
+        if (res.data.data.length == 0) {
+          this.isMoreData = false;
+        }else{
+          this.isMoreData = true;
+        }
         this.$apply();
         console.log('订单列表', this.goodsList);
       });
@@ -171,11 +177,14 @@ export default class searchlist extends wepy.page {
     console.log('传递的值', option);
     wx.removeStorageSync('pinpainame');
     wx.removeStorageSync('pinpailist');
+    wx.removeStorageSync('catlist');
+    wx.removeStorageSync('catname');
     this.userId = await this.$parent.loginInfo();
     this.cat_id = option.cat_id ? option.cat_id : '';
     if (option.navigationTitle) {
       wx.setNavigationBarTitle({ title: option.navigationTitle });
     }
+    this.cat_name=option.cat_name ? option.cat_name : '';
     this.suppliers_id = option.suppliers_id ? option.suppliers_id : '';
     this.initdata = this.initData();
     this.getGoodsList(this.initdata);

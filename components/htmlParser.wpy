@@ -1,5 +1,5 @@
 <style lang="less">
-@import '../plugins/wxParse/wxParse.wxss';
+
 
 .wxParse-img {
   margin: 0 auto;
@@ -46,8 +46,8 @@
 
 <template>
   <view class="body">
-    <text class="h1">{{parserContent.post_title}}</text>
-    <text class="date">{{parserContent.published_time}}</text>
+    <text class="h1" wx:if="{{parserContent.post_title}}">{{parserContent.post_title}}</text>
+    <text class="date" wx:if="{{parserContent.published_time}}">{{parserContent.published_time}}</text>
     <rich-text type="node" nodes="{{parserContent.post_content}}" class="content"></rich-text>
   </view>
 </template>

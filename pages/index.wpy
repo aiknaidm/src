@@ -252,7 +252,7 @@ button::after {
   text-align: center;
   line-height: 80rpx;
   padding-bottom: 20rpx;
-  background: #fff
+  background: #fff;
 }
 
 .img-box {
@@ -301,11 +301,11 @@ button::after {
       indicator-color="rgba(0,0,0,0.2)"
       indicator-active-color="rgba(0,0,0,0.5)"
     >
-      <swiper-item bindtap="toBannerDetail2">
+      <swiper-item @tap="toBannerDetail2">
         <image src="http://wsc.jicaizx.com/images/ad2.jpg?{{date}}" mode="aspectFill"></image>
       </swiper-item>
       <block wx:for="{{carousel}}" wx:key="{{index}}">
-        <swiper-item bindtap="toBannerDetail" data-url="{{item.url}}">
+        <swiper-item bindtap="toBannerDetail({{item.url}})">
           <image src="http://maijia.jicaizx.com/{{item.content}}?{{date}}" mode="aspectFill"></image>
         </swiper-item>
       </block>
@@ -371,8 +371,8 @@ export default class Index extends wepy.page {
       },
       {
         icon: '/images/zhengce.png',
-        text: '产品上新',
-        url: '/Index/pages/newsList?id=6&name=产品上新',
+        text: '最新资讯',
+        url: '/Index/pages/newsList?id=6&name=最新资讯',
         color: '#f6bf31'
       },
       {
@@ -402,9 +402,8 @@ export default class Index extends wepy.page {
       url: api.message
     });
     this.message = res.data.data;
-     wx.hideLoading();
+    wx.hideLoading();
     this.$apply();
-   
   }
   // 轮播
   async getCarousel() {
@@ -414,20 +413,39 @@ export default class Index extends wepy.page {
     this.carousel = res.data.data;
     console.log('carousel', this.carousel);
     this.$apply();
-   
   }
   computed = {};
 
   methods = {
-    toZiXunDetailTap(id){
-        // wx.navigationBarTitleText
-         wx.navigateTo({
-      url: "/Index/pages/details?id=" + id
-    })
+    toZiXunDetailTap(id) {
+      // wx.navigationBarTitleText
+      wx.navigateTo({
+        url: '/Index/pages/details?id=' + id
+      });
     },
-   toZiXunTap: function() {
+    toZiXunTap: function() {
       wx.navigateTo({
         url: '/Index/pages/newsList'
+      });
+    },
+    toBannerDetail: function(url) {
+
+      if (url != '0') {
+        wx.navigateTo({
+          url: '/Index/pages/details?id=' + url
+        });
+      }
+    },
+    toBannerDetail2: function() {
+      wx.navigateToMiniProgram({
+        appId: 'wxf48cdd6a7dae8c21',
+        path: 'pages/my/survey-ticket3/index',
+
+        // envVersion: 'release',
+        envVersion: 'develop',
+        success(res) {
+          // 打开成功
+        }
       });
     }
   };

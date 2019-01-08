@@ -121,9 +121,19 @@
   color: #e50012;
 }
 
+.materials-titile2 {
+  padding: 30rpx 55rpx;
+  // font-weight: bold;
+  border-bottom: 1px solid #f2f2f2;
+}
+.materials-titile2 .iconfont{
+  float: right;
+  color: #aaa
+}
 .materials-titile {
   padding: 30rpx;
   font-weight: bold;
+  border-bottom: 1px solid #f2f2f2;
 }
 </style>
 <template>
@@ -157,14 +167,29 @@
       <view class="materials-titile">商品分类</view>
       <loadingOrder  wx:if="{{isLoading}}"></loadingOrder>
       <noorder show="2" :text.sync="text" wx:elif="{{(goodsKind.length==0&&!isLoading)||isguoqi}}"></noorder>
-    
-      <view class="materials-list" wx:else>
+    <block wx:elif="{{erji==0}}">
+       <view class="materials-list" >
+          <view   wx:for="{{goodsKind}}"  wx:key="{{index}}"  @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})">
+              {{item.cat_name}}
+          </view>
+        </view>
+    </block>
+      <block wx:else>
         <view
           wx:for-items="{{goodsKind}}"
           wx:key="{{index}}"
-          @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})"
-        >{{item.cat_name}}</view>
-      </view>
+         
+        >
+        <view class="materials-titile2"  @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})">{{item.cat_name}}<text class="iconfont icon-arrow-right"></text></view>
+        <view class="materials-list" wx:if="{{item.ch_cats.length}}">
+          <view   wx:for="{{item.ch_cats}}" wx:for-index="index2" wx:for-item="item2" wx:key="{{index2}}"  @tap="toFenLeiTap({{item2.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item2.cat_name}})" >
+              {{item2.cat_name}}
+          </view>
+        </view>
+  
+        
+        </view>
+      </block>
     </view>
   </view>
 </template>
@@ -218,6 +243,11 @@ export default class shop extends wepy.component {
       type: Boolean,
       default: true,
       twoWay: true
+    },
+    erji: {
+      type: Number,
+      default: 0,
+      twoWay: true
     }
   };
   methods = {
@@ -233,7 +263,7 @@ export default class shop extends wepy.component {
           suppliers_name +
           '-' +
           cat_name +
-          '&type=2'
+          '&cat_name='+cat_name
       });
     },
     async apply() {

@@ -84,7 +84,7 @@ overflow: hidden;
         <view class="goods-price2">¥ {{goods.shop_price}}</view>
         <view class="goods-price">
           <view class="red">销量：{{goods.salenum}}</view>
-          <view class="goods-style2">+</view>
+          <view class="goods-style2">{{goods.suppliers_name}}</view>
 
 
         </view>

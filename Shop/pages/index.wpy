@@ -1,7 +1,7 @@
 <style lang="less">
 </style>
 <template>
-  <shopIndexc :yizhan.sync="yizhan" :yizhanBanner.sync="yizhanBanner" :shenhe.sync="shenhe" :goodsKind.sync="goodsKind" :isguoqi.sync="isguoqi" :isLoading.sync="isLoading"></shopIndexc>
+  <shopIndexc :yizhan.sync="yizhan" :yizhanBanner.sync="yizhanBanner" :shenhe.sync="shenhe" :goodsKind.sync="goodsKind" :isguoqi.sync="isguoqi" :isLoading.sync="isLoading" :text.sync="text" :erji.sync="erji"></shopIndexc>
 </template>
 
 
@@ -22,10 +22,11 @@ export default class shop extends wepy.page {
     isguoqi: false,
     text: '暂无分类',
     shenhe: 0,
-    isLoading:true
+    isLoading: true,
+    erji: 0
   };
   components = { shopIndexc };
-  
+
   mixins = [shopIndex];
   computed = {};
   methods = {};
@@ -43,10 +44,11 @@ export default class shop extends wepy.page {
       title: '加载中...', //提示的内容,
       mask: true, //显示透明蒙层，防止触摸穿透,
       success: res => {}
-    });}
+    });
+  }
   async onLoad(options) {
-    console.log("options",options)
-    this.suppliers_id=options.suppliers_id
+    console.log('options', options);
+    this.suppliers_id = options.suppliers_id;
   }
 }
 </script>

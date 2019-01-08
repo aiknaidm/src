@@ -1,4 +1,12 @@
 <style lang="less">
+.ad{
+	width: 100%;
+	height: 200rpx;
+}
+.ad image{
+	width: 100%;
+	height: 100%;
+}
 </style>
 <template>
   <view class="container">
@@ -13,6 +21,9 @@
         <myList :tabItem="item"></myList>
       </repeat>
     </view>
+      <view class='ad'  @tap='toBannerDetail2' >
+    <image src='http://wsc.jicaizx.com/images/ad1.jpg'  mode='aspectFill'></image>
+  </view>
     <!-- 遮罩层 -->
     <mask wx:if="{{isShowprompt}}"></mask>
     <!-- 为获取用户信息的提示 -->
@@ -114,7 +125,19 @@ export default class my extends wepy.page {
       } else console.log('获取用户信息失败');
       this.isShowprompt = false;
       this.$apply();
-    }
+    },
+    toBannerDetail2: function () {
+		wx.navigateToMiniProgram({
+			appId: 'wxf48cdd6a7dae8c21',
+			path: 'pages/my/survey-ticket3/index',
+
+			// envVersion: 'release',
+			envVersion: 'develop',
+			success(res) {
+				// 打开成功
+			}
+		})
+	},
   };
   events = {};
   upUserInfo() {
@@ -163,7 +186,7 @@ export default class my extends wepy.page {
     let userInfo = await this.$parent.getUserInfo(this.userId);
     this.userInfo = userInfo;
     // 是否有获取用户信息的权限
-    if (isSettingStatus) {
+    if (isSettingStatus||userInfo.mobile_phone) {
       console.log('已获取权限');
       console.log('userInfo', this.userInfo);
       this.$apply();

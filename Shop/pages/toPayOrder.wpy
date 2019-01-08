@@ -296,8 +296,8 @@ label.label text {
 }
 .address-list {
   text-align: left;
-	flex: 1;
-	padding-left: 20rpx;
+  flex: 1;
+  padding-left: 20rpx;
 }
 .address-title {
   width: 120rpx;
@@ -317,7 +317,7 @@ label.label text {
         <!-- <label class="radio">
         <radio value="1" color='red' checked='true' />快递配送
         </label>-->
-        <button class="order-adress" @tap="getWxAddress">
+        <button class="order-adress" @tap="getWxAddress">               
           <view class="address-title">收货地址</view>
           <view class="address-noinfo" bindtap="getAddress" wx:if="{{address==''||address==null}}">
             <text class="iconfont icon-tianjia-copy"></text>添加地址
@@ -443,7 +443,7 @@ label.label text {
         </view>
         <view class="jiesuan-box">
           <view class="left-price">
-            <view class="total">合计：¥ {{allGoodsPrice+yunPrice}}</view>
+            <view class="total">合计：¥ {{zongji}}</view>
           </view>
           <button class="to-pay-btn" formType="submit" disabled="{{isclick}}">提交订单</button>
         </view>
@@ -459,7 +459,7 @@ import goodsList from '../../components/shop/goodsList';
 import wxpay1 from '../../utils/index.js';
 export default class toPayOrder extends wepy.page {
   config = {
-    navigationBarTitleText: '购物车'
+    navigationBarTitleText: '支付订单'
   };
   components = { goodsList };
   data = {
@@ -467,6 +467,7 @@ export default class toPayOrder extends wepy.page {
     goodsMap: [],
     allGoodsPrice: 0,
     yunPrice: 0,
+    zongji:0,
     address: {},
     itemList: ['微信支付', '线下支付'], //支付方式
     payIndex: 0
@@ -583,7 +584,6 @@ export default class toPayOrder extends wepy.page {
       var mobile = that.address ? that.data.address.mobile : '';
       var region = that.address ? that.data.address.region : '';
       var address = that.address ? that.data.address.address : '';
-      var remark = e.detail.value.remark; // 备注信息
       var user_id = this.userId;
       var order_amount = that.allGoodsPrice;
       var yunfei = that.yunPrice;
@@ -618,70 +618,79 @@ export default class toPayOrder extends wepy.page {
         });
         return;
       }
-      var res = await wepy.request({
-        url: api.createOrder,
-        data: {
-          user_id,
-          form_id,
-          consignee,
-          region,
-          address,
-          mobile,
-          remark,
-          order_amount,
-          yunfei,
-          bonus_id,
-          pay_id,
-          goodsList,
-          pay_note
-        },
-        method: 'POST'
-      });
-      wx.hideLoading();
-
-      if (res.data.code != 0) {
-        wx.showModal({
-          title: '错误',
-          content: res.data.message,
-          showCancel: false,
-          success: res => {
-            if(res.confirm)
-            wx.navigateBack({});
-          }
+      try {
+        var res = await wepy.request({
+          url: api.createOrder,
+          data: {
+            user_id,
+            form_id,
+            consignee,
+            region,
+            address,
+            mobile,
+            order_amount,
+            yunfei,
+            bonus_id,
+            pay_id,
+            goodsList,
+            pay_note
+          },
+          method: 'POST'
         });
+        wx.hideLoading();
 
-        return;
-      }
-      // 刷新购物车
-      this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo(this.userId);
-      if (res.data.data == '' || res.data.data == null) {
-        wx.redirectTo({ url: '/Shop/pages/orderList?order_status=1' });
-        return;
-      }
-      if (pay_id == 2) {
-        wx.redirectTo({ url: '/Shop/pages/orderList?order_status=2' });
-        return;
-      }
-      if (this.shopCarList.length > 1) {
-        wx.redirectTo({ url: '/Shop/pages/orderList?order_status=1' });
-        return;
-      }
-      // 调起支付
-      var payResult = await wxpay1.wxpay1(res.data.data);
-      console.log('支付', payResult);
-      wx.showToast({
-        title: payResult.msg, //提示的内容,
-        icon: 'success', //图标,
-        duration: 2000, //延迟时间,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
-      // 取消支付
-      if (payResult.code == 2) {
-        wx.redirectTo({ url: '/Shop/pages/orderList?order_status=1' });
-      }
-      // 支付成功
-      if (payResult.code == 1) {
-        wx.redirectTo({ url: '/Shop/pages/orderList?order_status=2' });
+        if (res.data.code != 0) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false,
+            success: res => {
+              if (res.confirm) wx.navigateBack({});
+            }
+          });
+
+          return;
+        }
+        // 刷新购物车
+        this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo(
+          this.userId
+        );
+        if (res.data.data == '' || res.data.data == null) {
+          wx.redirectTo({ url: '/Shop/pages/orderList?order_status=1' });
+          return;
+        }
+        if (pay_id == 2) {
+          wx.redirectTo({ url: '/Shop/pages/orderList?order_status=2' });
+          return;
+        }
+        if (this.shopCarList.length > 1) {
+          wx.redirectTo({ url: '/Shop/pages/orderList?order_status=1' });
+          return;
+        }
+        // 调起支付
+        var payResult = await wxpay1.wxpay1(res.data.data);
+        console.log('支付', payResult);
+        wx.showToast({
+          title: payResult.msg, //提示的内容,
+          icon: 'success', //图标,
+          duration: 2000, //延迟时间,
+          mask: true //显示透明蒙层，防止触摸穿透,
+        });
+        // 取消支付
+        if (payResult.code == 2) {
+          wx.redirectTo({ url: '/Shop/pages/orderList?order_status=1' });
+        }
+        // 支付成功
+        if (payResult.code == 1) {
+          wx.redirectTo({ url: '/Shop/pages/orderList?order_status=2' });
+        }
+      } catch (error) {
+         wx.showToast({
+          title:"错误"+error, //提示的内容,
+          icon: 'none', //图标,
+          duration: 2000, //延迟时间,
+          mask: true //显示透明蒙层，防止触摸穿透,
+        });
       }
     }
   };
@@ -697,8 +706,11 @@ export default class toPayOrder extends wepy.page {
         this.shopCarList[index].order_amount =
           parseFloat(this.shopCarList[index].order_amount) +
           parseFloat(item2.goods_price) * parseFloat(item2.buy_number);
+        
       });
     });
+   this.allGoodsPrice= this.allGoodsPrice.toFixed(2)
+   this.zongji=  (parseFloat(this.allGoodsPrice)+ parseFloat(this.yunPrice)).toFixed(2)
   }
   // 获取地址信息
   async getAddress(user_id) {

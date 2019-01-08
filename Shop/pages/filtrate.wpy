@@ -55,29 +55,26 @@
   padding: 20rpx;
   border-bottom: 1px solid #eee;
 }
-.radio-group label {
-  padding: 0 40rpx;
-  display: flex;
-  justify-content: space-between;
-  line-height: 88rpx;
-  border-top: 1px solid #eee;
-}
-checkbox-group {
+
+checkbox-group,radio-group {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
   padding: 20rpx;
+
 }
-checkbox-group label {
+radio-group{
+  padding-bottom: 120rpx
+}
+checkbox-group label,radio-group label {
   width: 31%;
   font-size: 28rpx;
+    display: flex;
+  // justify-content: space-between;
+  line-height: 60rpx; 
 }
-checkbox-group label {
-  display: flex;
-  justify-content: space-between;
-  line-height: 60rpx;
-}
+
 checkbox-group.pinpai-check {
   padding-bottom: 138rpx;
 }
@@ -96,7 +93,7 @@ checkbox-group.pinpai-check {
       <input type='number' placeholder="最高价" bindinput="listenerHighInput" name="priceMax" value="{{initdata.price_max}}"></input>
     </view>
   </view>
-  <!--工种选择  -->
+
   <view class='shaixuan-list'>
     <view class='title'>品牌</view>
     <!-- <view>全部></view> -->
@@ -104,10 +101,21 @@ checkbox-group.pinpai-check {
   <view class='gongzhong-active'>已选择：{{pinpainame}}</view>
   <checkbox-group name="brand" > 
     <label class="checkbox" wx:for="{{pinpailist}}" wx:key="{{index}}" @tap="getName({{index}})">
-      {{item.brand_name}}
-      <checkbox checked='{{item.active}}' value="{{item.brand_id}}" />
+      <checkbox checked='{{item.active}}' value="{{item.brand_id}}" /> {{item.brand_name}}
+     
     </label>
   </checkbox-group>
+    <view class='shaixuan-list'>
+    <view class='title'>分类</view>
+    <!-- <view>全部></view> -->
+  </view>
+  <view class='gongzhong-active'>已选择：{{catname}}</view>
+  <radio-group name="cat" > 
+    <label class="checkbox" wx:for="{{catlist}}" wx:key="{{index}}" @tap="getCatName({{index}})">
+      <radio checked='{{item.cat_name==catname}}' value="{{item.cat_id}}" />{{item.cat_name}}
+
+    </label>
+  </radio-group>
   <!--品牌选择  -->
   <!-- <view class='shaixuan-list'>
     <view class='title'>类目</view>
@@ -135,11 +143,13 @@ import wepy from 'wepy';
 import api from '../../API/api';
 export default class filtrate extends wepy.page {
   config = {
-    navigationBarTitleText: '购物车'
+    navigationBarTitleText: '筛选'
   };
   components = {};
   data = {
     pinpailist: [],
+    catlist:[],
+    catname:"无",
     pinpainame: '无',
     initdata: {}
   };
@@ -153,13 +163,21 @@ export default class filtrate extends wepy.page {
           this.pinpainame.push(item.brand_name);
         }
       });
-      console.log(this.$parent.$pages['/Shop/pages/searchList'].initdata);
+    },
+    getCatName(index) {
+      
+      this.catname=this.catlist[index].cat_name;
+   
     },
     okSubmit(e) {
       var initdata = this.$parent.$pages['/Shop/pages/searchList'].initdata;
       wx.setStorageSync('pinpainame', this.pinpainame);
       wx.setStorageSync('pinpailist', this.pinpailist);
+      wx.setStorageSync('catname', this.catname);
+      wx.setStorageSync('catlist', this.catlist);
       initdata.brand = e.detail.value.brand.toString();
+      initdata.cat_id = e.detail.value.cat.toString();
+      // initdata.brand = e.detail.value.brand.toString();
       initdata.price_max = e.detail.value.priceMax;
       initdata.price_min = e.detail.value.priceMin;
       this.$parent.$pages['/Shop/pages/searchList'].initdata = initdata;
@@ -170,6 +188,7 @@ export default class filtrate extends wepy.page {
     },
     reset() {
       this.pinpainame = '';
+      this.catname = '';
       this.pinpailist.forEach((item, index) => {
         this.pinpailist[index].active = false;
       });
@@ -194,18 +213,49 @@ export default class filtrate extends wepy.page {
         this.$apply();
       });
   }
+  // 获取分类列表
+  getcatlist(parent_id, suppliers_id) {
+    var that = this;
+    console.log('cat_id.:', parent_id);
+    wepy
+      .request({
+        url: api.catlist,
+        data: {
+          parent_id,
+          suppliers_id
+        }
+      })
+      .then(res => {
+        if (res.data.code == '0') this.catlist = res.data.data;
+        console.log('品牌列表', this.catlist);
+        this.$apply();
+      });
+  }
   events = {};
   onLoad(options) {
     var cat_id = options.cat_id;
+    var cat_name = options.cat_name;
     var suppliers_id = options.suppliers_id;
     var pinpainame = wx.getStorageSync('pinpainame');
     var pinpailist = wx.getStorageSync('pinpailist');
+    var catname = wx.getStorageSync('catname');
+    var catlist = wx.getStorageSync('catlist');
+    var pinpailist = wx.getStorageSync('pinpailist');
+    if (cat_name) {
+      wx.setNavigationBarTitle({ title: '筛选-' + cat_name });
+    }
     this.initdata = this.$parent.$pages['/Shop/pages/searchList'].initdata;
     if (pinpainame && pinpailist) {
       this.pinpainame = pinpainame;
       this.pinpailist = pinpailist;
     } else {
       this.getPinPaiList(cat_id, suppliers_id);
+    }
+    if (catname && catlist) {
+      this.catname = catname;
+      this.catlist = catlist;
+    } else {
+      this.getcatlist(cat_id, suppliers_id);
     }
   }
 }

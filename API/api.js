@@ -10,7 +10,7 @@ const api = {
     yizhanBanner: `${host}/yzgg`, //首页广告
     orderList: `${host}/orderlist`, //进货记录（已完成订单）
     yizhanList: `${host}/yzlb_my`, //易站列表
-    goodsKind: `${host}/fenlei`, //商品分类
+    goodsKind: `${host}/categorys`, //商品分类
     goodsBrand: `${host}/pinpai`, //商品品牌
     goodsList: `${host}/search`, //商品列表
     helpList: `${host}/bangzhu`, //帮助中心
@@ -33,7 +33,7 @@ const api = {
     updateCart: `${host}/updatecart`,
     delCart: `${host}/delcart`,
     zlyd: `${host}/zlyd`, //再来一单
-    orderNum: `${host}/order_num` //订单数量
-
+    orderNum: `${host}/order_num`, //订单数量
+    catlist: `${host}/cat_list` //订单数量
 }
 export default api
