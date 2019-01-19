@@ -1,7 +1,33 @@
 <style lang="less">
+// .backIndex.active {
+//   width: 200rpx;
+// }
+// .backIndex .icon-arrow-right {
+//   display: inline-block;
+//   transform: rotate(180deg);
+//   -webkit-transform: rotate(180deg);
+//   margin: 0 10rpx;
+//   position: relative;
+// }
+// .backIndex.active .icon-arrow-right {
+//   transform: rotateX(180deg);
+//   -webkit-transform: rotateX(180deg);
+// }
+.backIndex2 {
+  bottom: 300rpx;
+}
 </style>
 <template>
-  <shopIndexc :yizhan.sync="yizhan" :yizhanBanner.sync="yizhanBanner" :shenhe.sync="shenhe" :goodsKind.sync="goodsKind" :isguoqi.sync="isguoqi" :isLoading.sync="isLoading" :text.sync="text" :erji.sync="erji"></shopIndexc>
+ <view class="container">
+ <shopIndexc :yizhan.sync="yizhan"  :yizhanBanner.sync="yizhanBanner" :shenhe.sync="shenhe" :goodsKind.sync="goodsKind" :isguoqi.sync="isguoqi" :isLoading.sync="isLoading" :text.sync="text" :erji.sync="erji"></shopIndexc>
+
+
+  
+    <view class="backIndex backIndex2 " @tap='backIndex'>
+   <text class='iconfont icon-shouye-copy'></text> 
+    </view>
+
+ </view>
 </template>
 
 
@@ -11,6 +37,7 @@ import wepy from 'wepy';
 import noorder from '../../components/noOrder';
 import shopIndexc from '../../components/shop/shopIndex';
 import shopIndex from '../../mixins/shopIndex';
+
 export default class shop extends wepy.page {
   config = {
     navigationBarTitleText: '吉采易站'
@@ -23,18 +50,60 @@ export default class shop extends wepy.page {
     text: '暂无分类',
     shenhe: 0,
     isLoading: true,
-    erji: 0
+    erji: 0,
+    isShowShare: false,
+    itemList: []
   };
   components = { shopIndexc };
 
   mixins = [shopIndex];
   computed = {};
-  methods = {};
+  methods = {
+    backIndex() {
+      wx.switchTab({ url: '/pages/shop' });
+    }
+  };
   events = {};
-  async onShow() {
-    this.userId = await this.$parent.loginInfo();
+
+  onShareAppMessage(res) {
+    var path = '/Shop/pages/index';
+    if (res.from === 'button') {
+      console.log(res.target.dataset.index);
+      if (res.target.dataset.index == 1)
+        var path = '/Shop/pages/index?friend_id=' + this.userId;
+      return {
+        title: this.yizhan.suppliers_name,
+        path: path
+      };
+    }
+  }
+  async onLoad(options) {
+    console.log('options', options);
+    // 店铺id
+    this.suppliers_id = options.suppliers_id;
+
+    // 业务员id sales_id
+    if (options.sales_id) {
+      wx.setStorageSync('sales_id', options.sales_id);
+      wx.setStorageSync('suppliers_id', options.suppliers_id);
+    }
+    // 工长id friend_id
+    if (options.friend_id) {
+      this.$parent.globalData.friend_id = options.friend_id;
+      this.$parent.globalData.friend_suppliers_id = options.suppliers_id;
+    }
+
+    // this.friend_id = this.$parent.globalData.friend_id;
+  }
+    async onShow() {
+      // 判断是工长还是用户
+    var userId =
+      this.suppliers_id == this.$parent.globalData.friend_suppliers_id
+        ? this.$parent.globalData.friend_id
+        : await this.$parent.loginInfo();
+    console.log('this.userId', userId);
     if (this.suppliers_id) {
-      this.getShopBanner(this.userId, this.suppliers_id);
+      this.getShopBanner(userId, this.suppliers_id);
       this.getMaterialsList(this.suppliers_id);
     } else {
       this.getShopIndex(this.userId);
@@ -45,10 +114,6 @@ export default class shop extends wepy.page {
       mask: true, //显示透明蒙层，防止触摸穿透,
       success: res => {}
     });
-  }
-  async onLoad(options) {
-    console.log('options', options);
-    this.suppliers_id = options.suppliers_id;
   }
 }
 </script>

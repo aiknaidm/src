@@ -5,6 +5,7 @@
   text-align: center;
  padding: 24rpx;
  border-bottom: 1px solid #f0f0f0;
+ background: #fff
 }
 .ss-my-c{
   display: flex;

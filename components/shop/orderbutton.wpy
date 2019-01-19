@@ -7,7 +7,7 @@
 
       <view
         class="btn cancel-btn"
-        wx:if="{{orderDetail.order_status==1}}"
+        wx:if="{{orderDetail.order_status==1||orderDetail.order_status==9}}"
         @tap.stop="cancelOrderTap({{orderDetail.id}})"
       >取消订单</view>
       <view
@@ -21,7 +21,11 @@
         wx:if="{{orderDetail.order_status==2&&orderDetail.shipping_status==1}}"
         @tap.stop="confirmBtnTap({{orderDetail.id}})"
       >确认收货</view>
-
+<view
+        class="btn topay-btn"
+        wx:if="{{orderDetail.order_status==9&&is_friend==1}}"
+        @tap.stop="payStatusTap({{orderDetail.id}})"
+      >付款</view>
   </view>
 </template>
 <script>
@@ -34,13 +38,18 @@ export default class orderbutton extends wepy.component {
       type: Object,
       default: {},
       twoWay: true
-    }
+    },
+    is_friend:String
   };
   data = {};
 
   events = {};
 
   methods = {
+    // 选择支付方式
+    payStatusTap(id){
+      this.$emit("payStatusTap",id)
+    },
     // 取消订单
     async cancelOrderTap(id) {
       var that = this;

@@ -46,6 +46,21 @@ export default class shop extends wepy.page {
       success: res => {}
     });
   }
+   // 分享
+    onShareAppMessage(res) {
+            var path = '/Shop/pages/index';
+            console.log("path",path)
+            if (res.from === 'button') {
+                console.log(res.target.dataset.index);
+                if (res.target.dataset.index == 1)
+                    var path = '/Shop/pages/index?friend_id=' + this.userId;
+
+            }
+            return {
+                title: this.yizhan.suppliers_name,
+                path: path
+            };
+        }
   async onLoad(options) {
     this.suppliers_id = options.suppliers_id;
   }

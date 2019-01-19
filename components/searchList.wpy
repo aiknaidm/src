@@ -19,7 +19,8 @@
   display: flex;
   /* width: 100%; */
   /* margin: 24rpx; */
-  padding:40rpx 24rpx;
+  padding: 40rpx 24rpx;
+  background: #fff;
   border-bottom: 16rpx solid #f0f0f0;
 }
 
@@ -47,15 +48,15 @@
 .goods-price2 {
   color: #e50012;
 }
-.goods-title2{
+.goods-title2 {
   font-weight: bold;
   max-height: 100rpx;
   display: -webkit-box;
--webkit-box-orient: vertical;
--webkit-line-clamp: 2;
-overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
-.goods-price{
+.goods-price {
   font-size: 24rpx;
   color: #666;
   line-height: 45rpx;
@@ -63,17 +64,32 @@ overflow: hidden;
   justify-content: space-between;
   align-items: center;
 }
-.img-box2{
+.img-box2 {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
-
+.goods-style2 {
+  background-color: #e50012;
+  color: #fff;
+  padding: 10rpx;
+  line-height: 0;
+  min-width: 30rpx;
+  min-height: 30rpx;
+  text-align: center;
+  line-height: 28rpx;
+  border-radius: 50px;
+  font-size: 30rpx;
+}
+.goods-text3{
+  font-size: 24rpx;
+}
 </style>
 <template>
 
     <view class="goods-box2"  @tap="toGoodDetailsTap({{goods.goods_id}})" >
+
+
       <view class="img-box2">
         <image src="http://maijia.jicaizx.com/{{goods.original_img}}" class="image" mode="aspectFit" lazy-load="true" wx:if="{{goods.original_img1==''}}" />
         <image src="{{goods.original_img1}}" class="image" mode="aspectFit" lazy-load="true" wx:else/>
@@ -84,8 +100,7 @@ overflow: hidden;
         <view class="goods-price2">¥ {{goods.shop_price}}</view>
         <view class="goods-price">
           <view class="red">销量：{{goods.salenum}}</view>
-          <view class="goods-style2">+</view>
-
+          <view class="goods-style2" @tap.stop="tobuy({{goods}})">+</view>
 
         </view>
       </view>
@@ -95,11 +110,13 @@ overflow: hidden;
 <script>
 import wepy from 'wepy';
 export default class searchList extends wepy.component {
-    props ={
-     goods:{
-         type: Object, default: {}, twoWay: true 
-     }
+  props = {
+    goods: {
+      type: Object,
+      default: {},
+      twoWay: true
     }
+  };
   data = {};
   events = {};
   methods = {
@@ -107,9 +124,12 @@ export default class searchList extends wepy.component {
     toGoodDetailsTap(id) {
       console.log('id', id);
       this.$emit('goodDetail', id);
+    },
+    tobuy(id) {
+      console.log('id', id);
+      this.$emit('addShopCar2', id);
     }
   };
-  onLoad() {
-  }
+  onLoad() {}
 }
 </script>

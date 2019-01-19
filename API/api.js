@@ -27,6 +27,7 @@ const api = {
     SheheStauts: `${host}/shenhe`, //判断审核状态
     GoodsInfo: `${host}/goodinfo`, //商品详情
     addCart: `${host}/addcart`, //加入购物车
+    showCart: `${host}/showcart_new`, //购物车列表
     getAddress: `${host}/dizhi`, //获取上一次地址
     createOrder: `${host}/order_new`, //创建订单
     //参数user_id  用户ID   goods_id  商品ID  goods_number   购买数量 goods_attr_id  规格ID   没有的话传空
@@ -34,6 +35,10 @@ const api = {
     delCart: `${host}/delcart`,
     zlyd: `${host}/zlyd`, //再来一单
     orderNum: `${host}/order_num`, //订单数量
-    catlist: `${host}/cat_list` //订单数量
+    catlist: `${host}/cat_list`, //订单数量
+    renzheng: `${host}/renzheng`, //订单数量
+    friend_list: `${host}/friend_list`, //工长列表
+    xianxiaorder: `${host}/xianxiaorder`, //修改订单支付状态
+    getQRCodeImg: `${host}/getQRCode1`
 }
 export default api

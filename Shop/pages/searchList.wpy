@@ -1,4 +1,8 @@
 <style lang="less">
+.container {
+  padding-bottom: 85rpx;
+  background-color: #f0f0f0;
+}
 .search-title {
   display: flex;
   justify-content: space-around;
@@ -10,7 +14,6 @@
 .search-title .active {
   color: #e50012;
 }
-
 .search-title image {
   width: 35rpx;
   height: 35rpx;
@@ -18,24 +21,125 @@
 }
 .search-title .up .img {
   transform: rotate(180deg);
-  -ms-transform: rotate(180deg); /* IE 9 */
-  -webkit-transform: rotate(180deg); /* Safari and Chrome */
+  -ms-transform: rotate(180deg);
+  /* IE 9 */
+  -webkit-transform: rotate(180deg);
+  /* Safari and Chrome */
 }
 .status-box .status-label.active {
   border-bottom: 6rpx solid #eee;
+}
+.shop-cart {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  z-index: 10;
+}
+.shop-cart-list {
+  background-color: #fff;
+  line-height: 50rpx;
+  max-height: 600rpx;
+  overflow-y: scroll;
+  .red {
+    color: #e50012;
+    margin-left: 20rpx;
+    display: inline-block;
+  }
+  .name {
+    max-width: 150rpx;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+.buy-num-box {
+  margin-top: 0;
+  padding-top: 30rpx;
+  border-top: 1px solid #f0f0f0;
+}
+.buy-num-title {
+  display: flex;
+  align-items: center;
+}
+.shop-cart-num {
+  height: 80rpx;
+  position: relative;
+}
+.shop-cart-num text {
+  display: inline-block;
+  position: relative;
+  width: 100rpx;
+  height: 100rpx;
+  left: 20rpx;
+  font-size: 100rpx;
+  top: -20rpx;
+  color: #e50012;
+}
+.shop-cart-num .num {
+  font-size: 30rpx;
+  display: inline-block;
+  width: 35rpx;
+  height: 35rpx;
+  text-align: center;
+  line-height: 30rpx;
+  position: relative;
+  left: -10rpx;
+  top: -70rpx;
+  background: #f7bf30;
+  color: #fff;
+  border-radius: 50%;
+}
+.topay {
+  background-color: #e50012;
+  color: #fff;
+  height: 80rpx;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 0 50rpx;
+  line-height: 80rpx;
 }
 </style>
 <template>
   <view class="container">
     <search @buttonTap.user="buttonTap">
-
     </search>
-    <statusTap :statusType.sync="statusType" @statusTap.user="statusTap" type="shop"></statusTap>
-    <noOrder text="暂无商品" wx:if="{{goodsList.length==0}}" show="2" ></noOrder>
+    <statusTap :statusType.sync="statusType" @statusTap.user="statusTap" type="shop">
+      <view slot="other" class="status-label" @tap="changeListStyle">
+        <text class="iconfont icon-hengshuqiehuanshu {{is_picture?'active':''}}"></text>
+      </view>
+    </statusTap>
+    <noOrder text="暂无商品" wx:if="{{goodsList.length==0}}" show="2"></noOrder>
     <repeat for="{{goodsList}}" key="{{index}}">
-      <searchList :goods.sync="item" @goodDetail.user="toGoodDetailsTap"></searchList>
-      <searchList2 :goods.sync="item" @goodDetail.user="toGoodDetailsTap"></searchList2>
+      
+      <searchList1 :goods.sync="item" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==1}}"></searchList1>
+      <searchList2 :goods.sync="item" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==0}}"></searchList2>
     </repeat>
+    <shopCartPopup :goodsDetail.sync="goodsDetail" wx:if="{{ishideShopPopup}}"></shopCartPopup>
+    <!-- <suppliersCart></suppliersCart> -->
+    <view class="shop-cart" wx:if="{{shopNum!=0}}">
+      <view class="shop-cart-list" wx:if="{{isShowCart}}">
+        <view wx:for="{{cartList}}" wx:key="{{index}}" class="buy-num-box">
+          <view class="buy-num-title">
+            <text class="name">{{item.goods_name}}</text><text class="red">￥{{item.goods_price}} </text>
+          </view>
+          <view class="num-box">
+            <view @tap="numJianTap({{item}},{{index}})" class="num-jian">-</view>
+            <view class="num-input"><input value="{{item.buy_number}}" /></view>
+            <view @tap="numJiaTap({{item}},{{index}})" class="num-jia">+</view>
+          </view>
+        </view>
+      </view>
+      <view class="shop-cart-num" wx:if="{{cartList.length}}">
+        <view class="cart" @tap="showCart"><text class="iconfont icon-gouwuche1"></text>
+          <text class="num">{{cartList.length}}</text></view>
+        <view class="topay" @tap="toPayOrder">去结算</view>
+      </view>
+    </view>
+    <mask wx:if="{{isShowCart&&shopNum!=0}}" @tap.stop="hiddenCart" @touchmove.stop="stop"></mask>
   </view>
 </template>
 
@@ -44,28 +148,99 @@ import wepy from 'wepy';
 import api from '../../API/api';
 import search from '../../components/search';
 import statusTap from '../../components/statusTap';
-import searchList from '../../components/searchList';
-import searchList2 from '../../components/searchList2';
+import searchList1 from '../../components/searchList';
+import searchList2 from '../../components/searchList1';
 import noOrder from '../../components/noOrder';
+import shopCart from '../../mixins/shopCart';
+import shopCartPopup from '../../components/shop/shopCartPopup';
 export default class searchlist extends wepy.page {
   config = {
     navigationBarTitleText: '搜索列表'
   };
-  components = { search, searchList, statusTap, noOrder };
-
+  components = {
+    search,
+    searchList1,
+    searchList2,
+    statusTap,
+    noOrder,
+    shopCartPopup
+  };
   data = {
     goodsList: [],
     statusType: ['综合', '销量', '价格', '筛选'],
     currentType: '',
-    isMoreData: true
+    isMoreData: true,
+    goodsDetail: {},
+    ishideShopPopup: false,
+    cartList: [],
+    isShowCart: false,
+    shopNum: 0,
+    is_picture: 0,
+    status: 2
   };
-
+  mixins = [shopCart];
   computed = {};
   methods = {
+    stop() {
+      return;
+    },
+    toPayOrder() {
+      this.$parent.$pages['/Shop/pages/shopCart'].methods.toPayOrder(
+        this.list,
+        this
+      );
+    },
+    hiddenCart() {
+      this.isShowCart = false;
+    },
+    async numJiaTap(goodsDetail, index) {
+      var buyNumMax = goodsDetail.goods_number; //库存
+      var buy_number = goodsDetail.buy_number; //购买数量
+      if (buy_number < buyNumMax) {
+        buy_number++;
+        this.cartList[index].buy_number = buy_number;
+        var price = await this.$parent.$pages[
+          '/Shop/pages/shopCart'
+        ].changeCartNum(this.list, 0, index, buy_number, this.userId);
+        console.log(price);
+        this.cartList[index].goods_price = price;
+        this.$apply();
+      }
+    },
+    async numJianTap(goodsDetail, index) {
+      var buy_number = goodsDetail.buy_number; //购买数量
+      if (buy_number == 1) {
+        var res = await wepy.showModal({
+          title: '提示', //提示的标题,
+          content: '你确定要删除该商品吗', //提示的内容,
+          showCancel: true, //是否显示取消按钮,
+          cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+          cancelColor: '#000000', //取消按钮的文字颜色,
+          confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+          confirmColor: '#e50012' //确定按钮的文字颜色,
+        });
+        if (res.cancel) {
+          return;
+        }
+      }
+      if (buy_number > 0) {
+        buy_number--;
+        this.cartList[index].buy_number = buy_number;
+        var price = await this.$parent.$pages[
+          '/Shop/pages/shopCart'
+        ].changeCartNum(this.list, 0, index, buy_number, this.userId);
+        this.cartList[index].goods_price = price;
+        this.$apply();
+      }
+      if (buy_number == 0) {
+        this.cartList.splice(index, 1);
+        this.shopNum = this.cartList.length;
+        this.$apply();
+      }
+    },
     // 选择
     statusTap(index, evt) {
       console.log('click index', index);
-
       switch (parseInt(index)) {
         case 0:
           this.isasc = true;
@@ -83,15 +258,14 @@ export default class searchlist extends wepy.page {
           this.initdata.sort = 'shop_price';
           this.isasc = !this.isasc;
           this.initdata.order = this.isasc ? 'asc' : 'desc';
-
           break;
         case 3:
           wx.navigateTo({
             url:
               'filtrate?cat_id=' +
               this.initdata.cat_id +
-               '&cat_name=' +
-               this.cat_name +
+              '&cat_name=' +
+              this.cat_name +
               '&suppliers_id=' +
               this.initdata.suppliers_id
           });
@@ -112,11 +286,17 @@ export default class searchlist extends wepy.page {
     buttonTap(keyword) {
       this.initdata.keyword = keyword;
       this.initdata.page = 1;
-
       this.getGoodsList(this.initdata);
+    },
+    showCart() {
+      this.isShowCart = true;
+      // this.showCart();
+    },
+    // 改变商品列表样式
+    changeListStyle() {
+      this.is_picture = this.is_picture == 1 ? 0 : 1;
     }
   };
-
   events = {};
   // 获取商品列表信息
   async getGoodsList(data) {
@@ -128,22 +308,18 @@ export default class searchlist extends wepy.page {
       })
       .then(res => {
         wx.hideLoading();
-
         if (data.page == 1) {
           this.goodsList = res.data.data;
         } else {
           this.goodsList.push(...res.data.data);
         }
-
-        if (res.data.data.length == 0) {
-          this.isMoreData = false;
-        }else{
-          this.isMoreData = true;
-        }
+        if (res.data.data.length == 0) this.isMoreData = false;
+        else this.isMoreData = true;
         this.$apply();
         console.log('订单列表', this.goodsList);
       });
   }
+  //初始化数据
   initData() {
     var initdata = {
       user_id: this.userId,
@@ -156,13 +332,15 @@ export default class searchlist extends wepy.page {
       brand: '',
       attr_value: '',
       page: 1,
-      suppliers_id: this.suppliers_id
+      suppliers_id: this.suppliers_id,
+      ch_cat_id: ''
     };
     this.isasc = true;
     return initdata;
   }
+  // 下拉刷新
   onReachBottom() {
-    console.log('page');
+    console.log('page', this.ishideShopPopup);
     if (this.isMoreData) {
       wx.showLoading({
         title: '加载中', //提示的内容,
@@ -179,15 +357,79 @@ export default class searchlist extends wepy.page {
     wx.removeStorageSync('pinpailist');
     wx.removeStorageSync('catlist');
     wx.removeStorageSync('catname');
-    this.userId = await this.$parent.loginInfo();
-    this.cat_id = option.cat_id ? option.cat_id : '';
     if (option.navigationTitle) {
-      wx.setNavigationBarTitle({ title: option.navigationTitle });
+      wx.setNavigationBarTitle({
+        title: option.navigationTitle
+      });
     }
-    this.cat_name=option.cat_name ? option.cat_name : '';
+    this.userId = await this.$parent.loginInfo();
+    // 工长id
+    this.friend_id = this.$parent.globalData.friend_id;
+    // 分类id
+    this.cat_id = option.cat_id ? option.cat_id : '';
+    // 是否图片模式
+    this.is_picture = this.$parent.globalData.yizhan
+      ? this.$parent.globalData.yizhan.is_picture
+      : 0;
+    // 分类
+    this.cat_name = option.cat_name ? option.cat_name : '';
+    // 店铺
     this.suppliers_id = option.suppliers_id ? option.suppliers_id : '';
+
     this.initdata = this.initData();
     this.getGoodsList(this.initdata);
+
+    // 是否是会员
+    var user_id =
+      this.suppliers_id == this.$parent.globalData.friend_suppliers_id
+        ? this.$parent.globalData.friend_id
+        : await this.$parent.loginInfo();
+    this.status = await this.getSheheStauts(user_id, '', this.suppliers_id);
+    this.$apply();
+  }
+  async onShow() {
+    this.userId = await this.$parent.loginInfo();
+    this.showCart();
+  }
+  // 获取购物车数据
+  async showCart() {
+    wx.showLoading({
+      title: '加载中', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+      success: res => {}
+    });
+    wepy
+      .request({
+        url: api.showCart,
+        data: {
+          user_id: this.userId,
+          suppliers_id: this.suppliers_id
+        }
+      })
+      .then(res => {
+        wx.hideLoading();
+        this.cartList =
+          res.data.data.length > 0 ? res.data.data[0].goodsList : [];
+        console.log('购物车数据res', this.cartList);
+        this.list = res.data.data;
+        this.shopNum = this.cartList.length;
+        if (res.data.data.length > 0) {
+          for (var i = 0; i < this.list[0].goodsList.length; i++) {
+            this.list[0].goodsList[i].active = true;
+          }
+        }
+        this.$apply();
+      })
+      .catch(res => {
+        console.log(res);
+        wx.showToast({
+          title: '出错了', //提示的内容,
+          icon: 'none', //图标,
+          duration: 2000, //延迟时间,
+          mask: true, //显示透明蒙层，防止触摸穿透,
+          success: res => {}
+        });
+      });
   }
 }
 </script>

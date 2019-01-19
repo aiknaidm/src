@@ -1,11 +1,11 @@
 <style lang="less">
-.ad{
-	width: 100%;
-	height: 200rpx;
+.ad {
+  width: 100%;
+  height: 200rpx;
 }
-.ad image{
-	width: 100%;
-	height: 100%;
+.ad image {
+  width: 100%;
+  height: 100%;
 }
 </style>
 <template>
@@ -126,18 +126,18 @@ export default class my extends wepy.page {
       this.isShowprompt = false;
       this.$apply();
     },
-    toBannerDetail2: function () {
-		wx.navigateToMiniProgram({
-			appId: 'wxf48cdd6a7dae8c21',
-			path: 'pages/my/survey-ticket3/index',
+    toBannerDetail2: function() {
+      wx.navigateToMiniProgram({
+        appId: 'wxf48cdd6a7dae8c21',
+        path: 'pages/my/survey-ticket3/index',
 
-			// envVersion: 'release',
-			envVersion: 'develop',
-			success(res) {
-				// 打开成功
-			}
-		})
-	},
+        // envVersion: 'release',
+        envVersion: 'develop',
+        success(res) {
+          // 打开成功
+        }
+      });
+    }
   };
   events = {};
   upUserInfo() {
@@ -170,6 +170,70 @@ export default class my extends wepy.page {
         this.orderList[0].unreadNum = res.data.data.daifukuan;
         this.orderList[1].unreadNum = res.data.data.daifahuo;
         this.orderList[2].unreadNum = res.data.data.yifahuo;
+        if (res.data.data.daiqueren != 0) {
+          console.log('你有待审核的订单');
+          this.tabList = [
+            
+            {
+              icon: '/images/icon-shopcar.png',
+              text: '待审核订单',
+              url: '/Shop/pages/orderCheck',
+              num:res.data.data.daiqueren
+            },
+            {
+              icon: '/images/icon-shopcar.png',
+              text: '购物车',
+              url: '/Shop/pages/shopCart'
+            },
+            {
+              icon: '/images/icon_normal.png',
+              text: '帮助中心',
+              url: '/Shop/pages/myHelp'
+            },
+            {
+              icon: '/images/shangcheng.png',
+              text: '管理工作台',
+              url: 'pages/my-console/index',
+              appId: 'wx024ea505bcfdda8e',
+              type: 1
+            },
+            {
+              icon: '/images/iconfont-yzm.png',
+              text: '批发商认证',
+              url: 'pages/my-renzheng/index',
+              appId: 'wx024ea505bcfdda8e',
+              type: 1
+            }
+          ];
+        } else {
+          this.tabList = [
+            {
+              icon: '/images/icon-shopcar.png',
+              text: '购物车',
+              url: '/Shop/pages/shopCart'
+            },
+            {
+              icon: '/images/icon_normal.png',
+              text: '帮助中心',
+              url: '/Shop/pages/myHelp'
+            },
+            {
+              icon: '/images/shangcheng.png',
+              text: '管理工作台',
+              url: 'pages/my-console/index',
+              appId: 'wx024ea505bcfdda8e',
+              type: 1
+            },
+            {
+              icon: '/images/iconfont-yzm.png',
+              text: '批发商认证',
+              url: 'pages/my-renzheng/index',
+              appId: 'wx024ea505bcfdda8e',
+              type: 1
+            }
+          ];
+        }
+        // daishenhe daiqueren
         // this.orderList[3].unreadNum = res.data.data.chenggong;
       });
   }
@@ -181,12 +245,12 @@ export default class my extends wepy.page {
     // });
     let that = this;
     this.userId = await this.$parent.loginInfo();
-    this.orderNum(this.userId);
+
     let isSettingStatus = await this.$parent.checkSettingStatus();
     let userInfo = await this.$parent.getUserInfo(this.userId);
     this.userInfo = userInfo;
     // 是否有获取用户信息的权限
-    if (isSettingStatus||userInfo.mobile_phone) {
+    if (isSettingStatus || userInfo.mobile_phone) {
       console.log('已获取权限');
       console.log('userInfo', this.userInfo);
       this.$apply();
@@ -197,6 +261,10 @@ export default class my extends wepy.page {
     }
 
     // console.log('userInfo', userInfo);
+  }
+  async onShow() {
+    this.userId = await this.$parent.loginInfo();
+    this.orderNum(this.userId);
   }
 }
 </script>

@@ -1,0 +1,242 @@
+<style lang="less">
+page {
+  background: #fff;
+}
+.isshowerweima {
+  height: 1000rpx;
+}
+.btn {
+  padding: 20rpx 40rpx;
+  border: 1px solid #e50012;
+  color: #e50012;
+  display: inline-block;
+  margin-right: 20rpx;
+  background: #fff;
+  height: auto;
+  line-height: inherit;
+}
+.bottom {
+  text-align: center;
+  font-size: 30rpx;
+}
+</style>
+<template>
+<view>
+  <view style="margin-top:20px;" class="isshowerweima">
+  <view class="container">
+    <!-- <img src="{{shareImage}}" class="share-image" /> -->
+    <canvasdrawer painting="{{painting}}" class="canvasdrawer" bindgetImage="eventGetImage" />
+
+  </view>
+  </view>
+<view class="bottom">
+  <!-- <button bindtap="toshop" class="btn">查看店铺</button> -->
+  <button bindtap="eventSave" class="btn">保存图片</button>
+</view>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '../../API/api';
+export default class shoperweima extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的',
+    usingComponents: {
+      canvasdrawer: '/components/canvasdrawer/canvasdrawer'
+    }
+  };
+  data = {};
+  computed = {};
+  components = {};
+  methods = {
+    eventSave() {
+      wx.getSetting({
+        success: res => {
+          var that = this;
+          // console.log(res.authSetting)
+          if (
+            res.authSetting['scope.writePhotosAlbum'] == undefined ||
+            res.authSetting['scope.writePhotosAlbum']
+          ) {
+            wx.saveImageToPhotosAlbum({
+              filePath: this.shareImage,
+              success(res) {
+                // console.log(res)
+                wx.showToast({
+                  title: '保存图片成功',
+                  icon: 'success',
+                  duration: 2000
+                });
+              }
+            });
+            return;
+          }
+          if (!res.authSetting['scope.writePhotosAlbum']) {
+            wx.openSetting({
+              success: res => {
+                if (res.authSetting['scope.writePhotosAlbum']) {
+                  wx.saveImageToPhotosAlbum({
+                    filePath: this.shareImage,
+                    success(res) {
+                      // console.log(res)
+                      wx.showToast({
+                        title: '保存图片成功',
+                        icon: 'success',
+                        duration: 2000
+                      });
+                    }
+                  });
+                }
+              }
+            });
+          }
+        }
+      });
+    },
+    toshop() {
+      console.log(this.$parent.globalData.suppliers_id);
+      wx.navigateToMiniProgram({
+        appId: 'wx7e302245debd521a',
+        path:
+          '/Shop/pages/index?suppliers_id=' +
+          this.$parent.globalData.suppliers_id +
+          '&sales_id=' +
+          this.sales_id,
+        // extraData: {
+        // 	suppliers_id: suppliers_id,
+        // },
+        // envVersion: 'release',
+        envVersion: 'develop',
+        success(res) {
+          // 打开成功
+        }
+      });
+    }
+  };
+  events = {};
+  async onLoad(options) {
+    console.log(options);
+    this.userId = await this.$parent.loginInfo();
+    this.suppliers_id = options.suppliers_id;
+this.suppliers_name=options.suppliers_name
+    this.eventDraw();
+    this.sales_id = options.sales_id ? options.sales_id : 0;
+  }
+  eventGetImage(event) {
+    console.log('eventGetImage', event);
+    wx.hideLoading();
+    this.shareImage = event.detail.tempFilePath;
+  }
+
+  async eventDraw(userId) {
+    var suppliers_id = this.suppliers_id;
+    var user_id = this.userId;
+    var that = this;
+
+    wx.request({
+      url: api.getQRCodeImg,
+      data: {
+        path:
+          '/Shop/pages/index?suppliers_id=' +
+          suppliers_id +
+          '&friend_id=' +
+          this.userId,
+        user_id,
+        suppliers_id
+      },
+      success: function(e) {
+        var a = wx.getSystemInfoSync().windowWidth / 375;
+        var height = wx.getSystemInfoSync().windowHeight;
+        var width = wx.getSystemInfoSync().windowWidth;
+        console.log('getqrcode', e.data);
+        wx.showLoading({ title: '绘制图片中' });
+        that.data.painting = {
+          width: 375 * a,
+          height: 474 * a,
+          clear: true,
+          views: [
+            {
+              type: 'image',
+              //url: 'https://d.funcodeit.com/test/onepayqrcode_template.jpg',
+              url: 'https://lmbge.com/qrcode/hand.jpg',
+              top: 0,
+              left: 0,
+              width: 375 * a,
+              height: 474 * a
+            },
+            {
+              type: 'image',
+              //url: 'https://d.funcodeit.com/test/mplogo-430.jpg',
+              url: e.data.data,
+              top: 50 * a,
+              left: 95 * a,
+              width: 180 * a,
+              height: 200 * a
+              // borderRadius:90,
+            },
+            // {
+            //   type: 'image',
+            //   url: '',
+            //   top: 140,
+            //   left: 145,
+            //   width: 80,
+            //   height: 80,
+            //   borderRadius:40,
+            // },
+   {
+              type: 'text',
+              content: that.suppliers_name,
+              fontSize: 16 * a,
+              width: 180 * a,
+              top: 335 * a,
+              left: 180 * a,
+              color: '#333',
+              textAlign: 'center',
+              bolder: false
+            },
+            {
+              type: 'text',
+              content: '用微信扫描二维码',
+              fontSize: 15 * a,
+              width: 180 * a,
+              top: 380 * a,
+              left: 180 * a,
+              color: '#aaa',
+              textAlign: 'center',
+              bolder: false
+            },
+
+            {
+              type: 'text',
+              content: '用微信扫描二维码',
+              fontSize: 15 * a,
+              width: 180 * a,
+              top: 380 * a,
+              left: 180 * a,
+              color: '#aaa',
+              textAlign: 'center',
+              bolder: false
+            },
+            {
+              type: 'text',
+              content: '打开小程序下单',
+              fontSize: 15 * a,
+              width: 180 * a,
+              top: 400 * a,
+              left: 180 * a,
+              color: '#aaa',
+              textAlign: 'center',
+              bolder: false
+            }
+          ]
+        };
+        that.setData({
+          painting: that.data.painting
+        });
+      }
+    });
+  }
+}
+</script>

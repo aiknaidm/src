@@ -221,10 +221,10 @@
       <view
         class="popup-join-btn"
         wx:if="{{goodsDetail.shopType =='addShopCar'}}"
-        @tap="addShopCar"
+        @tap="addShopCar({{goodsDetail}})"
       >加入购物车</view>
       <view class="popup-join-btn" wx:elif="{{goodsDetail.shopType =='tobuy'}}" @tap="addShopCar">立即购买</view>
-      <view class="popup-join-btn" wx:else @tap="addShopCar">确定</view>
+      <view class="popup-join-btn" wx:else @tap="addShopCar({{goodsDetail}})">确定</view>
       
     </view>
   </view>
@@ -340,7 +340,7 @@ export default class shopCart extends wepy.component {
           ? goodsDetail.shop_price
           : goodsDetail.floor_price;
       goodsDetail.selectPrice = price;
-    } else if (property) {
+    } else if (property&&property.goods_attr_id) {
       // 有规格的
       var price =
         goodsDetail.status == 2 &&

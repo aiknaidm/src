@@ -1,0 +1,225 @@
+<style lang="less">
+.input {
+  display: flex;
+  align-items: center;
+  line-height: 80rpx;
+  padding: 0 40rpx;
+}
+.radio-group {
+  line-height: 80rpx;
+  padding: 20rpx 40rpx;
+}
+.input view {
+  width: 120rpx;
+}
+.input input {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+</style>
+<template>
+    <view class="container">
+        <noorder show="2" wx:if="{{orderList.length==0}}" text="暂无订单"></noorder>
+        <repeat for="{{orderList}}" wx:key="{{index}}">
+            <orderList :orderList.sync="item" :goodsMap.sync="goodsMap[index]" @orderDetail.user="orderDetail">
+                <view slot="btn">
+                    <radio-group class="radio-group" bindchange="radioChange">
+                        <label class="radio" wx:for="{{items}}">
+                            <radio value="{{item.pay_id}}" checked="{{item.checked}}" />
+                            {{item.name}}
+                        </label>
+                    </radio-group>
+                   <view class="input" wx:if="{{isShowNote}}"><view> 备注：</view><input @input="inputChange" ></input></view>
+                    <orderbutton :orderDetail.sync="item" :is_friend.sync="is_friend" @payStatusTap.user="payTap">
+                    </orderbutton>
+
+                </view>
+            </orderList>
+        </repeat>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '../../API/api';
+import noorder from '../../components/noOrder';
+import orderList from '../../components/shop/orderList';
+import orderbutton from '../../components/shop/orderbutton';
+import util from '../../utils/index';
+
+export default class newslist extends wepy.page {
+  config = {
+    navigationBarTitleText: '待审核订单'
+  };
+  components = {
+    noorder,
+    orderList,
+    orderbutton
+  };
+  data = {
+    orderList: [],
+    goodsMap: [],
+    is_friend: '1',
+    isShowNote: false,
+    items: [
+      {
+        name: '线上支付',
+        pay_id: '0'
+      },
+      {
+        name: '线下支付',
+        pay_id: '2'
+      }
+    ]
+  };
+  computed = {};
+  methods = {
+    radioChange(e) {
+      console.log(e.detail.value);
+      this.pay_id = e.detail.value;
+      // 0是线上 2是线下
+      if (e.detail.value == 2) {
+        this.isShowNote = true;
+      } else {
+        this.isShowNote = false;
+      }
+    },
+    inputChange(e) {
+      this.pay_note = e.detail.value;
+    },
+    async payTap(id) {
+      if (!this.pay_id) {
+        wx.showToast({
+          title: '请选择支付方式', //提示的内容,
+          icon: 'none', //图标,
+          duration: 2000, //延迟时间,
+          mask: true, //显示透明蒙层，防止触摸穿透,
+          success: res => {}
+        });
+        return;
+      }
+      var pay_name = pay_id == 0 ? '线上支付' : '线下支付';
+      var mRes = await wepy.showModal({
+        title: '提示', //提示的标题,
+        content: '你确定使用' + pay_name + '吗', //提示的内容,
+        showCancel: true, //是否显示取消按钮,
+        cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+        cancelColor: '#000000', //取消按钮的文字颜色,
+        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+        confirmColor: '#e50012' //确定按钮的文字颜色,
+      });
+      if (mRes.cancel) {
+        return;
+      }
+      console.log(this.pay_id);
+      wx.showLoading({
+        title: '支付中...', //提示的内容,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
+      // 线上支付
+      if (this.pay_id == 0) {
+        var res = await util.wxpay1(id);
+        wx.hideLoading();
+        if (res.code == 1) {
+          this.getOrderList(this.user_id);
+        }
+        wx.showToast({
+          title: res.msg, //提示的内容,
+          icon: 'none' //图标,
+        });
+      }
+      // 线下支付
+      else if (this.pay_id == 2) {
+        var pay_id = this.pay_id;
+        var pay_note = this.pay_note ? this.pay_note : '';
+        var res = await wepy.request({
+          url: api.xianxiaorder, //开发者服务器接口地址",
+          data: {
+            id,
+            pay_id,
+            pay_note
+          }, //请求的参数",
+          method: 'GET',
+          dataType: 'json' //如果设为json，会尝试对返回的数据做一次 JSON.parse
+        });
+        wx.hideLoading();
+        if (res.data && res.data.code == 0) {
+          this.getOrderList(this.user_id);
+          wx.showToast({
+            title: '支付成功', //提示的内容,
+            icon: 'none' //图标,
+          });
+        }
+      }
+    },
+    // 订单详情
+    orderDetail(id, evt) {
+      console.log('orderDetail?id=' + id);
+      wx.navigateTo({
+        url: 'orderDetail?id=' + id
+      });
+    }
+  };
+  events = {};
+  //  订单列表
+  async getOrderList(user_id, page = 1) {
+    wx.showLoading({
+      title: '加载中...', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+      success: res => {}
+    });
+    wepy
+      .request({
+        url: api.orderList,
+        data: {
+          user_id,
+          order_status: 9,
+          page
+        }
+      })
+      .then(res => {
+        wx.hideLoading();
+        var orderList = res.data.data.orderList;
+        var goodsMap = res.data.data.goodsMap;
+        orderList.forEach((item, index) => {
+          orderList[index].add_time = util.formatTime(
+            new Date(item.add_time * 1000),
+            'yyyy-MM-dd'
+          );
+        });
+        if (page == 1) {
+          this.orderList = orderList;
+          this.goodsMap = goodsMap;
+        } else {
+          this.orderList.push(...orderList);
+          this.goodsMap.push(...goodsMap);
+        }
+        if (orderList.length < 10) {
+          this.isMoreData = false;
+        }
+        this.$apply();
+        console.log('订单列表', this.orderList);
+      });
+  }
+  async onLoad(option) {
+    var user_id = await this.$parent.loginInfo();
+    this.user_id = user_id;
+    this.isMoreData = true;
+    this.getOrderList(user_id);
+    this.$apply();
+  }
+  onReachBottom() {
+    if (this.isMoreData) {
+      wx.showLoading({
+        title: '加载中', //提示的内容,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
+      this.page = this.page + 1;
+      this.getOrderList(this.userId, this.page);
+    }
+  }
+}
+</script>

@@ -175,11 +175,13 @@ export default class filtrate extends wepy.page {
       wx.setStorageSync('pinpailist', this.pinpailist);
       wx.setStorageSync('catname', this.catname);
       wx.setStorageSync('catlist', this.catlist);
+      
       initdata.brand = e.detail.value.brand.toString();
-      initdata.cat_id = e.detail.value.cat.toString();
+      initdata.ch_cat_id = e.detail.value.cat.toString();
       // initdata.brand = e.detail.value.brand.toString();
       initdata.price_max = e.detail.value.priceMax;
       initdata.price_min = e.detail.value.priceMin;
+      initdata.page =1;
       this.$parent.$pages['/Shop/pages/searchList'].initdata = initdata;
       this.$parent.$pages['/Shop/pages/searchList'].getGoodsList(initdata);
       wx.navigateBack({

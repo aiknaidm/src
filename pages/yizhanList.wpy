@@ -1,4 +1,19 @@
-<style lang="less" >
+<style lang="less">
+/*选择分类  */
+
+.list {
+  background-color: #fff;
+  width: 60%;
+  text-align: center;
+  line-height: 88rpx;
+  font-size: 30rpx;
+  max-height: 450rpx;
+  overflow: scroll;
+}
+
+.list view {
+  border-bottom: 1px solid #f0f0f0;
+}
 </style>
 <template>
   <view class="container">
@@ -7,11 +22,20 @@
       <orderList :orderList.sync="item" :goodsMap.sync="goodsMap[index]">
         <view slot="btn">
           <view class="price-box">
-            <view class="btn topay-btn" @tap="toOrderAgain({{item.suppliers_id}},{{item.id}})">再来一单</view>
+            <view class="btn topay-btn" @tap="toOrderAgain({{item.suppliers_id}},{{item.id}},{{index}})">再来一单</view>
           </view>
         </view>
       </orderList>
     </repeat>
+    <!--商品分类显示  -->
+    <view class='body-bg' bindtap='hiddenShopList' touchstart='hiddenbg' touchmove="hiddenbg" wx:if="{{ishowList}}">
+      <view class='list'>
+        <view style="color:red" @tap.stop="stop"> 选择工长</view>
+        <view wx:for="{{friendList}}" wx:key="{{index}}" @tap='changeList({{item.user_id}},{{item.user_name}})'>
+          {{item.user_name}}
+        </view>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -28,64 +52,191 @@ export default class yizhanList extends wepy.page {
     noorder,
     orderList
   };
-
   data = {
     orderList: [],
-    goodsMap: []
+    goodsMap: [],
+    friendList: [],
+    ishowList: false
   };
-
   computed = {};
-
   methods = {
-    async toOrderAgain(suppliersId, orderId) {
-      console.log('父组件再来一单', suppliersId, orderId);
-      wx.showLoading({
-        title: '', //提示的内容,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
-      var res = await wepy.request({
-        url: api.zlyd,
-        data: {
-          order_id: orderId,
-          user_id: this.userId
+    changeList(user_id) {
+      this.$parent.globalData.friend_id = user_id;
+      this.$parent.globalData.friend_suppliers_id = this.orderList[
+        this.orderIndex
+      ].suppliers_id;
+      this.toShopCart(this.orderList[this.orderIndex].id);
+    },
+    hiddenShopList() {
+      this.ishowList = false;
+    },
+    async toOrderAgain(suppliersId, orderId, index) {
+      this.orderIndex = index;
+      // 判断是否工长分享页面
+      if (
+        this.$parent.globalData.friend_suppliers_id &&
+        this.$parent.globalData.friend_id
+      ) {
+        // 判断店铺是否相同
+        if (this.$parent.globalData.friend_suppliers_id == suppliersId) {
+          // 相同 =》直接下单
+          this.toShopCart(orderId);
+        } else {
+          console.log('店铺id不相同', this.orderList[index].friend_id);
+          // 判断店铺是否有friend_id
+          if (this.orderList[index].friend_id == '0') {
+            // 没有friend_id=>直接下单
+            this.toShopCart(orderId);
+          } else {
+            //不相同=》提示是否切换
+            // 选择friend_id=>下单
+            var res = await wepy.showModal({
+              title: '提示', //提示的标题,
+              content: '你确定要.....', //提示的内容,
+              showCancel: true, //是否显示取消按钮,
+              cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+              cancelColor: '#000000', //取消按钮的文字颜色,
+              confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+              confirmColor: '#e50012' //确定按钮的文字颜色,
+            });
+            if (res.confirm) {
+              this.friendList = await this.getFriendList(
+                suppliersId,
+                this.userId
+              );
+              this.ishowList = true;
+              this.$apply();
+              console.log('工长列表', this.friendList);
+            } else if (res.cancel) {
+              console.log('用户点击取消');
+              // 直接下单
+              this.toShopCart(orderId);
+            }
+          }
         }
-      });
-      wx.hideLoading();
-      if (res.data.code === '0') {
-        wx.showToast({
-          title: '加入购物车成功', //提示的内容,
-          icon: 'none', //图标,
-          duration: 2000, //延迟时间,
-          mask: true, //显示透明蒙层，防止触摸穿透,
-          success: res => {}
-        });
+        // 不是来着工长分享页面
+      } else {
+        if (this.orderList[index].friend_id == '0') {
+          // 没有friend_id=>直接下单
+          this.toShopCart(orderId);
+        } else {
+          // 选择friend_id=>下单
+          var res = await wepy.showModal({
+            title: '提示', //提示的标题,
+            content: '你确定要.....', //提示的内容,
+            showCancel: true, //是否显示取消按钮,
+            cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+            cancelColor: '#000000', //取消按钮的文字颜色,
+            confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+            confirmColor: '#e50012' //确定按钮的文字颜色,
+          });
+          if (res.confirm) {
+            this.friendList = await this.getFriendList(
+              suppliersId,
+              this.userId
+            );
+            this.ishowList = true;
+            this.$apply();
+            console.log('工长列表', this.friendList);
+          } else if (res.cancel) {
+            console.log('用户点击取消');
+            // 直接下单
+            this.toShopCart(orderId);
+          }
+        }
       }
-      console.log('再来一单', suppliersId, orderId, res);
+      console.log('父组件再来一单', suppliersId, orderId);
     }
   };
   events = {};
-  // 进货记录
-  async onShow() {
-    var userId = await this.$parent.loginInfo();
-    this.userId = userId;
+  // 工长列表
+  async getFriendList(suppliers_id, user_id) {
+    wx.showLoading({
+      title: '', //提示的内容,
+      mask: true //显示透明蒙层，防止触摸穿透,
+    });
     var res = await wepy.request({
-      url: api.orderList,
+      url: api.friend_list,
       data: {
-        user_id: userId,
-        order_status: 4
+        suppliers_id,
+        user_id
       }
     });
-    wepy.hideLoading();
-    this.orderList = res.data.data.orderList;
-    this.goodsMap = res.data.data.goodsMap;
-    this.$apply();
-    console.log('orderList', this.orderList);
+    wx.hideLoading();
+    if (res.data.code === '0') {
+      return res.data.data;
+    } else {
+      wx.showToast({
+        title: '获取工长列表失败', //提示的内容,
+        icon: 'none' //图标,
+      });
+    }
   }
-  onLoad() {
+  async toShopCart(orderId) {
+    wx.showLoading({
+      title: '', //提示的内容,
+      mask: true //显示透明蒙层，防止触摸穿透,
+    });
+    var res = await wepy.request({
+      url: api.zlyd,
+      data: {
+        order_id: orderId,
+        user_id: this.userId
+      }
+    });
+    wx.hideLoading();
+    if (res.data.code === '0') {
+      wx.showToast({
+        title: '加入购物车成功', //提示的内容,
+        icon: 'none', //图标,
+        duration: 2000, //延迟时间,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
+    }
+  }
+  async getOrderList(userId, page = 1) {
     wepy.showLoading({
       title: '加载中', //提示的内容,
       mask: true //显示透明蒙层，防止触摸穿透,
     });
+    var res = await wepy.request({
+      url: api.orderList,
+      data: {
+        user_id: userId,
+        order_status: 4,
+        page
+      }
+    });
+      wx.hideLoading();
+        var orderList = res.data.data.orderList;
+        var goodsMap = res.data.data.goodsMap;
+    if (page == 1) {
+      this.orderList = orderList;
+      this.goodsMap = goodsMap;
+    } else {
+      this.orderList.push(...orderList);
+      this.goodsMap.push(...goodsMap);
+    }
+    if (orderList.length < 10) {
+      this.isMoreData = false;
+    }
+    this.$apply();
+    console.log('订单列表', this.orderList);
+  }
+  async onShow() {
+    var userId = await this.$parent.loginInfo();
+    this.isMoreData = true;
+    this.page=1;
+    this.userId = userId;
+    this.getOrderList(userId);
+  }
+  onLoad() {}
+  onReachBottom() {
+    if (this.isMoreData) {
+      this.page = this.page + 1;
+      this.getOrderList(this.userId, this.page);
+    }
   }
 }
 </script>

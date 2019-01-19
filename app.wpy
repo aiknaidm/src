@@ -127,7 +127,9 @@ export default class extends wepy.app {
           'pages/orderDetail',
           'pages/toPayOrder',
           'pages/filtrate',
-          'pages/renzheng'
+          'pages/renzheng',
+          'pages/orderCheck',
+          'pages/share'
         ]
       },
       {

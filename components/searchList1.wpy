@@ -1,0 +1,86 @@
+
+<style lang="less">
+  /* 商品种类 */
+  .goods-box3 {
+    height: auto;
+    display: flex;
+    padding:20rpx 40rpx;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fff;
+  }
+  .goods-style3 {
+    background-color: #e50012;
+    color: #fff;
+    padding: 10rpx;
+    line-height: 0;
+    width: 30rpx;
+    height: 30rpx;
+    text-align: center;
+    line-height: 28rpx;
+    border-radius: 50px;
+    font-size: 30rpx;
+    display: inline-block;
+  }
+  .goods-right3 {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
+    align-items: flex-end
+  }
+  .goods-price3 {
+    margin-top: 20rpx;
+    color: #e50012;
+  }
+  .goods-name3 {
+    font-size: 24rpx;
+    color: #666;
+    margin-top: 20rpx;
+  }
+</style>
+<template>
+  <view class="goods-box3" @tap="toGoodDetailsTap({{goods.goods_id}})">
+    <view class='img-contect3'>
+      <view class="goods-title3"> {{goods.goods_name}}</view>
+      <view class="goods-price3">零售价¥ {{goods.floor_price}}</view>
+      <view class="goods-text3" wx:if="{{status==2}}">批发价¥ {{goods.shop_price}}</view>
+      <view class="goods-text3" wx:if="{{status==2}}">起订量{{goods.qidingliang}}</view>
+    </view>
+    <view class="goods-right3">
+      <view class="goods-style3" @tap.stop="tobuy({{goods}})">+</view>
+      <view class="goods-name3">{{goods.suppliers_name}}</view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy';
+  export default class searchList1 extends wepy.component {
+    props = {
+      goods: {
+        type: Object,
+        default: {},
+        twoWay: true
+      },
+      status: {
+        type: Number,
+        default:1,
+        twoWay: true
+      }
+    };
+    data = {};
+    events = {};
+    methods = {
+      // 商品详情
+      toGoodDetailsTap(id) {
+        console.log('id', id);
+        this.$emit('goodDetail', id);
+      },
+      tobuy(id) {
+        console.log('id', id);
+        this.$emit('addShopCar2', id);
+      }
+    };
+    onLoad() {}
+  }
+</script>

@@ -393,7 +393,7 @@ label.label text {
             <view class="row-label">运费</view>
             <view class="right-text">+ ¥ {{yunPrice}}</view>
           </view>
-          <view class="row-box row-box2" @tap="selectPayStyle">
+          <view class="row-box row-box2" @tap="selectPayStyle" wx:if="{{friend_id==0}}">
             <view class="row-label">支付方式</view>
             <view class="right-text">
               {{itemList[payIndex]}}
@@ -467,10 +467,12 @@ export default class toPayOrder extends wepy.page {
     goodsMap: [],
     allGoodsPrice: 0,
     yunPrice: 0,
-    zongji:0,
+    zongji: 0,
     address: {},
     itemList: ['微信支付', '线下支付'], //支付方式
-    payIndex: 0
+    payIndex: 0,
+    pay_id: 0,
+    friend_id: 0
   };
   computed = {};
   methods = {
@@ -551,6 +553,7 @@ export default class toPayOrder extends wepy.page {
 
         console.log('res', res);
         this.payIndex = res.tapIndex;
+        // 0是线上 2是线下
         this.payId = res.tapIndex == 0 ? '0' : '2';
         this.$apply();
       } catch (error) {
@@ -560,19 +563,22 @@ export default class toPayOrder extends wepy.page {
 
     // 提交订单
     async createOrder(e) {
-      var msg = this.itemList[this.payIndex];
-      var showRes = await wepy.showModal({
-        title: '提示', //提示的标题,
-        content: '你确定使用' + msg + '吗？', //提示的内容,
-        showCancel: true, //是否显示取消按钮,
-        cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
-        cancelColor: '#000000', //取消按钮的文字颜色,
-        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-        confirmColor: '#3CC51F' //确定按钮的文字颜色,
-      });
-      if (showRes.cancel) {
-        return;
+      if (this.friend_id == 0) {
+        var msg = this.itemList[this.payIndex];
+        var showRes = await wepy.showModal({
+          title: '提示', //提示的标题,
+          content: '你确定使用' + msg + '吗？', //提示的内容,
+          showCancel: true, //是否显示取消按钮,
+          cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+          cancelColor: '#000000', //取消按钮的文字颜色,
+          confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+          confirmColor: '#3CC51F' //确定按钮的文字颜色,
+        });
+        if (showRes.cancel) {
+          return;
+        }
       }
+
       console.log('订单内容', e);
       wx.showLoading({
         title: '提交订单中...', //提示的内容,
@@ -590,8 +596,9 @@ export default class toPayOrder extends wepy.page {
       var bonus_id = that.youhuiId ? that.youhuiId : '';
       var pay_id = that.payId;
       var goodsList = that.shopCarList;
-
       var pay_note = pay_id == 2 ? e.detail.value.paynote1 : '';
+      var friend_id = this.friend_id;
+  
       if (consignee == '' || mobile == undefined) {
         wx.showModal({
           title: '提示',
@@ -633,7 +640,8 @@ export default class toPayOrder extends wepy.page {
             bonus_id,
             pay_id,
             goodsList,
-            pay_note
+            pay_note,
+            friend_id
           },
           method: 'POST'
         });
@@ -655,6 +663,7 @@ export default class toPayOrder extends wepy.page {
         this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo(
           this.userId
         );
+   
         if (res.data.data == '' || res.data.data == null) {
           wx.redirectTo({ url: '/Shop/pages/orderList?order_status=1' });
           return;
@@ -665,6 +674,10 @@ export default class toPayOrder extends wepy.page {
         }
         if (this.shopCarList.length > 1) {
           wx.redirectTo({ url: '/Shop/pages/orderList?order_status=1' });
+          return;
+        }
+        if (this.friend_id != 0) {
+          wx.redirectTo({ url: '/Shop/pages/orderList?order_status=9' });
           return;
         }
         // 调起支付
@@ -685,8 +698,8 @@ export default class toPayOrder extends wepy.page {
           wx.redirectTo({ url: '/Shop/pages/orderList?order_status=2' });
         }
       } catch (error) {
-         wx.showToast({
-          title:"错误"+error, //提示的内容,
+        wx.showToast({
+          title: '错误' + error, //提示的内容,
           icon: 'none', //图标,
           duration: 2000, //延迟时间,
           mask: true //显示透明蒙层，防止触摸穿透,
@@ -706,11 +719,12 @@ export default class toPayOrder extends wepy.page {
         this.shopCarList[index].order_amount =
           parseFloat(this.shopCarList[index].order_amount) +
           parseFloat(item2.goods_price) * parseFloat(item2.buy_number);
-        
       });
     });
-   this.allGoodsPrice= this.allGoodsPrice.toFixed(2)
-   this.zongji=  (parseFloat(this.allGoodsPrice)+ parseFloat(this.yunPrice)).toFixed(2)
+    this.allGoodsPrice = this.allGoodsPrice.toFixed(2);
+    this.zongji = (
+      parseFloat(this.allGoodsPrice) + parseFloat(this.yunPrice)
+    ).toFixed(2);
   }
   // 获取地址信息
   async getAddress(user_id) {
@@ -729,7 +743,23 @@ export default class toPayOrder extends wepy.page {
     this.userId = userId;
     var shopCarList = wx.getStorageSync('shopCarInfo');
     this.shopCarList = shopCarList;
-    this.goodsMap = shopCarList[0].goodsList;
+    // this.goodsMap = shopCarList[0].goodsList;
+    this.suppliers_id=shopCarList[0].suppliers_id
+    if(this.suppliers_id==this.$parent.globalData.friend_suppliers_id&&shopCarList.length>1){
+      wx.showToast({
+        title: '代下单商品不能和其他商品一起购买', //提示的内容,
+        icon: 'none', //图标,
+        duration: 2000, //延迟时间,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
+      wx.navigateBack({
+        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+      });
+      return
+    }
+    this.friend_id =this.suppliers_id==this.$parent.globalData.friend_suppliers_id? this.$parent.globalData.friend_id:0;
+   
     this.count(shopCarList);
     this.getAddress(userId);
     console.log('商品详情', shopCarList);

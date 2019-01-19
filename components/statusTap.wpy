@@ -16,6 +16,9 @@
     border-bottom: 6rpx solid #eee;
     position: relative;
     /* border-right: 2rpx solid #eee; */
+    display: flex;
+    align-items: center;
+    justify-content: center
   }
 
   .status-label.active {
@@ -48,7 +51,7 @@
   font-size: 20rpx;
   position: absolute;
   top: 15rpx;
-  right: -5rpx;
+  right: -10rpx;
 }
 </style>
 <template>
@@ -69,8 +72,12 @@
           <image wx:if="{{index==3&&index != currentType}}" src="/images/shaixuan.png">
           <image wx:if="{{index==3&&index == currentType}}" src="/images/shaixuan-active.png">
         </block>
+      
       </view>
     </block>
+      <slot name="other">
+          
+          <slot>
   </view>
 </template>
 <script>

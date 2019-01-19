@@ -6,6 +6,7 @@
     <orderDetail
       :orderDetail.sync="orderDetail"
       :goodsMap.sync="goodsMap"
+      :is_friend.sync="is_friend"
       @cancelOrderTap.user="cancelOrderTap"
       @confirmBtnTap.user="confirmBtnTap"
     ></orderDetail>
@@ -26,7 +27,8 @@ export default class orderDetails extends wepy.page {
 
   data = {
     orderDetail: {},
-    goodsMap: []
+    goodsMap: [],
+    is_friend:"0"
   };
 
   computed = {};
@@ -76,6 +78,8 @@ export default class orderDetails extends wepy.page {
 
   async onLoad(option) {
     this.id = option.id;
+    console.log(option);
+    if(option.is_friend) this.is_friend=option.is_friend
     this.getOrderDetail(this.id);
     wx.showLoading({
       title: '加载中...', //提示的内容,
