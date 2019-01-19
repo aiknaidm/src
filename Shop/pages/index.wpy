@@ -65,12 +65,13 @@ export default class shop extends wepy.page {
   };
   events = {};
 
-  onShareAppMessage(res) {
+ async onShareAppMessage(res) {
     var path = '/Shop/pages/index';
+     var userId = await this.$parent.loginInfo();
     if (res.from === 'button') {
       console.log(res.target.dataset.index);
       if (res.target.dataset.index == 1)
-        var path = '/Shop/pages/index?friend_id=' + this.userId;
+        var path = '/Shop/pages/index?suppliers_id='+ this.suppliers_id+'&friend_id=' + userId;
       return {
         title: this.yizhan.suppliers_name,
         path: path
@@ -102,6 +103,7 @@ export default class shop extends wepy.page {
         ? this.$parent.globalData.friend_id
         : await this.$parent.loginInfo();
     console.log('this.userId', userId);
+    this.userId=userId
     if (this.suppliers_id) {
       this.getShopBanner(userId, this.suppliers_id);
       this.getMaterialsList(this.suppliers_id);

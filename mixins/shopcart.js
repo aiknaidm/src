@@ -252,14 +252,9 @@ export default class shopcart extends wepy.mixin {
             that.closePopupTap();
             if (res.data.code == 0) {
                 console.log("加入购物车成功")
-
                 that.shopNum = res.data.data.gouwuche;
-
                 await that.$parent.$pages['/Shop/pages/searchList'].showCart();
-
-
                 // 刷新购物车
-
                 await that.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo(
                     that.userId
                 );
