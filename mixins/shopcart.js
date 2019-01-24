@@ -4,31 +4,7 @@ let that;
 import util from '../utils/index';
 export default class shopcart extends wepy.mixin {
     events = {
-        // 规格被点击
-        'labelItemTap': (property, $event) => {
-            that.goodsDetail.goods_attr_id = property.goods_attr_id;
-            that.goodsDetail.goods_number = property.goods_number;
-            that.goodsDetail.property = property;
-            that.goodsDetail = that.showPrice(that.goodsDetail)
-            that.$apply();
-        },
-        "numJiaTap": (buy_number, $event) => {
-            that.goodsDetail.buy_number = buy_number;
-            that.$apply();
-        },
-        "numJianTap": (buy_number, $event) => {
-            that.goodsDetail.buy_number = buy_number;
-            that.$apply();
-        },
-        "buyNow": (goodsDetail) => {
-            var goodsDetail = goodsDetail;
-            that.buliduBuyNowInfo();
-            that.closePopupTap();
-            wx.navigateTo({
-                url: '/Shop/pages/toPayOrder?orderType=buyNow'
-            });
-        },
-        "closePopupTap": () => {
+        closePopupTap: () => {
             that.ishideShopPopup = false;
         },
         /**
@@ -39,16 +15,21 @@ export default class shopcart extends wepy.mixin {
             that.addShopCar3(goodsDetail);
 
         },
-        "addShopCar2": async(goodsDetail) => {
+        "addShopCar2": async(goodsDetail, index) => {
+            console.log("goodsDetail", goodsDetail);
             var goodsDetail = await that.goodsInit(that.userId, goodsDetail);
+            this.goodsListIndex = index;
             //没有规格
             if (that.goodsDetail.properties.length == 0) {
+
                 that.addShopCar3(goodsDetail);
                 that.ishideShopPopup = false;
+
             } else {
-                console.log(that);
                 that.goodsDetail.shopType = "addShopCar"
                     // that.ishideShopPopup = true
+                    // that.goodsDetail.property = that.goodsDetail.properties[0]
+
                 console.log(that.ishideShopPopup);
                 that.$parent.$pages['/Shop/pages/searchList'].ishideShopPopup = true;
                 that.$apply();
@@ -185,7 +166,7 @@ export default class shopcart extends wepy.mixin {
     buliduBuyNowInfo() {
             var shopCarInfo = [{}];
             var goodsList = [{}];
-            // console.log('直接购买', this.goodsDetail);
+            console.log('直接购买', this.goodsDetail);
             goodsList[0].goods_id = this.goodsDetail.goods_id;
             if (
                 this.goodsDetail.original_img == '' &&
@@ -220,10 +201,11 @@ export default class shopcart extends wepy.mixin {
         }
         // 列表页面加入购物车
     async addShopCar3(goodsDetail) {
+            console.log("加入购物车", goodsDetail.buy_number)
             var goodsDetail = goodsDetail;
             var user_id = this.userId;
             var goods_id = goodsDetail.goods_id;
-            var buy_number = goodsDetail.buy_number;
+            var buy_number = goodsDetail.buy_number == 0 || !goodsDetail.buy_number ? 1 : goodsDetail.buy_number;
             var goods_name = goodsDetail.goods_name;
             var goods_attr_id = goodsDetail.properties.length ?
                 goodsDetail.property.goods_attr_id :
@@ -258,6 +240,7 @@ export default class shopcart extends wepy.mixin {
                 await that.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo(
                     that.userId
                 );
+
                 wx.showToast({
                     title: '加入购物车成功',
                     icon: 'success',
@@ -305,16 +288,13 @@ export default class shopcart extends wepy.mixin {
             console.log('商品信息', res.data.data);
 
             this.goodsDetail = res.data.data;
-
             this.shopNum = res.data.data.gouwuche;
             var userId =
                 res.data.data.suppliers_id == this.$parent.globalData.friend_suppliers_id ?
                 this.$parent.globalData.friend_id :
                 await this.$parent.loginInfo();
-
             this.goodsInit(userId, this.goodsDetail);
-
-
+            this.goodsDetail.buy_number = 1;
             this.$apply();
         }
         // 
@@ -325,7 +305,7 @@ export default class shopcart extends wepy.mixin {
         // 2是会员 1不是会员
 
         this.status = await this.getSheheStauts(userId, id);
-        console.log("是否是会员", this.status)
+
         if (this.goodsDetail.goods_desc) {
             this.articleDetail.post_content = this.goodsDetail.goods_desc;
             this.articleDetail.post_content = util.html_decode(
@@ -342,7 +322,6 @@ export default class shopcart extends wepy.mixin {
             );
         }
 
-        this.goodsDetail.buy_number = 1;
         if (
             this.status == 2 &&
             this.goodsDetail.qidingliang <= this.goodsDetail.buy_number

@@ -1,135 +1,188 @@
 
 <style lang="less">
-/* 商品种类 */
-
-.goods-container2 {
-  background-color: #fff;
-  /* margin-top: 24rpx; */
-  width: 100%;
-  /* padding: 24rpx; */
-  padding-left: 0px;
-  left: 0;
-  /* overflow: hidden; */
-  font-size: 30rpx;
-  padding-bottom: 0;
-  position: relative;
-}
-
-.goods-box2 {
-  display: flex;
-  /* width: 100%; */
-  /* margin: 24rpx; */
-  padding: 40rpx 24rpx;
-  background: #fff;
-  border-bottom: 16rpx solid #f0f0f0;
-}
-
-.goods-box2 image {
-  height: 260rpx;
-  margin-right: 24rpx;
-  width: 250rpx;
-}
-
-.img-contect2 {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  flex: 1;
-  height: 260rpx;
-  /* padding-right: 30rpx; */
-}
-
-.img-contect2 view {
-  /* flex: 1;
-  display: flex;
-  align-items: center; */
-}
-
-.goods-price2 {
-  color: #e50012;
-}
-.goods-title2 {
-  font-weight: bold;
-  max-height: 100rpx;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-.goods-price {
-  font-size: 24rpx;
-  color: #666;
-  line-height: 45rpx;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.img-box2 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.goods-style2 {
+  /* 商品种类 */
+  .goods-container2 {
+    background-color: #fff;
+    /* margin-top: 24rpx; */
+    width: 100%;
+    /* padding: 24rpx; */
+    padding-left: 0px;
+    left: 0;
+    /* overflow: hidden; */
+    font-size: 30rpx;
+    padding-bottom: 0;
+    position: relative;
+  }
+  .goods-box2 {
+    display: flex;
+    /* width: 100%; */
+    /* margin: 24rpx; */
+    padding: 40rpx 24rpx;
+    background: #fff;
+    border-bottom: 16rpx solid #f0f0f0;
+  }
+  .goods-box2 image {
+    height: 260rpx;
+    margin-right: 24rpx;
+    width: 250rpx;
+  }
+  .img-contect2 {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    flex: 1;
+    height: 260rpx;
+    /* padding-right: 30rpx; */
+  }
+  .img-contect2 view {
+    /* flex: 1;
+    display: flex;
+    align-items: center; */
+  }
+  .goods-price2 {
+    color: #e50012;
+  }
+  .goods-title2 {
+    font-weight: bold;
+    max-height: 100rpx;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  .goods-price {
+    font-size: 24rpx;
+    color: #666;
+    line-height: 45rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .img-box2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+ .goods-style3,.goods-style3-guige {
   background-color: #e50012;
   color: #fff;
   padding: 10rpx;
   line-height: 0;
-  min-width: 30rpx;
-  min-height: 30rpx;
+  min-width: 40rpx;
+  height: 40rpx;
   text-align: center;
-  line-height: 28rpx;
+  line-height: 38rpx;
   border-radius: 50px;
   font-size: 30rpx;
+  display: inline-block;
+  padding: 10rpx;
+    position: relative;
 }
-.goods-text3{
-  font-size: 24rpx;
+  .goods-style3-jian {
+    background-color: #f0f0f0;
+    color: #666;
+    border: 1px solid #eee;
+  }
+  .goods-text3 {
+    font-size: 24rpx;
+  }
+  .goods-num view {
+    display: inline-block;
+    margin: 10rpx;
+  }
+  .goods-text2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.goods-style3-guige .guige-num{
+  display: inline-block;
+  min-width: 40rpx;
+  height: 40rpx;
+  text-align: center;
+  line-height: 40rpx;
+  position: absolute;
+  right: -15rpx;
+  top: -15rpx;
+  border-radius: 50%;
+  background-color: #f7bf30;
+  color: #fff
+}
+.goods-style3-guige{
+  padding: 5rpx 30rpx
 }
 </style>
 <template>
-
-    <view class="goods-box2"  @tap="toGoodDetailsTap({{goods.goods_id}})" >
-
-
-      <view class="img-box2">
-        <image src="http://maijia.jicaizx.com/{{goods.original_img}}" class="image" mode="aspectFit" lazy-load="true" wx:if="{{goods.original_img1==''}}" />
-        <image src="{{goods.original_img1}}" class="image" mode="aspectFit" lazy-load="true" wx:else/>
+  <view class="goods-box2" @tap="toGoodDetailsTap({{goods.goods_id}})">
+    <view class="img-box2">
+      <image src="http://maijia.jicaizx.com/{{goods.original_img}}" class="image" mode="aspectFit" lazy-load="true" wx:if="{{goods.original_img1==''}}" />
+      <image src="{{goods.original_img1}}" class="image" mode="aspectFit" lazy-load="true" wx:else/>
+    </view>
+    <view class='img-contect2'>
+      <view class="goods-title2"> {{goods.goods_name}}</view>
+      <view class="goods-price2">零售价¥ {{goods.floor_price}}</view>
+      <view class="goods-text2">
+        <view wx:if="{{status==2}}"> 批发价¥ {{goods.shop_price}}</view>
+         <view class="goods-name3" @tap.stop="toshop({{goods.suppliers_id}})">{{goods.suppliers_name}}</view>
       </view>
-      <view class='img-contect2'>
-        <view class="goods-title2"> {{goods.goods_name}}</view>
-
-        <view class="goods-price2">¥ {{goods.shop_price}}</view>
-        <view class="goods-price">
-          <view class="red">销量：{{goods.salenum}}</view>
-          <view class="goods-style2" @tap.stop="tobuy({{goods}})">+</view>
-
+      <!-- <view class="goods-price2">¥ {{goods.shop_price}}</view> -->
+      <view class="goods-price">
+        <view wx:if="{{status==2}}">起订量：{{goods.qidingliang}}</view>
+        <!-- <view>库存：{{goods.goods_number}}</view> -->
+      </view>
+      <view class="goods-price">
+        <view >库存：{{goods.goods_number}}</view>
+        <view class="goods-style3 goods-style3-guige " @tap.stop="tobuy({{goods}})" wx:if="{{goods.properties.length>0}}">选择规格<text class="guige-num" wx:if="{{goods.show_buy_number>0}}">{{goods.show_buy_number}}</text></view>
+        <view class="goods-style3" @tap.stop="tobuy({{goods}})" wx:elif="{{!goods.buy_number}}">+</view>
+        <view class="goods-num" wx:else>
+          <view class="goods-style3  goods-style3-jian" @tap.stop="numJianTap">-</view>
+          <view>{{goods.buy_number}}</view>
+          <view class="goods-style3" @tap.stop="numJiaTap">+</view>
         </view>
       </view>
     </view>
-
+  </view>
 </template>
 <script>
-import wepy from 'wepy';
-export default class searchList extends wepy.component {
-  props = {
-    goods: {
-      type: Object,
-      default: {},
-      twoWay: true
-    }
-  };
-  data = {};
-  events = {};
-  methods = {
-    // 商品详情
-    toGoodDetailsTap(id) {
-      console.log('id', id);
-      this.$emit('goodDetail', id);
-    },
-    tobuy(id) {
-      console.log('id', id);
-      this.$emit('addShopCar2', id);
-    }
-  };
-  onLoad() {}
-}
+  import wepy from 'wepy';
+  export default class searchList extends wepy.component {
+    props = {
+      goods: {
+        type: Object,
+        default: {},
+        twoWay: true
+      },
+      index: {
+        type: String,
+        default: '',
+        twoWay: true
+      }
+    };
+    data = {};
+    events = {};
+    methods = {
+      // 商品详情
+      toGoodDetailsTap(id) {
+        console.log('id', id);
+        this.$emit('goodDetail', id);
+      },
+      tobuy(id) {
+        console.log('id', id);
+        this.$emit('addShopCar2', id, index);
+      },
+      toshop(id) {
+        wx.navigateTo({
+          url: '/Shop/pages/index?suppliers_id=' + id
+        });
+      },
+      numJiaTap(num) {
+        this.$emit('numJiaTap1', this.goods, this.index, 1);
+      },
+      numJianTap(num) {
+        this.$emit('numJianTap1', this.goods, this.index, 1);
+      }
+    };
+    onLoad() {}
+  }
 </script>

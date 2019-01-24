@@ -274,6 +274,32 @@ export default class goodDetail extends wepy.page {
     danwei: '件',
     articleDetail: {}
   };
+  events = {
+    // 规格被点击
+    labelItemTap: (property, $event) => {
+      this.goodsDetail.goods_attr_id = property.goods_attr_id;
+      this.goodsDetail.goods_number = property.goods_number;
+      this.goodsDetail.property = property;
+      this.goodsDetail = this.showPrice(this.goodsDetail);
+      this.$apply();
+    },
+    numJiaTap: (buy_number, $event) => {
+      this.goodsDetail.buy_number = buy_number;
+      this.$apply();
+    },
+    numJianTap: (buy_number, $event) => {
+      this.goodsDetail.buy_number = buy_number;
+      this.$apply();
+    },
+    buyNow: goodsDetail => {
+      var goodsDetail = goodsDetail;
+      this.buliduBuyNowInfo();
+      this.closePopupTap();
+      wx.navigateTo({
+        url: '/Shop/pages/toPayOrder?orderType=buyNow'
+      });
+    }
+  };
   mixins = [shopCart];
   async onLoad(option) {
     wx.showLoading({

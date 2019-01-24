@@ -220,14 +220,14 @@ export default class my extends wepy.page {
             {
               icon: '/images/shangcheng.png',
               text: '管理工作台',
-              url: 'pages/my-console/index',
+              url: 'ConsolePages/pages/index',
               appId: 'wx024ea505bcfdda8e',
               type: 1
             },
             {
               icon: '/images/iconfont-yzm.png',
               text: '批发商认证',
-              url: 'pages/my-renzheng/index',
+              url: 'ConsolePages/pages/renzheng',
               appId: 'wx024ea505bcfdda8e',
               type: 1
             }

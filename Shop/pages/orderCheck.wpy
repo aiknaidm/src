@@ -26,7 +26,7 @@
                 <view slot="btn">
                     <radio-group class="radio-group" bindchange="radioChange">
                         <label class="radio" wx:for="{{items}}">
-                            <radio value="{{item.pay_id}}" />
+                            <radio value="{{item.pay_id}}" color="#e50012" />
                             {{item.name}}
                         </label>
                     </radio-group>

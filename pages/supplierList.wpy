@@ -333,7 +333,7 @@ button.ss-my-d {
               </view>
             </view>
             <view>联系人：{{item.username}}</view>
-            <view catchtap="phoneCallTap" data-mobile="{{item.mobile}}">
+            <view catchtap="phoneCallTap({{item.mobile}})" >
               手机号码：{{item.mobile}}
               <text class="iconfont icon-shouji"></text>
             </view>
@@ -364,6 +364,11 @@ export default class suppliersList extends wepy.page {
   computed = {};
 
   methods = {
+    phoneCallTap (phone){
+wx.makePhoneCall({
+  phoneNumber: phone // 仅为示例，并非真实的电话号码
+})
+    },
     changeStatus(suppliers_id, xingji, shenhe) {
       if (shenhe == 0) {
         let itemLists = ['取消申请'];

@@ -120,7 +120,8 @@ export default class shoperweima extends wepy.page {
     console.log(options);
     this.userId = await this.$parent.loginInfo();
     this.suppliers_id = options.suppliers_id;
-this.suppliers_name=options.suppliers_name
+    this.suppliers_name = options.suppliers_name;
+    this.userInfo = await this.$parent.getUserInfo(this.userId);
     this.eventDraw();
     this.sales_id = options.sales_id ? options.sales_id : 0;
   }
@@ -176,16 +177,19 @@ this.suppliers_name=options.suppliers_name
               height: 200 * a
               // borderRadius:90,
             },
-            // {
-            //   type: 'image',
-            //   url: '',
-            //   top: 140,
-            //   left: 145,
-            //   width: 80,
-            //   height: 80,
-            //   borderRadius:40,
-            // },
-   {
+            {
+              type: 'text',
+              content:"工长："+ that.userInfo.nickName,
+              top: 280 * a,
+              left: 180 * a,
+              fontSize: 16 * a,
+              width: 180 * a,
+              bolder: false,
+              textAlign: 'center',
+              color: '#333'
+            },
+
+            {
               type: 'text',
               content: that.suppliers_name,
               fontSize: 16 * a,
@@ -208,17 +212,6 @@ this.suppliers_name=options.suppliers_name
               bolder: false
             },
 
-            {
-              type: 'text',
-              content: '用微信扫描二维码',
-              fontSize: 15 * a,
-              width: 180 * a,
-              top: 380 * a,
-              left: 180 * a,
-              color: '#aaa',
-              textAlign: 'center',
-              bolder: false
-            },
             {
               type: 'text',
               content: '打开小程序下单',

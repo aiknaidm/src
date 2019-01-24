@@ -39,6 +39,7 @@ const api = {
     renzheng: `${host}/renzheng`, //订单数量
     friend_list: `${host}/friend_list`, //工长列表
     xianxiaorder: `${host}/xianxiaorder`, //修改订单支付状态
-    getQRCodeImg: `${host}/getQRCode1`
+    getQRCodeImg: `${host}/getQRCode1`,
+    tjdd: `${host}/tjdd`
 }
 export default api

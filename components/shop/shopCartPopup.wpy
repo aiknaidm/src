@@ -166,7 +166,7 @@
   <view class="show-popup">
     <view class="popup-mask" @tap="closePopupTap"></view>
     <view class="popup-contents">
-      <view class="pop-goods-info">
+      <view class="pop-goods-info" wx:if="{{thisindex==-1}}">
         <view class="pop-img-box">
           <image
             src="http://maijia.jicaizx.com/{{goodsDetail.original_img}}"
@@ -218,13 +218,15 @@
           <view class="num-jia" @tap="numJiaTap">+</view>
         </view>
       </view>
-      <view
+      <view wx:if="{{thisindex==-1}}">
+        <view
         class="popup-join-btn"
         wx:if="{{goodsDetail.shopType =='addShopCar'}}"
         @tap="addShopCar({{goodsDetail}})"
       >加入购物车</view>
       <view class="popup-join-btn" wx:elif="{{goodsDetail.shopType =='tobuy'}}" @tap="addShopCar">立即购买</view>
       <view class="popup-join-btn" wx:else @tap="addShopCar({{goodsDetail}})">确定</view>
+      </view>
       
     </view>
   </view>
@@ -238,6 +240,10 @@ export default class shopCart extends wepy.component {
       type: Object,
       default: {},
       twoWay: true
+    },
+    thisindex: {
+      type: String,
+      default: "-1"
     }
   };
   methods = {
@@ -253,8 +259,10 @@ export default class shopCart extends wepy.component {
         this.goodsDetail.buy_number = buy_number;
         this.showPrice();
       }
-      this.$emit('numJiaTap', buy_number);
+      if(this.thisindex==-1) this.$emit('numJiaTap', buy_number);
+     else this.$emit('numJiaTap', this.goodsDetail, this.thisindex, 1);
     },
+
     numJianTap() {
       var buy_number = this.goodsDetail.buy_number; //购买数量
       if (buy_number > 1) {
@@ -262,8 +270,10 @@ export default class shopCart extends wepy.component {
         this.goodsDetail.buy_number = buy_number;
         this.showPrice();
       }
-      this.$emit('numJianTap', buy_number);
+     if(this.thisindex==-1) this.$emit('numJianTap', buy_number);
+     else this.$emit('numJianTap1', this.goodsDetail, this.thisindex, 1);
     },
+
     // 关闭
     closePopupTap() {
       this.$emit('closePopupTap');
@@ -294,7 +304,7 @@ export default class shopCart extends wepy.component {
           });
           return;
         }
-        if (properties.length != 0 &&property&& !property.goods_attr_id) {
+        if (properties.length != 0 && property && !property.goods_attr_id) {
           wx.showModal({
             title: '提示',
             content: '请选择商品规格！',
@@ -340,7 +350,7 @@ export default class shopCart extends wepy.component {
           ? goodsDetail.shop_price
           : goodsDetail.floor_price;
       goodsDetail.selectPrice = price;
-    } else if (property&&property.goods_attr_id) {
+    } else if (property && property.goods_attr_id) {
       // 有规格的
       var price =
         goodsDetail.status == 2 &&

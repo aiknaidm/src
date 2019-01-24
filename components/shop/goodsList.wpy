@@ -48,7 +48,7 @@
 .a-goods .text-box .arow02 {
   font-size: 23rpx;
   color: #888;
-  width: 120rpx;
+  width: 150rpx;
   text-align: right;
   display: flex;
   flex-direction: column;

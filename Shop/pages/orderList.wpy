@@ -142,15 +142,23 @@ export default class orderlist extends wepy.page {
         }
       })
       .then(res => {
-        this.goodsListnum[0] = 0;
+       
+        if (res.data.data.daishenhe != 0) {
+          this.statusType = ['全部','待审核', '待付款', '待发货', '待收货', '已完成'];
+          this.statusIndex = ['0','9', '1', '2', '3', '4'];
+           this.goodsListnum[0] = 0;
         this.goodsListnum[1] = res.data.data.daishenhe;
         this.goodsListnum[2] = res.data.data.daifukuan;
         this.goodsListnum[3] = res.data.data.daifahuo;
         this.goodsListnum[4] = res.data.data.yifahuo;
         this.goodsListnum[5] = 0;
-        if (res.data.data.daishenhe != 0) {
-          this.statusType = ['全部','待审核', '待付款', '待发货', '待收货', '已完成'];
-          this.statusIndex = ['0','9', '1', '2', '3', '4'];
+        }else{
+           this.goodsListnum[0] = 0;
+
+        this.goodsListnum[1] = res.data.data.daifukuan;
+        this.goodsListnum[2] = res.data.data.daifahuo;
+        this.goodsListnum[3] = res.data.data.yifahuo;
+        this.goodsListnum[4] = 0;
         }
         this.$apply();
       });

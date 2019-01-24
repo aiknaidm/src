@@ -1,141 +1,153 @@
 <style lang="less">
-.container {
-  padding-bottom: 85rpx;
-  background-color: #f0f0f0;
-}
-.search-title {
-  display: flex;
-  justify-content: space-around;
-  line-height: 88rpx;
-  font-size: 30rpx;
-  border-bottom: 0px solid #eee;
-  align-items: center;
-}
-.search-title .active {
-  color: #e50012;
-}
-.search-title image {
-  width: 35rpx;
-  height: 35rpx;
-  margin-left: 5rpx;
-}
-.search-title .up .img {
-  transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  /* IE 9 */
-  -webkit-transform: rotate(180deg);
-  /* Safari and Chrome */
-}
-.status-box .status-label.active {
-  border-bottom: 6rpx solid #eee;
-}
-.shop-cart {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #333;
-  z-index: 10;
-}
-.shop-cart-list {
-  background-color: #fff;
-  line-height: 50rpx;
-  max-height: 600rpx;
-  overflow-y: scroll;
-  .red {
+  .container {
+    padding-bottom: 85rpx;
+    background-color: #f0f0f0;
+  }
+  .search-title {
+    display: flex;
+    justify-content: space-around;
+    line-height: 88rpx;
+    font-size: 30rpx;
+    border-bottom: 0px solid #eee;
+    align-items: center;
+  }
+  .search-title .active {
     color: #e50012;
-    margin-left: 20rpx;
-    display: inline-block;
   }
-  .name {
-    max-width: 150rpx;
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  .search-title image {
+    width: 35rpx;
+    height: 35rpx;
+    margin-left: 5rpx;
   }
-}
-.buy-num-box {
-  margin-top: 0;
-  padding-top: 30rpx;
-  border-top: 1px solid #f0f0f0;
-}
-.buy-num-title {
-  display: flex;
-  align-items: center;
-}
-.shop-cart-num {
-  height: 80rpx;
-  position: relative;
-}
-.shop-cart-num text {
-  display: inline-block;
-  position: relative;
-  width: 100rpx;
-  height: 100rpx;
-  left: 20rpx;
-  font-size: 100rpx;
-  top: -20rpx;
-  color: #e50012;
-}
-.shop-cart-num .num {
-  font-size: 30rpx;
-  display: inline-block;
-  width: 35rpx;
-  height: 35rpx;
-  text-align: center;
-  line-height: 30rpx;
-  position: relative;
-  left: -10rpx;
-  top: -70rpx;
-  background: #f7bf30;
-  color: #fff;
-  border-radius: 50%;
-}
-.topay {
-  background-color: #e50012;
-  color: #fff;
-  height: 80rpx;
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 0 50rpx;
-  line-height: 80rpx;
-}
+  .search-title .up .img {
+    transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    /* IE 9 */
+    -webkit-transform: rotate(180deg);
+    /* Safari and Chrome */
+  }
+  .status-box .status-label.active {
+    border-bottom: 6rpx solid #eee;
+  }
+  .shop-cart {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    z-index: 10;
+  }
+  .shop-cart-list {
+    background-color: #fff;
+    line-height: 50rpx;
+    max-height: 600rpx;
+    overflow-y: scroll;
+    .red {
+      color: #e50012;
+      display: inline-block;
+    }
+    .name {
+      max-width: 250rpx;
+      display: inline-block;
+      white-space: nowrap;
+      text-overflow: ellipsis;overflow:hidden
+     
+    }
+    .attr{
+        margin-left: 10rpx;
+        font-size: 24rpx;
+        color: #999;
+        max-width: 150rpx;   display: inline-block;
+      white-space: nowrap;
+      text-overflow: ellipsis;overflow:hidden
+      }
+  }
+  .buy-num-box {
+    margin-top: 0;
+    padding-top: 30rpx;
+    border-top: 1px solid #f0f0f0;
+  }
+  .shop-cart-num {
+    height: 80rpx;
+    position: relative;
+  }
+  .shop-cart-num text {
+    display: inline-block;
+    position: relative;
+    width: 100rpx;
+    height: 100rpx;
+    left: 20rpx;
+    font-size: 100rpx;
+    top: -20rpx;
+    color: #e50012;
+  }
+  .shop-cart-num .num {
+    font-size: 30rpx;
+    display: inline-block;
+    min-width: 35rpx;
+    height: 35rpx;
+    text-align: center;
+    line-height: 30rpx;
+    position: relative;
+    left: -15rpx;
+    top: -80rpx;
+    background: #f7bf30;
+    color: #fff;
+    border-radius: 50px;
+  }
+  .topay {
+    background-color: #e50012;
+    color: #fff;
+    height: 80rpx;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 50rpx;
+    line-height: 80rpx;
+  }
+  .icon-shaixuan1{
+    color:#707070;
+    margin-left: 10rpx;
+    font-size: 30rpx;
+  }
 </style>
 <template>
   <view class="container">
     <search @buttonTap.user="buttonTap">
     </search>
     <statusTap :statusType.sync="statusType" @statusTap.user="statusTap" type="shop">
+      <view slot="other" class="status-label" @tap="shaixuan">筛选
+        <text class="iconfont icon-shaixuan1"></text>
+      </view>
       <view slot="other" class="status-label" @tap="changeListStyle">
         <text class="iconfont icon-hengshuqiehuanshu {{is_picture?'active':''}}"></text>
       </view>
     </statusTap>
-    <noOrder text="暂无商品" wx:if="{{goodsList.length==0}}" show="2"></noOrder>
-    <repeat for="{{goodsList}}" key="{{index}}">
-      
-      <searchList1 :goods.sync="item" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==1}}"></searchList1>
-      <searchList2 :goods.sync="item" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==0}}"></searchList2>
+     <loadingOrder wx:if="{{isLoading}}" show="2"></loadingOrder>
+    <noOrder text="暂无商品"  wx:elif="{{goodsList.length==0&&!isLoading}}" show="2"></noOrder>
+    <repeat  for="{{goodsList}}" key="{{index}}">
+      <searchList1 :goods.sync="item" :index.sync="index" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==1}}" @numJianTap1.user="numJianTap" @numJiaTap1.user="numJiaTap"></searchList1>
+      <searchList2 :goods.sync="item" :index.sync="index" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==0}}" @numJianTap1.user="numJianTap" @numJiaTap1.user="numJiaTap"></searchList2>
     </repeat>
-    <shopCartPopup :goodsDetail.sync="goodsDetail" wx:if="{{ishideShopPopup}}"></shopCartPopup>
+    <shopCartPopup :goodsDetail.sync="goodsDetail" :thisindex.sync="goodsListIndex" isshowbtn="0" @numJiaTap1.user="numJiaTap" @numJianTap1.user="numJianTap" @labelItemTap.user="labelItemTap" wx:if="{{ishideShopPopup}}"></shopCartPopup>
     <!-- <suppliersCart></suppliersCart> -->
-    <view class="shop-cart" wx:if="{{shopNum!=0}}">
+    <view class="shop-cart">
       <view class="shop-cart-list" wx:if="{{isShowCart}}">
         <view wx:for="{{cartList}}" wx:key="{{index}}" class="buy-num-box">
           <view class="buy-num-title">
-            <text class="name">{{item.goods_name}}</text><text class="red">￥{{item.goods_price}} </text>
+            <text class="name">{{item.goods_name}}</text><text class="attr" wx:if="{{item.goods_attr!=''}}">{{item.goods_attr}}</text>
+            <view><text class="red">￥{{item.goods_price}} </text> </view>
           </view>
           <view class="num-box">
             <view @tap="numJianTap({{item}},{{index}})" class="num-jian">-</view>
-            <view class="num-input"><input value="{{item.buy_number}}" /></view>
+            <view class="num-input"><input value="{{item.buy_number}}" @change="shopNumChange({{item}},{{index}})" /></view>
             <view @tap="numJiaTap({{item}},{{index}})" class="num-jia">+</view>
           </view>
         </view>
       </view>
       <view class="shop-cart-num" wx:if="{{cartList.length}}">
         <view class="cart" @tap="showCart"><text class="iconfont icon-gouwuche1"></text>
-          <text class="num">{{cartList.length}}</text></view>
+          <text class="num">{{shopNum}}</text></view>
         <view class="topay" @tap="toPayOrder">去结算</view>
       </view>
     </view>
@@ -144,169 +156,275 @@
 </template>
 
 <script>
-import wepy from 'wepy';
-import api from '../../API/api';
-import search from '../../components/search';
-import statusTap from '../../components/statusTap';
-import searchList1 from '../../components/searchList';
-import searchList2 from '../../components/searchList1';
-import noOrder from '../../components/noOrder';
-import shopCart from '../../mixins/shopCart';
-import shopCartPopup from '../../components/shop/shopCartPopup';
-export default class searchlist extends wepy.page {
-  config = {
-    navigationBarTitleText: '搜索列表'
-  };
-  components = {
-    search,
-    searchList1,
-    searchList2,
-    statusTap,
-    noOrder,
-    shopCartPopup
-  };
-  data = {
-    goodsList: [],
-    statusType: ['综合', '销量', '价格', '筛选'],
-    currentType: '',
-    isMoreData: true,
-    goodsDetail: {},
-    ishideShopPopup: false,
-    cartList: [],
-    isShowCart: false,
-    shopNum: 0,
-    is_picture: 0,
-    status: 2
-  };
-  mixins = [shopCart];
-  computed = {};
-  methods = {
-    stop() {
-      return;
-    },
-    toPayOrder() {
-      this.$parent.$pages['/Shop/pages/shopCart'].methods.toPayOrder(
-        this.list,
-        this
-      );
-    },
-    hiddenCart() {
-      this.isShowCart = false;
-    },
-    async numJiaTap(goodsDetail, index) {
-      var buyNumMax = goodsDetail.goods_number; //库存
-      var buy_number = goodsDetail.buy_number; //购买数量
-      if (buy_number < buyNumMax) {
-        buy_number++;
-        this.cartList[index].buy_number = buy_number;
-        var price = await this.$parent.$pages[
-          '/Shop/pages/shopCart'
-        ].changeCartNum(this.list, 0, index, buy_number, this.userId);
-        console.log(price);
-        this.cartList[index].goods_price = price;
-        this.$apply();
-      }
-    },
-    async numJianTap(goodsDetail, index) {
-      var buy_number = goodsDetail.buy_number; //购买数量
-      if (buy_number == 1) {
-        var res = await wepy.showModal({
-          title: '提示', //提示的标题,
-          content: '你确定要删除该商品吗', //提示的内容,
-          showCancel: true, //是否显示取消按钮,
-          cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
-          cancelColor: '#000000', //取消按钮的文字颜色,
-          confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-          confirmColor: '#e50012' //确定按钮的文字颜色,
+  import wepy from 'wepy';
+  import api from '../../API/api';
+  import search from '../../components/search';
+  import statusTap from '../../components/statusTap';
+  import searchList1 from '../../components/searchList';
+  import searchList2 from '../../components/searchList1';
+  import noOrder from '../../components/noOrder';
+  import loadingOrder from '../../components/loadingOrder';
+  import shopCart from '../../mixins/shopCart';
+  import shopCartPopup from '../../components/shop/shopCartPopup2';
+  export default class searchlist extends wepy.page {
+    config = {
+      navigationBarTitleText: '搜索列表'
+    };
+    components = {
+      search,
+      searchList1,
+      searchList2,
+      statusTap,
+      noOrder,
+      shopCartPopup,
+      loadingOrder
+    };
+    data = {
+      goodsList: [],
+      statusType: ['综合', '销量', '价格'],
+      currentType: '',
+      isMoreData: true,
+      goodsDetail: {},
+      ishideShopPopup: false,
+      cartList: [],
+      isShowCart: false,
+      shopNum: 0,
+      is_picture: 0,
+      status: 2,
+      goodsListIndex: '0',
+      isLoading:true
+    };
+    mixins = [shopCart];
+    computed = {};
+    methods = {
+      stop() {
+        return;
+      },
+      toPayOrder() {
+        this.$parent.$pages['/Shop/pages/shopCart'].methods.toPayOrder(
+          this.list,
+          this
+        );
+      },
+      hiddenCart() {
+        this.isShowCart = false;
+      },
+      shaixuan() {
+        wx.navigateTo({
+          url: 'filtrate?cat_id=' +
+            this.initdata.cat_id +
+            '&cat_name=' +
+            this.cat_name +
+            '&suppliers_id=' +
+            this.initdata.suppliers_id
         });
-        if (res.cancel) {
+      },
+      // 点击规格
+      labelItemTap(property) {
+        var goods_attr_id = property.goods_attr_id;
+        // 点击规格的数量
+        var {
+          buy_number,
+          showproindex
+        } = this.showProNum(
+          this.cartList,
+          property.goods_attr_id
+        );
+        this.carIndex = showproindex;
+        console.log(
+          '被点击的规格id',
+          this.cartList,
+          property.goods_attr_id,
+          this.carIndex
+        );
+        this.goodsDetail.property = property;
+        this.goodsDetail.property.buy_number = buy_number;
+        this.goodsDetail.buy_number = buy_number;
+        this.goodsList[this.goodsListIndex].buy_number = buy_number;
+        this.$apply();
+        // if (arr1[i].properties[k].goods_attr_id == goods_attr_id) {
+        //   // 相同规格
+        //   arr1[i].properties[k].buy_number = arr2[j].buy_number;
+        //   // arr1[i].properties[k].goods_attr_id = arr2[j].goods_attr_id;
+        // }
+      },
+      // 直接修改数量
+      async shopNumChange(goodsDetail, index, e) {
+        var buyNumMax = goodsDetail.goods_number; //库存
+        var buy_number = e.detail.value;
+        if (buy_number <= 0) {
+          wx.showToast({
+            title: '购买数量不能小于1', //提示的内容,
+            icon: 'none', //图标,
+            duration: 2000, //延迟时间,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+            success: res => {}
+          });
           return;
         }
-      }
-      if (buy_number > 0) {
-        buy_number--;
-        this.cartList[index].buy_number = buy_number;
-        var price = await this.$parent.$pages[
-          '/Shop/pages/shopCart'
-        ].changeCartNum(this.list, 0, index, buy_number, this.userId);
-        this.cartList[index].goods_price = price;
-        this.$apply();
-      }
-      if (buy_number == 0) {
-        this.cartList.splice(index, 1);
-        this.shopNum = this.cartList.length;
-        this.$apply();
-      }
-    },
-    // 选择
-    statusTap(index, evt) {
-      console.log('click index', index);
-      switch (parseInt(index)) {
-        case 0:
-          this.isasc = true;
-          this.initdata.order = '';
-          this.initdata.sort = '';
-          break;
-        case 1:
-          // 销量
-          this.isasc = true;
-          this.initdata.order = '';
-          this.data.sort = 'salenum';
-          break;
-        case 2:
-          // 价格
-          this.initdata.sort = 'shop_price';
-          this.isasc = !this.isasc;
-          this.initdata.order = this.isasc ? 'asc' : 'desc';
-          break;
-        case 3:
-          wx.navigateTo({
-            url:
-              'filtrate?cat_id=' +
-              this.initdata.cat_id +
-              '&cat_name=' +
-              this.cat_name +
-              '&suppliers_id=' +
-              this.initdata.suppliers_id
+        if (buy_number > buyNumMax) {
+          wx.showToast({
+            title: '购买数量不能大于库存', //提示的内容,
+            icon: 'none', //图标,
+            duration: 2000, //延迟时间,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+            success: res => {}
           });
-          break;
-        default:
-          break;
+          this.cartList[index].buy_number = buyNumMax;
+          return;
+        }
+        if (buy_number < buyNumMax && buy_number > 0) {
+          this.cartList[index].buy_number = buy_number;
+          var price = await this.$parent.$pages[
+            '/Shop/pages/shopCart'
+          ].changeCartNum(this.list, 0, index, buy_number, this.userId);
+          console.log(this.cartList[index], index);
+          this.cartList[index].goods_price = price;
+          this.$apply();
+        }
+      },
+      async numJiaTap(goodsDetail, index, isList) {
+        var buyNumMax = goodsDetail.goods_number; //库存
+        var buy_number = goodsDetail.buy_number; //购买数量
+        if (buy_number < buyNumMax) {
+          buy_number++;
+          if (isList == 1) {
+            if (this.goodsList[index].properties.length == 0) {
+              this.goodsList[index].buy_number = buy_number;
+              var index = this.compareIndex(this.cartList, goodsDetail.goods_id);
+            } else {
+              this.goodsDetail.buy_number = buy_number;
+              var index = this.carIndex;
+              this.goodsList[index].show_buy_number = this.goodsList[index].show_buy_number + 1
+            }
+            this.cartList[index].buy_number = buy_number;
+          } else {
+            this.cartList[index].buy_number = buy_number;
+            var arr1 = this.compareList(this.goodsList, this.cartList);
+            this.goodsList = arr1;
+          }
+          this.cartNum();
+          var price = await this.$parent.$pages[
+            '/Shop/pages/shopCart'
+          ].changeCartNum(this.list, 0, index, buy_number, this.userId);
+          this.cartList[index].goods_price = price;
+          this.$apply();
+        } else {
+          wx.showToast({
+            title: '超过库存', //提示的内容,
+            icon: 'none', //图标,
+            duration: 2000, //延迟时间,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+            success: res => {}
+          });
+        }
+      },
+      async numJianTap(goodsDetail, index, isList) {
+        var buy_number = goodsDetail.buy_number; //购买数量
+        if (buy_number == 1) {
+          var res = await wepy.showModal({
+            title: '提示', //提示的标题,
+            content: '你确定要删除该商品吗', //提示的内容,
+            showCancel: true, //是否显示取消按钮,
+            cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+            cancelColor: '#000000', //取消按钮的文字颜色,
+            confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+            confirmColor: '#e50012' //确定按钮的文字颜色,
+          });
+          if (res.cancel) {
+            return;
+          }
+        }
+        if (buy_number > 0) {
+          buy_number--;
+          if (isList == 1) {
+            this.goodsList[index].buy_number = buy_number;
+            if (this.goodsList[index].properties.length == 0) {
+              var index = this.compareIndex(this.cartList, goodsDetail.goods_id);
+              this.cartList[index].buy_number = buy_number;
+            } else {
+              this.goodsDetail.buy_number = buy_number;
+              this.goodsList[index].show_buy_number = this.goodsList[index].show_buy_number - 1;
+              var index = this.carIndex;
+              this.cartList[index].buy_number = buy_number;
+            }
+          } else {
+            this.cartList[index].buy_number = buy_number;
+            var arr1 = this.compareList(this.goodsList, this.cartList);
+            this.goodsList = arr1;
+          }
+          this.cartNum();
+          var price = await this.$parent.$pages[
+            '/Shop/pages/shopCart'
+          ].changeCartNum(this.list, 0, index, buy_number, this.userId);
+          this.cartList[index].goods_price = price;
+          this.$apply();
+        }
+        if (buy_number == 0) {
+          var id = [];
+          id.push(this.cartList[index].id);
+          this.$parent.$pages['/Shop/pages/shopCart'].delCartGoods(id);
+          this.cartList.splice(index, 1);
+          this.cartNum();
+          this.$apply();
+        }
+      },
+      // 选择
+      statusTap(index, evt) {
+        switch (parseInt(index)) {
+          case 0:
+            this.isasc = true;
+            this.initdata.order = '';
+            this.initdata.sort = '';
+            break;
+          case 1:
+            // 销量
+            this.isasc = true;
+            this.initdata.order = '';
+            this.data.sort = 'salenum';
+            break;
+          case 2:
+            // 价格
+            this.initdata.sort = 'shop_price';
+            this.isasc = !this.isasc;
+            this.initdata.order = this.isasc ? 'asc' : 'desc';
+            break;
+          default:
+            break;
+        }
+        this.initdata.page = 1;
+        this.getGoodsList(this.initdata);
+      },
+      // 商品详情
+      toGoodDetailsTap(id, evt) {
+        wx.navigateTo({
+          url: 'goodDetail?id=' + id
+        });
+      },
+      // 点击确定 搜索商品
+      buttonTap(keyword) {
+        this.initdata.keyword = keyword;
+        this.initdata.page = 1;
+        this.getGoodsList(this.initdata);
+      },
+      showCart() {
+        this.isShowCart = true;
+        // this.showCart();
+      },
+      // 改变商品列表样式
+      changeListStyle() {
+        this.is_picture = this.is_picture == 1 ? 0 : 1;
       }
-      this.initdata.page = 1;
-      this.getGoodsList(this.initdata);
-    },
-    // 商品详情
-    toGoodDetailsTap(id, evt) {
-      wx.navigateTo({
-        url: 'goodDetail?id=' + id
-      });
-    },
-    // 点击确定 搜索商品
-    buttonTap(keyword) {
-      this.initdata.keyword = keyword;
-      this.initdata.page = 1;
-      this.getGoodsList(this.initdata);
-    },
-    showCart() {
-      this.isShowCart = true;
-      // this.showCart();
-    },
-    // 改变商品列表样式
-    changeListStyle() {
-      this.is_picture = this.is_picture == 1 ? 0 : 1;
-    }
-  };
-  events = {};
-  // 获取商品列表信息
-  async getGoodsList(data) {
-    wepy
-      .request({
+    };
+    events = {};
+    // 获取商品列表信息
+    async getGoodsList(data) {
+      var res = await wepy.request({
         url: api.goodsList,
         data: data,
         method: 'get'
-      })
-      .then(res => {
+      });
+      if (res.data.code) {
         wx.hideLoading();
         if (data.page == 1) {
           this.goodsList = res.data.data;
@@ -315,121 +433,182 @@ export default class searchlist extends wepy.page {
         }
         if (res.data.data.length == 0) this.isMoreData = false;
         else this.isMoreData = true;
+        this.goodsList = this.compareList(this.goodsList, this.cartList)
+        this.isLoading=false;
         this.$apply();
-        console.log('订单列表', this.goodsList);
-      });
-  }
-  //初始化数据
-  initData() {
-    var initdata = {
-      user_id: this.userId,
-      cat_id: this.cat_id,
-      keyword: '',
-      order: '', //
-      sort: '', //排序的方式
-      price_max: '', //加个
-      price_min: '',
-      brand: '',
-      attr_value: '',
-      page: 1,
-      suppliers_id: this.suppliers_id,
-      ch_cat_id: ''
-    };
-    this.isasc = true;
-    return initdata;
-  }
-  // 下拉刷新
-  onReachBottom() {
-    console.log('page', this.ishideShopPopup);
-    if (this.isMoreData) {
+        return this.goodsList;
+      }
+    }
+    // 获取购物车数据
+    async showCart() {
       wx.showLoading({
         title: '加载中', //提示的内容,
         mask: true, //显示透明蒙层，防止触摸穿透,
         success: res => {}
       });
-      this.initdata.page = this.initdata.page + 1;
-      this.getGoodsList(this.initdata);
-    }
-  }
-  async onLoad(option) {
-    console.log('传递的值', option);
-    wx.removeStorageSync('pinpainame');
-    wx.removeStorageSync('pinpailist');
-    wx.removeStorageSync('catlist');
-    wx.removeStorageSync('catname');
-    if (option.navigationTitle) {
-      wx.setNavigationBarTitle({
-        title: option.navigationTitle
-      });
-    }
-    this.userId = await this.$parent.loginInfo();
-    // 工长id
-    this.friend_id = this.$parent.globalData.friend_id;
-    // 分类id
-    this.cat_id = option.cat_id ? option.cat_id : '';
-    // 是否图片模式
-    this.is_picture = this.$parent.globalData.yizhan
-      ? this.$parent.globalData.yizhan.is_picture
-      : 0;
-    // 分类
-    this.cat_name = option.cat_name ? option.cat_name : '';
-    // 店铺
-    this.suppliers_id = option.suppliers_id ? option.suppliers_id : '';
-
-    this.initdata = this.initData();
-    this.getGoodsList(this.initdata);
-
-    // 是否是会员
-    var user_id =
-      this.suppliers_id == this.$parent.globalData.friend_suppliers_id
-        ? this.$parent.globalData.friend_id
-        : await this.$parent.loginInfo();
-    this.status = await this.getSheheStauts(user_id, '', this.suppliers_id);
-    this.$apply();
-  }
-  async onShow() {
-    this.userId = await this.$parent.loginInfo();
-    this.showCart();
-  }
-  // 获取购物车数据
-  async showCart() {
-    wx.showLoading({
-      title: '加载中', //提示的内容,
-      mask: true, //显示透明蒙层，防止触摸穿透,
-      success: res => {}
-    });
-    wepy
-      .request({
+      var res = await wepy.request({
         url: api.showCart,
         data: {
           user_id: this.userId,
           suppliers_id: this.suppliers_id
         }
-      })
-      .then(res => {
+      });
+      if (res.data.code) {
         wx.hideLoading();
         this.cartList =
           res.data.data.length > 0 ? res.data.data[0].goodsList : [];
-        console.log('购物车数据res', this.cartList);
         this.list = res.data.data;
-        this.shopNum = this.cartList.length;
         if (res.data.data.length > 0) {
           for (var i = 0; i < this.list[0].goodsList.length; i++) {
             this.list[0].goodsList[i].active = true;
           }
         }
-        this.$apply();
-      })
-      .catch(res => {
-        console.log(res);
-        wx.showToast({
-          title: '出错了', //提示的内容,
-          icon: 'none', //图标,
-          duration: 2000, //延迟时间,
+        this.cartNum();
+        this.compareList(this.goodsList, this.cartList);
+        console.log('商品数量', this.goodsList);
+      }
+      this.$apply();
+    }
+    //初始化数据
+    initData() {
+      var initdata = {
+        user_id: this.userId,
+        cat_id: this.cat_id,
+        keyword: '',
+        order: '', //
+        sort: '', //排序的方式
+        price_max: '', //加个
+        price_min: '',
+        brand: '',
+        attr_value: '',
+        page: 1,
+        suppliers_id: this.suppliers_id,
+        ch_cat_id: ''
+      };
+      this.isasc = true;
+      return initdata;
+    }
+    // 下拉刷新
+    onReachBottom() {
+      console.log('page', this.ishideShopPopup);
+      if (this.isMoreData) {
+        wx.showLoading({
+          title: '加载中', //提示的内容,
           mask: true, //显示透明蒙层，防止触摸穿透,
           success: res => {}
         });
+        this.initdata.page = this.initdata.page + 1;
+        this.getGoodsList(this.initdata);
+      }
+    }
+    async onLoad(option) {
+      console.log('传递的值', option);
+      wx.removeStorageSync('pinpainame');
+      wx.removeStorageSync('pinpailist');
+      wx.removeStorageSync('catlist');
+      wx.removeStorageSync('catname');
+      if (option.navigationTitle) {
+        wx.setNavigationBarTitle({
+          title: option.navigationTitle
+        });
+      }
+      this.userId = await this.$parent.loginInfo();
+      // 工长id
+      this.friend_id = this.$parent.globalData.friend_id;
+      // 分类id
+      this.cat_id = option.cat_id ? option.cat_id : '';
+      // 是否图片模式
+      this.is_picture = this.$parent.globalData.yizhan ?
+        this.$parent.globalData.yizhan.is_picture :
+        0;
+      // 分类
+      this.cat_name = option.cat_name ? option.cat_name : '';
+      // 店铺
+      this.suppliers_id = option.suppliers_id ? option.suppliers_id : '';
+      this.initdata = this.initData();
+      await this.showCart();
+      await this.getGoodsList(this.initdata);
+      // this.goodsList = this.compareList(this.goodsList, this.cartList);
+      console.log('商品列表', this.goodsList);
+      this.cartNum();
+      // 是否是会员
+      var user_id =
+        this.suppliers_id == this.$parent.globalData.friend_suppliers_id ?
+        this.$parent.globalData.friend_id :
+        await this.$parent.loginInfo();
+      this.status = await this.getSheheStauts(user_id, '', this.suppliers_id);
+      this.$apply();
+    }
+    //
+    compareList(arr1, arr2) {
+      var thisindex;
+      for (var i = 0; i < arr1.length; i++) {
+        arr1[i].show_buy_number = 0;
+        for (var j = 0; j < arr2.length; j++) {
+          // 有规格的商品
+          // if (arr1[i].properties.length != 0) {
+          //   for (var k = 0; k < arr1[i].properties.length; k++) {
+          //     if (arr1[i].properties[k].goods_attr_id == arr2[j].goods_attr_id) {
+          //       // 相同规格
+          //       console.log("k", k, arr2[j].buy_number);
+          //       arr1[i].properties[k].buy_number = arr2[j].buy_number;
+          //       console.log(arr1[i],k, arr1[i].properties[k].buy_number)
+          //     }
+          //   }
+          // } else
+          if (
+            arr1[i].goods_id == arr2[j].goods_id &&
+            arr1[i].properties.length == 0
+          ) {
+            arr1[i].buy_number = arr2[j].buy_number;
+          } else if (arr1[i].goods_id == arr2[j].goods_id) {
+            arr1[i].show_buy_number += parseInt(arr2[j].buy_number);
+          }
+        }
+        // if (arr1[i].properties.length != 0) {
+        //   arr1[i].buy_number = this.propertiesNum(arr1[i].properties);
+        //   console.log(i, arr1[i].buy_number)
+        // }
+      }
+      return arr1;
+    }
+    compareIndex(arr1, goods_id) {
+      var thisindex;
+      for (var i = 0; i < arr1.length; i++) {
+        if (arr1[i].goods_id == goods_id) {
+          return i;
+        }
+      }
+    }
+    //计算总数
+    cartNum() {
+      this.shopNum = 0;
+      for (var i = 0; i < this.cartList.length; i++) {
+        this.shopNum += this.cartList[i].buy_number;
+      }
+    }
+    // 计算有规格总数量
+    propertiesNum(properties) {
+      var propertiesNum = 0;
+      properties.forEach(function(item, index) {
+        propertiesNum += item.buy_number;
       });
+      console.log('计算有规格总数量', propertiesNum);
+      return propertiesNum;
+    }
+    showProNum(arr, id) {
+      var buy_number = 0;
+      var index = 0;
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].goods_attr_id == id) {
+          buy_number = arr[i].buy_number;
+          var showproindex = i;
+        }
+      }
+      return {
+        buy_number,
+        showproindex
+      };
+    }
   }
-}
 </script>

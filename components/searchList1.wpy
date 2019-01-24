@@ -1,86 +1,125 @@
 
 <style lang="less">
-  /* 商品种类 */
-  .goods-box3 {
-    height: auto;
-    display: flex;
-    padding:20rpx 40rpx;
-    justify-content: space-between;
-    border-bottom: 1px solid #f0f0f0;
-    background: #fff;
-  }
-  .goods-style3 {
-    background-color: #e50012;
-    color: #fff;
-    padding: 10rpx;
-    line-height: 0;
-    width: 30rpx;
-    height: 30rpx;
-    text-align: center;
-    line-height: 28rpx;
-    border-radius: 50px;
-    font-size: 30rpx;
-    display: inline-block;
-  }
-  .goods-right3 {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    justify-content:space-between;
-    align-items: flex-end
-  }
-  .goods-price3 {
-    margin-top: 20rpx;
-    color: #e50012;
-  }
-  .goods-name3 {
-    font-size: 24rpx;
-    color: #666;
-    margin-top: 20rpx;
-  }
+/* 商品种类 */
+.goods-box3 {
+  height: auto;
+  display: flex;
+  padding: 20rpx 40rpx;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fff;
+}
+.img-contect3 {
+  width: 100%;
+}
+
+.goods-style3 text{
+  position: relative;
+  top: 2rpx;
+}
+.goods-right3 {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.goods-price3 {
+  margin-top: 20rpx;
+  color: #e50012;
+}
+.goods-name3 {
+  font-size: 24rpx;
+  color: #666;
+  margin-top: 20rpx;
+}
+.goods-text3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.goods-num2 view {
+  margin: 0;
+  display: inline-block;
+}
+.goods-num2 .goods-num-c {
+  margin: 20rpx;
+}
+.goods-style3{
+
+}
+
 </style>
 <template>
   <view class="goods-box3" @tap="toGoodDetailsTap({{goods.goods_id}})">
     <view class='img-contect3'>
-      <view class="goods-title3"> {{goods.goods_name}}</view>
+      <view class="goods-title3 goods-text3">
+        {{goods.goods_name}}
+        <view class="goods-style3-guige " @tap.stop="tobuy({{goods}})" wx:if="{{goods.properties.length>0}}">选择规格<text class="guige-num" wx:if="{{goods.show_buy_number>0}}">{{goods.show_buy_number}}</text></view>
+        <view class="goods-style3" @tap.stop="tobuy({{goods}})" wx:elif="{{!goods.buy_number}}">+</view>
+        <view class="goods-num2" wx:else>
+             <view class="goods-style3 goods-style3-jian" @tap.stop="numJianTap">-</view>
+          
+            <view class="goods-num-c">{{goods.buy_number}}</view>
+             <view class="goods-style3 " @tap.stop="numJiaTap">+</view>
+          </view>
+      </view>
       <view class="goods-price3">零售价¥ {{goods.floor_price}}</view>
-      <view class="goods-text3" wx:if="{{status==2}}">批发价¥ {{goods.shop_price}}</view>
-      <view class="goods-text3" wx:if="{{status==2}}">起订量{{goods.qidingliang}}</view>
-    </view>
-    <view class="goods-right3">
-      <view class="goods-style3" @tap.stop="tobuy({{goods}})">+</view>
-      <view class="goods-name3">{{goods.suppliers_name}}</view>
+      <view class="goods-text3">
+       <view  wx:if="{{status==2}}"> 批发价¥ {{goods.shop_price}}</view>
+        <view>库存{{goods.goods_number}}</view>
+      </view>
+      <view class="goods-text3" wx:if="{{status==2}}">起订量{{goods.qidingliang}}
+        <view class="goods-name3" @tap.stop="toshop({{goods.suppliers_id}})">{{goods.suppliers_name}}</view>
+      </view>
     </view>
   </view>
 </template>
 <script>
-  import wepy from 'wepy';
-  export default class searchList1 extends wepy.component {
-    props = {
-      goods: {
-        type: Object,
-        default: {},
-        twoWay: true
-      },
-      status: {
-        type: Number,
-        default:1,
-        twoWay: true
-      }
-    };
-    data = {};
-    events = {};
-    methods = {
-      // 商品详情
-      toGoodDetailsTap(id) {
-        console.log('id', id);
-        this.$emit('goodDetail', id);
-      },
-      tobuy(id) {
-        console.log('id', id);
-        this.$emit('addShopCar2', id);
-      }
-    };
-    onLoad() {}
-  }
+import wepy from 'wepy';
+export default class searchList1 extends wepy.component {
+  props = {
+    goods: {
+      type: Object,
+      default: {},
+      twoWay: true
+    },
+    status: {
+      type: Number,
+      default: 1,
+      twoWay: true
+    },
+    index: {
+      type: String,
+      default: '',
+      twoWay: true
+    }
+  };
+  data = {};
+  events = {};
+  methods = {
+    // 商品详情
+    toGoodDetailsTap(id) {
+      console.log('id', id);
+      this.$emit('goodDetail', id);
+    },
+    tobuy(id) {
+      console.log('id', id);
+     
+      this.$emit('addShopCar2', id);
+    },
+    toshop(id) {
+      wx.navigateTo({ url: '/Shop/pages/index?suppliers_id=' + id });
+    },
+    numJiaTap(num) {
+      this.$emit('numJiaTap1', this.goods, this.index, 1);
+    },
+    numJianTap(num) {
+      this.$emit('numJianTap1', this.goods, this.index, 1);
+    }
+  };
+  onLoad() {}
+}
 </script>

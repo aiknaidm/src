@@ -58,7 +58,7 @@
   <view class="status-box search-title" statusType="一个tab名字的数组">
     <block wx:for="{{statusType}}" wx:key="{{index}}">
       <view
-        class="status-label {{index == currentType ? 'active' : ''}} {{isclick?'down':'up'}}"
+        class="status-label {{index == currentType? 'active' : ''}} {{isclick?'down':'up'}}"
         @tap="statusTap({{index}})"
       >
         {{item}}<text class='goodsListnum' wx:if="{{goodsListnum[index]&&goodsListnum[index]!=0}}">{{goodsListnum[index]}}</text>
