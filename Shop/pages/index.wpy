@@ -65,14 +65,14 @@
     events = {};
     onShareAppMessage(res) {
       var path = '/Shop/pages/index?suppliers_id=' + this.suppliers_id;
-      if (this.sales_id && this.is_sales == 1)
+      if (this.sales_id)
         var path =
           '/Shop/pages/index?suppliers_id=' +
           this.suppliers_id +
           '&sales_id=' +
           this.sales_id +
           '&sales_name=' +
-          this.show_sales_name;
+          this.sales_name;
       var userId = this.userId;
       if (res.from === 'button') {
         console.log(res.target.dataset.index);
@@ -85,6 +85,7 @@
             userId +
             '&friend_name=' +
             this.nickName;
+           
       }
       console.log('分享的路径', path);
       return {
@@ -99,7 +100,7 @@
         mask: true, //显示透明蒙层，防止触摸穿透,
         success: res => {}
       });
-      this.show_sales_name = '';
+      this.sales_name = '';
       // 店铺id
       this.suppliers_id = options.suppliers_id;
       if (!this.suppliers_id) {
@@ -109,29 +110,42 @@
         });
         return;
       }
-      // 是否来自业务员跳转
-      if (options.is_sales) this.is_sales = options.is_sales;
-      // 业务员
-      if (options.sales_id && options.is_sales == 1) {
-        this.sales_id = options.sales_id;
-        this.show_sales_name = options.sales_name;
-      }
-      // 来自业务员分享
-      else {
-        var sales_name = wx.getStorageSync('sales_name');
-        var suppliers_id = wx.getStorageSync('suppliers_id');
-        if (this.suppliers_id == suppliers_id)
-          if (sales_name) this.sales_name = sales_name;
-        if (options.sales_id) {
-          wx.setStorageSync('sales_id', options.sales_id);
-          wx.setStorageSync('suppliers_id', options.suppliers_id);
-          wx.setStorageSync('sales_name', options.sales_name);
+      // // 是否来自业务员跳转
+      // if (options.is_sales) this.is_sales = options.is_sales;
+      // // 业务员
+      // if (options.sales_id&&options.sales_id!="" && options.is_sales == 1) {
+      //   this.sales_id = options.sales_id;
+      //   this.show_sales_name = options.sales_name;
+      // }
+      // // 来自业务员分享
+      // else {
+       
+        if (options.sales_id&&options.sales_id!=0&&options.sales_id!='') {
+          wx.setStorageSync('sales_id'+options.suppliers_id, options.sales_id);
+          wx.setStorageSync('suppliers_id'+options.suppliers_id, options.suppliers_id);
+         
+          var sales_name=  unescape(options.sales_name.replace(/\u/g, "%u"));
+          sales_name=sales_name.replace(/\\/g, "")
+          //  options.sales_name.replace()
+          // console.log(options.sales_name.replace(/\u/g, "%u"),sales_name)
+          wx.setStorageSync('sales_name'+options.suppliers_id, sales_name);
         }
-      }
+        var sales_name = wx.getStorageSync('sales_name'+options.suppliers_id);
+        var sales_id = wx.getStorageSync('sales_id'+options.suppliers_id);
+        var suppliers_id = wx.getStorageSync('suppliers_id'+options.suppliers_id);
+        if (sales_id) {
+            this.sales_name = sales_name;
+            this.sales_id = sales_id; 
+          }
+     
+      // }
       // 来自工长id friend_id
       if (options.friend_id) {
         this.$parent.globalData.friend_id = options.friend_id;
-        this.$parent.globalData.friend_name = options.friend_name;
+        // var friend_name=  unescape(options.friend_name.replace(/\\u/g, "%u"));
+        var friend_name=  unescape(options.friend_name.replace(/\u/g, "%u"));
+          friend_name=friend_name.replace(/\\/g, "")
+        this.$parent.globalData.friend_name =friend_name;
         this.$parent.globalData.friend_suppliers_id = options.suppliers_id;
       }
       if (this.$parent.globalData.friend_suppliers_id == this.suppliers_id)

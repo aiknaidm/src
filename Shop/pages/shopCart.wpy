@@ -1,327 +1,320 @@
 <style lang="less">
-page {
-  height: 100%;
-}
-/* .container{
-      justify-content:initial;
-      display: flex;
-       overflow: hidden; height: 100%;
+  page {
+    height: 100%;
   }
-  .list{
+  /* .container{
+            justify-content:initial;
+            display: flex;
+             overflow: hidden; height: 100%;
+        }
+        .list{
+          flex: 1;
+         overflow: hidden;
+         width: 100%;
+        } */
+  .container {
+    background: #f0f0f0;
+  }
+  .title {
+    line-height: 80rpx;
+    padding-left: 80rpx;
+    position: relative;
+    font-family: 'iconfont';
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .title::before {
+    content: '\e619';
+    position: absolute;
+    width: 40rpx;
+    height: 40rpx;
+    color: #e50012;
+    font-size: 40rpx;
+    left: 30rpx;
+  }
+  .title::after {
+    content: '\e646';
+    width: 40rpx;
+    height: 40rpx;
+    margin-left: 40rpx;
+    color: #aaa;
+  }
+  .title-box {
+    width: 100%;
+    padding-top: 330rpx;
+    text-align: center;
+    font-size: 28rpx;
+    color: #999;
+    background: url(https://cdn.it120.cc/images/weappshop/icon-cart.png) no-repeat center 205rpx;
+    background-size: 100rpx auto;
+    margin-bottom: 50rpx;
+  }
+  .to-index-btn {
+    color: #fff;
+    background: #e50012;
+    border-radius: 6px;
+    width: 300rpx;
+    height: 70rpx;
+    line-height: 70rpx;
+    text-align: center;
+    font-size: 28rpx;
+    margin: auto;
+  }
+  .list-top {
+    width: 100%;
+    height: 88rpx;
+    line-height: 88rpx;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 30rpx;
+    font-size: 28rpx;
+    align-items: center;
+  }
+  .list-top .label {
+    color: #000;
+  }
+  .list-top .edit-btn {
+    color: #999;
+    height: 100%;
+  }
+  .goodsList {
+    width: 100%;
+    padding-bottom: 150rpx;
+    /* height: 100%; */
+  }
+  .a-gooods {
+    width: 100%;
+    /* width: 100%; */
+    background-color: #fff;
+    overflow: hidden;
+    margin-bottom: 12rpx;
+  }
+  .a-gooods-title {
+    padding: 20rpx 40rpx;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .a-goods-conts {
+    display: flex;
+    justify-content: space-between;
+    /* padding-left: 30rpx; */
+    width: 100%;
+    box-sizing: border-box;
+    transition: margin-left 0.2s ease-in-out;
+    background: url(https://cdn.it120.cc/images/weappshop/gou.png) no-repeat 30rpx center;
+    background-size: 40rpx auto;
+  }
+  .a-goods-conts.active {
+    background: url(https://cdn.it120.cc/images/weappshop/gou-red.png) no-repeat 30rpx center;
+    background-size: 40rpx auto;
+  }
+  .goods-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 30rpx 0 30rpx 90rpx;
+    flex: 11;
+    box-sizing: border-box;
+    position: relative;
+  }
+  .goods-info .img-box {
+    width: 160rpx;
+    height: 160rpx;
+    overflow: hidden;
+    margin-right: 20rpx;
+    /* background-color: #d8d8d8; */
+  }
+  .goods-info .text-box {
     flex: 1;
-   overflow: hidden;
-   width: 100%;
-  } */
-.container {
-  background: #f0f0f0;
-}
-.title {
-  line-height: 80rpx;
-  padding-left: 80rpx;
-  position: relative;
-  font-family: 'iconfont';
-  background: #fff;
-  border-bottom: 1px solid #f0f0f0;
-}
-.title::before {
-  content: '\e619';
-  position: absolute;
-  width: 40rpx;
-  height: 40rpx;
-  color: #e50012;
-  font-size: 40rpx;
-  left: 30rpx;
-}
-.title::after {
-  content: '\e646';
-  width: 40rpx;
-  height: 40rpx;
-  margin-left: 40rpx;
-  color: #aaa;
-}
-.title-box {
-  width: 100%;
-  padding-top: 330rpx;
-  text-align: center;
-  font-size: 28rpx;
-  color: #999;
-  background: url(https://cdn.it120.cc/images/weappshop/icon-cart.png) no-repeat
-    center 205rpx;
-  background-size: 100rpx auto;
-  margin-bottom: 50rpx;
-}
-.to-index-btn {
-  color: #fff;
-  background: #e50012;
-  border-radius: 6px;
-  width: 300rpx;
-  height: 70rpx;
-  line-height: 70rpx;
-  text-align: center;
-  font-size: 28rpx;
-  margin: auto;
-}
-.list-top {
-  width: 100%;
-  height: 88rpx;
-  line-height: 88rpx;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 30rpx;
-  font-size: 28rpx;
-  align-items: center;
-}
-.list-top .label {
-  color: #000;
-}
-.list-top .edit-btn {
-  color: #999;
-  height: 100%;
-}
-.goodsList {
-  width: 100%;
-  padding-bottom: 150rpx;
-  /* height: 100%; */
-}
-.a-gooods {
-  width: 100%;
-  /* width: 100%; */
-  background-color: #fff;
-  overflow: hidden;
-  margin-bottom: 12rpx;
-}
-.a-gooods-title {
-  padding: 20rpx 40rpx;
-  border-bottom: 1px solid #f0f0f0;
-}
-.a-goods-conts {
-  display: flex;
-  justify-content: space-between;
-  /* padding-left: 30rpx; */
-  width: 100%;
-  box-sizing: border-box;
-  transition: margin-left 0.2s ease-in-out;
-  background: url(https://cdn.it120.cc/images/weappshop/gou.png) no-repeat 30rpx
-    center;
-  background-size: 40rpx auto;
-}
-.a-goods-conts.active {
-  background: url(https://cdn.it120.cc/images/weappshop/gou-red.png) no-repeat
-    30rpx center;
-  background-size: 40rpx auto;
-}
-.goods-info {
-  display: flex;
-  justify-content: space-between;
-  padding: 30rpx 0 30rpx 90rpx;
-  flex: 11;
-  box-sizing: border-box;
-  position: relative;
-}
-.goods-info .img-box {
-  width: 160rpx;
-  height: 160rpx;
-  overflow: hidden;
-  margin-right: 20rpx;
-  /* background-color: #d8d8d8; */
-}
-.goods-info .text-box {
-  flex: 1;
-  position: relative;
-  font-size: 30rpx;
-  justify-content: space-around;
-  /* display: flex; */
-  flex-direction: column;
-  padding-right: 15rpx;
-}
-.goods-info .text-box .goods-title {
-  width: 100%;
-}
-.nolist {
-  margin: 20rpx 0;
-  height: 1px;
-}
-.xunze view {
-  display: inline-block;
-}
-.xunze .iconfont {
-  color: #aaa;
-  font-size: 30rpx;
-}
-.text-box .xunze {
-  display: inline-block;
-  border: 1px solid #f0f0f0;
-  padding: 10rpx 25rpx;
-  border-radius: 5px;
-  font-size: 24rpx;
-  margin: 20rpx 0;
-}
-.text-box .xunze:after {
-}
-.goods-info .text-box .goods-label {
-}
-.goods-info .text-box .goods-price {
-  display: flex;
-  color: #e50112;
-  font-size: 26rpx;
-  justify-content: space-between;
-}
-.goods-info .text-box .goods-count {
-  display: flex;
-  justify-content: flex-end;
-}
-.goods-info .buy-num {
-  width: 200rpx;
-  height: 48rpx;
-  line-height: 48rpx;
-  display: flex;
-  /*justify-content: space-between;*/
-  font-size: 24rpx;
-  text-align: center;
-  z-index: 10;
-  position: relative;
-}
-.goods-info .buy-num .jian-btn {
-  width: 48rpx;
-  height: 100%;
-  border-left: 1rpx solid #ccc;
-  border-bottom: 1rpx solid #ccc;
-  border-top: 1rpx solid #ccc;
-  border-bottom-left-radius: 6rpx;
-  border-top-left-radius: 6rpx;
-  /* padding: 10rpx; */
-}
-.goods-info .buy-num .jian-btn.disabled {
-  background-color: #f5f5f9;
-  border-left: 1rpx solid #eee;
-  border-bottom: 1rpx solid #eee;
-  border-top: 1rpx solid #eee;
-  color: #ccc;
-}
-.goods-info .buy-num .jia-btn {
-  width: 48rpx;
-  height: 100%;
-  border-right: 1rpx solid #ccc;
-  border-bottom: 1rpx solid #ccc;
-  border-top: 1rpx solid #ccc;
-  border-bottom-right-radius: 6rpx;
-  border-top-right-radius: 6rpx;
-}
-.goods-info .buy-num .jia-btn.disabled {
-  background-color: #f5f5f9;
-  border-right: 1rpx solid #eee;
-  border-bottom: 1rpx solid #eee;
-  border-top: 1rpx solid #eee;
-  color: #ccc;
-}
-.goods-info .buy-num input {
-  /* width: 68rpx; */
-  height: 48rpx;
-  min-height: 48rpx;
-  line-height: 48rpx;
-  text-align: center;
-  font-size: 24rpx;
-  border: 1rpx solid #ccc;
-  flex: 1;
-}
-.goods-info .img-box .img {
-  width: 160rpx;
-  height: 100%;
-  margin-left: 10rpx;
-}
-.a-goods-conts {
-  position: relative;
-}
-.delete-btn {
-  width: 120rpx;
-  line-height: 290rpx;
-  text-align: center;
-  background: #e64340;
-  font-size: 24rpx;
-  color: #fff;
-  position: absolute;
-  right: -120rpx;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.jiesuan-box2 {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 100rpx;
-  position: fixed;
-  bottom: 100rpx;
-  left: 0;
-  border-bottom: 1px solid #eee;
-  border-top: 1px solid #eee;
-  background-color: #fff;
-  z-index: 10;
-}
-.jiesuan-box {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 100rpx;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  border-bottom: 1px solid #eee;
-  border-top: 1px solid #eee;
-  background-color: #fff;
-  z-index: 10;
-}
-.jiesuan-box .to-pay-btn {
-  width: 240rpx;
-  text-align: center;
-  line-height: 100rpx;
-  background-color: #e64340;
-  font-size: 32rpx;
-  color: #ffffff;
-}
-.jiesuan-box .to-pay-btn.no-select {
-  background-color: #ccc;
-}
-.jiesuan-box .left-price {
-  display: flex;
-  width: 510rpx;
-  justify-content: space-between;
-  line-height: 100rpx;
-  padding: 0 30rpx 0 0;
-  font-size: 28rpx;
-  box-sizing: border-box;
-}
-.jiesuan-box .all-selected {
-  padding-left: 90rpx;
-  color: #000000;
-  background: url(https://cdn.it120.cc/images/weappshop/gou.png) no-repeat 30rpx
-    center;
-  background-size: 40rpx auto;
-}
-.jiesuan-box .all-selected.active {
-  background: url(https://cdn.it120.cc/images/weappshop/gou-red.png) no-repeat
-    30rpx center;
-  background-size: 40rpx auto;
-}
-.jiesuan-box .total {
-  color: #e64340;
-}
-.toaddgoods {
-  color: #e50012;
-}
-.huiyuanlabel {
-  background: #e50012;
-  color: #fff;
-  font-size: 20rpx;
-  padding: 5rpx;
-  margin-left: 10rpx;
-  border-radius: 5rpx;
-}
-.shopList {
-  background: #fff;
-}
+    position: relative;
+    font-size: 30rpx;
+    justify-content: space-around;
+    /* display: flex; */
+    flex-direction: column;
+    padding-right: 15rpx;
+  }
+  .goods-info .text-box .goods-title {
+    width: 100%;
+  }
+  .nolist {
+    margin: 20rpx 0;
+    height: 1px;
+  }
+  .xunze view {
+    display: inline-block;
+  }
+  .xunze .iconfont {
+    color: #aaa;
+    font-size: 30rpx;
+  }
+  .text-box .xunze {
+    display: inline-block;
+    border: 1px solid #f0f0f0;
+    padding: 10rpx 25rpx;
+    border-radius: 5px;
+    font-size: 24rpx;
+    margin: 20rpx 0;
+  }
+  .text-box .xunze:after {}
+  .goods-info .text-box .goods-label {}
+  .goods-info .text-box .goods-price {
+    display: flex;
+    color: #e50112;
+    font-size: 26rpx;
+    justify-content: space-between;
+  }
+  .goods-info .text-box .goods-count {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .goods-info .buy-num {
+    width: 200rpx;
+    height: 48rpx;
+    line-height: 48rpx;
+    display: flex;
+    /*justify-content: space-between;*/
+    font-size: 24rpx;
+    text-align: center;
+    z-index: 10;
+    position: relative;
+  }
+  .goods-info .buy-num .jian-btn {
+    width: 48rpx;
+    height: 100%;
+    border-left: 1rpx solid #ccc;
+    border-bottom: 1rpx solid #ccc;
+    border-top: 1rpx solid #ccc;
+    border-bottom-left-radius: 6rpx;
+    border-top-left-radius: 6rpx;
+    /* padding: 10rpx; */
+  }
+  .goods-info .buy-num .jian-btn.disabled {
+    background-color: #f5f5f9;
+    border-left: 1rpx solid #eee;
+    border-bottom: 1rpx solid #eee;
+    border-top: 1rpx solid #eee;
+    color: #ccc;
+  }
+  .goods-info .buy-num .jia-btn {
+    width: 48rpx;
+    height: 100%;
+    border-right: 1rpx solid #ccc;
+    border-bottom: 1rpx solid #ccc;
+    border-top: 1rpx solid #ccc;
+    border-bottom-right-radius: 6rpx;
+    border-top-right-radius: 6rpx;
+  }
+  .goods-info .buy-num .jia-btn.disabled {
+    background-color: #f5f5f9;
+    border-right: 1rpx solid #eee;
+    border-bottom: 1rpx solid #eee;
+    border-top: 1rpx solid #eee;
+    color: #ccc;
+  }
+  .goods-info .buy-num input {
+    /* width: 68rpx; */
+    height: 48rpx;
+    min-height: 48rpx;
+    line-height: 48rpx;
+    text-align: center;
+    font-size: 24rpx;
+    border: 1rpx solid #ccc;
+    flex: 1;
+  }
+  .goods-info .img-box .img {
+    width: 160rpx;
+    height: 100%;
+    margin-left: 10rpx;
+  }
+  .a-goods-conts {
+    position: relative;
+  }
+  .delete-btn {
+    width: 120rpx;
+    line-height: 290rpx;
+    text-align: center;
+    background: #e64340;
+    font-size: 24rpx;
+    color: #fff;
+    position: absolute;
+    right: -120rpx;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .jiesuan-box2 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 100rpx;
+    position: fixed;
+    bottom: 100rpx;
+    left: 0;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    background-color: #fff;
+    z-index: 10;
+  }
+  .jiesuan-box {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 100rpx;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    background-color: #fff;
+    z-index: 10;
+  }
+  .jiesuan-box .to-pay-btn {
+    width: 240rpx;
+    text-align: center;
+    line-height: 100rpx;
+    background-color: #e64340;
+    font-size: 32rpx;
+    color: #ffffff;
+  }
+  .jiesuan-box .to-pay-btn.no-select {
+    background-color: #ccc;
+  }
+  .jiesuan-box .left-price {
+    display: flex;
+    width: 510rpx;
+    justify-content: space-between;
+    line-height: 100rpx;
+    padding: 0 30rpx 0 0;
+    font-size: 28rpx;
+    box-sizing: border-box;
+  }
+  .jiesuan-box .all-selected {
+    padding-left: 90rpx;
+    color: #000000;
+    background: url(https://cdn.it120.cc/images/weappshop/gou.png) no-repeat 30rpx center;
+    background-size: 40rpx auto;
+  }
+  .jiesuan-box .all-selected.active {
+    background: url(https://cdn.it120.cc/images/weappshop/gou-red.png) no-repeat 30rpx center;
+    background-size: 40rpx auto;
+  }
+  .jiesuan-box .total {
+    color: #e64340;
+  }
+  .toaddgoods {
+    color: #e50012;
+  }
+  .huiyuanlabel {
+    background: #e50012;
+    color: #fff;
+    font-size: 20rpx;
+    padding: 5rpx;
+    margin-left: 10rpx;
+    border-radius: 5rpx;
+  }
+  .shopList {
+    background: #fff;
+  }
 </style>
 <template>
   <view class="container">
@@ -337,8 +330,8 @@ page {
     <view wx:else>
       <view class="list-top">
         <!-- <view bindtap="toAddGoods" class='toaddgoods'>
-        +添加其他商品
-      </view> -->
+              +添加其他商品
+            </view> -->
         <view class="label"></view>
         <view class="edit-btn" @tap="saveTap">{{saveHidden?"编辑":"完成"}}</view>
       </view>
@@ -348,7 +341,7 @@ page {
             <text class='huiyuanlabel' wx:if="{{item1.is_hy==1}}">会员</text>
             <text class='huiyuanlabel' wx:if="{{item1.suppliers_id==friend_suppliers_id}}">代下单商品</text>
           </view>
-          <view class="a-gooods" wx:for="{{item1.goodsList}}" wx:key="{{indexy}}" wx:for-item="item" wx:for-index="indexy">
+          <view class="a-gooods" wx:for="{{item1.goodsList}}" wx:key="{{indexy}}" wx:for-item="item" wx:for-index="indexy"  bindlongpress='delGoods({{item.id}})'>
             <view class="a-goods-conts {{item.active? 'active':''}}" @tap="selectTap({{indexx}},{{indexy}})">
               <view class="goods-info">
                 <view class="img-box" @tap.stop="toGoodDetailsTap({{item.goods_id}})">
@@ -363,10 +356,10 @@ page {
                   </view>
                   <view hidden="{{item.properties.length>0?true:false}}" class='nolist'></view>
                   <view class="goods-price" catchtap="noclick">
-                    <view> ¥ {{item.goods_price}}</view>
+                    <view> ¥ {{item.goods_price}} </view>
                     <view class="buy-num">
                       <view class="jian-btn {{item.buy_number <= 1}}" @tap.stop="jianBtnTap({{indexx}},{{indexy}},{{item.buy_number}})">-</view>
-                      <input type="number" value="{{item.buy_number}}" @input="shopNumChange({{indexx}},{{indexy}})" />
+                      <input type="number" value="{{item.buy_number}}" bindinput="shopNumChange1" data-indexx="{{indexx}}" data-indexy="{{indexy}}" />
                       <view class="jia-btn" @tap.stop="jiaBtnTap({{indexx}},{{indexy}},{{item.buy_number}})">+</view>
                     </view>
                   </view>
@@ -393,232 +386,432 @@ page {
 </template>
 
 <script>
-import wepy from 'wepy';
-import api from '../../API/api';
-import shopCartPopup from '../../components/shop/shopCartPopup';
-import loadingOrder from '../../components/loadingOrder';
-export default class shopCart extends wepy.page {
-  config = {
-    navigationBarTitleText: '购物车'
-  };
-  components = {
-    shopCartPopup,
-    loadingOrder
-  };
-  data = {
-    list: [],
-    totalPrice: 0,
-    allSelect: false,
-    saveHidden: true,
-    ishideShopPopup: false,
-    goodsDetail: {},
-    isLoading: true,
-    friend_suppliers_id: ''
-  };
-  computed = {};
-  methods = {
-    // 去逛逛
-    toIndexPage() {
-      wx.switchTab({
-        url: '/pages/shop'
-      });
-    },
-    toShop(id) {
-      wx.navigateTo({
-        url: '/Shop/pages/index?suppliers_id=' + id
-      });
-    },
-    closePopupTap() {
-      this.ishideShopPopup = false;
-    },
-    //单选选择商品
-    selectTap(x, y) {
-      var list = this.list;
-      list[parseInt(x)].goodsList[parseInt(y)].active = !list[parseInt(x)]
-        .goodsList[parseInt(y)].active;
-      this.allSelect = true;
-      //判断是否全选
-      for (var i = 0; i < list.length; i++) {
-        for (var j = 0; j < list[i].goodsList.length; j++) {
-          if (!list[i].goodsList[j].active) {
-            this.allSelect = false;
-            break;
-          }
-        }
-      }
-      // 计算价格
-      this.allPrice();
-      // this.totalPrice();
-    },
-    // 点击全选
-    bindAllSelect() {
-      var list = this.list;
-      this.allSelect = !this.allSelect;
-      for (var i = 0; i < list.length; i++) {
-        for (var j = 0; j < list[i].goodsList.length; j++) {
-          list[i].goodsList[j].active = this.allSelect;
-        }
-      }
-      // 计算价格
-      this.allPrice();
-    },
-    // 数量加减
-    async jianBtnTap(x, y, buy_number) {
-      var list = this.list;
-      if (buy_number > 1) {
-        buy_number--;
-      } else {
-        wx.showToast({
-          title: '不能小于零', //提示的内容,
-          icon: 'none', //图标,
-          duration: 2000, //延迟时间,
-          mask: true //显示透明蒙层，防止触摸穿透,
+  import wepy from 'wepy';
+  import api from '../../API/api';
+  import shopCartPopup from '../../components/shop/shopCartPopup';
+  import loadingOrder from '../../components/loadingOrder';
+  export default class shopCart extends wepy.page {
+    config = {
+      navigationBarTitleText: '购物车'
+    };
+    components = {
+      shopCartPopup,
+      loadingOrder
+    };
+    data = {
+      list: [],
+      totalPrice: 0,
+      allSelect: false,
+      saveHidden: true,
+      ishideShopPopup: false,
+      goodsDetail: {},
+      isLoading: true,
+      friend_suppliers_id: ''
+    };
+    computed = {};
+    methods = {
+      async delGoods(id) {
+        var res = await wepy.showModal({
+          title: '提示', //提示的标题,
+          content: '你确定要删除该商品吗', //提示的内容,
+          showCancel: true, //是否显示取消按钮,
+          cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
+          cancelColor: '#000000', //取消按钮的文字颜色,
+          confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+          confirmColor: '#e50012', //确定按钮的文字颜色,
         });
-        return
-      }
-        if(list[x].suppliers_id==this.$parent.globalData.friend_suppliers_id) var friend_id = this.$parent.globalData.friend_id;
-      var goods_price = await this.changeCartNum(
-        list,
-        x,
-        y,
-        buy_number,
-        this.user_id,
-        friend_id
-      );
-      list[x].goodsList[y].goods_price = goods_price;
-    },
-    async jiaBtnTap(x, y, buy_number) {
-      var list = this.list;
-      var goods_number = list[x].goodsList[y].goods_number; //库存
-      //零售价
-      if (buy_number < goods_number) {
-        buy_number++;
-      } else {
-        wx.showToast({
-          title: '不能大于库存', //提示的内容,
-          icon: 'none', //图标,
-          duration: 2000, //延迟时间,
-          mask: true //显示透明蒙层，防止触摸穿透,
-        });
-         return
-      }
-       if(list[x].suppliers_id==this.$parent.globalData.friend_suppliers_id) var friend_id = this.$parent.globalData.friend_id;
-      var goods_price = await this.changeCartNum(
-        list,
-        x,
-        y,
-        buy_number,
-        this.user_id,
-        friend_id
-      );
-      list[x].goodsList[y].goods_price = goods_price;
-    },
-    // 直接修改数量
-    async shopNumChange(x, y, e) {
-      var list = this.list;
-      var buy_number = e.detail.value;
-      var goods_number = list[x].goodsList[y].goods_number; //库存
-      if (buy_number >= goods_number) {
-        buy_number = goods_number;
-      }
-      if (buy_number <= 0) {
-        buy_number = 1;
-      }
-       if(list[x].suppliers_id==this.$parent.globalData.friend_suppliers_id) var friend_id = this.$parent.globalData.friend_id;
-      var goods_price = await this.changeCartNum(
-        list,
-        x,
-        y,
-        buy_number,
-        this.user_id,
-        friend_id
-      );
-      list[x].goodsList[y].goods_price = goods_price;
-    },
-    // 删除商品
-    async deleteSelected(x, y) {
-      var showRes = await wepy.showModal({
-        title: '提示', //提示的标题,
-        content: '你确定要删除吗', //提示的内容,
-        cancelColor: '#000000', //取消按钮的文字颜色,
-        confirmColor: '#e50012' //确定按钮的文字颜色,
-      });
-      if (showRes.confirm) {
-        console.log('用户确认删除');
-        var list = this.list;
+        if (res.cancel) {
+          console.log('用户点击取消')
+          return;
+        }
         var idList = [];
+        idList[0] = id;
+        this.delCartGoods(idList)
+      },
+      // 去逛逛
+      toIndexPage() {
+        wx.switchTab({
+          url: '/pages/shop'
+        });
+      },
+      toShop(id) {
+        wx.navigateTo({
+          url: '/Shop/pages/index?suppliers_id=' + id
+        });
+      },
+      closePopupTap() {
+        this.ishideShopPopup = false;
+      },
+      //单选选择商品
+      selectTap(x, y) {
+        var list = this.list;
+        list[parseInt(x)].goodsList[parseInt(y)].active = !list[parseInt(x)]
+          .goodsList[parseInt(y)].active;
+        this.allSelect = true;
+        //判断是否全选
         for (var i = 0; i < list.length; i++) {
-          var goodsList = list[i].goodsList;
-          for (var j = 0; j < goodsList.length; j++) {
-            if (goodsList[j].active) {
-              idList.push(goodsList[j].id);
+          for (var j = 0; j < list[i].goodsList.length; j++) {
+            if (!list[i].goodsList[j].active) {
+              this.allSelect = false;
+              break;
             }
           }
         }
-        this.delCartGoods(idList);
-      }
-    },
-    // 显示规格
-    toAddShopCar(x, y) {
-      this.goodsDetail = this.list[x].goodsList[y];
-      this.goodsDetail.selectPrice = this.goodsDetail.goods_price;
-      this.goodsDetail.property = {};
-      this.goodsDetail.property.goods_attr_id = this.goodsDetail.goods_attr_id;
-      this.goodsDetail.property.goods_number = this.goodsDetail.goods_number;
-      this.goodsDetail.property.attr_value = this.goodsDetail.goods_attr;
-      this.ishideShopPopup = true;
-      this.x = x;
-    },
-    // 选择规格
-    labelItemTap(property) {
-      var price =
-        this.list[this.x].is_hy &&
-        this.goodsDetail.qidingliang <= this.goodsDetail.buy_number
-          ? property.attr_price
-          : property.floor_price;
-      this.goodsDetail.property = property;
-      this.goodsDetail.selectPrice = price;
-    },
-    // 点击确定
-    async buyNow() {
-      var property = this.goodsDetail.property;
-      
-      this.list[this.x].goodsList.forEach((item, index) => {
-        if (
-          item.id != this.goodsDetail.id &&
-          item.goods_attr_id == property.goods_attr_id
-        ) {
-          var idList = [];
-          idList[0] = this.goodsDetail.id;
-          this.delCartGoods(idList);
-          return;
+        // 计算价格
+        this.allPrice();
+        // this.totalPrice();
+      },
+      // 点击全选
+      bindAllSelect() {
+        var list = this.list;
+        this.allSelect = !this.allSelect;
+        for (var i = 0; i < list.length; i++) {
+          for (var j = 0; j < list[i].goodsList.length; j++) {
+            list[i].goodsList[j].active = this.allSelect;
+          }
         }
+        // 计算价格
+        this.allPrice();
+      },
+      // 数量加减
+      async jianBtnTap(x, y, buy_number) {
+        var list = this.list;
+        if (buy_number > 1) {
+          buy_number--;
+        } else {
+          wx.showToast({
+            title: '不能小于零', //提示的内容,
+            icon: 'none', //图标,
+            duration: 2000, //延迟时间,
+            mask: true //显示透明蒙层，防止触摸穿透,
+          });
+          return
+        }
+        if (list[x].suppliers_id == this.$parent.globalData.friend_suppliers_id) var friend_id = this.$parent.globalData.friend_id;
+        var goods_price = await this.changeCartNum(
+          list,
+          x,
+          y,
+          buy_number,
+          this.user_id,
+          friend_id
+        );
+        list[x].goodsList[y].goods_price = goods_price;
+      },
+      async jiaBtnTap(x, y, buy_number) {
+        console.log("加", buy_number)
+        var list = this.list;
+        var goods_number = list[x].goodsList[y].goods_number; //库存
+        //零售价
+        if (buy_number < goods_number) {
+          buy_number++;
+        } else {
+          wx.showToast({
+            title: '不能大于库存', //提示的内容,
+            icon: 'none', //图标,
+            duration: 2000, //延迟时间,
+            mask: true //显示透明蒙层，防止触摸穿透,
+          });
+          return
+        }
+        if (list[x].suppliers_id == this.$parent.globalData.friend_suppliers_id) var friend_id = this.$parent.globalData.friend_id;
+        var goods_price = await this.changeCartNum(
+          list,
+          x,
+          y,
+          buy_number,
+          this.user_id,
+          friend_id
+        );
+        list[x].goodsList[y].goods_price = goods_price;
+      },
+      // 直接修改数量
+      shopNumChange1(e) {
+        var that = this
+        var x = e.currentTarget.dataset.indexx;
+        var y = e.currentTarget.dataset.indexy;
+        var list = this.list;
+        if (e.detail.value == "") {
+          return
+        }
+        var buy_number = parseInt(e.detail.value);
+        var goods_number = list[x].goodsList[y].goods_number; //库存
+        console.log(buy_number)
+        if (buy_number >= goods_number) {
+          var buy_number = goods_number;
+          wx.showToast({
+            title: '超过库存', //提示的内容,
+            icon: 'none', //图标,
+          });
+        } else if (buy_number <= 0 || buy_number == "" || buy_number == null || buy_number == "NaN") {
+          var buy_number = 1;
+          wx.showToast({
+            title: '不能小于1', //提示的内容,
+            icon: 'none', //图标,
+          });
+        }
+        list[x].goodsList[y].buy_number = buy_number
+        //  that.$apply()
+        if (list[x].suppliers_id == this.$parent.globalData.friend_suppliers_id) var friend_id = this.$parent.globalData.friend_id;
+        this.changeCartNum(
+          list,
+          x,
+          y,
+          buy_number,
+          this.user_id,
+          friend_id,
+          function(goods_price, buy_number) {
+            // console.log(buy_number, goods_price,list[x].goodsList[y].goods_price )
+            list[x].goodsList[y].goods_price = goods_price;
+            that.$apply()
+            that.setData({
+              list: list
+            })
+          }
+        );
+      },
+      // 删除商品
+      async deleteSelected(x, y) {
+        var showRes = await wepy.showModal({
+          title: '提示', //提示的标题,
+          content: '你确定要删除吗', //提示的内容,
+          cancelColor: '#000000', //取消按钮的文字颜色,
+          confirmColor: '#e50012' //确定按钮的文字颜色,
+        });
+        if (showRes.confirm) {
+          console.log('用户确认删除');
+          var list = this.list;
+          var idList = [];
+          for (var i = 0; i < list.length; i++) {
+            var goodsList = list[i].goodsList;
+            for (var j = 0; j < goodsList.length; j++) {
+              if (goodsList[j].active) {
+                idList.push(goodsList[j].id);
+              }
+            }
+          }
+          this.delCartGoods(idList);
+        }
+      },
+      // 显示规格
+      toAddShopCar(x, y) {
+        this.goodsDetail = this.list[x].goodsList[y];
+        this.goodsDetail.selectPrice = this.goodsDetail.goods_price;
+        this.goodsDetail.property = {};
+        this.goodsDetail.property.goods_attr_id = this.goodsDetail.goods_attr_id;
+        this.goodsDetail.property.goods_number = this.goodsDetail.goods_number;
+        this.goodsDetail.property.attr_value = this.goodsDetail.goods_attr;
+        this.ishideShopPopup = true;
+        this.x = x;
+      },
+      // 选择规格
+      labelItemTap(property) {
+        var price =
+          this.list[this.x].is_hy &&
+          this.goodsDetail.qidingliang <= this.goodsDetail.buy_number ?
+          property.attr_price :
+          property.floor_price;
+        this.goodsDetail.property = property;
+        this.goodsDetail.selectPrice = price;
+      },
+      // 点击确定
+      async buyNow() {
+        var property = this.goodsDetail.property;
+        this.list[this.x].goodsList.forEach((item, index) => {
+          if (
+            item.id != this.goodsDetail.id &&
+            item.goods_attr_id == property.goods_attr_id
+          ) {
+            var idList = [];
+            idList[0] = this.goodsDetail.id;
+            this.delCartGoods(idList, true);
+            return;
+          }
+        });
+        var friend_id = ""
+        if (this.list[this.x].suppliers_id == this.$parent.globalData.friend_suppliers_id) {
+          friend_id = this.$parent.globalData.friend_id;
+        }
+        // delCartGoods
+        this.goodsDetail.goods_attr_id = property.goods_attr_id;
+        this.goodsDetail.goods_number = property.goods_number;
+        this.goodsDetail.goods_price = this.goodsDetail.selectPrice;
+        this.goodsDetail.goods_attr = this.goodsDetail.property.attr_value;
+        this.goodsDetail.buy_number =
+          this.goodsDetail.buy_number > this.goodsDetail.goods_number ?
+          this.goodsDetail.goods_number :
+          this.goodsDetail.buy_number;
+        this.ishideShopPopup = false;
+        var res = await wepy.request({
+          url: api.updateCart,
+          data: {
+            user_id: this.user_id,
+            goods_id: this.goodsDetail.goods_id,
+            buy_number: this.goodsDetail.buy_number,
+            goods_attr_id: this.goodsDetail.goods_attr_id,
+            is_hy: this.list[this.x].is_hy,
+            attr_value: this.goodsDetail.goods_attr,
+            id: this.goodsDetail.id,
+            friend_id,
+          }
+        });
+        if (res.data.code != '0') {
+          wx.showToast({
+            title: '修改失败', //提示的内容,
+            icon: 'none', //图标,
+            mask: true //显示透明蒙层，防止触摸穿透,
+          });
+        } else {
+          this.goodsDetail.goods_price = res.data.data;
+        }
+      },
+      //去结算
+      toPayOrder: function(list, e) {
+        //判断是否选择了商品
+        // var that=this
+        var goodsList = [];
+        var index = 0;
+        for (var i = 0; i < list.length; i++) {
+          var goods = [];
+          var curItemx = list[i];
+          for (var j = 0; j < list[i].goodsList.length; j++) {
+            var curItemy = list[i].goodsList[j];
+            if (curItemy.active) {
+              if (!goodsList[index]) {
+                goodsList[index] = {};
+                goodsList[index].goodsList = [];
+              }
+              if (
+                list[i].goodsList[j].properties.length != 0 &&
+                list[i].goodsList[j].goods_attr_id == ''
+              ) {
+                wx.showToast({
+                  title: '请选择规格', //提示的内容,
+                  icon: 'none',
+                  duration: 1000, //延迟时间,
+                  mask: true, //显示透明蒙层，防止触摸穿透,
+                  success: res => {}
+                });
+                return;
+              }
+              if (
+                list[i].goodsList[j].original_img == '' &&
+                list[i].goodsList[j].original_img1 == ''
+              ) {
+                list[i].goodsList[j].goods_imgs =
+                  'http://wsc.jicaizx.com/images/no_picture.gif';
+              } else {
+                list[i].goodsList[j].goods_imgs =
+                  list[i].goodsList[j].original_img != '' ?
+                  'http://maijia.jicaizx.com/' +
+                  list[i].goodsList[j].original_img :
+                  list[i].goodsList[j].original_img1;
+              }
+              goodsList[index].goodsList.push(list[i].goodsList[j]);
+              goodsList[index].suppliers_name = list[i].suppliers_name;
+              goodsList[index].suppliers_id = list[i].suppliers_id;
+              goodsList[index].yunfei = list[i].yunfei ? list[i].yunfei : 0;
+            }
+          }
+          if (goodsList[index]) {
+            index++;
+          }
+        }
+        try {
+          for (var i = 0; i < goodsList.length; i++) {
+            if (
+              goodsList[i].suppliers_id ==
+              this.$parent.globalData.friend_suppliers_id &&
+              goodsList.length > 1
+            ) {
+              wx.showToast({
+                title: '代下单商品不能与其他商品一起提交', //提示的内容,
+                icon: 'none', //图标,
+                duration: 2000, //延迟时间,
+                mask: true, //显示透明蒙层，防止触摸穿透,
+                success: res => {}
+              });
+              return;
+            }
+          }
+        } catch (error) {}
+        wx.setStorageSync('shopCarInfo', goodsList);
+        if (goodsList.length <= 0) {
+          wx.showToast({
+            title: '请先选择商品',
+            icon: 'none',
+            duration: 1000
+          });
+        } else {
+          wx.navigateTo({
+            url: '/Shop/pages/toPayOrder?orderType='
+          });
+        }
+      },
+      saveTap() {
+        this.saveHidden = !this.saveHidden;
+      },
+      toGoodDetailsTap(id) {
+        console.log('跳转到详情');
+        wx.navigateTo({
+          url: '/Shop/pages/goodDetail?id=' + id
+        });
+      }
+    };
+    events = {};
+    // 删除购物车商品
+    async delCartGoods(idList, ishiddenToast) {
+      wx.showLoading({
+        title: '加载中', //提示的内容,
+        mask: true //显示透明蒙层，防止触摸穿透,
       });
-      var friend_id=""
-       if(this.list[this.x].suppliers_id==this.$parent.globalData.friend_suppliers_id){
-      friend_id = this.$parent.globalData.friend_suppliers_id;
+      var res = await wepy.request({
+        url: api.delCart,
+        data: {
+          id: idList
+        },
+        method: 'post'
+      });
+      if (res.data.code == '0') {
+        this.getShopCartInfo(this.user_id);
+        if (ishiddenToast) {
+          wx.hideLoading();
+          return
+        }
+        wx.showToast({
+          title: '删除成功', //提示的内容,
+          icon: 'none', //图标,
+          mask: true //显示透明蒙层，防止触摸穿透,
+        });
+      } else {
+        wx.showToast({
+          title: '删除失败', //提示的内容,
+          icon: 'none', //图标,
+          mask: true //显示透明蒙层，防止触摸穿透,
+        });
+      }
     }
-      // delCartGoods
-      this.goodsDetail.goods_attr_id = property.goods_attr_id;
-      this.goodsDetail.goods_number = property.goods_number;
-      this.goodsDetail.goods_price = this.goodsDetail.selectPrice;
-      this.goodsDetail.goods_attr = this.goodsDetail.property.attr_value;
-      this.goodsDetail.buy_number =
-        this.goodsDetail.buy_number > this.goodsDetail.goods_number
-          ? this.goodsDetail.goods_number
-          : this.goodsDetail.buy_number;
-      this.ishideShopPopup = false;
+    // 改变购物车数量
+    async changeCartNum(list, x, y, buy_number, user_id, friend_id = "", back) {
+      var goodsDetail = list[x].goodsList[y];
+      var is_hy = list[x].is_hy; //是否是会员
+      var goods_attr_id = goodsDetail.goods_attr_id;
+      var goods_price = goodsDetail.goods_price;
+      var goods_id = goodsDetail.goods_id;
+      var attr_value = goodsDetail.goods_attr;
+      var id = goodsDetail.id;
+      goodsDetail.buy_number = buy_number;
       var res = await wepy.request({
         url: api.updateCart,
         data: {
-          user_id: this.user_id,
-          goods_id: this.goodsDetail.goods_id,
-          buy_number: this.goodsDetail.buy_number,
-          goods_attr_id: this.goodsDetail.goods_attr_id,
-          is_hy: this.list[this.x].is_hy,
-          attr_value: this.goodsDetail.goods_attr,
-          id: this.goodsDetail.id,
-          friend_id,
+          user_id,
+          goods_id,
+          buy_number,
+          goods_attr_id,
+          is_hy,
+          attr_value,
+          id,
+          friend_id
         }
       });
       if (res.data.code != '0') {
@@ -628,227 +821,67 @@ export default class shopCart extends wepy.page {
           mask: true //显示透明蒙层，防止触摸穿透,
         });
       } else {
-        this.goodsDetail.goods_price = res.data.data;
+        this.$apply();
+        if (back) back(res.data.data, buy_number);
+        return res.data.data;
       }
-    },
-    //去结算
-    toPayOrder: function(list, e) {
-      //判断是否选择了商品
-      // var that=this
-      var goodsList = [];
-      var index = 0;
-      for (var i = 0; i < list.length; i++) {
-        var goods = [];
-        var curItemx = list[i];
-        for (var j = 0; j < list[i].goodsList.length; j++) {
-          var curItemy = list[i].goodsList[j];
-          if (curItemy.active) {
-            if (!goodsList[index]) {
-              goodsList[index] = {};
-              goodsList[index].goodsList = [];
-            }
-            if (
-              list[i].goodsList[j].properties.length != 0 &&
-              list[i].goodsList[j].goods_attr_id == ''
-            ) {
-              wx.showToast({
-                title: '请选择规格', //提示的内容,
-                icon: 'none',
-                duration: 1000, //延迟时间,
-                mask: true, //显示透明蒙层，防止触摸穿透,
-                success: res => {}
-              });
-              return;
-            }
-            if (
-              list[i].goodsList[j].original_img == '' &&
-              list[i].goodsList[j].original_img1 == ''
-            ) {
-              list[i].goodsList[j].goods_imgs =
-                'http://wsc.jicaizx.com/images/no_picture.gif';
-            } else {
-              list[i].goodsList[j].goods_imgs =
-                list[i].goodsList[j].original_img != ''
-                  ? 'http://maijia.jicaizx.com/' +
-                    list[i].goodsList[j].original_img
-                  : list[i].goodsList[j].original_img1;
-            }
-
-            goodsList[index].goodsList.push(list[i].goodsList[j]);
-            goodsList[index].suppliers_name = list[i].suppliers_name;
-            goodsList[index].suppliers_id = list[i].suppliers_id;
-            goodsList[index].yunfei = list[i].yunfei ? list[i].yunfei : 0;
-          }
+    }
+    // 购物车列表
+    async getShopCartInfo(user_id) {
+      var res = await wepy.request({
+        url: api.showCart,
+        data: {
+          user_id
         }
-        if (goodsList[index]) {
-          index++;
-        }
-      }
-      try {
-        for (var i = 0; i < goodsList.length; i++) {
-          if (
-            goodsList[i].suppliers_id ==
-              this.$parent.globalData.friend_suppliers_id &&
-            goodsList.length > 1
-          ) {
-            wx.showToast({
-              title: '代下单商品不能与其他商品一起提交', //提示的内容,
-              icon: 'none', //图标,
-              duration: 2000, //延迟时间,
-              mask: true, //显示透明蒙层，防止触摸穿透,
-              success: res => {}
-            });
-            return;
-          }
-        }
-      } catch (error) {}
-      wx.setStorageSync('shopCarInfo', goodsList);
-      if (goodsList.length <= 0) {
-        wx.showToast({
-          title: '请先选择商品',
-          icon: 'none',
-          duration: 1000
-        });
+      });
+      this.isLoading = false;
+      console.log('购物车数据：', res.data.data);
+      if (res.data.code == 0) {
+        this.list = res.data.data;
+        this.totalPrice = 0;
+        this.$apply();
       } else {
-        wx.navigateTo({
-          url: '/Shop/pages/toPayOrder?orderType='
-        });
+        this.text = '出错了！';
       }
-    },
-    saveTap() {
-      this.saveHidden = !this.saveHidden;
-    },
-    toGoodDetailsTap(id) {
-      console.log('跳转到详情');
-      wx.navigateTo({
-        url: '/Shop/pages/goodDetail?id=' + id
-      });
+      //可见的时候，取消全选状态，隐藏合计金额
+      // that.setGoodsList(
+      //   that.getSaveHide(),
+      //   that.totalPrice(),
+      //   false,
+      //   true,
+      //   that.data.list,
+      //   true,
+      //   0,
+      //   0
+      // );
     }
-  };
-  events = {};
-  // 删除购物车商品
-  async delCartGoods(idList) {
-    wx.showLoading({
-      title: '加载中', //提示的内容,
-      mask: true //显示透明蒙层，防止触摸穿透,
-    });
-    var res = await wepy.request({
-      url: api.delCart,
-      data: {
-        id: idList
-      },
-      method: 'post'
-    });
-    if (res.data.code == '0') {
-      this.getShopCartInfo(this.user_id);
-      wx.showToast({
-        title: '删除成功', //提示的内容,
-        icon: 'none', //图标,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
-    } else {
-      wx.showToast({
-        title: '删除失败', //提示的内容,
-        icon: 'none', //图标,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
-    }
-  }
-  // 改变购物车数量
-  async changeCartNum(list, x, y, buy_number, user_id,friend_id="") {
-   
-    var goodsDetail = list[x].goodsList[y];
-    var is_hy = list[x].is_hy; //是否是会员
-    var goods_attr_id = goodsDetail.goods_attr_id;
-    var goods_price = goodsDetail.goods_price;
-    var goods_id = goodsDetail.goods_id;
-    var attr_value = goodsDetail.goods_attr;
-    var id = goodsDetail.id;
-   
-
-    
-    goodsDetail.buy_number = buy_number;
-    var res = await wepy.request({
-      url: api.updateCart,
-      data: {
-        user_id,
-        goods_id,
-        buy_number,
-        goods_attr_id,
-        is_hy,
-        attr_value,
-        id,
-        friend_id
-      }
-    });
-    if (res.data.code != '0') {
-      wx.showToast({
-        title: '修改失败', //提示的内容,
-        icon: 'none', //图标,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
-    } else {
-      return res.data.data;
-      this.$apply();
-    }
-  }
-  // 购物车列表
-  async getShopCartInfo(user_id) {
-    var res = await wepy.request({
-      url: api.showCart,
-      data: {
-        user_id
-      }
-    });
-    this.isLoading = false;
-    console.log('购物车数据：', res.data.data);
-    if (res.data.code == 0) {
-      this.list = res.data.data;
+    allPrice() {
+      var list = this.list;
       this.totalPrice = 0;
-      this.$apply();
-    } else {
-      this.text = '出错了！';
-    }
-    //可见的时候，取消全选状态，隐藏合计金额
-    // that.setGoodsList(
-    //   that.getSaveHide(),
-    //   that.totalPrice(),
-    //   false,
-    //   true,
-    //   that.data.list,
-    //   true,
-    //   0,
-    //   0
-    // );
-  }
-  allPrice() {
-    var list = this.list;
-    this.totalPrice = 0;
-    list.forEach((item, index) => {
-      list[index].totalPrice = 0;
-      item.goodsList.forEach((item2, index2) => {
-        if (item2.active) {
-          list[index].totalPrice +=
-            parseFloat(item2.goods_price).toFixed(2) *
-            parseFloat(item2.buy_number).toFixed(2);
-        }
+      list.forEach((item, index) => {
+        list[index].totalPrice = 0;
+        item.goodsList.forEach((item2, index2) => {
+          if (item2.active) {
+            list[index].totalPrice +=
+              parseFloat(item2.goods_price).toFixed(2) *
+              parseFloat(item2.buy_number).toFixed(2);
+          }
+        });
+        this.totalPrice += list[index].totalPrice;
       });
-      this.totalPrice += list[index].totalPrice;
-    });
-    this.totalPrice = this.totalPrice.toFixed(2);
+      this.totalPrice = this.totalPrice.toFixed(2);
+    }
+    async onLoad() {
+      this.user_id = await this.$parent.loginInfo();
+      this.allSelect = false;
+      this.getShopCartInfo(this.user_id);
+      try {
+        this.friend_suppliers_id = this.$parent.globalData.friend_suppliers_id;
+        console.log(
+          '工长分享的店铺',
+          this.$parent.globalData.friend_suppliers_id
+        );
+      } catch (error) {}
+    }
   }
-  async onLoad() {
-    this.user_id = await this.$parent.loginInfo();
-   
-    this.allSelect = false;
-    this.getShopCartInfo(this.user_id);
-    try {
-      this.friend_suppliers_id = this.$parent.globalData.friend_suppliers_id;
-      console.log(
-        '工长分享的店铺',
-        this.$parent.globalData.friend_suppliers_id
-      );
-    } catch (error) {}
-  }
-}
 </script>

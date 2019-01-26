@@ -172,7 +172,7 @@
                   <view class="from">
                     <text class="sales" wx:if="{{sales_name!=''}}">业务员：{{sales_name}}</text><text class="sales" wx:if="{{friend_name!=''}}">来自工长：{{friend_name}}</text>
                   </view>
-                  <view class="yizhan-name-txt" wx:if="{{shenhe!=2}}">您还不是该店的会员，暂不能享受该店的会员权益</view>
+                  <view class="yizhan-name-txt" wx:if="{{(!friend_name||friend_name=='')&&shenhe!=2}}">您还不是该店的会员，暂不能享受该店的会员权益</view>
                 </view>
             </swiper-item>
           </block>
@@ -305,7 +305,7 @@
         if (index == 2) {
           console.log('跳转海报页面');
           wx.navigateTo({
-            url: '/Shop/pages/share?suppliers_id=' + this.yizhan.suppliers_id + '&suppliers_name=' + this.yizhan.suppliers_name
+            url: '/Shop/pages/share?suppliers_id=' + this.yizhan.suppliers_id + '&suppliers_name=' + this.yizhan.suppliers_name+"&friend_name="+this.user_info.nickName
           });
         }
       },

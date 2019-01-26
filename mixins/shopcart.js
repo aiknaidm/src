@@ -16,13 +16,13 @@ export default class shopcart extends wepy.mixin {
 
         },
         "addShopCar2": async(goodsDetail, index) => {
-            console.log("goodsDetail", goodsDetail);
-            var goodsDetail = await that.goodsInit(that.userId, goodsDetail);
+            console.log("goodsDetail", goodsDetail, that.friend_id);
+            var goodsDetail = await that.goodsInit(that.userId, goodsDetail, that.friend_id);
             this.goodsListIndex = index;
             //没有规格
             if (that.goodsDetail.properties.length == 0) {
 
-                that.addShopCar3(goodsDetail);
+                that.addShopCar3(goodsDetail, true);
                 that.ishideShopPopup = false;
 
             } else {
@@ -200,7 +200,7 @@ export default class shopcart extends wepy.mixin {
             wx.setStorageSync('shopCarInfo', shopCarInfo);
         }
         // 列表页面加入购物车
-    async addShopCar3(goodsDetail) {
+    async addShopCar3(goodsDetail, isShowToast) {
             console.log("加入购物车", goodsDetail.buy_number)
             var goodsDetail = goodsDetail;
             var user_id = this.userId;
@@ -240,12 +240,17 @@ export default class shopcart extends wepy.mixin {
                 await that.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo(
                     that.userId
                 );
-
+                if (isShowToast) {
+                    wx.hideLoading();
+                    return
+                }
+                that.ishideShopPopup = false;
                 wx.showToast({
                     title: '加入购物车成功',
                     icon: 'success',
                     duration: 1000
                 });
+                this.$apply();
             } else {
                 wx.showToast({
                     title: res.data.message, //提示的内容,
@@ -256,13 +261,14 @@ export default class shopcart extends wepy.mixin {
             }
         }
         // 获取会员状态
-    async getSheheStauts(user_id, id = '', suppliers_id = '') {
+    async getSheheStauts(user_id, id = '', suppliers_id = '', friend_id = '') {
         var res = await wepy.request({
             url: api.SheheStauts,
             data: {
                 goods_id: id,
                 suppliers_id,
-                user_id
+                user_id,
+                friend_id
             }
         });
         console.log('shenhe', res.data.data.shenhe);
@@ -289,22 +295,22 @@ export default class shopcart extends wepy.mixin {
 
             this.goodsDetail = res.data.data;
             this.shopNum = res.data.data.gouwuche;
-            var userId =
+            var friend_id =
                 res.data.data.suppliers_id == this.$parent.globalData.friend_suppliers_id ?
                 this.$parent.globalData.friend_id :
                 await this.$parent.loginInfo();
-            this.goodsInit(userId, this.goodsDetail);
+            this.goodsInit(userId, this.goodsDetail, friend_id);
             this.goodsDetail.buy_number = 1;
             this.$apply();
         }
         // 
-    async goodsInit(userId, goodsDetail) {
+    async goodsInit(userId, goodsDetail, friend_id = "") {
         this.goodsDetail = goodsDetail
         var id = goodsDetail.goods_id
 
         // 2是会员 1不是会员
 
-        this.status = await this.getSheheStauts(userId, id);
+        this.status = await this.getSheheStauts(userId, id, '', friend_id);
 
         if (this.goodsDetail.goods_desc) {
             this.articleDetail.post_content = this.goodsDetail.goods_desc;

@@ -322,6 +322,7 @@ export default class shopCart extends wepy.component {
         });
         return;
       }
+      // console.log("this.goodsDetail.shopType ",this.goodsDetail.shopType)
       if (this.goodsDetail.shopType == 'addShopCar') {
         this.$emit('addShopCar', this.goodsDetail);
       } else {

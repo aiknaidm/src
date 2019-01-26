@@ -157,11 +157,14 @@
     background-color: #e50012;
     color: #fff
   }
+  .red{
+    color:#e50012
+  }
 </style>
 <template>
   <view class="show-popup">
     <view class="popup-mask" @tap="closePopupTap"></view>
-    <view class="popup-contents">
+    <view class="popup-contents"> 
       <view class="pop-goods-info" wx:if="{{thisindex==-1}}">
         <view class="pop-img-box">
           <image src="http://maijia.jicaizx.com/{{goodsDetail.original_img}}" class="goods-thumbnail" mode="aspectFit" lazy-load="true" wx:if="{{goodsDetail.original_img1==''}}">
@@ -184,7 +187,7 @@
         </view>
       </view>
       <view class="buy-num-box" wx:if="{{goodsDetail.shopType =='tobuy'||goodsDetail.shopType =='addShopCar'||thisindex!=-1}}">
-        <view class="num-label">购买数量</view>
+        <view class="num-label red" wx:if="{{goodsDetail.selectPrice}}">¥ {{goodsDetail.selectPrice}}</view>
         <view class="num-box add-car" style="text-align: right" wx:if="{{goodsDetail.buy_number==0&&goodsDetail.properties.length!=0&&thisindex!=-1}}"  @tap="addShopCar({{goodsDetail}})">
           加入购物车
         </view>
@@ -220,6 +223,9 @@
     };
     methods = {
       labelItemTap(property) {
+
+ this.goodsDetail.property=property
+
         this.$emit('labelItemTap', property);
       },
       numJiaTap() {
@@ -307,28 +313,7 @@
         this.goodsDetail.buy_number = buy_number;
       }
     };
-    // 显示价格
-    showPrice() {
-      var goodsDetail = this.goodsDetail;
-      var property = this.goodsDetail.property;
-      if (goodsDetail.properties.length == 0) {
-        // 没有规格的价格
-        var price =
-          goodsDetail.status == 2 &&
-          goodsDetail.qidingliang <= goodsDetail.buy_number ?
-          goodsDetail.shop_price :
-          goodsDetail.floor_price;
-        goodsDetail.selectPrice = price;
-      } else if (property && property.goods_attr_id) {
-        // 有规格的
-        var price =
-          goodsDetail.status == 2 &&
-          goodsDetail.qidingliang <= goodsDetail.buy_number ?
-          property.attr_price :
-          property.floor_price;
-        goodsDetail.selectPrice = price;
-      }
-    }
+  
     async onLoad() {}
   }
 </script>

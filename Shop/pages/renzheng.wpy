@@ -238,7 +238,7 @@ export default class renzheng extends wepy.page {
       this.phone = e.detail.value;
     },
     //联网获取验证码
-    async getSmsCode(phone) {
+    async getSmsCode(phone='') {
       this.smsCodeDisabled = true;
       console.log('输入的电话号码', phone);
       //点击了获取验证码先在本地验证手机号的合法性
@@ -325,20 +325,32 @@ export default class renzheng extends wepy.page {
         method: 'POST'
       });
       if (res.data.code == '0') {
-        var sales_id = wx.getStorageSync('sales_id');
-        var suppliers_id = wx.getStorageSync('suppliers_id');
+        var sales_id = wx.getStorageSync('sales_id'+this.suppliers_id);
+        var suppliers_id = wx.getStorageSync('suppliers_id'+this.suppliers_id);
         var res1 = await wepy.request({
           url: api.applyMember, //开发者服务器接口地址",
           data: {
             user_id: this.user_id,
             suppliers_id: this.suppliers_id,
-            sales_id: suppliers_id == this.suppliers_id ? sales_id : 0
+            sales_id: suppliers_id? sales_id : 0
           } //请求的参数",
         });
         if (res1.data.code == '0') {
-          wepy.showModal({
+          wx.showModal({
             title: '提示', //提示的标题,
             content: '发送成功，等待易站同意', //提示的内容,
+            showCancel: false, //是否显示取消按钮,
+            confirmColor: '#e50012', //确定按钮的文字颜色,
+            success: res => {
+              wepy.navigateBack({
+                delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+              });
+            }
+          });
+        }else{
+            wx.showModal({
+            title: '提示', //提示的标题,
+            content: '发送失败', //提示的内容,
             showCancel: false, //是否显示取消按钮,
             confirmColor: '#e50012', //确定按钮的文字颜色,
             success: res => {

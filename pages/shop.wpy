@@ -42,6 +42,8 @@ export default class shop extends wepy.page {
   }
   async onShow() {
     this.userId = await this.$parent.loginInfo();
+    var userInfo = await this.$parent.getUserInfo(this.userId);
+    this.nickName = userInfo.nickName;
     if (this.suppliers_id) {
       this.getShopBanner(this.userId, this.suppliers_id);
       this.getMaterialsList(this.suppliers_id);
@@ -52,20 +54,27 @@ export default class shop extends wepy.page {
     
   }
    // 分享
-    onShareAppMessage(res) {
-            var path = '/Shop/pages/index';
-            console.log("path",path)
-            if (res.from === 'button') {
-                console.log(res.target.dataset.index);
-                if (res.target.dataset.index == 1)
-                    var path = '/Shop/pages/index?friend_id=' + this.userId;
-
-            }
-            return {
-                title: this.yizhan.suppliers_name,
-                path: path
-            };
-        }
+   onShareAppMessage(res) {
+      var path = '/Shop/pages/index?suppliers_id=' + this.suppliers_id;
+      var userId = this.userId;
+      if (res.from === 'button') {
+        console.log(res.target.dataset.index);
+        // 工长分享
+          if (res.target.dataset.index == 1)
+          var path =
+            '/Shop/pages/index?suppliers_id=' +
+            this.suppliers_id +
+            '&friend_id=' +
+            userId +
+            '&friend_name=' +
+            this.nickName;
+      }
+      console.log('分享的路径', path);
+      return {
+        title: this.yizhan.suppliers_name,
+        path: path
+      };
+    }
 
 }
 </script>

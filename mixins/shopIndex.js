@@ -60,6 +60,8 @@ export default class testMixin extends wepy.mixin {
         this.yizhanBanner = res.data.data;
         this.yizhan = res.data.yizhan;
         this.yizhan.suppliers_id = suppliers_id
+        this.suppliers_id = suppliers_id
+
         this.$parent.globalData.yizhan = this.yizhan
         this.shenhe = res.data.shenhe
         wx.setNavigationBarTitle({

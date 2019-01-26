@@ -118,10 +118,11 @@ export default class shoperweima extends wepy.page {
   events = {};
   async onLoad(options) {
     console.log(options);
-    this.userId = await this.$parent.loginInfo();
+    this.user_id = await this.$parent.loginInfo();
     this.suppliers_id = options.suppliers_id;
+    this.friend_name = options.friend_name;
     this.suppliers_name = options.suppliers_name;
-    this.userInfo = await this.$parent.getUserInfo(this.userId);
+
     this.eventDraw();
     this.sales_id = options.sales_id ? options.sales_id : 0;
   }
@@ -131,22 +132,23 @@ export default class shoperweima extends wepy.page {
     this.shareImage = event.detail.tempFilePath;
   }
 
-  async eventDraw(userId) {
-    var suppliers_id = this.suppliers_id;
-    var user_id = this.userId;
+  async eventDraw() {
+    var suppliers_id=this.suppliers_id
+    var user_id= this.user_id
+    var friend_name=this.friend_name
     var that = this;
 
     wx.request({
       url: api.getQRCodeImg,
       data: {
         path:
-          '/Shop/pages/index?suppliers_id=' +
-          suppliers_id +
-          '&friend_id=' +
-          this.userId,
+          '/Shop/pages/index?suppliers_id='+suppliers_id
+           +
+          '&friend_id=' +user_id+"&friend_name="+friend_name,
         user_id,
         suppliers_id
       },
+
       success: function(e) {
         var a = wx.getSystemInfoSync().windowWidth / 375;
         var height = wx.getSystemInfoSync().windowHeight;
@@ -179,7 +181,7 @@ export default class shoperweima extends wepy.page {
             },
             {
               type: 'text',
-              content:"工长："+ that.userInfo.nickName,
+              content:"工长："+ that.friend_name,
               top: 280 * a,
               left: 180 * a,
               fontSize: 16 * a,

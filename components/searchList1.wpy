@@ -58,7 +58,7 @@
       <view class="goods-title3 goods-text3">
         {{goods.goods_name}}
         <view class="goods-style3-guige " @tap.stop="tobuy({{goods}})" wx:if="{{goods.properties.length>0}}">选择规格<text class="guige-num" wx:if="{{goods.show_buy_number>0}}">{{goods.show_buy_number}}</text></view>
-        <view class="goods-style3" @tap.stop="tobuy({{goods}})" wx:elif="{{!goods.buy_number}}">+</view>
+        <view class="goods-style3" @tap.stop="tobuy({{goods}},{{index}})" wx:elif="{{!goods.buy_number}}">+</view>
         <view class="goods-num2" wx:else>
              <view class="goods-style3 goods-style3-jian" @tap.stop="numJianTap">-</view>
           
@@ -105,10 +105,10 @@ export default class searchList1 extends wepy.component {
       console.log('id', id);
       this.$emit('goodDetail', id);
     },
-    tobuy(id) {
+    tobuy(id,index) {
       console.log('id', id);
      
-      this.$emit('addShopCar2', id);
+      this.$emit('addShopCar2', id,index);
     },
     toshop(id) {
       wx.navigateTo({ url: '/Shop/pages/index?suppliers_id=' + id });
