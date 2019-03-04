@@ -60,6 +60,11 @@ export default class my extends wepy.page {
     userInfo: {},
     tabList: [
       {
+        icon: '/images/kb.png',
+        text: '我的卡包',
+        url: '/Shop/pages/showCard'
+      },
+      {
         icon: '/images/icon-shopcar.png',
         text: '购物车',
         url: '/Shop/pages/shopCart'
@@ -72,14 +77,14 @@ export default class my extends wepy.page {
       {
         icon: '/images/shangcheng.png',
         text: '管理工作台',
-        url: 'pages/my-console/index',
+        url: 'ConsolePages/pages/index',
         appId: 'wx024ea505bcfdda8e',
         type: 1
       },
       {
         icon: '/images/iconfont-yzm.png',
         text: '批发商认证',
-        url: 'pages/my-renzheng/index',
+        url: 'ConsolePages/pages/renzheng',
         appId: 'wx024ea505bcfdda8e',
         type: 1
       }
@@ -172,13 +177,18 @@ export default class my extends wepy.page {
         this.orderList[2].unreadNum = res.data.data.yifahuo;
         if (res.data.data.daiqueren != 0) {
           console.log('你有待审核的订单');
+    
           this.tabList = [
-            
             {
               icon: '/images/icon-shopcar.png',
               text: '待审核订单',
               url: '/Shop/pages/orderCheck',
               num:res.data.data.daiqueren
+            },
+            {
+              icon: '/images/kb.png',
+              text: '我的卡包',
+              url: '/Shop/pages/showCard'
             },
             {
               icon: '/images/icon-shopcar.png',
@@ -193,20 +203,25 @@ export default class my extends wepy.page {
             {
               icon: '/images/shangcheng.png',
               text: '管理工作台',
-              url: 'pages/my-console/index',
+              url: 'ConsolePages/pages/index',
               appId: 'wx024ea505bcfdda8e',
               type: 1
             },
             {
               icon: '/images/iconfont-yzm.png',
               text: '批发商认证',
-              url: 'pages/my-renzheng/index',
+              url: 'ConsolePages/pages/renzheng',
               appId: 'wx024ea505bcfdda8e',
               type: 1
             }
           ];
         } else {
           this.tabList = [
+            {
+              icon: '/images/kb.png',
+              text: '我的卡包',
+              url: '/Shop/pages/showCard'
+            },
             {
               icon: '/images/icon-shopcar.png',
               text: '购物车',

@@ -136,6 +136,8 @@
         if (sales_id) {
             this.sales_name = sales_name;
             this.sales_id = sales_id; 
+            console.log("id",this.sales_id);
+            console.log("name",this.sales_name);
           }
      
       // }

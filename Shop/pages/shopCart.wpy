@@ -686,7 +686,7 @@
                 list[i].goodsList[j].goods_attr_id == ''
               ) {
                 wx.showToast({
-                  title: '请选择规格', //提示的内容,
+                  title: '有商品未选择规格，请在购物车查看', //提示的内容,
                   icon: 'none',
                   duration: 1000, //延迟时间,
                   mask: true, //显示透明蒙层，防止触摸穿透,

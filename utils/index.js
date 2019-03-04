@@ -22,37 +22,97 @@ const formatTime = function(time, fmt) {
     // orderId 订单id redirectUrl 跳转url failUrl 失败跳转
 
 var wxpay1 = async function(orderId) {
-        //   let remark = "在线充值";
-        //   let nextAction = {};
-        //   if (orderId != 0) {
-        //    let remark = "支付订单 ：" + orderId;
-        //    let nextAction = {
-        //       type: 0,
-        //       id: orderId
-        //     };
-        //   }
-        var res0 = await wepy.login()
-        var code = res0.code
-        if (!code) {
+    //   let remark = "在线充值";
+    //   let nextAction = {};
+    //   if (orderId != 0) {
+    //    let remark = "支付订单 ：" + orderId;
+    //    let nextAction = {
+    //       type: 0,
+    //       id: orderId
+    //     };
+    //   }
+    var res0 = await wepy.login()
+    var code = res0.code
+    if (!code) {
+        return {
+            code: 0,
+            msg: "登录失败"
+        };
+    }
+    var res = await wepy.request({
+        url: 'https://lmbge.com/wxapi/jicai/wxpay1',
+        data: {
+            weixin: res0.code,
+            id: orderId
+        },
+    })
+    var result = res.data.data;
+    console.log(res.data)
+    if (res.data.code == 0) {
+        //  通知用
+        var prepay_id = result.package.replace("prepay_id=", "");
+        // 发起支付
+
+        try {
+            var payres = await wepy.requestPayment({
+                timeStamp: result.timeStamp,
+                nonceStr: result.nonceStr,
+                package: result.package,
+                signType: result.signType,
+                paySign: result.paySign,
+
+            })
+            wepy.request({
+                url: 'https://lmbge.com/wxapi/jicai/paysuccess',
+                data: {
+                    id: orderId
+                },
+            })
+
+            // wx.redirectTo({
+            //     url: redirectUrl
+            // });
             return {
-                code: 0,
-                msg: "登录失败"
+
+                code: 1,
+                msg: "支付成功"
             };
+
+        } catch (err) {
+            // 取消支付 
+            console.log("取消支付")
+            return {
+                code: 2,
+                msg: "取消支付"
+            };
+
         }
+    } else {
+        return {
+            code: 3,
+            msg: "服务器忙"
+        };
+    }
+}
+const pay = async function(data, data2, url, sucessUrl) {
+        wx.showLoading({
+            title: '支付中...', //提示的内容,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+            success: res => {}
+        });
+
         var res = await wepy.request({
-            url: 'https://lmbge.com/wxapi/jicai/wxpay1',
-            data: {
-                weixin: res0.code,
-                id: orderId
-            },
+            url,
+            data,
         })
+        wx.hideLoading();
+        data2.order_id = res.data.orderId
         var result = res.data.data;
-        console.log(res.data)
+        console.log("resulit", result)
         if (res.data.code == 0) {
             //  通知用
             var prepay_id = result.package.replace("prepay_id=", "");
             // 发起支付
-
             try {
                 var payres = await wepy.requestPayment({
                     timeStamp: result.timeStamp,
@@ -60,23 +120,8 @@ var wxpay1 = async function(orderId) {
                     package: result.package,
                     signType: result.signType,
                     paySign: result.paySign,
-
-                })
-                wepy.request({
-                    url: 'https://lmbge.com/wxapi/jicai/paysuccess',
-                    data: {
-                        id: orderId
-                    },
                 })
 
-                // wx.redirectTo({
-                //     url: redirectUrl
-                // });
-                return {
-
-                    code: 1,
-                    msg: "支付成功"
-                };
 
             } catch (err) {
                 // 取消支付 
@@ -87,6 +132,16 @@ var wxpay1 = async function(orderId) {
                 };
 
             }
+
+            if (sucessUrl)
+                wepy.request({
+                    url: sucessUrl,
+                    data: data2,
+                })
+            return {
+                code: 1,
+                msg: "支付成功"
+            };
         } else {
             return {
                 code: 3,
@@ -123,4 +178,5 @@ export default {
     wxpay1,
     regexConfig,
     html_decode,
+    pay
 }

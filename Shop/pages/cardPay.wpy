@@ -1,0 +1,277 @@
+
+<style lang="less">
+  /* pages/my/qb-hy-pay/index.wxss */
+  .container {
+    padding-top: 30rpx;
+    background-color: transparent;
+  }
+  .promotion-activity {
+    background-color: #f0f0f0;
+    padding-top: 40rpx;
+  }
+  .promotion-activity-list {
+    width: 90%;
+    margin: auto;
+    background-color: #fff;
+    margin-bottom: 40rpx;
+    border-radius: 10rpx;
+  }
+  .promotion-activity-list2 .moneycancle {
+    color: #aaa !important;
+  }
+  .promotion-activity-list2 .btn {
+    background-color: #aaa !important;
+  }
+  .promotion-activity-list .content {
+    padding: 20rpx;
+    display: flex;
+    padding-top: 10rpx;
+    justify-content: space-between;
+  }
+  .promotion-activity-list .left {
+    padding: 20rpx 30rpx 20rpx 0;
+    min-width: 250rpx;
+  }
+  .promotion-activity-list .content .money {
+    margin-bottom: 10rpx;
+    font-size: 55rpx;
+    color: #ff6769;
+    text-align: center;
+    line-height: 55rpx;
+    font-weight: bold;
+    margin-right: 20rpx;
+  }
+  .promotion-activity-list .moneycancle {
+    margin-bottom: 10rpx;
+    font-size: 40rpx;
+    text-align: center;
+    line-height: 40rpx;
+    margin-right: 20rpx;
+    color: #ff6600;
+  }
+  .promotion-activity-list .content .text {
+    font-size: 35rpx;
+    padding: 20rpx 0;
+  }
+  .promotion-activity-list .content .textcancle {
+    font-size: 35rpx;
+    color: #aaa;
+    padding: 20rpx 0;
+  }
+  .vName {
+    line-height: 44rpx;
+    font-size: 36rpx;
+  }
+  .txt2 {
+    font-size: 28rpx;
+    color: #6b6b6b;
+  }
+  .promotion-activity-list .time {
+    font-size: 24rpx;
+    color: #aaa;
+    border-top: 1px dashed #e2e2e2;
+    line-height: 60rpx;
+    padding: 0 20rpx;
+  }
+  .promotion-activity-list .btn {
+    color: #fff;
+    line-height: 70rpx;
+    padding: 0 10rpx;
+    border-radius: 15rpx;
+    margin-left: 20rpx;
+    height: 70rpx;
+    background-color: #ff6600;
+  }
+  .promotion-activity-list .btn.activecancle {
+    color: #aaa;
+    border: 1px solid #aaa;
+  }
+  .title {
+    background: #f2f2f2;
+    display: block;
+    padding: 20rpx;
+    font-weight: bold;
+    font-size: 32rpx;
+  }
+  .main-bgcolorg {
+    background-color: #f2f2f2;
+    color: #6b6b6b;
+  }
+  .moneyBox {
+    display: flex;
+  }
+  .free {
+    height: 40rpx;
+    line-height: 40rpx;
+    width: 140rpx;
+    font-size: 22rpx;
+    color: #ff6600;
+    border-radius: 20rpx;
+    border: 1px solid#ff6600;
+    text-align: center;
+  }
+  .prompt-box {
+    font-size: 30rpx;
+    padding: 30rpx;
+    view {
+      background-color: #fff;
+      padding: 30rpx;
+      font-size: 26rpx;
+      color: #6b6b6b;
+       
+    }
+    .title {
+      border-bottom: 1px solid #f0f0f0;
+    
+      color: #333
+    }
+    .content{
+       line-height: 45rpx;
+    }
+    .content-1 {
+      color: #6b6b6b
+    }
+  }
+</style>
+<template>
+  <view class='container'>
+    <noOrder text="商家暂无活动，不可充值" show="2" wx:if="{{activitylist.length==0}}"></noOrder>
+    <view class="promotion-activity-list {{item.state==2?'promotion-activity-list2':''}}" wx:for="{{activitylist}}" wx:key='{{index}}' data-id='{{item.card_id}}' data-index="{{index}}">
+      <view wx:if="{{item.promotion_state==2}}">
+        <view class='content'>
+          <view class='left'>
+            <view class='moneyBox'>
+              <view class='moneycancle'>￥{{item.card_fee}}</view>
+              <view class="free">送{{item.free_money}}元</view>
+            </view>
+            <view class='txt txt2'>到账金额￥{{item.yj_money}}元</view>
+          </view>
+        </view>
+        <view class='time'>{{item.start_time}}-{{item.end_time}}
+          <view class='btn activecancle' data-promotion_id='{{item.card_id}}' data-card_fee='{{item.card_fee}}' data-suppliers_id='{{item.suppliers_id}}' @tap='pay({{item}})'>立即充值
+          </view>
+        </view>
+      </view>
+      <view wx:else>
+        <view class='content'>
+          <view class='left'>
+            <view class='moneyBox'>
+              <view class='moneycancle'>￥{{item.card_fee}}</view>
+              <view class="free">送{{item.free_money}}元</view>
+            </view>
+            <view class='txt txt2'>到账金额￥{{item.yj_money}}元</view>
+          </view>
+          <view class='text'>
+            <view class='btn active ' @tap='pay({{item}})'>立即充值
+            </view>
+          </view>
+        </view>
+        <view class='time'>活动时间：{{item.start_time}} —— {{item.end_time}}
+        </view>
+      </view>
+    </view>
+    <view class="prompt-box">
+      <view class="title"> 温馨提示：</view>
+      <view class="content">
+        <text class="content-1">免责声明</text>
+        <text>\n 充值金额直接充给该商户账号，后续服务中遇到的任何问题请联系该商家，纠纷与本平台无关。
+      </text> </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy';
+  import api from '../../API/api';
+  import noOrder from '../../components/noOrder';
+  import utils from '../../utils/index';
+  export default class myHelp extends wepy.page {
+    config = {
+      navigationBarTitleText: '会员充值'
+    };
+    components = {
+      noOrder
+    };
+    data = {
+      activitylist: []
+    };
+    computed = {};
+    methods = {
+      async pay(item) {
+        var data = {
+          user_id: this.user_id,
+          suppliers_id: item.suppliers_id,
+          id: item.card_id,
+          order_amount: item.card_fee
+        };
+        var data2 = {
+          user_id: this.user_id,
+          order_id: ''
+        };
+        var res = await utils.pay(data, data2, api.cardwxpay, api.cardpaysuccess);
+        if (res.code == 1) {
+          this.$parent.$pages['/Shop/pages/cardDetail'].list.amount=parseFloat(this.$parent.$pages['/Shop/pages/cardDetail'].list.amount)+parseFloat(item.yj_money);
+          this.$parent.$pages['/Shop/pages/cardDetail'].list.amount.toFixed(2)
+          this.$parent.$pages['/Shop/pages/showCard'].list[this.$parent.$pages['/Shop/pages/showCard'].index].amount=this.$parent.$pages['/Shop/pages/cardDetail'].list.amount;
+        }
+        wx.showToast({
+          title: res.msg, //提示的内容,
+          icon: 'none', //图标,
+          duration: 2000, //延迟时间,
+          mask: true, //显示透明蒙层，防止触摸穿透,
+          success: res => {}
+        });
+      }
+    };
+    events = {};
+    getList(suppliers_id) {
+      var that = this;
+      wx.request({
+        url: api.card_promotion,
+        data: {
+          suppliers_id
+        },
+        success: res => {
+          wx.hideLoading();
+          if (res.data.code == 0) {
+            var datas = res.data.data;
+            for (var i = 0; i < datas.length; i++) {
+              datas[i].start_time = utils.formatTime(
+                new Date(datas[i].start_time * 1000),
+                'yyyy-MM-dd hh:mm:ss'
+              );
+              datas[i].end_time = utils.formatTime(
+                new Date(datas[i].end_time * 1000),
+                'yyyy-MM-dd hh:mm:ss'
+              );
+              datas[i].yj_money =
+                parseFloat(datas[i].card_fee) + parseFloat(datas[i].free_money);
+            }
+            this.activitylist = datas;
+            this.$apply();
+          }
+        }
+      });
+    }
+    async onLoad(option) {
+      wx.showLoading({
+        title: '加载中', //提示的内容,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
+      this.user_id = await this.$parent.loginInfo();
+      if (option.suppliers_id) this.getList(option.suppliers_id);
+      else
+        wx.showToast({
+          title: '数据错误', //提示的内容,
+          icon: 'none', //图标,
+          duration: 2000, //延迟时间,
+          mask: true, //显示透明蒙层，防止触摸穿透,
+          success: res => {
+            wx.navigateBack({
+              delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+            });
+          }
+        });
+    }
+  }
+</script>

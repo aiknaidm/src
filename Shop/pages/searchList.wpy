@@ -50,17 +50,19 @@
       max-width: 250rpx;
       display: inline-block;
       white-space: nowrap;
-      text-overflow: ellipsis;overflow:hidden
-     
+      text-overflow: ellipsis;
+      overflow: hidden
     }
-    .attr{
-        margin-left: 10rpx;
-        font-size: 24rpx;
-        color: #999;
-        max-width: 150rpx;   display: inline-block;
+    .attr {
+      margin-left: 10rpx;
+      font-size: 24rpx;
+      color: #999;
+      max-width: 150rpx;
+      display: inline-block;
       white-space: nowrap;
-      text-overflow: ellipsis;overflow:hidden
-      }
+      text-overflow: ellipsis;
+      overflow: hidden
+    }
   }
   .buy-num-box {
     margin-top: 0;
@@ -105,10 +107,13 @@
     padding: 0 50rpx;
     line-height: 80rpx;
   }
-  .icon-shaixuan1{
-    color:#707070;
+  .icon-shaixuan1 {
+    color: #707070;
     margin-left: 10rpx;
     font-size: 30rpx;
+  }
+  .purple {
+    font-size: 24rpx;
   }
 </style>
 <template>
@@ -123,24 +128,24 @@
         <text class="iconfont icon-hengshuqiehuanshu {{is_picture?'active':''}}"></text>
       </view>
     </statusTap>
-     <loadingOrder wx:if="{{isLoading}}" show="2"></loadingOrder>
-    <noOrder text="暂无商品"  wx:elif="{{goodsList.length==0&&!isLoading}}" show="2"></noOrder>
-    <repeat  for="{{goodsList}}" key="{{index}}">
+    <loadingOrder wx:if="{{isLoading}}" show="2"></loadingOrder>
+    <noOrder text="暂无商品" wx:elif="{{goodsList.length==0&&!isLoading}}" show="2"></noOrder>
+    <repeat for="{{goodsList}}" key="{{index}}">
       <searchList1 :goods.sync="item" :index.sync="index" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==1}}" @numJianTap1.user="numJianTap" @numJiaTap1.user="numJiaTap"></searchList1>
       <searchList2 :goods.sync="item" :index.sync="index" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==0}}" @numJianTap1.user="numJianTap" @numJiaTap1.user="numJiaTap"></searchList2>
     </repeat>
-    <shopCartPopup :goodsDetail.sync="goodsDetail" :thisindex.sync="goodsListIndex" isshowbtn="0" @numJiaTap1.user="numJiaTap" @numJianTap1.user="numJianTap" @labelItemTap.user="labelItemTap" wx:if="{{ishideShopPopup}}"></shopCartPopup>
+    <shopCartPopup :goodsDetail.sync="goodsDetail" :status.sync="status" :thisindex.sync="goodsListIndex" isshowbtn="0" @numJiaTap1.user="numJiaTap" @numJianTap1.user="numJianTap" @labelItemTap.user="labelItemTap" wx:if="{{ishideShopPopup}}"></shopCartPopup>
     <!-- <suppliersCart></suppliersCart> -->
     <view class="shop-cart">
       <view class="shop-cart-list" wx:if="{{isShowCart}}">
         <view wx:for="{{cartList}}" wx:key="{{index}}" class="buy-num-box">
           <view class="buy-num-title">
             <text class="name">{{item.goods_name}}</text><text class="attr" wx:if="{{item.goods_attr!=''}}">{{item.goods_attr}}</text>
-            <view><text class="red">￥{{item.goods_price}} </text> </view>
+            <view><text class="red">￥{{item.goods_price}} </text> <text class="purple">\t{{item.qidingliang}}件享受批发价￥{{item.shop_price}}</text></view>
           </view>
           <view class="num-box">
             <view @tap="numJianTap({{item}},{{index}})" class="num-jian">-</view>
-            <view class="num-input"><input value="{{item.buy_number}}"  @change="shopNumChange({{item}},{{index}})" disabled/></view>
+            <view class="num-input"><input value="{{item.buy_number}}" type="number" @input="shopNumChange({{item}},{{index}})" /></view>
             <view @tap="numJiaTap({{item}},{{index}})" class="num-jia">+</view>
           </view>
         </view>
@@ -190,13 +195,39 @@
       isShowCart: false,
       shopNum: 0,
       is_picture: 0,
-      status: 2,
+      status: 1,
       goodsListIndex: '0',
-      isLoading:true
+      isLoading: true
     };
     mixins = [shopCart];
     computed = {};
     methods = {
+      callTel() {
+        console.log('电话列表-', this.goodsDetail.kefu);
+        var kefu = this.goodsDetail.kefu;
+        var phoneList = [];
+        if (this.goodsDetail.kefu.length == 1) {
+          wx.makePhoneCall({
+            phoneNumber: this.goodsDetail.kefu[0].mobile
+          });
+          return;
+        }
+        kefu.forEach(function(item, index) {
+          phoneList.push(item.kefu_name + ' ' + item.mobile);
+        });
+        console.log('电话列表', phoneList);
+        wx.showActionSheet({
+          itemList: phoneList,
+          success(res) {
+            wx.makePhoneCall({
+              phoneNumber: phoneList[res.tapIndex]
+            });
+          },
+          fail(res) {
+            console.log(res.errMsg);
+          }
+        });
+      },
       stop() {
         return;
       },
@@ -241,8 +272,8 @@
         this.goodsDetail.property.buy_number = buy_number;
         this.goodsDetail.buy_number = buy_number;
         this.goodsList[this.goodsListIndex].buy_number = buy_number;
-         this.showPrice();
- this.$apply();
+        this.showPrice();
+        this.$apply();
         // if (arr1[i].properties[k].goods_attr_id == goods_attr_id) {
         //   // 相同规格
         //   arr1[i].properties[k].buy_number = arr2[j].buy_number;
@@ -250,7 +281,8 @@
         // }
       },
       // 直接修改数量
-      async shopNumChange(goodsDetail, index, e) {
+      shopNumChange(goodsDetail, index, e) {
+        var that = this
         var buyNumMax = goodsDetail.goods_number; //库存
         var buy_number = e.detail.value;
         if (buy_number <= 0) {
@@ -261,9 +293,12 @@
             mask: true, //显示透明蒙层，防止触摸穿透,
             success: res => {}
           });
-          return;
+          this.cartList[index].buy_number = 1;
         }
-        if (buy_number > buyNumMax) {
+        else if (buy_number <= buyNumMax) {
+          this.cartList[index].buy_number = buy_number;
+        }
+        else {
           wx.showToast({
             title: '购买数量不能大于库存', //提示的内容,
             icon: 'none', //图标,
@@ -272,21 +307,31 @@
             success: res => {}
           });
           this.cartList[index].buy_number = buyNumMax;
-          return;
         }
-        if (buy_number < buyNumMax && buy_number > 0) {
-          this.cartList[index].buy_number = buy_number;
-          var price = await this.$parent.$pages[
-            '/Shop/pages/shopCart'
-          ].changeCartNum(this.list, 0, index, buy_number, this.userId,this.friend_id);
-          console.log(this.cartList[index], index);
-          this.cartList[index].goods_price = parseInt(price);
-          this.$apply();
-        }
+      
+      // console.log("buy_number1", this.cartList[index].buy_number,buy_number,buyNumMax);
+        this.$parent.$pages[
+          '/Shop/pages/shopCart'
+        ].changeCartNum(this.list, 0, index, this.cartList[index].buy_number, this.userId, this.friend_id, function(price, buy_number) {
+          that.cartList[index].goods_price = parseFloat(price).toFixed(2);
+          // that.cartList[index].buy_number = that.cartList[index].buy_number;
+          // console.log("buy_number2",buy_number);
+          that.setData({
+            cartList: that.cartList
+          })
+        });
+        var arr1 = this.compareList(this.goodsList, this.cartList);
+        this.goodsList = arr1;
+        this.cartNum();
+        console.log("this.cartList", this.cartList[index])
+        this.$apply();
       },
+      // isList ==1 来自于商品列表的点击
       async numJiaTap(goodsDetail, index, isList) {
+        console.log("点击+", goodsDetail, index, isList)
         var buyNumMax = goodsDetail.goods_number; //库存
         var buy_number = goodsDetail.buy_number; //购买数量
+        this.goodsList[index].show_buy_number = this.goodsList[index].show_buy_number + 1;
         if (buy_number < buyNumMax) {
           buy_number++;
           if (isList == 1) {
@@ -296,11 +341,9 @@
             } else {
               this.goodsDetail.buy_number = buy_number;
               var index = this.carIndex;
-              this.goodsList[index].show_buy_number = this.goodsList[index].show_buy_number + 1;
               this.showPrice();
             }
             this.cartList[index].buy_number = buy_number;
-             
           } else {
             this.cartList[index].buy_number = buy_number;
             var arr1 = this.compareList(this.goodsList, this.cartList);
@@ -309,7 +352,7 @@
           this.cartNum();
           var price = await this.$parent.$pages[
             '/Shop/pages/shopCart'
-          ].changeCartNum(this.list, 0, index, buy_number, this.userId,this.friend_id);
+          ].changeCartNum(this.list, 0, index, buy_number, this.userId, this.friend_id);
           this.cartList[index].goods_price = price;
           this.$apply();
         } else {
@@ -352,7 +395,6 @@
               this.cartList[index].buy_number = buy_number;
               this.showPrice();
             }
-             
           } else {
             this.cartList[index].buy_number = buy_number;
             var arr1 = this.compareList(this.goodsList, this.cartList);
@@ -361,7 +403,7 @@
           this.cartNum();
           var price = await this.$parent.$pages[
             '/Shop/pages/shopCart'
-          ].changeCartNum(this.list, 0, index, buy_number, this.userId,this.friend_id);
+          ].changeCartNum(this.list, 0, index, buy_number, this.userId, this.friend_id);
           this.cartList[index].goods_price = price;
           this.$apply();
         }
@@ -439,7 +481,7 @@
         if (res.data.data.length == 0) this.isMoreData = false;
         else this.isMoreData = true;
         this.goodsList = this.compareList(this.goodsList, this.cartList)
-        this.isLoading=false;
+        this.isLoading = false;
         this.$apply();
         return this.goodsList;
       }
@@ -506,6 +548,15 @@
         this.getGoodsList(this.initdata);
       }
     }
+    async initF() {
+      this.userId = await this.$parent.loginInfo();
+      this.initdata = this.initData();
+      await this.showCart();
+      await this.getGoodsList(this.initdata);
+      // this.goodsList = this.compareList(this.goodsList, this.cartList);
+      console.log('商品列表', this.goodsList);
+      this.cartNum();
+    }
     async onLoad(option) {
       console.log('传递的值', option);
       wx.removeStorageSync('pinpainame');
@@ -518,8 +569,6 @@
         });
       }
       this.userId = await this.$parent.loginInfo();
-     
- 
       // 分类id
       this.cat_id = option.cat_id ? option.cat_id : '';
       // 是否图片模式
@@ -530,20 +579,13 @@
       this.cat_name = option.cat_name ? option.cat_gname : '';
       // 店铺
       this.suppliers_id = option.suppliers_id ? option.suppliers_id : '';
-      this.initdata = this.initData();
-       // 工长id
-      this.friend_id =this.suppliers_id == this.$parent.globalData.friend_suppliers_id ?
+      // 工长id
+      this.friend_id = this.suppliers_id == this.$parent.globalData.friend_suppliers_id ?
         this.$parent.globalData.friend_id :
         await this.$parent.loginInfo();
-      await this.showCart();
-      await this.getGoodsList(this.initdata);
-      // this.goodsList = this.compareList(this.goodsList, this.cartList);
-      console.log('商品列表', this.goodsList);
-      this.cartNum();
-      
+      this.initF();
       // 是否是会员
-  
-      this.status = await this.getSheheStauts( this.userId , '', this.suppliers_id, this.friend_id);
+      this.status = await this.getSheheStauts(this.userId, '', this.suppliers_id, this.friend_id);
       console.log(" this.status", this.status);
       this.$apply();
     }
@@ -592,7 +634,7 @@
     cartNum() {
       this.shopNum = 0;
       for (var i = 0; i < this.cartList.length; i++) {
-        this.shopNum += this.cartList[i].buy_number;
+        this.shopNum += parseInt(this.cartList[i].buy_number);
       }
     }
     // 计算有规格总数量
@@ -618,15 +660,17 @@
         showproindex
       };
     }
-      // 显示价格
+    // 显示价格
     showPrice() {
       var goodsDetail = this.goodsDetail;
       var property = this.goodsDetail.property;
+      var buy_number = goodsDetail.buy_number
+      buy_number = buy_number == 0 ? 1 : buy_number
       if (goodsDetail.properties.length == 0) {
         // 没有规格的价格
         var price =
           goodsDetail.status == 2 &&
-          goodsDetail.qidingliang <= goodsDetail.buy_number ?
+          goodsDetail.qidingliang <= buy_number?
           goodsDetail.shop_price :
           goodsDetail.floor_price;
         goodsDetail.selectPrice = price;
@@ -634,7 +678,7 @@
         // 有规格的
         var price =
           goodsDetail.status == 2 &&
-          goodsDetail.qidingliang <= goodsDetail.buy_number ?
+          goodsDetail.qidingliang <= buy_number?
           property.attr_price :
           property.floor_price;
         goodsDetail.selectPrice = price;

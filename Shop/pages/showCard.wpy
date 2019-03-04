@@ -1,0 +1,162 @@
+
+<style lang="less">
+/* pages/my/qb-hy/index.wxss */
+page{
+  background-color: #fff
+}
+.no-order{
+  padding: 80rpx 0
+}
+.listBox{
+  padding: 30rpx;
+}
+.shopName{
+  position: relative;
+  padding: 40rpx 30rpx;
+  border-radius: 15rpx;
+  background-color: #008080;
+  margin-bottom: 30rpx;
+}
+.imgBox image {
+  
+  width:128rpx;
+height:118rpx;
+vertical-align:middle;
+border-radius:50%;
+}
+
+.nameBox{
+  margin-left: 10rpx;
+  flex: 1
+}
+.shopList{
+background-color: transparent;
+display: flex;
+width: 100%;
+justify-content: space-between;
+}
+.left{
+  display: flex;
+    align-items: center;
+    flex: 4
+
+}
+.toShop{
+  text-align: center;
+  background-color: #fff;
+  height: 30rpx;
+  line-height: 30rpx;
+  border-radius: 20rpx;
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  font-size: 28rpx;
+  padding: 0 20rpx;
+}
+.name{
+  text-align:left;
+font-size: 28rpx;
+color:#fff;
+ text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; /*后面的3是设置显示几行*/
+
+}
+
+.txt .name{
+  text-align:left;
+display:-webkit-box;
+-webkit-box-orient:vertical;
+-webkit-line-clamp:2;
+overflow:hidden;
+font-size:28rpx;
+color:#666;
+
+}
+
+.text{
+  color: #fff;
+  font-size: 36rpx;
+  display: flex;
+  justify-content:space-between
+}
+.right{
+  font-size: 26rpx;
+}
+</style>
+<template>
+ <view class='container'>
+   <noOrder text="暂无会员卡"  show="2" wx:if="{{list.length==0}}"></noOrder>
+    <view class='listBox' wx:else>
+        <view class='shopName' wx:for="{{list}}" wx:key="{{index}}" @tap='toDetail({{item.suppliers_id}},{{index}})' style="{{item.card_img?'background:url(' + item.card_img + ') no-repeat;background-size:cover':'background-color:#008080;'}}">
+            <view class='shopList'>
+              <view class='left'>
+                <view class="imgBox">
+                  <image mode="aspectFill" src='{{item.img}}'></image>
+                </view>
+                <view class='nameBox'>
+                  <view class='name'> {{item.suppliers_name}}</view>
+                  <view class='text'>
+                    <text>会员卡</text><text class="right">余额￥{{item.amount}}</text> </view>
+                </view>
+              </view>
+
+              <view class='toShop'>积分：{{item.jifen}}</view>
+
+            </view>
+          </view>
+
+    </view>
+</view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '../../API/api';
+import noOrder from '../../components/noOrder';
+export default class myHelp extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的卡包'
+  };
+  components = {noOrder };
+
+  data = {
+    list:[]
+  };
+
+  computed = {};
+  methods = {
+     toDetail(id,index){
+   this.index=index;
+    wx.navigateTo({
+      url: 'cardDetail?suppliers_id=' + id,
+    })
+  
+  },
+  };
+  events = {};
+ 
+     getList(){
+      wx.request({
+        url: api.cardlist,
+        data:{
+          user_id:this.user_id
+        },
+        success:(res)=>{
+          console.log(res)
+          if(res.data.code==0){
+           
+             this.list=res.data.data
+            this.$apply();
+          }
+        }
+      })
+    }
+  async onLoad(option) {
+   this.user_id = await this.$parent.loginInfo();
+  this.getList()
+  }
+}
+</script>

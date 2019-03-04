@@ -60,17 +60,28 @@ swiper-item image {
   color: #c00;
   margin-bottom: 28rpx;
 }
-.goods-info .goods-price {
+.goods-price {
   box-sizing: border-box;
-  color: #e64340;
-  font-size: 28rpx;
-  font-weight: bold;
+color: #999;
+  font-size: 26rpx;
+  // font-weight: bold;
   padding-bottom: 20rpx;
   padding: 0 35rpx;
   display: flex;
   justify-content: space-between;
   /* width: 30%; */
   /* float: left; */
+}
+.goods-price2{
+  font-size: 32rpx;
+  color: #e64340;
+    box-sizing: border-box;
+
+  font-weight: bold;
+  padding-bottom: 20rpx;
+  padding: 0 35rpx;
+  display: flex;
+  justify-content: space-between;
 }
 .goods-price view {
   color: #333;
@@ -197,14 +208,23 @@ swiper-item image {
 .body {
   padding: 0 !important;
 }
+.goods_brief {
+  background: #fff;
+  padding: 35rpx 30rpx;
+  margin-bottom: 24rpx;
+}
+.purple{
+  color:#a78dd3;
+  font-weight: bold;
+}
 </style>
 <template>
   <view class="container {{ishideShopPopup?'hidden':''}}">
     <view class="swiper-container">
-      <swiper class="swiper_box" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-        <swiper-item>
-          <image src="http://maijia.jicaizx.com/{{goodsDetail.original_img}}" class="image" mode="aspectFit" lazy-load="true" wx:if="{{goodsDetail.original_img1==''}}">
-            <image src="{{goodsDetail.original_img1}}" class="image" mode="aspectFit" lazy-load="true" wx:else>
+      <swiper class="swiper_box" autoplay="{{autoplay}}" interval="{{interval}}" indicator-active-color="#666666" duration="{{duration}}" indicator-dots="true" circular="true">
+        <swiper-item wx:for="{{goodsDetail.img_url}}" wx:key="{{index}}">
+          <image src="{{item.img_url}}" class="image" mode="aspectFit" lazy-load="true" >
+            <!-- <image src="{{goodsDetail.original_img1}}" class="image" mode="aspectFit" lazy-load="true" wx:else> -->
         </swiper-item>
       </swiper>
       <view class="dots">
@@ -213,18 +233,22 @@ swiper-item image {
         </block>
       </view>
     </view>
+
     <view class="goods-info">
       <view class="goods-title">{{goodsDetail.goods_name}}</view>
-      <view class="goods-price" wx:if="{{status>1}}">批发价：¥ {{goodsDetail.shop_price}}</view>
-      <view class="goods-price">
+      <view class="goods-price2 goods-price " style="fonts-size:46rpx;" wx:if="{{status>1}}">批发价：¥ {{goodsDetail.shop_price}}</view>
+      <view class=" {{status>1?'goods-price':'goods-price2'}} ">
         零售价：¥ {{goodsDetail.floor_price}}
         <view class>销量：{{goodsDetail.salenum}}</view>
       </view>
       <view class="goods-txt">
-        <view wx:if="{{status>1}}">{{goodsDetail.qidingliang}}{{danwei}}起批发</view>
+        <view wx:if="{{status>1}}" class="purple">{{goodsDetail.qidingliang}}{{danwei}}可以享受批发价<view >￥{{goodsDetail.shop_price}}</view></view>
         <view>库存:{{goodsDetail.goods_number}}</view>
         <view @tap="viewYiZhanDetails({{goodsDetail.suppliers_id}})">批发商:{{goodsDetail.suppliers_name}}</view>
       </view>
+    </view>
+    <view class="goods_brief" wx:if="{{goodsDetail.goods_brief}}">
+      商品活动：{{goodsDetail.goods_brief}}
     </view>
     <view wx:if="{{hasMoreSelect}}" class="row-arrow">{{selectSize}}</view>
     <view class="goods-des-info">
@@ -244,7 +268,7 @@ swiper-item image {
       <view class="join-shop-cart" @tap="toAddShopCar({{goodsDetail.goods_id}})">加入购物车</view>
       <view class="now-buy" @tap.stop="tobuy({{goodsDetail.goods_id}})">立即购买</view>
     </view>
-    <shopCartPopup :goodsDetail.sync="goodsDetail" wx:if="{{ishideShopPopup}}"></shopCartPopup>
+    <shopCartPopup :goodsDetail.sync="goodsDetail" :status.sync="status" wx:if="{{ishideShopPopup}}"></shopCartPopup>
   </view>
 </template>
 
@@ -291,6 +315,12 @@ export default class goodDetail extends wepy.page {
       this.goodsDetail.buy_number = buy_number;
       this.$apply();
     },
+    shopNumChange: (buy_number, $event) => {
+      console.log("buy_number",buy_number)
+      this.goodsDetail.buy_number = buy_number;
+      
+      this.$apply();
+    },
     buyNow: goodsDetail => {
       var goodsDetail = goodsDetail;
       this.buliduBuyNowInfo();
@@ -300,7 +330,67 @@ export default class goodDetail extends wepy.page {
       });
     }
   };
+  methods = {
+    callTel() {
+      console.log('电话列表-', this.goodsDetail.kefu);
+      var kefu = this.goodsDetail.kefu;
+      var phoneList = [];
+
+      if (this.goodsDetail.kefu.length == 1) {
+        wx.makePhoneCall({
+          phoneNumber: this.goodsDetail.kefu[0].mobile
+        });
+        return;
+      }
+      kefu.forEach(function(item, index) {
+        phoneList.push(item.kefu_name + ' ' + item.mobile);
+      });
+      console.log('电话列表', phoneList);
+      wx.showActionSheet({
+        itemList: phoneList,
+        success(res) {
+          wx.makePhoneCall({
+            phoneNumber: phoneList[res.tapIndex]
+          });
+        },
+        fail(res) {
+          console.log(res.errMsg);
+        }
+      });
+    }
+  };
   mixins = [shopCart];
+  // 获取商品详情
+  async getGoodsInfo(userId, id) {
+    var res = await wepy.request({
+      url: api.GoodsInfo,
+      data: {
+        goods_id: id,
+        user_id: userId
+      }
+    });
+
+    wx.hideLoading();
+    console.log('商品信息', res.data.data);
+
+    this.goodsDetail = res.data.data;
+    this.shopNum = res.data.data.gouwuche;
+    var friend_id =
+      res.data.data.suppliers_id == this.$parent.globalData.friend_suppliers_id
+        ? this.$parent.globalData.friend_id
+        : await this.$parent.loginInfo();
+    this.goodsInit(userId, this.goodsDetail, friend_id);
+    this.goodsDetail.buy_number = 1;
+    var img = [{}];
+    img[0].img_url = this.goodsDetail.original_img
+      ? 'http://maijia.jicaizx.com/' + this.goodsDetail.original_img
+      : this.goodsDetail.original_img1;
+
+    console.log('img', img);
+    this.goodsDetail.img_url =
+      this.goodsDetail.img_url.length == 0 ? img : this.goodsDetail.img_url;
+    this.$apply();
+  }
   async onLoad(option) {
     wx.showLoading({
       title: '加载中', //提示的内容,

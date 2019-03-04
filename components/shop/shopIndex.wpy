@@ -66,7 +66,7 @@
     width: 100%;
     background-color: #fff;
   }
-  ::-webkit-scrollbar {
+   ::-webkit-scrollbar {
     width: 0;
     height: 0;
     color: transparent;
@@ -86,7 +86,7 @@
   .materials-list {
     display: flex;
     /* justify-content: space-between;
-     */
+       */
     flex-wrap: wrap;
     padding: 40rpx;
     color: #797979;
@@ -143,11 +143,11 @@
   .backIndex3 {
     bottom: 100rpx
   }
-  .sales{
+  .sales {
     font-size: 30rpx;
     margin-right: 10px
   }
-  .from{
+  .from {
     text-align: left;
     padding-left: 50rpx;
     position: relative;
@@ -165,7 +165,7 @@
                 <view class="yizhan-name">
                   <view class="yizhan-name-titile">
                     <text>{{yizhan.suppliers_name}}</text>
-                    <button class="apply" wx:if="{{shenhe==2}}">会员</button>
+                    <button class="apply" wx:if="{{shenhe==2}}" @tap="{{yizhan.is_kthy==1?'toCardDetail':''}}">会员</button>
                     <button class wx:if="{{shenhe==1}}">申请中</button>
                     <button class wx:if="{{shenhe==0}}" @tap="apply({{sale_id}})">申请会员</button>
                   </view>
@@ -274,46 +274,51 @@
         default: 0,
         twoWay: true
       },
-      sales_name:{
-         type: String,
+      sales_name: {
+        type: String,
         default: "",
         twoWay: true
       },
-      friend_name:{
+      friend_name: {
         type: String,
         default: "",
         twoWay: true
       }
     };
     methods = {
-      toCart(){
-        wx.navigateTo({ url: '/Shop/pages/shopCart' });
+      toCardDetail(){
+        wx.navigateTo({
+          url: '/Shop/pages/cardDetail?suppliers_id='+this.yizhan.suppliers_id 
+        });
+      },
+      toCart() {
+        wx.navigateTo({
+          url: '/Shop/pages/shopCart'
+        });
       },
       toShare() {
-        console.log("易站信息",this.yizhan)
-      try {
+        console.log("易站信息", this.yizhan)
+        try {
           this.itemList =
-          this.yizhan&&this.yizhan.is_friend && this.shenhe == 2 ?
-          ['分享店铺给好友', '分享给工人下单', '分享下单海报'] :
-          ['分享给好友'];
-      } catch (error) {
-        this.itemList = ['分享给好友']
-      }
+            this.yizhan && this.yizhan.is_friend && this.shenhe == 2 ? ['分享店铺给好友', '分享给工人下单', '分享下单海报'] : ['分享给好友'];
+        } catch (error) {
+          this.itemList = ['分享给好友']
+        }
         this.isShowShare = true;
       },
       toPoster(index) {
         if (index == 2) {
           console.log('跳转海报页面');
           wx.navigateTo({
-            url: '/Shop/pages/share?suppliers_id=' + this.yizhan.suppliers_id + '&suppliers_name=' + this.yizhan.suppliers_name+"&friend_name="+this.user_info.nickName
+            url: '/Shop/pages/share?suppliers_id=' + this.yizhan.suppliers_id + '&suppliers_name=' + this.yizhan.suppliers_name + "&friend_name=" + this.user_info.nickName
           });
         }
       },
       // 分类跳转
       toFenLeiTap(id, suppliers_id, suppliers_name, cat_name) {
-        if(this.shenhe!=2&&suppliers_id==76){
-          return
-        }
+        // if (this.shenhe != 2 && suppliers_id == 76) {
+        //   return
+        // }
         wx.navigateTo({
           url: '/Shop/pages/searchList?cat_id=' +
             id +
@@ -328,10 +333,8 @@
         });
       },
       async apply() {
-        var sales_id = wx.getStorageSync('sales_id');
-        var suppliers_id = wx.getStorageSync('suppliers_id');
-        console.log('suppliers_id', this.yizhan.suppliers_id);
- 
+        var sales_id = wx.getStorageSync('sales_id' + this.yizhan.suppliers_id);
+        var suppliers_id = wx.getStorageSync('suppliers_id' + this.yizhan.suppliers_id);
         if (this.user_info.mobile_phone == '') {
           wx.navigateTo({
             url: '/Shop/pages/renzheng?suppliers_id=' + this.yizhan.suppliers_id
@@ -344,12 +347,18 @@
             confirmColor: '#e50012' //确定按钮的文字颜色,
           });
           if (res.confirm) {
+            // // 吉采专营弹出支付
+            // if (this.yizhan.suppliers_id == 76) {
+            //   console.log("支付");
+              
+            //   return;
+            // }
             var res1 = await wepy.request({
               url: api.applyMember, //开发者服务器接口地址",
               data: {
                 user_id: this.user_id,
                 suppliers_id: this.yizhan.suppliers_id,
-                sales_id: suppliers_id == this.yizhan.suppliers_id ? sales_id : 0
+                sales_id: sales_id ? sales_id : 0
               } //请求的参数",
             });
             if (res1.data.data) {

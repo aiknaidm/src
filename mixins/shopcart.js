@@ -16,12 +16,13 @@ export default class shopcart extends wepy.mixin {
 
         },
         "addShopCar2": async(goodsDetail, index) => {
-            console.log("goodsDetail", goodsDetail, that.friend_id);
+            console.log("goodsDetail", goodsDetail, that.friend_id, index);
             var goodsDetail = await that.goodsInit(that.userId, goodsDetail, that.friend_id);
-            this.goodsListIndex = index;
+            that.goodsListIndex = index;
             //没有规格
             if (that.goodsDetail.properties.length == 0) {
-
+                goodsDetail.buy_number = goodsDetail.buy_number == 0 || !goodsDetail.buy_number ? 1 : goodsDetail.buy_number
+                goodsDetail = this.showPrice(that.goodsDetail);
                 that.addShopCar3(goodsDetail, true);
                 that.ishideShopPopup = false;
 
@@ -29,43 +30,15 @@ export default class shopcart extends wepy.mixin {
                 that.goodsDetail.shopType = "addShopCar"
                     // that.ishideShopPopup = true
                     // that.goodsDetail.property = that.goodsDetail.properties[0]
-
-                console.log(that.ishideShopPopup);
                 that.$parent.$pages['/Shop/pages/searchList'].ishideShopPopup = true;
-                that.$apply();
-            }
 
+            }
+            that.$apply();
         },
 
     };
     methods = {
-        callTel() {
-            console.log('电话列表-', this.goodsDetail.kefu);
-            var kefu = this.goodsDetail.kefu;
-            var phoneList = [];
 
-            if (this.goodsDetail.kefu.length == 1) {
-                wx.makePhoneCall({
-                    phoneNumber: this.goodsDetail.kefu[0].mobile
-                });
-                return;
-            }
-            kefu.forEach(function(item, index) {
-                phoneList.push(item.kefu_name + ' ' + item.mobile);
-            });
-            console.log('电话列表', phoneList);
-            wx.showActionSheet({
-                itemList: phoneList,
-                success(res) {
-                    wx.makePhoneCall({
-                        phoneNumber: phoneList[res.tapIndex]
-                    });
-                },
-                fail(res) {
-                    console.log(res.errMsg);
-                }
-            });
-        },
         closePopupTap() {
             this.ishideShopPopup = false;
         },
@@ -83,7 +56,6 @@ export default class shopcart extends wepy.mixin {
         },
         // 直接购买
         tobuy() {
-            console.log(" tobuy() ")
             var goodsDetail = this.goodsDetail;
             if (goodsDetail.selectSizePrice == 0) {
                 wx.showToast({
@@ -119,9 +91,6 @@ export default class shopcart extends wepy.mixin {
             this.goodsDetail.shopType = 'addShopCar';
             this.ishideShopPopup = true;
         },
-
-
-
     };
 
     // 显示价格
@@ -276,34 +245,12 @@ export default class shopcart extends wepy.mixin {
         return res.data.data.shenhe == 2 ? 2 : 1;
     }
     async onShow() {
-            that = this;
-            console.log("that", that)
+        that = this;
+        console.log("that", that)
 
-        }
-        // 获取商品详情
-    async getGoodsInfo(userId, id) {
-            var res = await wepy.request({
-                url: api.GoodsInfo,
-                data: {
-                    goods_id: id,
-                    user_id: userId
-                }
-            });
+    }
 
-            wx.hideLoading();
-            console.log('商品信息', res.data.data);
-
-            this.goodsDetail = res.data.data;
-            this.shopNum = res.data.data.gouwuche;
-            var friend_id =
-                res.data.data.suppliers_id == this.$parent.globalData.friend_suppliers_id ?
-                this.$parent.globalData.friend_id :
-                await this.$parent.loginInfo();
-            this.goodsInit(userId, this.goodsDetail, friend_id);
-            this.goodsDetail.buy_number = 1;
-            this.$apply();
-        }
-        // 
+    // 
     async goodsInit(userId, goodsDetail, friend_id = "") {
         this.goodsDetail = goodsDetail
         var id = goodsDetail.goods_id

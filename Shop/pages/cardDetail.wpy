@@ -1,0 +1,268 @@
+
+<style lang="less">
+/* pages/my/qb-hy-detail/index.wxss */
+/* pages/my/qb-hy/index.wxss */
+page {
+  background-color: #fff;
+}
+.container {
+  //   padding: 30rpx;
+}
+.card{
+    padding: 30rpx;
+}
+.shopName {
+  position: relative;
+  padding: 40rpx 30rpx;
+  border-radius: 15rpx;
+  background-color: #008080;
+  margin-bottom: 30rpx;
+}
+.imgBox image {
+  width: 128rpx;
+  height: 118rpx;
+  vertical-align: middle;
+  border-radius: 50%;
+}
+.nameBox {
+  margin-left: 10rpx;
+}
+.shopList {
+  background-color: transparent;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.left {
+  display: flex;
+  align-items: center;
+  flex: 4;
+}
+.toShop {
+  text-align: center;
+  background-color: #fff;
+  height: 30rpx;
+  line-height: 30rpx;
+  border-radius: 20rpx;
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  font-size: 28rpx;
+  padding: 0 20rpx;
+}
+.name {
+  text-align: left;
+  font-size: 28rpx;
+  color: #fff;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  /*后面的3是设置显示几行*/
+}
+.txt .name {
+  text-align: left;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 28rpx;
+  color: #666;
+}
+.text {
+  color: #fff;
+  font-size: 36rpx;
+}
+.border {
+  font-size: 30rpx;
+  color: #fff;
+  text-align: center;
+  margin: 20rpx 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.countBox {
+  text-align: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.amount {
+  font-size: 38rpx;
+}
+.tips {
+  font-size: 28rpx;
+}
+.toPay {
+  border: 1px solid#ff802b;
+  height: 66rpx;
+  line-height: 66rpx;
+  text-align: center;
+  width: 200rpx;
+  border-radius: 15rpx;
+}
+.box {
+  display: flex;
+  justify-content: center;
+}
+.xinxi {
+  border-bottom: 1px solid#e4e4e4;
+  font-size: 30rpx;
+  background-color: #fff;
+}
+.xinxi .main {
+  height: 80rpx;
+  line-height: 80rpx;
+  border-top: 1px solid#e4e4e4;
+  padding-left: 30rpx;
+}
+.Xx {
+  padding-left: 30rpx;
+  // border-bottom: 1px solid#e4e4e4;
+  color: #747373; line-height: 60rpx;
+}
+.Xx view {
+  height: 60rpx;
+ 
+}
+.dotted {
+  border-bottom: 2px dotted#fff;
+  height: 10rpx;
+  width: 250rpx;
+}
+</style>
+<template>
+    <view class='container'>
+        <view class="card">
+            <view class='shopName' data-id="{{list.id}}" style="{{list.card_img?'background:url(' + list.card_img + ') no-repeat;background-size:cover':'background-color:#008080;'}}">
+                <view class='shopList'>
+                    <view class='left'>
+                        <view class="imgBox">
+                            <image mode="aspectFill" src='{{list.img}}'></image>
+                        </view>
+                        <view class='nameBox'>
+                            <view class='name'> {{list.suppliers_name}}</view>
+                            <view class='text'>
+                                <text>会员卡</text> </view>
+                        </view>
+                    </view>
+                    <view class='toShop'>积分：{{list.jifen}}</view>
+                </view>
+                <view class='border'>
+                    <view class='dotted'></view>
+                    <text class='iconfont icon-star_full'></text>
+                    <view class='dotted'></view>
+                </view>
+                <view class='countBox'>
+                    <view class='amount'>￥{{list.amount}}</view>
+                    <view class='tips'>可用余额</view>
+                </view>
+            </view>
+            <view class='box'>
+                <view class='toPay' @tap='toPay({{list.suppliers_id}})' >
+                    会员充值
+                </view>
+            </view>
+        </view>
+        <view class='xinxi'>
+            <view bindtap='showXx' class='main'>会员信息</view>
+            <view hidden='{{Xx}}' class='Xx'>
+                <view>姓名：{{list.hyxx_name}}</view>
+                <view>电话：{{list.hyxx_mobile}}</view>
+            </view>
+            <view bindtap='showGz' class='main'>会员卡使用规则</view>
+            <view hidden='{{Gz}}' class='Xx'>
+               <rich-text nodes="{{list.card_rules}}" bindtap="tap"></rich-text>
+            </view>
+            <view bindtap='showJf' class='main'>会员积分</view>
+            <view hidden='{{Jf}}' class='Xx'>
+                当前积分：{{list.jifen}}
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '../../API/api';
+import noOrder from '../../components/noOrder';
+export default class myHelp extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的卡包'
+  };
+  components = {
+    noOrder
+  };
+  data = {
+    list: '',
+    Xx:true,
+    Gz:true,
+    Jf:true,
+  };
+  computed = {};
+  methods = {
+      
+  showXx:function(){
+
+this.Xx=!this.Xx
+ 
+  },
+  showGz: function () {
+    this.Gz=!this.Gz
+ 
+  },
+  showJf: function () {
+    this.Jf=!this.Jf
+ 
+  },
+   toPay(suppliers_id){
+    wx.navigateTo({
+      url: 'cardPay?suppliers_id='+suppliers_id,
+    })
+  },
+  };
+  events = {};
+  detail(suppliers_id) {
+    var that = this;
+    wx.request({
+      url: api.cardinfo,
+      data: {
+        suppliers_id,
+        user_id: this.user_id 
+      },
+      success: res => {
+        wx.hideLoading();
+        if (res.data.code == 0) {
+          this.list = res.data.data;
+      
+          this.$apply();
+        }
+      }
+    });
+  }
+  async onLoad(option) {
+          wx.showLoading({
+        title: '加载中', //提示的内容,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
+    this.user_id = await this.$parent.loginInfo();
+    if (option.suppliers_id) {this.suppliers_id=option.suppliers_id;this.detail(option.suppliers_id)}
+    else
+      wx.showToast({
+        title: '数据错误', //提示的内容,
+        icon: 'none', //图标,
+        duration: 2000, //延迟时间,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {
+          wx.navigateBack({
+            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+          });
+        }
+      });
+  }
+}
+</script>

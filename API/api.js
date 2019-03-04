@@ -40,6 +40,12 @@ const api = {
     friend_list: `${host}/friend_list`, //工长列表
     xianxiaorder: `${host}/xianxiaorder`, //修改订单支付状态
     getQRCodeImg: `${host}/getQRCode1`,
-    tjdd: `${host}/tjdd`
+    tjdd: `${host}/tjdd`,
+    cardlist: `${host}/cardlist`,
+    cardinfo: `${host}/cardinfo`,
+    card_promotion: `${host}/card_promotion`,
+    cardwxpay: `${host}/cardwxpay`,
+    cardpaysuccess: `${host}/cardpaysuccess`,
+    cardpay: `${host}/cardpay`,
 }
 export default api

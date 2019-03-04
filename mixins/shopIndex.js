@@ -6,7 +6,7 @@ export default class testMixin extends wepy.mixin {
     };
 
     // 分类
-    async getMaterialsList(suppliers_id = '') {
+    async getMaterialsList(suppliers_id = 76) {
             try {
                 var res = await wepy.request({
                     url: api.goodsKind,
@@ -40,7 +40,7 @@ export default class testMixin extends wepy.mixin {
             var suppliers_id =
                 res.data.data && res.data.data.suppliers_id ?
                 res.data.data.suppliers_id :
-                '';
+                76;
 
             this.getShopBanner(userId, suppliers_id);
             this.getMaterialsList(suppliers_id);
