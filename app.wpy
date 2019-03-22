@@ -108,11 +108,12 @@ setStore(store);
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/index',
-      'pages/shop',
+      'pages/home',    
       'pages/yizhanList',
       'pages/supplierList',
-      'pages/my'
+   
+      'pages/my',
+      "pages/zz",
     ],
     subPackages: [
       {
@@ -140,24 +141,7 @@ export default class extends wepy.app {
         pages: ['pages/details', 'pages/newsList']
       }
     ],
-    preloadRule: {
-      'pages/index': {
-        network: 'all',
-        packages: ['Index']
-      },
-      'pages/shop': {
-        network: 'all',
-        packages: ['Shop']
-      },
-      'pages/my': {
-        network: 'all',
-        packages: ['Shop']
-      },
-      'pages/supplierList': {
-        network: 'all',
-        packages: ['Shop']
-      }
-    },
+   
     window: {
       backgroundTextStyle: '#333',
       navigationBarTitleText: '吉采易站',
@@ -173,13 +157,7 @@ export default class extends wepy.app {
       backgroundColor: '#fff',
       list: [
         {
-          pagePath: 'pages/index',
-          iconPath: 'images/footer-icon-01.png',
-          selectedIconPath: 'images/footer-icon-01-active.png',
-          text: '首页'
-        },
-        {
-          pagePath: 'pages/shop',
+          pagePath: 'pages/home',
           iconPath: 'images/footer-icon-03.png',
           selectedIconPath: 'images/footer-icon-03-active.png',
           text: '批发商城'
@@ -195,6 +173,12 @@ export default class extends wepy.app {
           iconPath: 'images/footer-icon-05.png',
           selectedIconPath: 'images/footer-icon-05-active.png',
           text: '供应商'
+        },
+       {
+          pagePath: 'pages/zz',
+          iconPath: 'images/footer-icon-01.png',
+          selectedIconPath: 'images/footer-icon-01-active.png',
+          text: '发现'
         },
         {
           pagePath: 'pages/my',

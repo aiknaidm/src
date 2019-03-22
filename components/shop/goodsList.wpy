@@ -54,13 +54,17 @@
   flex-direction: column;
   justify-content: space-between;
 }
-.a-goods .text-box .arow .goods-name {
-  /* width: 360rpx; */
-  font-size: 26rpx;
-  height: 74rpx;
-  color: #000000;
-  line-height: 1.6;
-  overflow: hidden;
+
+.goods-name{
+text{
+    background: #e50012;
+      color: #fff;
+      padding: 4rpx 8rpx;
+      margin-left: 10rpx;
+      font-size: 20rpx;
+      border-radius: 5rpx;
+      font-weight: 100;
+  }
 }
 .a-goods .text-box .arow01 {
   flex: 1;
@@ -102,7 +106,7 @@
             </view>
             <view class="text-box">
               <view class="arow01">
-                <view class="goods-name">{{item.goods_name}}</view>
+                <view class="goods-name">{{item.goods_name}}<text wx:if="{{item.hdky}}">可用会员卡</text></view>
                 <view class="goods-label">{{item.goods_attr}}</view>
               </view>
               <view class="arow02">

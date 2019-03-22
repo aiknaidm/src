@@ -85,6 +85,9 @@ color:#666;
 .right{
   font-size: 26rpx;
 }
+.no-order .text{
+  text-align: center
+}
 </style>
 <template>
  <view class='container'>
@@ -99,7 +102,7 @@ color:#666;
                 <view class='nameBox'>
                   <view class='name'> {{item.suppliers_name}}</view>
                   <view class='text'>
-                    <text>会员卡</text><text class="right">余额￥{{item.amount}}</text> </view>
+                    <text>会员卡</text><view class="right">余额￥{{item.amount}}<view wx:if="{{item.tbc_amount}}">待确认：￥{{item.tbc_amount}}</view></view> </view>
                 </view>
               </view>
 

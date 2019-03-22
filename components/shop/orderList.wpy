@@ -220,7 +220,6 @@ export default class List extends wepy.component {
   methods = {
     // 再来一单
     toOrderAgain(suppliersId, orderId) {
-      console.log(111111111111111111);
       this.$emit('toOrderAgain', suppliersId, orderId);
     },
     // 订单详情

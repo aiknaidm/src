@@ -160,6 +160,7 @@ export default class shopcart extends wepy.mixin {
                 '';
             goodsList[0].suppliers_name = this.goodsDetail.suppliers_name;
             goodsList[0].yunfei = this.goodsDetail.yunfei;
+            goodsList[0].hdky = this.goodsDetail.hdky;
             shopCarInfo[0].suppliers_id = this.goodsDetail.suppliers_id;
             shopCarInfo[0].suppliers_name = this.goodsDetail.suppliers_name;
             shopCarInfo[0].goodsList = goodsList;
@@ -204,11 +205,18 @@ export default class shopcart extends wepy.mixin {
             if (res.data.code == 0) {
                 console.log("加入购物车成功")
                 that.shopNum = res.data.data.gouwuche;
-                await that.$parent.$pages['/Shop/pages/searchList'].showCart();
+                try {
+                    await that.$parent.$pages['/Shop/pages/searchList'].showCart();
+                } catch (error) {}
                 // 刷新购物车
-                await that.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo(
-                    that.userId
-                );
+                try {
+                    await that.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo(
+                        that.userId
+                    );
+                } catch (error) {
+
+                }
+
                 if (isShowToast) {
                     wx.hideLoading();
                     return

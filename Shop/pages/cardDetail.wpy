@@ -95,6 +95,7 @@ page {
 }
 .tips {
   font-size: 28rpx;
+  color: #fff
 }
 .toPay {
   border: 1px solid#ff802b;
@@ -157,8 +158,8 @@ page {
                     <view class='dotted'></view>
                 </view>
                 <view class='countBox'>
-                    <view class='amount'>￥{{list.amount}}</view>
-                    <view class='tips'>可用余额</view>
+                    <view class='amount'>可用余额：￥{{list.amount}}</view>
+                    <view class='tips' wx:if="{{list.tbc_amount}}">待确认余额：￥{{list.tbc_amount}}</view>
                 </view>
             </view>
             <view class='box'>

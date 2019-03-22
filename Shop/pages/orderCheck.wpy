@@ -19,25 +19,35 @@
 }
 </style>
 <template>
-    <view class="container">
-        <noorder show="2" wx:if="{{orderList.length==0}}" text="暂无订单"></noorder>
-        <repeat for="{{orderList}}" wx:key="{{index}}">
-            <orderList :orderList.sync="item" :goodsMap.sync="goodsMap[index]" @orderDetail.user="orderDetail">
-                <view slot="btn">
-                    <radio-group class="radio-group" bindchange="radioChange">
-                        <label class="radio" wx:for="{{items}}">
-                            <radio value="{{item.pay_id}}" color="#e50012" />
-                            {{item.name}}
-                        </label>
-                    </radio-group>
-                   <view class="input" wx:if="{{isShowNote}}"><view> 备注：</view><input @input="inputChange" ></input></view>
-                    <orderbutton :orderDetail.sync="item" :is_friend.sync="is_friend" @payStatusTap.user="payTap">
-                    </orderbutton>
-
-                </view>
-            </orderList>
-        </repeat>
-    </view>
+  <view class="container">
+    <noorder show="2" wx:if="{{orderList.length==0}}" text="暂无订单"></noorder>
+    <repeat for="{{orderList}}" wx:key="{{index}}">
+      <orderList
+        :orderList.sync="item"
+        :goodsMap.sync="goodsMap[index]"
+        @orderDetail.user="orderDetail"
+      >
+        <view slot="btn">
+          <radio-group class="radio-group" bindchange="radioChange">
+            <label class="radio" wx:for="{{items}}">
+              <radio value="{{item.pay_id}}" color="#e50012"/>
+              {{item.name}}
+            </label>
+          </radio-group>
+          <view class="input" wx:if="{{isShowNote}}">
+            <view>备注：</view>
+            <input @input="inputChange">
+          </view>
+          <orderbutton
+            :orderDetail.sync="item"
+            :is_friend.sync="is_friend"
+            @payStatusTap.user="payTap"
+            @cancelOrderTap.user="cancelOrderTap"
+          ></orderbutton>
+        </view>
+      </orderList>
+    </repeat>
+  </view>
 </template>
 
 <script>
@@ -70,6 +80,10 @@ export default class newslist extends wepy.page {
       {
         name: '线下支付',
         pay_id: '2'
+      },
+      {
+        name: '会员卡支付',
+        pay_id: '4'
       }
     ]
   };
@@ -78,7 +92,7 @@ export default class newslist extends wepy.page {
     radioChange(e) {
       console.log(e.detail.value);
       this.pay_id = e.detail.value;
-      // 0是线上 2是线下
+      // 0是线上 2是线下 4会员卡支付
       if (e.detail.value == 2) {
         this.isShowNote = true;
       } else {
@@ -99,7 +113,10 @@ export default class newslist extends wepy.page {
         });
         return;
       }
-      var pay_name = this.pay_id == 0 ? '线上支付' : '线下支付';
+
+      if (this.pay_id == 0) var pay_name = '线上支付';
+      if (this.pay_id == 2) var pay_name = '线下支付';
+      if (this.pay_id == 4) var pay_name = '会员卡支付';
       var mRes = await wepy.showModal({
         title: '提示', //提示的标题,
         content: '你确定使用' + pay_name + '吗', //提示的内容,
@@ -152,7 +169,27 @@ export default class newslist extends wepy.page {
             icon: 'none' //图标,
           });
         }
+      } else {
+        var pay_id = this.pay_id;
+        var cardPayRes = await this.cardPay(id);
+         wx.hideLoading();
+        if (cardPayRes.data && cardPayRes.data.code == 0) {
+         
+          this.getOrderList(this.user_id);
+          wx.showToast({
+            title: '支付成功', //提示的内容,
+            icon: 'none' //图标,
+          });
+        }else{
+           wx.showToast({
+            title: cardPayRes.data.message, //提示的内容,
+            icon: 'none' //图标,
+          });
+        }
       }
+    },
+    cancelOrderTap() {
+      this.getOrderList(this.user_id, 1);
     },
     // 订单详情
     orderDetail(id, evt) {
@@ -163,9 +200,19 @@ export default class newslist extends wepy.page {
     }
   };
   events = {};
+  // 会员卡支付
+  async cardPay(id) {
+    var res = await wepy.request({
+      url: api.cardpay, //开发者服务器接口地址",
+      data: {
+        id
+      } //请求的参数",
+    });
+    return res;
+  }
   //  订单列表
   async getOrderList(user_id, page = 1) {
-      var friend_id=user_id
+    var friend_id = user_id;
     wx.showLoading({
       title: '加载中...', //提示的内容,
       mask: true, //显示透明蒙层，防止触摸穿透,

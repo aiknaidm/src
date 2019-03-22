@@ -11,6 +11,8 @@
   }
   .swiper-container {
     height: 320rpx;
+    position: relative;
+   
   }
   .swiper-item {
     width: 100%;
@@ -86,7 +88,7 @@
   .materials-list {
     display: flex;
     /* justify-content: space-between;
-       */
+         */
     flex-wrap: wrap;
     padding: 40rpx;
     color: #797979;
@@ -152,10 +154,50 @@
     padding-left: 50rpx;
     position: relative;
     top: -10rpx
+  } // 提示
+ 
+    image {
+      width: 300rpx;
+    }
+    .tishi {
+      position: absolute;
+      top: 120rpx;
+      right: 100rpx;
+      z-index: 1000;
+      .icon-guanbi1{
+        color: #f7bf30;
+        font-size: 40rpx;
+        position: absolute;
+        top: 100rpx;
+        right: -60rpx;
+        z-index: 100;
+      }
+    }
+  
+  .btn {
+    border: 1px dashed #fff;
+    color: #fff;
+    display: inline;
+    font-size: 25rpx;
+    padding: 10rpx 30rpx;
+    border-radius: 50px;
+    position: relative;
+    z-index: 20;
+  }
+  .yizhan-name-titile button {
+ 
   }
 </style>
 <template>
   <view class="container">
+  
+      <view class="tishi" wx:if="{{frist_open!=1}}">
+        <image src="/images/tishi.png" mode="widthFix" lazy-load="false">
+        </image>
+        <text class="iconfont icon-guanbi1"  @tap.stop="toKnow"></text>
+      </view>
+      <!-- <view class="btn" @tap.stop="toKnow">我知道了</view> -->
+   
     <view id="top">
       <view class="swiper-container">
         <swiper class="swiper_box" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
@@ -208,6 +250,7 @@
       <text class='iconfont icon-gouwuchekong'></text>
     </view>
     <itemList :isShowShare.sync="isShowShare" :itemList.sync="itemList" @toPoster.user="toPoster"></itemList>
+    
   </view>
 </template>
 
@@ -226,7 +269,8 @@
     };
     data = {
       itemList: [],
-      isShowShare: false
+      isShowShare: false,
+      frist_open:1
     };
     props = {
       yizhanBanner: {
@@ -286,9 +330,17 @@
       }
     };
     methods = {
-      toCardDetail(){
+       stop(){
+     
+    },
+    toKnow(){
+      wx.setStorageSync('frist_open',"1")
+      this.frist_open="1";
+      console.log(111111111111);
+    },
+      toCardDetail() {
         wx.navigateTo({
-          url: '/Shop/pages/cardDetail?suppliers_id='+this.yizhan.suppliers_id 
+          url: '/Shop/pages/cardDetail?suppliers_id=' + this.yizhan.suppliers_id
         });
       },
       toCart() {
@@ -350,7 +402,6 @@
             // // 吉采专营弹出支付
             // if (this.yizhan.suppliers_id == 76) {
             //   console.log("支付");
-              
             //   return;
             // }
             var res1 = await wepy.request({
@@ -389,7 +440,7 @@
     async onLoad() {
       this.user_id = await this.$parent.$parent.loginInfo();
       this.user_info = await this.$parent.$parent.getUserInfo(this.user_id);
-      console.log('userId2', this.user_info);
+       this.frist_open=wx.getStorageSync('frist_open');
     }
   }
 </script>

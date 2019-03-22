@@ -126,9 +126,10 @@ export default class my extends wepy.page {
         console.log('获取用户信息成功');
         this.userInfo = e.detail.userInfo;
         this.upUserInfo();
+         this.isShowprompt = false;
         this.$apply();
       } else console.log('获取用户信息失败');
-      this.isShowprompt = false;
+     
       this.$apply();
     },
     toBannerDetail2: function() {

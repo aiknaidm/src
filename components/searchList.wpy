@@ -54,6 +54,15 @@
     font-size: 34rpx;
     font-weight: bold;
     line-height:80rpx;
+     text{
+      background: #e50012;
+      color: #fff;
+      padding: 4rpx 8rpx;
+      margin-left: 10rpx;
+      font-size: 20rpx;
+      border-radius: 5rpx;
+      font-weight: 100;
+    }
   }
   .goods-price {
     font-size: 24rpx;
@@ -123,7 +132,7 @@
       <image src="{{goods.original_img1}}" class="image" mode="aspectFit" lazy-load="true" wx:else/>
     </view>
     <view class='img-contect2'>
-      <view class="goods-title2"> {{goods.goods_name}}</view>
+      <view class="goods-title2"> {{goods.goods_name}} <text>{{goods.hdky==1?"支持会员卡":""}}</text></view>
       <view class="{{status==2?'':'goods-price2'}}">零售价¥ {{goods.floor_price}}</view>
       <view class="goods-text2">
         <view  class="goods-price2" wx:if="{{status==2}}"> 批发价¥ {{goods.shop_price}}</view>

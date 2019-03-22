@@ -315,12 +315,13 @@
         }
         // this.goodsDetail.buy_number = buy_number;
         console.log("this.goodsDetail.buy_number", this.goodsDetail.buy_number,buy_number)
-        this.showPrice();
+     
 this.goodsDetail.buy_number=1;
 this.$apply();
 
 this.goodsDetail.buy_number=buy_number;
 this.$apply();
+   this.showPrice();
 // this.setData({
 //   goodsDetail:this.goodsDetail
 // })
@@ -350,6 +351,8 @@ this.$apply();
           property.floor_price;
         goodsDetail.selectPrice = price;
       }
+      console.log("goodsDetail.selectPrice",goodsDetail.selectPrice);
+
     }
     async onLoad() {}
   }

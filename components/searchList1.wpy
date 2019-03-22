@@ -19,6 +19,19 @@
   font-size: 34rpx;
   font-weight: bold;
   line-height: 60rpx;
+  .goods-name{
+    font-size: 32rpx;
+    font-weight: bold;
+    text{
+      background: #e50012;
+      color: #fff;
+      padding: 4rpx 8rpx;
+      margin-left: 10rpx;
+      font-size: 20rpx;
+      border-radius: 5rpx;
+      font-weight: 100;
+    }
+  }
 }
 }
 
@@ -68,12 +81,13 @@
 .goods-kc{
   color: #666
 }
+
 </style>
 <template>
   <view class="goods-box3" @tap="toGoodDetailsTap({{goods.goods_id}})">
     <view class='img-contect3'>
       <view class="goods-title3 goods-text3">
-        {{goods.goods_name}}
+       <view class="goods-name"> {{goods.goods_name}}<text wx:if="{{goods.hdky==1}}">支持会员卡</text></view>
         <view class="goods-style3-guige " @tap.stop="tobuy({{goods}},{{index}})" wx:if="{{goods.properties.length>0}}">选择规格<text class="guige-num" wx:if="{{goods.show_buy_number>0}}">{{goods.show_buy_number}}</text></view>
         <view class="goods-style3" @tap.stop="tobuy({{goods}},{{index}})" wx:elif="{{!goods.buy_number}}">+</view>
         <view class="goods-num2" wx:else>

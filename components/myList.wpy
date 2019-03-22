@@ -8,7 +8,7 @@
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    /* border-bottom: 1px solid #eee; */
+    border-bottom: 1px solid #eee; 
   }
   .weui_cell_hd {
     display: inline-block;
@@ -22,6 +22,7 @@
   }
   .weui_cell_hd {
     margin-bottom: 10rpx;
+    
   }
   .weui_cell_hd {
     margin-right: 10rpx;

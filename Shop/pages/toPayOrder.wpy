@@ -170,6 +170,7 @@
     left: 0;
     border-top: 1px solid #eee;
     background-color: #fff;
+    z-index: 10;
   }
   .jiesuan-box .to-pay-btn {
     width: 250rpx;
@@ -300,60 +301,60 @@
       <form @submit="createOrder" report-submit="true">
         <!-- <radio-group class="address-group" bindchange="addressChange"> -->
         <!-- <label class="radio">
-              <radio value="1" color='red' checked='true' />快递配送
-              </label>-->
+                      <radio value="1" color='red' checked='true' />快递配送
+                      </label>-->
         <button class="order-adress" @tap="getWxAddress">               
-                <view class="address-title">收货地址</view>
-                <view class="address-noinfo" bindtap="getAddress" wx:if="{{address==''||address==null}}">
-                  <text class="iconfont icon-tianjia-copy"></text>添加地址
-                </view>
-                <view class="address-list" wx:else>
-                  <view>{{address.consignee}} {{address.mobile}}</view>
-                  <view>{{address.region}} {{address.address}}</view>
-                  <view></view>
-                </view>
-                <view class="address-more">
-                  <image src="/images/enter.png">
-                </view>
-              </button>
+                        <view class="address-title">收货地址</view>
+                        <view class="address-noinfo" bindtap="getAddress" wx:if="{{address==''||address==null}}">
+                          <text class="iconfont icon-tianjia-copy"></text>添加地址
+                        </view>
+                        <view class="address-list" wx:else>
+                          <view>{{address.consignee}} {{address.mobile}}</view>
+                          <view>{{address.region}} {{address.address}}</view>
+                          <view></view>
+                        </view>
+                        <view class="address-more">
+                          <image src="/images/enter.png">
+                        </view>
+                      </button>
         <!-- </radio-group> -->
         <!-- <view class="peisong-way">
-            <view class="row-box">
-              <view class="row-label">姓　　名</view>
-              <view class="right-text">
-                <input name="consignee" type="text" class="liuyan" placeholder=""  value='{{userinfos.consignee}}'/>
-              </view>
-            </view>
-            <view class="row-box">
-              <view class="row-label">手机号码</view>
-              <view class="right-text">
-                <input name="mobile" type="number" class="liuyan" placeholder="" maxlength="13" value='{{userinfos.mobile}}'/>
-              </view>
-            </view>
-            <view class="row-box">
-              <view class="row-label">地　　区</view>
-              <view class="right-text">
-                <input name="region" type="text" class="liuyan" value="{{city}}-{{district}}" placeholder="" value='{{userinfos.region}}'/>
-              </view>
-            </view>
-            <view class="row-box">
-              <view class="row-label">详细地址</view>
-              <view class="right-text">
-                <input name="address" type="text" class="liuyan" placeholder="" value='{{userinfos.address}}'/>
-              </view>
-            </view>
-            <view class="row-box">
-              <view class="row-label">备　　注</view>
-              <view class="right-text">
-                <input name="remark" type="text" class="liuyan" placeholder="如需备注请输入" />
-              </view>
-            </view>
-              </view>-->
+                    <view class="row-box">
+                      <view class="row-label">姓　　名</view>
+                      <view class="right-text">
+                        <input name="consignee" type="text" class="liuyan" placeholder=""  value='{{userinfos.consignee}}'/>
+                      </view>
+                    </view>
+                    <view class="row-box">
+                      <view class="row-label">手机号码</view>
+                      <view class="right-text">
+                        <input name="mobile" type="number" class="liuyan" placeholder="" maxlength="13" value='{{userinfos.mobile}}'/>
+                      </view>
+                    </view>
+                    <view class="row-box">
+                      <view class="row-label">地　　区</view>
+                      <view class="right-text">
+                        <input name="region" type="text" class="liuyan" value="{{city}}-{{district}}" placeholder="" value='{{userinfos.region}}'/>
+                      </view>
+                    </view>
+                    <view class="row-box">
+                      <view class="row-label">详细地址</view>
+                      <view class="right-text">
+                        <input name="address" type="text" class="liuyan" placeholder="" value='{{userinfos.address}}'/>
+                      </view>
+                    </view>
+                    <view class="row-box">
+                      <view class="row-label">备　　注</view>
+                      <view class="right-text">
+                        <input name="remark" type="text" class="liuyan" placeholder="如需备注请输入" />
+                      </view>
+                    </view>
+                      </view>-->
         <view class="goods-list goods-list2">
           <view class="list-title">商品列表</view>
           <repeat class="shopList" for="{{shopCarList}}" wx:key="{{index}}">
             <goodsList :goodsMap.sync="item.goodsList">
-              <view slot="suppliers">{{item.suppliers_name}}</view>
+              <view slot="suppliers">{{item.suppliers_name}} </view>
             </goodsList>
             <!-- <goodsList :goodsMap.sync="item"></goodsList> -->
             <view class="address-group beizhu">
@@ -384,41 +385,41 @@
           </view>
           <view class="row-box row-box2" wx:if="{{payIndex==1}}">
             <!-- <radio-group class="radio-group" bindchange="radioChange">
-                <label>
-                  <radio value="2" checked="{{item.checked}}" color="#e50012" />线下微信支付</label>
-                <view wx:if="{{payId==2}}">
-                  <label class='radio-label'>
-                    <text>我的微信昵称：</text>
-                    <input name="paynote1"></input>
-                  </label>
-                </view>
-                <label>
-                  <radio value="3" checked="{{item.checked}}" color="#e50012" />线下银行卡支付</label>
-                <view wx:if="{{payId==3}}">
-                  <label class='radio-label'>
-                    <text>我的银行卡号：</text>
-                    <input name="paynote2"></input>
-                  </label>
-                </view>
-                  </radio-group>-->
+                        <label>
+                          <radio value="2" checked="{{item.checked}}" color="#e50012" />线下微信支付</label>
+                        <view wx:if="{{payId==2}}">
+                          <label class='radio-label'>
+                            <text>我的微信昵称：</text>
+                            <input name="paynote1"></input>
+                          </label>
+                        </view>
+                        <label>
+                          <radio value="3" checked="{{item.checked}}" color="#e50012" />线下银行卡支付</label>
+                        <view wx:if="{{payId==3}}">
+                          <label class='radio-label'>
+                            <text>我的银行卡号：</text>
+                            <input name="paynote2"></input>
+                          </label>
+                        </view>
+                          </radio-group>-->
             <label class="label">
-                    <text>备注：</text>
-                    <input name="paynote1">
-                  </label>
+                            <text>备注：</text>
+                            <input name="paynote1">
+                          </label>
           </view>
           <!-- <picker bindchange="bindPickerChange" value="{{index}}" range="{{yhqList}}" wx:if="{{yhqList.length}}">
-              <view class="picker row-box" wx:if="{{index}}">
-                <view class="row-label">选择优惠券</view>
-                {{yhqList[index]}}
-              </view>
-              <view class="picker row-box" wx:else>
-                <view class="row-label">选择优惠券</view>
-                {{yhqList[0]}}
-              </view>
-                </picker>-->
+                      <view class="picker row-box" wx:if="{{index}}">
+                        <view class="row-label">选择优惠券</view>
+                        {{yhqList[index]}}
+                      </view>
+                      <view class="picker row-box" wx:else>
+                        <view class="row-label">选择优惠券</view>
+                        {{yhqList[0]}}
+                      </view>
+                        </picker>-->
           <!-- <view class="row-box" wx:else>
-              <view class="row-label">无可用优惠券</view>
-                </view>-->
+                      <view class="row-label">无可用优惠券</view>
+                        </view>-->
         </view>
         <view class="jiesuan-box">
           <view class="left-price">
@@ -531,14 +532,38 @@
             itemList: this.itemList
           });
           console.log('res', res);
-          this.payIndex = res.tapIndex;
           // 0是线上 2是线下 4会员卡
           if (res.tapIndex == 0) this.payId = 0
           if (res.tapIndex == 1) this.payId = 2
-          if (res.tapIndex == 2) this.payId = 4
+          if (res.tapIndex == 2) {
+            // if()
+            var is_hdky = true
+            this.shopCarList[0].goodsList.forEach((item, index) => {
+              if (item.hdky == 0)
+                is_hdky = false
+            })
+            if (!is_hdky) {
+              wx.showModal({
+                title: '提示', //提示的标题,
+                content: '您提交的订单中有不支持会员卡支付的商品，请单独提交支持会员卡支付的商品。', //提示的内容,
+                showCancel: false, //是否显示取消按钮,
+                confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
+                confirmColor: '#e50012', //确定按钮的文字颜色,
+              });
+              return
+            } else this.payId = 4
+          }
+          this.payIndex = res.tapIndex;
           this.$apply();
         } catch (error) {
-          console.log('取消选择');
+          console.log('取消选择', error);
+          wx.showToast({
+            title: error.ReferenceError, //提示的内容,
+            icon: 'none', //图标,
+            duration: 2000, //延迟时间,
+            mask: true, //显示透明蒙层，防止触摸穿透,
+            success: res => {}
+          });
         }
       },
       // 提交订单
@@ -558,11 +583,6 @@
             return;
           }
         }
-        console.log('订单内容', e);
-        wx.showLoading({
-          title: '提交订单中...', //提示的内容,
-          mask: true //显示透明蒙层，防止触摸穿透,
-        });
         var that = this;
         var form_id = e.detail.formId;
         var consignee = that.address ? that.data.address.consignee : '';
@@ -601,6 +621,10 @@
           });
           return;
         }
+        wx.showLoading({
+          title: '提交订单中...', //提示的内容,
+          mask: true //显示透明蒙层，防止触摸穿透,
+        });
         try {
           var res = await wepy.request({
             url: api.createOrder,
@@ -624,7 +648,7 @@
           wx.hideLoading();
           if (res.data.code != 0) {
             wx.showModal({
-              title: '错误' ,
+              title: '错误',
               content: res.data.message,
               showCancel: false,
               // success: res => {
@@ -637,7 +661,7 @@
           this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo(
             this.userId
           );
-           this.$parent.$pages['/Shop/pages/searchList'].initF();
+          this.$parent.$pages['/Shop/pages/searchList'].initF();
           if (res.data.data == '' || res.data.data == null) {
             wx.redirectTo({
               url: '/Shop/pages/orderList?order_status=1'
@@ -674,7 +698,7 @@
                 content: cardPayRes.data.message, //提示的内容,
                 showCancel: false, //是否显示取消按钮,
                 confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-                confirmColor: '#3CC51F', //确定按钮的文字颜色,
+                confirmColor: '#e50012', //确定按钮的文字颜色,
                 success: res => {
                   wx.redirectTo({
                     url: '/Shop/pages/orderList?order_status=1'
@@ -784,21 +808,23 @@
           suppliers_id: this.suppliers_id
         }
       }).then(res => {
-        console.log(res,res.data.yizhan.is_kthy ,res.data.yizhan.is_is_kthy == 0);
+        console.log(res, res.data.yizhan.is_kthy, res.data.yizhan.is_is_kthy == 0);
         if (res.data.yizhan.is_kthy == 1) {
-          this.itemList = ['微信支付', '线下支付','会员卡支付']
-        }else{
+          this.itemList = ['微信支付', '线下支付', '会员卡支付']
+        } else {
           this.itemList = ['微信支付', '线下支付']
         }
       });
     }
+    // init(){
+
+    // }
     async onLoad() {
       var userId = await this.$parent.loginInfo();
       this.userId = userId;
+      this.payId="0";
       var shopCarList = wx.getStorageSync('shopCarInfo');
       this.shopCarList = shopCarList;
-      // this.goodsMap = shopCarList[0].goodsList;
-      console.log("shopCarList[0].suppliers_id", shopCarList[0].suppliers_id);
       this.suppliers_id = shopCarList[0].suppliers_id
       if (this.suppliers_id == this.$parent.globalData.friend_suppliers_id && shopCarList.length > 1) {
         wx.showToast({
