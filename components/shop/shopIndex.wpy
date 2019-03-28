@@ -191,7 +191,7 @@
 <template>
   <view class="container">
   
-      <view class="tishi" wx:if="{{frist_open!=1}}">
+      <view class="tishi" wx:if="{{frist_open!=1&&shenhe==0}}">
         <image src="/images/tishi.png" mode="widthFix" lazy-load="false">
         </image>
         <text class="iconfont icon-guanbi1"  @tap.stop="toKnow"></text>

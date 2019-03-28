@@ -132,7 +132,7 @@
       <image src="{{goods.original_img1}}" class="image" mode="aspectFit" lazy-load="true" wx:else/>
     </view>
     <view class='img-contect2'>
-      <view class="goods-title2"> {{goods.goods_name}} <text>{{goods.hdky==1?"支持会员卡":""}}</text></view>
+      <view class="goods-title2"> {{goods.goods_name}} <text wx:if="{{goods.hdky==1}}">支持会员卡</text></view>
       <view class="{{status==2?'':'goods-price2'}}">零售价¥ {{goods.floor_price}}</view>
       <view class="goods-text2">
         <view  class="goods-price2" wx:if="{{status==2}}"> 批发价¥ {{goods.shop_price}}</view>
