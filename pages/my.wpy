@@ -126,10 +126,10 @@ export default class my extends wepy.page {
         console.log('获取用户信息成功');
         this.userInfo = e.detail.userInfo;
         this.upUserInfo();
-         this.isShowprompt = false;
+        this.isShowprompt = false;
         this.$apply();
       } else console.log('获取用户信息失败');
-     
+
       this.$apply();
     },
     toBannerDetail2: function() {
@@ -178,13 +178,13 @@ export default class my extends wepy.page {
         this.orderList[2].unreadNum = res.data.data.yifahuo;
         if (res.data.data.daiqueren != 0) {
           console.log('你有待审核的订单');
-    
+
           this.tabList = [
             {
               icon: '/images/icon-shopcar.png',
               text: '待审核订单',
               url: '/Shop/pages/orderCheck',
-              num:res.data.data.daiqueren
+              num: res.data.data.daiqueren
             },
             {
               icon: '/images/kb.png',
@@ -266,7 +266,24 @@ export default class my extends wepy.page {
     let userInfo = await this.$parent.getUserInfo(this.userId);
     this.userInfo = userInfo;
     // 是否有获取用户信息的权限
-    if (isSettingStatus || userInfo.mobile_phone) {
+    if (isSettingStatus) {
+      if (!userInfo.unionid) {
+        let code = await wepy.login();
+        await wx.getUserInfo({
+          success(res) {
+            var encryptedData = res.encryptedData;
+            var iv = res.iv;
+            wepy.request({
+              url: api.set_unionid,
+              data: {
+                weixin: code.code,
+                encryptedData, 
+                iv
+              }
+            });
+          }
+        });
+      }
       console.log('已获取权限');
       console.log('userInfo', this.userInfo);
       this.$apply();

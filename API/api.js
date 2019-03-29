@@ -47,6 +47,8 @@ const api = {
     cardwxpay: `${host}/cardwxpay`,
     cardpaysuccess: `${host}/cardpaysuccess`,
     cardpay: `${host}/cardpay`,
-    cardxxpay: `${host}/cardxxpay`
+    cardxxpay: `${host}/cardxxpay`,
+    set_unionid: `${host}/set_unionid`,
+    
 }
 export default api
