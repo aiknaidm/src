@@ -1,6 +1,5 @@
 
 <style lang="less">
-
 </style>
 <template>
   <view class="container">
@@ -24,157 +23,156 @@
 </template>
 
 <script>
-  import wepy from 'wepy';
-  import api from '../../API/api';
-  import statusTap from '../../components/statusTap';
-  import noorder from '../../components/noOrder';
-  import orderList from '../../components/shop/orderList';
-  import orderbutton from '../../components/shop/orderbutton';
-  import util from '../../utils/index';
-  export default class orderlist extends wepy.page {
-    config = {
-      navigationBarTitleText: '订单列表'
-    };
-    components = {
-      statusTap,
-      noorder,
-      orderList,
-      orderbutton
-    };
-    data = {
-      statusType: ['全部', '待付款', '待发货', '待收货', '已完成'],
-      statusIndex: ['0', '1', '2', '3', '4'],
-      orderList: [],
-      goodsMap: [],
-      currentType: '0',
-      goodsListnum: [],
-      thisindex: ''
-    };
-    computed = {};
-    events = {
-      // 取消订单
-      cancelOrderTap: res => {
-        this.page = 1;
-        this.isMoreData = true;
-        this.getOrderList(this.userId, this.thisindex, 1);
-      },
-      // 确认订单
-      confirmBtnTap: res => {
-        this.page = 1;
-        this.isMoreData = true;
-        this.getOrderList(this.userId, this.thisindex, 1);
-      }
-    };
-    methods = {
-      // 选择
-      statusTap(index) {
-        wx.showLoading({
-          title: '加载中', //提示的内容,
-          mask: true //显示透明蒙层，防止触摸穿透,
-        });
-        this.thisindex = this.statusIndex[index];
-        console.log('this.thisindex', this.thisindex);
-        this.page = 1;
-        this.isMoreData = true;
-        this.getOrderList(this.userId, this.thisindex, this.page);
-      },
-      // 订单详情
-      orderDetail(id, evt) {
-        console.log('orderDetail?id=' + id);
-        wx.navigateTo({
-          url: 'orderDetail?id=' + id
-        });
-      }
-    };
-    //  订单列表
-    async getOrderList(user_id, order_status = '0', page = 1) {
-      wx.showLoading({
-        title: '加载中...', //提示的内容,
-        mask: true, //显示透明蒙层，防止触摸穿透,
-        success: res => {}
-      });
-      wepy
-        .request({
-          url: api.orderList,
-          data: {
-            user_id,
-            order_status,
-            page
-          }
-        })
-        .then(res => {
-          wx.hideLoading();
-          var orderList = res.data.data.orderList;
-          var goodsMap = res.data.data.goodsMap;
-          orderList.forEach((item, index) => {
-            orderList[index].add_time = util.formatTime(
-              new Date(item.add_time * 1000),
-              'yyyy-MM-dd'
-            );
-          });
-          if (page == 1) {
-            this.orderList = orderList;
-            this.goodsMap = goodsMap;
-          } else {
-            this.orderList.push(...orderList);
-            this.goodsMap.push(...goodsMap);
-          }
-          if (orderList.length < 10) {
-            this.isMoreData = false;
-          }
-          this.$apply();
-          console.log('订单列表', this.orderList);
-        });
-      wepy
-        .request({
-          url: api.orderNum,
-          data: {
-            user_id: this.userId
-          }
-        })
-        .then(res => {
-          if (res.data.data.daishenhe != 0) {
-            this.statusType = ['全部', '待审核', '待付款', '待发货', '待收货', '已完成'];
-            this.statusIndex = ['0', '9', '1', '2', '3', '4'];
-            this.goodsListnum[0] = 0;
-            this.goodsListnum[1] = res.data.data.daishenhe;
-            this.goodsListnum[2] = res.data.data.daifukuan;
-            this.goodsListnum[3] = res.data.data.daifahuo;
-            this.goodsListnum[4] = res.data.data.yifahuo;
-            this.goodsListnum[5] = 0;
-          } else {
-            this.goodsListnum[0] = 0;
-            this.goodsListnum[1] = res.data.data.daifukuan;
-            this.goodsListnum[2] = res.data.data.daifahuo;
-            this.goodsListnum[3] = res.data.data.yifahuo;
-            this.goodsListnum[4] = 0;
-          }
-          this.$apply();
-        });
+import wepy from 'wepy';
+import api from '../../API/api';
+import newapi from '../../API/newapi';
+import statusTap from '../../components/statusTap';
+import noorder from '../../components/noOrder';
+import orderList from '../../components/shop/orderList';
+import orderbutton from '../../components/shop/orderbutton';
+import util from '../../utils/index';
+export default class orderlist extends wepy.page {
+  config = {
+    navigationBarTitleText: '订单列表'
+  };
+  components = {
+    statusTap,
+    noorder,
+    orderList,
+    orderbutton
+  };
+  data = {
+    statusType: ['全部', '待付款', '待发货', '待收货', '已完成'],
+    statusIndex: ['0', '1', '2', '3', '4'],
+    orderList: [],
+    goodsMap: [],
+    currentType: '0',
+    goodsListnum: [],
+    thisindex: ''
+  };
+  computed = {};
+  events = {
+    // 取消订单
+    cancelOrderTap: res => {
+      this.page = 1;
+      this.isMoreData = true;
+      this.getOrderList(this.userId, this.thisindex, 1);
+    },
+    // 确认订单
+    confirmBtnTap: res => {
+      this.page = 1;
+      this.isMoreData = true;
+      this.getOrderList(this.userId, this.thisindex, 1);
     }
-    async onLoad(option) {
+  };
+  methods = {
+    // 选择
+    statusTap(index) {
       wx.showLoading({
         title: '加载中', //提示的内容,
         mask: true //显示透明蒙层，防止触摸穿透,
       });
-      let userId = await this.$parent.loginInfo();
-      this.userId = userId;
-      this.thisindex = option.order_status;
-      this.isMoreData = true;
+      this.thisindex = this.statusIndex[index];
+      console.log('this.thisindex', this.thisindex);
       this.page = 1;
-      this.getOrderList(userId, this.thisindex, this.page);
+      this.isMoreData = true;
+      this.getOrderList(this.userId, this.thisindex, this.page);
+    },
+    // 订单详情
+    orderDetail(id, evt) {
+      console.log('orderDetail?id=' + id);
+      wx.navigateTo({
+        url: 'orderDetail?id=' + id
+      });
     }
-    onReachBottom() {
-      if (this.isMoreData) {
-        wx.showLoading({
-          title: '加载中', //提示的内容,
-          mask: true, //显示透明蒙层，防止触摸穿透,
-          success: res => {}
-        });
-        this.page = this.page + 1;
-        this.getOrderList(this.userId, this.thisindex, this.page);
-      }
+  };
+  //  订单列表
+  async getOrderList(user_id, order_status = '0', page = 1) {
+    wx.showLoading({
+      title: '加载中...', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+      success: res => {}
+    });
+    let data = {
+      user_id,
+      order_status,
+      page
+    };
+    var res0 = await newapi.orderList(data);
+    wx.hideLoading();
+    var orderList = res0.data.data.orderList;
+    var goodsMap = res0.data.data.goodsMap;
+    orderList.forEach((item, index) => {
+      orderList[index].add_time = util.formatTime(
+        new Date(item.add_time * 1000),
+        'yyyy-MM-dd'
+      );
+    });
+    if (page == 1) {
+      this.orderList = orderList;
+      this.goodsMap = goodsMap;
+    } else {
+      this.orderList.push(...orderList);
+      this.goodsMap.push(...goodsMap);
+    }
+    if (orderList.length < 10) {
+      this.isMoreData = false;
+    }
+    //this.$apply();
+    console.log('订单列表', this.orderList);
+
+    let data2 = {
+      user_id: this.userId
+    };
+    var res = await newapi.orderNum(data2);
+    if (res.data.data.daishenhe != 0) {
+      this.statusType = [
+        '全部',
+        '待审核',
+        '待付款',
+        '待发货',
+        '待收货',
+        '已完成'
+      ];
+      this.statusIndex = ['0', '9', '1', '2', '3', '4'];
+      this.goodsListnum[0] = 0;
+      this.goodsListnum[1] = res.data.data.daishenhe;
+      this.goodsListnum[2] = res.data.data.daifukuan;
+      this.goodsListnum[3] = res.data.data.daifahuo;
+      this.goodsListnum[4] = res.data.data.yifahuo;
+      this.goodsListnum[5] = 0;
+    } else {
+      this.goodsListnum[0] = 0;
+      this.goodsListnum[1] = res.data.data.daifukuan;
+      this.goodsListnum[2] = res.data.data.daifahuo;
+      this.goodsListnum[3] = res.data.data.yifahuo;
+      this.goodsListnum[4] = 0;
+    }
+    this.$apply();
+  }
+  async onLoad(option) {
+    wx.showLoading({
+      title: '加载中', //提示的内容,
+      mask: true //显示透明蒙层，防止触摸穿透,
+    });
+    let userId = await this.$parent.loginInfo();
+    this.userId = userId;
+    this.thisindex = option.order_status;
+    this.isMoreData = true;
+    this.page = 1;
+    this.getOrderList(userId, this.thisindex, this.page);
+  }
+  onReachBottom() {
+    if (this.isMoreData) {
+      wx.showLoading({
+        title: '加载中', //提示的内容,
+        mask: true, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
+      this.page = this.page + 1;
+      this.getOrderList(this.userId, this.thisindex, this.page);
     }
   }
+}
 </script>
  

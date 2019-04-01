@@ -298,9 +298,9 @@ button.ss-my-d {
   border: 0px solid;
   margin-left: 10rpx;
 }
-.search-title .active{
+.search-title .active {
   color: #e50012;
-  border-bottom: 1px solid #e50012
+  border-bottom: 1px solid #e50012;
 }
 </style>
 <template>
@@ -348,6 +348,7 @@ button.ss-my-d {
 var that;
 import wepy from 'wepy';
 import api from '../API/api';
+import newapi from '../API/newapi';
 import noorder from '../components/noOrder';
 export default class suppliersList extends wepy.page {
   config = {
@@ -364,10 +365,10 @@ export default class suppliersList extends wepy.page {
   computed = {};
 
   methods = {
-    phoneCallTap (phone){
-wx.makePhoneCall({
-  phoneNumber: phone // 仅为示例，并非真实的电话号码
-})
+    phoneCallTap(phone) {
+      wx.makePhoneCall({
+        phoneNumber: phone // 仅为示例，并非真实的电话号码
+      });
     },
     changeStatus(suppliers_id, xingji, shenhe) {
       if (shenhe == 0) {
@@ -382,28 +383,17 @@ wx.makePhoneCall({
       }
     },
     // 店铺详情页面
-    viewYiZhanDetails(suppliers_id=""){
-      wx.navigateTo({ url: '/Shop/pages/index?suppliers_id='+suppliers_id });
+    viewYiZhanDetails(suppliers_id = '') {
+      wx.navigateTo({ url: '/Shop/pages/index?suppliers_id=' + suppliers_id });
     }
   };
   events = {};
-  // 进货记录
-  // yizhanList(userId) {
-  //  wepy.request({
-  //     url: api.yizhanList,
-  //     data: { user_id: userId }
-  //     }).then((res) =>{
-  //          that.yizhanList=res.data.data
-  //          that.$apply();
-  //     });
-  // }
   onLoad() {
     that = this;
     wepy.showLoading({
       title: '加载中', //提示的内容,
       mask: true //显示透明蒙层，防止触摸穿透,
     });
- 
   }
   async showActionSheet(itemLists, suppliers_id) {
     var user_id = await this.$parent.loginInfo();
@@ -470,21 +460,15 @@ wx.makePhoneCall({
     }
   }
   async getyizhanList(user_id) {
-    wepy
-      .request({
-        url: api.yizhanList,
-        data: { user_id }
-      })
-      .then(res => {
-        wx.hideLoading();
-        that.yizhanList = res.data.data;
-        that.$apply();
-      });
+    let data = { user_id };
+    var res = await newapi.yizhanList(data);
+    wx.hideLoading();
+    that.yizhanList = res.data.data;
+    that.$apply();
   }
   async onShow() {
     var userId = await this.$parent.loginInfo();
     this.getyizhanList(userId);
   }
-  
 }
 </script>

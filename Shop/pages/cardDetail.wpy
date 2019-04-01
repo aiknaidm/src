@@ -8,8 +8,8 @@ page {
 .container {
   //   padding: 30rpx;
 }
-.card{
-    padding: 30rpx;
+.card {
+  padding: 30rpx;
 }
 .shopName {
   position: relative;
@@ -95,7 +95,7 @@ page {
 }
 .tips {
   font-size: 28rpx;
-  color: #fff
+  color: #fff;
 }
 .toPay {
   border: 1px solid#ff802b;
@@ -123,11 +123,11 @@ page {
 .Xx {
   padding-left: 30rpx;
   // border-bottom: 1px solid#e4e4e4;
-  color: #747373; line-height: 60rpx;
+  color: #747373;
+  line-height: 60rpx;
 }
 .Xx view {
   height: 60rpx;
- 
 }
 .dotted {
   border-bottom: 2px dotted#fff;
@@ -189,6 +189,7 @@ page {
 <script>
 import wepy from 'wepy';
 import api from '../../API/api';
+import newapi from '../../API/newapi';
 import noOrder from '../../components/noOrder';
 export default class myHelp extends wepy.page {
   config = {
@@ -199,60 +200,53 @@ export default class myHelp extends wepy.page {
   };
   data = {
     list: '',
-    Xx:true,
-    Gz:true,
-    Jf:true,
+    Xx: true,
+    Gz: true,
+    Jf: true
   };
   computed = {};
   methods = {
-      
-  showXx:function(){
-
-this.Xx=!this.Xx
- 
-  },
-  showGz: function () {
-    this.Gz=!this.Gz
- 
-  },
-  showJf: function () {
-    this.Jf=!this.Jf
- 
-  },
-   toPay(suppliers_id){
-    wx.navigateTo({
-      url: 'cardPay?suppliers_id='+suppliers_id,
-    })
-  },
+    showXx: function() {
+      this.Xx = !this.Xx;
+    },
+    showGz: function() {
+      this.Gz = !this.Gz;
+    },
+    showJf: function() {
+      this.Jf = !this.Jf;
+    },
+    toPay(suppliers_id) {
+      wx.navigateTo({
+        url: 'cardPay?suppliers_id=' + suppliers_id
+      });
+    }
   };
   events = {};
-  detail(suppliers_id) {
+  async detail(suppliers_id) {
     var that = this;
-    wx.request({
-      url: api.cardinfo,
-      data: {
-        suppliers_id,
-        user_id: this.user_id 
-      },
-      success: res => {
-        wx.hideLoading();
-        if (res.data.code == 0) {
-          this.list = res.data.data;
-      
-          this.$apply();
-        }
-      }
-    });
+    let data = {
+      suppliers_id,
+      user_id: this.user_id
+    };
+    var res = await newapi.cardinfo(data);
+    wx.hideLoading();
+    if (res.data.code == 0) {
+      this.list = res.data.data;
+
+      this.$apply();
+    }
   }
   async onLoad(option) {
-          wx.showLoading({
-        title: '加载中', //提示的内容,
-        mask: true, //显示透明蒙层，防止触摸穿透,
-        success: res => {}
-      });
+    wx.showLoading({
+      title: '加载中', //提示的内容,
+      mask: true, //显示透明蒙层，防止触摸穿透,
+      success: res => {}
+    });
     this.user_id = await this.$parent.loginInfo();
-    if (option.suppliers_id) {this.suppliers_id=option.suppliers_id;this.detail(option.suppliers_id)}
-    else
+    if (option.suppliers_id) {
+      this.suppliers_id = option.suppliers_id;
+      this.detail(option.suppliers_id);
+    } else
       wx.showToast({
         title: '数据错误', //提示的内容,
         icon: 'none', //图标,

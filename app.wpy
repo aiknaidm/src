@@ -101,6 +101,7 @@ import 'wepy-async-function';
 import { setStore } from 'wepy-redux';
 import configStore from './store';
 import api from './API/api';
+import newapi from './API/newapi';
 
 const store = configStore();
 setStore(store);
@@ -108,12 +109,12 @@ setStore(store);
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/home',    
+      'pages/home',
       'pages/yizhanList',
       'pages/supplierList',
-   
+
       'pages/my',
-      "pages/zz",
+      'pages/zz'
     ],
     subPackages: [
       {
@@ -141,7 +142,7 @@ export default class extends wepy.app {
         pages: ['pages/details', 'pages/newsList']
       }
     ],
-   
+
     window: {
       backgroundTextStyle: 'light',
       navigationBarTitleText: '吉采易站',
@@ -174,7 +175,7 @@ export default class extends wepy.app {
           selectedIconPath: 'images/footer-icon-05-active.png',
           text: '供应商'
         },
-       {
+        {
           pagePath: 'pages/zz',
           iconPath: 'images/footer-icon-01.png',
           selectedIconPath: 'images/footer-icon-01-active.png',
@@ -206,7 +207,9 @@ export default class extends wepy.app {
     this.use('requestfix');
   }
 
-  async onLaunch() {this.upData()}
+  async onLaunch() {
+    this.upData();
+  }
   upData() {
     // 获取小程序更新机制兼容
     if (wx.canIUse('getUpdateManager')) {
@@ -295,25 +298,19 @@ export default class extends wepy.app {
       return userId;
     }
     let code = await wepy.login();
-    let loginInfo = await wepy.request({
-      url: api.login,
-      data: {
-        weixin: code.code,
-        sex: '未知',
-        avatar: 'https://lmbge.com/upload/avatar/weixin1.png'
-      }
-    });
+    let data = {
+      weixin: code.code,
+      sex: '未知',
+      avatar: 'https://lmbge.com/upload/avatar/weixin1.png'
+    };
+    let loginInfo = await newapi.login(data);
     wx.setStorageSync('userId', loginInfo.data.data.user_id);
     this.globalData.userId = loginInfo.data.data.user_id;
     return loginInfo.data.data.user_id;
   }
   async getUserInfo(userId) {
-    let userInfo = await wepy.request({
-      url: api.getUserInfo,
-      data: {
-        user_id: userId
-      }
-    });
+    let data = { user_id: userId };
+    let userInfo = await newapi.getUserInfo(data);
     if (userInfo.data.code == '0') return userInfo.data.data;
     else
       wx.showToast({

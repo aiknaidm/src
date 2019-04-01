@@ -32,8 +32,8 @@
   -webkit-transition: height 1s; /* Safari 和 Chrome */
   -o-transition: height 1s;
 }
-.droplist-content.active{
-   height: auto;
+.droplist-content.active {
+  height: auto;
   /* overflow: scroll; */
   transition: height 1s;
   -moz-transition: height 1s; /* Firefox 4 */
@@ -48,10 +48,8 @@
   -o-transform: rotate(-90deg);
   float: left;
   margin-right: 10rpx;
-  
-
 }
-.icon-zhankai{
+.icon-zhankai {
   color: #f60;
   font-size: 40rpx;
 }
@@ -91,36 +89,32 @@
 <script>
 import wepy from 'wepy';
 import api from '../../API/api';
+import newapi from '../../API/newapi';
 export default class myHelp extends wepy.page {
   config = {
     navigationBarTitleText: '帮助中心'
   };
-  components = { };
+  components = {};
 
   data = {
-    thisindex:0,
-    helpList:[]
+    thisindex: 0,
+    helpList: []
   };
 
   computed = {};
   methods = {
-    clickTitle(index){
-       this.thisindex=index
+    clickTitle(index) {
+      this.thisindex = index;
     }
   };
   events = {};
   async getHelpList() {
-    wepy
-      .request({
-        url: api.helpList,
-      })
-      .then(res => {
-        this.helpList = res.data.data;
-        this.$apply();
-        console.log('帮助中心', this.helpList);
-      });
+    var res = await newapi.helpList();
+    this.helpList = res.data.data;
+    this.$apply();
+    console.log('帮助中心', this.helpList);
   }
-  
+
   async onLoad(option) {
     this.getHelpList();
   }

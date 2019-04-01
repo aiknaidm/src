@@ -53,6 +53,7 @@
 <script>
 import wepy from 'wepy';
 import api from '../../API/api';
+import newapi from '../../API/newapi';
 import noorder from '../../components/noOrder';
 import orderList from '../../components/shop/orderList';
 import orderbutton from '../../components/shop/orderbutton';
@@ -146,21 +147,16 @@ export default class newslist extends wepy.page {
           title: res.msg, //提示的内容,
           icon: 'none' //图标,
         });
-      }
-      // 线下支付
-      else if (this.pay_id == 2) {
+      } else if (this.pay_id == 2) {
+        // 线下支付
         var pay_id = this.pay_id;
         var pay_note = this.pay_note ? this.pay_note : '';
-        var res = await wepy.request({
-          url: api.xianxiaorder, //开发者服务器接口地址",
-          data: {
-            id,
-            pay_id,
-            pay_note
-          }, //请求的参数",
-          method: 'GET',
-          dataType: 'json' //如果设为json，会尝试对返回的数据做一次 JSON.parse
-        });
+        let data = {
+          id,
+          pay_id,
+          pay_note
+        };
+        var res = await newapi.xianxiaorder(data);
         wx.hideLoading();
         if (res.data && res.data.code == 0) {
           this.getOrderList(this.user_id);
@@ -172,16 +168,15 @@ export default class newslist extends wepy.page {
       } else {
         var pay_id = this.pay_id;
         var cardPayRes = await this.cardPay(id);
-         wx.hideLoading();
+        wx.hideLoading();
         if (cardPayRes.data && cardPayRes.data.code == 0) {
-         
           this.getOrderList(this.user_id);
           wx.showToast({
             title: '支付成功', //提示的内容,
             icon: 'none' //图标,
           });
-        }else{
-           wx.showToast({
+        } else {
+          wx.showToast({
             title: cardPayRes.data.message, //提示的内容,
             icon: 'none' //图标,
           });
@@ -202,13 +197,8 @@ export default class newslist extends wepy.page {
   events = {};
   // 会员卡支付
   async cardPay(id) {
-    var res = await wepy.request({
-      url: api.cardpay, //开发者服务器接口地址",
-      data: {
-        id
-      } //请求的参数",
-    });
-    return res;
+    let data = { id };
+    return await newapi.cardpay(data);
   }
   //  订单列表
   async getOrderList(user_id, page = 1) {
@@ -218,38 +208,34 @@ export default class newslist extends wepy.page {
       mask: true, //显示透明蒙层，防止触摸穿透,
       success: res => {}
     });
-    wepy
-      .request({
-        url: api.orderList,
-        data: {
-          friend_id,
-          order_status: 9,
-          page
-        }
-      })
-      .then(res => {
-        wx.hideLoading();
-        var orderList = res.data.data.orderList;
-        var goodsMap = res.data.data.goodsMap;
-        orderList.forEach((item, index) => {
-          orderList[index].add_time = util.formatTime(
-            new Date(item.add_time * 1000),
-            'yyyy-MM-dd'
-          );
-        });
-        if (page == 1) {
-          this.orderList = orderList;
-          this.goodsMap = goodsMap;
-        } else {
-          this.orderList.push(...orderList);
-          this.goodsMap.push(...goodsMap);
-        }
-        if (orderList.length < 10) {
-          this.isMoreData = false;
-        }
-        this.$apply();
-        console.log('订单列表', this.orderList);
-      });
+    let data = {
+      friend_id,
+      order_status: 9,
+      page
+    };
+    var res = await newapi.orderList(data);
+
+    wx.hideLoading();
+    var orderList = res.data.data.orderList;
+    var goodsMap = res.data.data.goodsMap;
+    orderList.forEach((item, index) => {
+      orderList[index].add_time = util.formatTime(
+        new Date(item.add_time * 1000),
+        'yyyy-MM-dd'
+      );
+    });
+    if (page == 1) {
+      this.orderList = orderList;
+      this.goodsMap = goodsMap;
+    } else {
+      this.orderList.push(...orderList);
+      this.goodsMap.push(...goodsMap);
+    }
+    if (orderList.length < 10) {
+      this.isMoreData = false;
+    }
+    this.$apply();
+    console.log('订单列表', this.orderList);
   }
   async onLoad(option) {
     var user_id = await this.$parent.loginInfo();

@@ -56,23 +56,24 @@
   border-bottom: 1px solid #eee;
 }
 
-checkbox-group,radio-group {
+checkbox-group,
+radio-group {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
   padding: 20rpx;
-
 }
-radio-group{
-  padding-bottom: 120rpx
+radio-group {
+  padding-bottom: 120rpx;
 }
-checkbox-group label,radio-group label {
+checkbox-group label,
+radio-group label {
   width: 31%;
   font-size: 28rpx;
-    display: flex;
+  display: flex;
   // justify-content: space-between;
-  line-height: 60rpx; 
+  line-height: 60rpx;
 }
 
 checkbox-group.pinpai-check {
@@ -141,6 +142,7 @@ checkbox-group.pinpai-check {
 <script>
 import wepy from 'wepy';
 import api from '../../API/api';
+import newapi from '../../API/newapi';
 export default class filtrate extends wepy.page {
   config = {
     navigationBarTitleText: '筛选'
@@ -148,8 +150,8 @@ export default class filtrate extends wepy.page {
   components = {};
   data = {
     pinpailist: [],
-    catlist:[],
-    catname:"无",
+    catlist: [],
+    catname: '无',
     pinpainame: '无',
     initdata: {}
   };
@@ -165,9 +167,7 @@ export default class filtrate extends wepy.page {
       });
     },
     getCatName(index) {
-      
-      this.catname=this.catlist[index].cat_name;
-   
+      this.catname = this.catlist[index].cat_name;
     },
     okSubmit(e) {
       var initdata = this.$parent.$pages['/Shop/pages/searchList'].initdata;
@@ -175,13 +175,13 @@ export default class filtrate extends wepy.page {
       wx.setStorageSync('pinpailist', this.pinpailist);
       wx.setStorageSync('catname', this.catname);
       wx.setStorageSync('catlist', this.catlist);
-      
+
       initdata.brand = e.detail.value.brand.toString();
       initdata.ch_cat_id = e.detail.value.cat.toString();
       // initdata.brand = e.detail.value.brand.toString();
       initdata.price_max = e.detail.value.priceMax;
       initdata.price_min = e.detail.value.priceMin;
-      initdata.page =1;
+      initdata.page = 1;
       this.$parent.$pages['/Shop/pages/searchList'].initdata = initdata;
       this.$parent.$pages['/Shop/pages/searchList'].getGoodsList(initdata);
       wx.navigateBack({
@@ -198,40 +198,31 @@ export default class filtrate extends wepy.page {
   };
   //获取品牌list
   //http://lmbge.com/wxapi//pinpai?keyword=%E9%97%A8&cat_id=811    keyword  关键词   cat_id  商品分类
-  getPinPaiList(cat_id, suppliers_id) {
+  async getPinPaiList(cat_id, suppliers_id) {
     var that = this;
     console.log('cat_id.:', cat_id);
-    wepy
-      .request({
-        url: api.goodsBrand,
-        data: {
-          cat_id,
-          suppliers_id
-        }
-      })
-      .then(res => {
-        if (res.data.code == '0') this.pinpailist = res.data.data;
-        console.log('品牌列表', this.pinpailist);
-        this.$apply();
-      });
+    let data = {
+      cat_id,
+      suppliers_id
+    };
+    var res = await newapi.goodsBrand(data);
+
+    if (res.data.code == '0') this.pinpailist = res.data.data;
+    console.log('品牌列表', this.pinpailist);
+    this.$apply();
   }
   // 获取分类列表
-  getcatlist(parent_id, suppliers_id) {
+  async getcatlist(parent_id, suppliers_id) {
     var that = this;
     console.log('cat_id.:', parent_id);
-    wepy
-      .request({
-        url: api.catlist,
-        data: {
-          parent_id,
-          suppliers_id
-        }
-      })
-      .then(res => {
-        if (res.data.code == '0') this.catlist = res.data.data;
-        console.log('品牌列表', this.catlist);
-        this.$apply();
-      });
+    let data = {
+      parent_id,
+      suppliers_id
+    };
+    var res = await newapi.catlist(data);
+    if (res.data.code == '0') this.catlist = res.data.data;
+    console.log('品牌列表', this.catlist);
+    this.$apply();
   }
   events = {};
   onLoad(options) {

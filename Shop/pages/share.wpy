@@ -40,6 +40,7 @@ page {
 <script>
 import wepy from 'wepy';
 import api from '../../API/api';
+import newapi from '../../API/newapi';
 export default class shoperweima extends wepy.page {
   config = {
     navigationBarTitleText: '我的',
@@ -133,104 +134,103 @@ export default class shoperweima extends wepy.page {
   }
 
   async eventDraw() {
-    var suppliers_id=this.suppliers_id
-    var user_id= this.user_id
-    var friend_name=this.friend_name
+    var suppliers_id = this.suppliers_id;
+    var user_id = this.user_id;
+    var friend_name = this.friend_name;
     var that = this;
 
-    wx.request({
-      url: api.getQRCodeImg,
-      data: {
-        path:
-          '/Shop/pages/index?suppliers_id='+suppliers_id
-           +
-          '&friend_id=' +user_id+"&friend_name="+friend_name,
-        user_id,
-        suppliers_id
-      },
+    let data = {
+      path:
+        '/Shop/pages/index?suppliers_id=' +
+        suppliers_id +
+        '&friend_id=' +
+        user_id +
+        '&friend_name=' +
+        friend_name,
+      user_id,
+      suppliers_id
+    };
+    var res = await newapi.getQRCodeImg(data);
 
-      success: function(e) {
-        var a = wx.getSystemInfoSync().windowWidth / 375;
-        var height = wx.getSystemInfoSync().windowHeight;
-        var width = wx.getSystemInfoSync().windowWidth;
-        console.log('getqrcode', e.data);
-        wx.showLoading({ title: '绘制图片中' });
-        that.data.painting = {
+    var a = wx.getSystemInfoSync().windowWidth / 375;
+    var height = wx.getSystemInfoSync().windowHeight;
+    var width = wx.getSystemInfoSync().windowWidth;
+    console.log('getqrcode', res.data);
+    wx.showLoading({ title: '绘制图片中' });
+    that.data.painting = {
+      width: 375 * a,
+      height: 474 * a,
+      clear: true,
+      views: [
+        {
+          type: 'image',
+          //url: 'https://d.funcodeit.com/test/onepayqrcode_template.jpg',
+          url: 'https://lmbge.com/qrcode/hand.jpg',
+          top: 0,
+          left: 0,
           width: 375 * a,
-          height: 474 * a,
-          clear: true,
-          views: [
-            {
-              type: 'image',
-              //url: 'https://d.funcodeit.com/test/onepayqrcode_template.jpg',
-              url: 'https://lmbge.com/qrcode/hand.jpg',
-              top: 0,
-              left: 0,
-              width: 375 * a,
-              height: 474 * a
-            },
-            {
-              type: 'image',
-              //url: 'https://d.funcodeit.com/test/mplogo-430.jpg',
-              url: e.data.data,
-              top: 50 * a,
-              left: 95 * a,
-              width: 180 * a,
-              height: 200 * a
-              // borderRadius:90,
-            },
-            {
-              type: 'text',
-              content:"工长："+ that.friend_name,
-              top: 280 * a,
-              left: 180 * a,
-              fontSize: 16 * a,
-              width: 180 * a,
-              bolder: false,
-              textAlign: 'center',
-              color: '#333'
-            },
+          height: 474 * a
+        },
+        {
+          type: 'image',
+          //url: 'https://d.funcodeit.com/test/mplogo-430.jpg',
+          url: res.data.data,
+          top: 50 * a,
+          left: 95 * a,
+          width: 180 * a,
+          height: 200 * a
+          // borderRadius:90,
+        },
+        {
+          type: 'text',
+          content: '工长：' + that.friend_name,
+          top: 280 * a,
+          left: 180 * a,
+          fontSize: 16 * a,
+          width: 180 * a,
+          bolder: false,
+          textAlign: 'center',
+          color: '#333'
+        },
 
-            {
-              type: 'text',
-              content: that.suppliers_name,
-              fontSize: 16 * a,
-              width: 180 * a,
-              top: 335 * a,
-              left: 180 * a,
-              color: '#333',
-              textAlign: 'center',
-              bolder: false
-            },
-            {
-              type: 'text',
-              content: '用微信扫描二维码',
-              fontSize: 15 * a,
-              width: 180 * a,
-              top: 380 * a,
-              left: 180 * a,
-              color: '#aaa',
-              textAlign: 'center',
-              bolder: false
-            },
+        {
+          type: 'text',
+          content: that.suppliers_name,
+          fontSize: 16 * a,
+          width: 180 * a,
+          top: 335 * a,
+          left: 180 * a,
+          color: '#333',
+          textAlign: 'center',
+          bolder: false
+        },
+        {
+          type: 'text',
+          content: '用微信扫描二维码',
+          fontSize: 15 * a,
+          width: 180 * a,
+          top: 380 * a,
+          left: 180 * a,
+          color: '#aaa',
+          textAlign: 'center',
+          bolder: false
+        },
 
-            {
-              type: 'text',
-              content: '打开小程序下单',
-              fontSize: 15 * a,
-              width: 180 * a,
-              top: 400 * a,
-              left: 180 * a,
-              color: '#aaa',
-              textAlign: 'center',
-              bolder: false
-            }
-          ]
-        };
-        that.setData({
-          painting: that.data.painting
-        });
-      }
+        {
+          type: 'text',
+          content: '打开小程序下单',
+          fontSize: 15 * a,
+          width: 180 * a,
+          top: 400 * a,
+          left: 180 * a,
+          color: '#aaa',
+          textAlign: 'center',
+          bolder: false
+        }
+      ]
+    };
+    that.setData({
+      painting: that.data.painting
     });
   }
 }

@@ -40,6 +40,7 @@
 <script>
 import wepy from 'wepy';
 import api from '../API/api';
+import newapi from '../API/newapi';
 import userInfo from '../components/userinfo';
 import myList from '../components/myList';
 import myOrderList from '../components/myOrderList';
@@ -120,7 +121,7 @@ export default class my extends wepy.page {
 
   computed = {};
   methods = {
-    getUserInfo(e, evt) {
+    async getUserInfo(e, evt) {
       console.log(e.detail.userInfo);
       if (e.detail.userInfo) {
         console.log('获取用户信息成功');
@@ -146,112 +147,103 @@ export default class my extends wepy.page {
     }
   };
   events = {};
-  upUserInfo() {
-    wepy
-      .request({
-        url: api.upUserInfo,
-        data: {
-          user_id: this.userId,
-          avatarUrl: this.userInfo.avatarUrl,
-          nickName: this.userInfo.nickName
-        }
-      })
-      .then(res => {
-        wx.showToast({
-          title: '提交信息成功', //提示的内容,
-          icon: 'none' //图标,
-        });
-      });
+  async upUserInfo() {
+    let data = {
+      user_id: this.userId,
+      avatarUrl: this.userInfo.avatarUrl,
+      nickName: this.userInfo.nickName
+    };
+    var res = await newapi.upUserInfo(data);
+    wx.showToast({
+      title: '提交信息成功', //提示的内容,
+      icon: 'none' //图标,
+    });
   }
-  orderNum(user_id) {
-    wepy
-      .request({
-        url: api.orderNum,
-        data: {
-          user_id
-        }
-      })
-      .then(res => {
-        console.log('订单数量', res);
-        this.orderList[0].unreadNum = res.data.data.daifukuan;
-        this.orderList[1].unreadNum = res.data.data.daifahuo;
-        this.orderList[2].unreadNum = res.data.data.yifahuo;
-        if (res.data.data.daiqueren != 0) {
-          console.log('你有待审核的订单');
+  async orderNum(user_id) {
+    let data = {
+      user_id
+    };
+    var res = await newapi.orderNum(data);
 
-          this.tabList = [
-            {
-              icon: '/images/icon-shopcar.png',
-              text: '待审核订单',
-              url: '/Shop/pages/orderCheck',
-              num: res.data.data.daiqueren
-            },
-            {
-              icon: '/images/kb.png',
-              text: '我的卡包',
-              url: '/Shop/pages/showCard'
-            },
-            {
-              icon: '/images/icon-shopcar.png',
-              text: '购物车',
-              url: '/Shop/pages/shopCart'
-            },
-            {
-              icon: '/images/icon_normal.png',
-              text: '帮助中心',
-              url: '/Shop/pages/myHelp'
-            },
-            {
-              icon: '/images/shangcheng.png',
-              text: '管理工作台',
-              url: 'ConsolePages/pages/index',
-              appId: 'wx024ea505bcfdda8e',
-              type: 1
-            },
-            {
-              icon: '/images/iconfont-yzm.png',
-              text: '批发商认证',
-              url: 'ConsolePages/pages/renzheng',
-              appId: 'wx024ea505bcfdda8e',
-              type: 1
-            }
-          ];
-        } else {
-          this.tabList = [
-            {
-              icon: '/images/kb.png',
-              text: '我的卡包',
-              url: '/Shop/pages/showCard'
-            },
-            {
-              icon: '/images/icon-shopcar.png',
-              text: '购物车',
-              url: '/Shop/pages/shopCart'
-            },
-            {
-              icon: '/images/icon_normal.png',
-              text: '帮助中心',
-              url: '/Shop/pages/myHelp'
-            },
-            {
-              icon: '/images/shangcheng.png',
-              text: '管理工作台',
-              url: 'ConsolePages/pages/index',
-              appId: 'wx024ea505bcfdda8e',
-              type: 1
-            },
-            {
-              icon: '/images/iconfont-yzm.png',
-              text: '批发商认证',
-              url: 'ConsolePages/pages/renzheng',
-              appId: 'wx024ea505bcfdda8e',
-              type: 1
-            }
-          ];
+    console.log('订单数量', res);
+    this.orderList[0].unreadNum = res.data.data.daifukuan;
+    this.orderList[1].unreadNum = res.data.data.daifahuo;
+    this.orderList[2].unreadNum = res.data.data.yifahuo;
+    if (res.data.data.daiqueren != 0) {
+      console.log('你有待审核的订单');
+
+      this.tabList = [
+        {
+          icon: '/images/icon-shopcar.png',
+          text: '待审核订单',
+          url: '/Shop/pages/orderCheck',
+          num: res.data.data.daiqueren
+        },
+        {
+          icon: '/images/kb.png',
+          text: '我的卡包',
+          url: '/Shop/pages/showCard'
+        },
+        {
+          icon: '/images/icon-shopcar.png',
+          text: '购物车',
+          url: '/Shop/pages/shopCart'
+        },
+        {
+          icon: '/images/icon_normal.png',
+          text: '帮助中心',
+          url: '/Shop/pages/myHelp'
+        },
+        {
+          icon: '/images/shangcheng.png',
+          text: '管理工作台',
+          url: 'ConsolePages/pages/index',
+          appId: 'wx024ea505bcfdda8e',
+          type: 1
+        },
+        {
+          icon: '/images/iconfont-yzm.png',
+          text: '批发商认证',
+          url: 'ConsolePages/pages/renzheng',
+          appId: 'wx024ea505bcfdda8e',
+          type: 1
         }
-        // daishenhe daiqueren
-        // this.orderList[3].unreadNum = res.data.data.chenggong;
-      });
+      ];
+    } else {
+      this.tabList = [
+        {
+          icon: '/images/kb.png',
+          text: '我的卡包',
+          url: '/Shop/pages/showCard'
+        },
+        {
+          icon: '/images/icon-shopcar.png',
+          text: '购物车',
+          url: '/Shop/pages/shopCart'
+        },
+        {
+          icon: '/images/icon_normal.png',
+          text: '帮助中心',
+          url: '/Shop/pages/myHelp'
+        },
+        {
+          icon: '/images/shangcheng.png',
+          text: '管理工作台',
+          url: 'ConsolePages/pages/index',
+          appId: 'wx024ea505bcfdda8e',
+          type: 1
+        },
+        {
+          icon: '/images/iconfont-yzm.png',
+          text: '批发商认证',
+          url: 'ConsolePages/pages/renzheng',
+          appId: 'wx024ea505bcfdda8e',
+          type: 1
+        }
+      ];
+    }
+    // daishenhe daiqueren
+    // this.orderList[3].unreadNum = res.data.data.chenggong;
   }
   async onLoad() {
     // wx.showLoading({
@@ -269,18 +261,16 @@ export default class my extends wepy.page {
     if (isSettingStatus) {
       if (!userInfo.unionid) {
         let code = await wepy.login();
-        await wx.getUserInfo({
+        wx.getUserInfo({
           success(res) {
             var encryptedData = res.encryptedData;
             var iv = res.iv;
-            wepy.request({
-              url: api.set_unionid,
-              data: {
-                weixin: code.code,
-                encryptedData, 
-                iv
-              }
-            });
+            let data = {
+              weixin: code.code,
+              encryptedData,
+              iv
+            };
+            newapi.set_unionid(data);
           }
         });
       }

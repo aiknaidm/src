@@ -1,16 +1,16 @@
 
 <style lang="less">
 /* pages/my/qb-hy/index.wxss */
-page{
-  background-color: #fff
+page {
+  background-color: #fff;
 }
-.no-order{
-  padding: 80rpx 0
+.no-order {
+  padding: 80rpx 0;
 }
-.listBox{
+.listBox {
   padding: 30rpx;
 }
-.shopName{
+.shopName {
   position: relative;
   padding: 40rpx 30rpx;
   border-radius: 15rpx;
@@ -18,30 +18,28 @@ page{
   margin-bottom: 30rpx;
 }
 .imgBox image {
-  
-  width:128rpx;
-height:118rpx;
-vertical-align:middle;
-border-radius:50%;
+  width: 128rpx;
+  height: 118rpx;
+  vertical-align: middle;
+  border-radius: 50%;
 }
 
-.nameBox{
+.nameBox {
   margin-left: 10rpx;
-  flex: 1
+  flex: 1;
 }
-.shopList{
-background-color: transparent;
-display: flex;
-width: 100%;
-justify-content: space-between;
-}
-.left{
+.shopList {
+  background-color: transparent;
   display: flex;
-    align-items: center;
-    flex: 4
-
+  width: 100%;
+  justify-content: space-between;
 }
-.toShop{
+.left {
+  display: flex;
+  align-items: center;
+  flex: 4;
+}
+.toShop {
   text-align: center;
   background-color: #fff;
   height: 30rpx;
@@ -53,40 +51,38 @@ justify-content: space-between;
   font-size: 28rpx;
   padding: 0 20rpx;
 }
-.name{
-  text-align:left;
-font-size: 28rpx;
-color:#fff;
- text-overflow: ellipsis;
+.name {
+  text-align: left;
+  font-size: 28rpx;
+  color: #fff;
+  text-overflow: ellipsis;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1; /*后面的3是设置显示几行*/
-
 }
 
-.txt .name{
-  text-align:left;
-display:-webkit-box;
--webkit-box-orient:vertical;
--webkit-line-clamp:2;
-overflow:hidden;
-font-size:28rpx;
-color:#666;
-
+.txt .name {
+  text-align: left;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 28rpx;
+  color: #666;
 }
 
-.text{
+.text {
   color: #fff;
   font-size: 36rpx;
   display: flex;
-  justify-content:space-between
+  justify-content: space-between;
 }
-.right{
+.right {
   font-size: 26rpx;
 }
-.no-order .text{
-  text-align: center
+.no-order .text {
+  text-align: center;
 }
 </style>
 <template>
@@ -118,48 +114,43 @@ color:#666;
 <script>
 import wepy from 'wepy';
 import api from '../../API/api';
+import newapi from '../../API/newapi';
 import noOrder from '../../components/noOrder';
 export default class myHelp extends wepy.page {
   config = {
     navigationBarTitleText: '我的卡包'
   };
-  components = {noOrder };
+  components = { noOrder };
 
   data = {
-    list:[]
+    list: []
   };
 
   computed = {};
   methods = {
-     toDetail(id,index){
-   this.index=index;
-    wx.navigateTo({
-      url: 'cardDetail?suppliers_id=' + id,
-    })
-  
-  },
+    toDetail(id, index) {
+      this.index = index;
+      wx.navigateTo({
+        url: 'cardDetail?suppliers_id=' + id
+      });
+    }
   };
   events = {};
- 
-     getList(){
-      wx.request({
-        url: api.cardlist,
-        data:{
-          user_id:this.user_id
-        },
-        success:(res)=>{
-          console.log(res)
-          if(res.data.code==0){
-           
-             this.list=res.data.data
-            this.$apply();
-          }
-        }
-      })
+
+  async getList() {
+    let data = {
+      user_id: this.user_id
+    };
+    var res = await newapi.cardlist(data);
+    console.log(res);
+    if (res.data.code == 0) {
+      this.list = res.data.data;
+      this.$apply();
     }
+  }
   async onLoad(option) {
-   this.user_id = await this.$parent.loginInfo();
-  this.getList()
+    this.user_id = await this.$parent.loginInfo();
+    this.getList();
   }
 }
 </script>

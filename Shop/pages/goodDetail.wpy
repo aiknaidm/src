@@ -284,6 +284,7 @@ color: #999;
 <script>
 import wepy from 'wepy';
 import api from '../../API/api';
+import newapi from '../../API/newapi';
 import shopCartPopup from '../../components/shop/shopCartPopup';
 import htmlParser from '../../components/htmlParser';
 import shopCart from '../../mixins/shopCart';
@@ -371,13 +372,11 @@ export default class goodDetail extends wepy.page {
   mixins = [shopCart];
   // 获取商品详情
   async getGoodsInfo(userId, id) {
-    var res = await wepy.request({
-      url: api.GoodsInfo,
-      data: {
+    let data = {
         goods_id: id,
         user_id: userId
-      }
-    });
+      };
+    var res = await newapi.GoodsInfo(data);
 
     wx.hideLoading();
     console.log('商品信息', res.data.data);

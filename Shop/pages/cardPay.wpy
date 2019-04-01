@@ -192,6 +192,7 @@
 <script>
 import wepy from 'wepy';
 import api from '../../API/api';
+import newapi from '../../API/newapi';
 import noOrder from '../../components/noOrder';
 import popupbox from '../../components/popupbox';
 import utils from '../../utils/index';
@@ -213,17 +214,15 @@ export default class myHelp extends wepy.page {
       // tijiao
       console.log('e', e.detail.value.pay_note);
       // order_amount user_id suppliers_id id pay_note
-      var res = await wepy.request({
-        url: api.cardxxpay, //开发者服务器接口地址",
-        data: {
-          user_id: this.user_id,
-          suppliers_id: this.item.suppliers_id,
-          id: this.item.card_id,
-          order_amount: this.item.card_fee,
-          pay_note: e.detail.value.pay_note,
-          amount:this.item.yj_money
-        }
-      });
+      let data = {
+        user_id: this.user_id,
+        suppliers_id: this.item.suppliers_id,
+        id: this.item.card_id,
+        order_amount: this.item.card_fee,
+        pay_note: e.detail.value.pay_note,
+        amount: this.item.yj_money
+      };
+      var res = await newapi.cardxxpay(data);
       if (res.data.code == 0) {
         wx.showToast({
           title: '支付成功', //提示的内容,
@@ -286,7 +285,7 @@ export default class myHelp extends wepy.page {
         suppliers_id: item.suppliers_id,
         id: item.card_id,
         order_amount: item.card_fee,
-        amount:item.yj_money
+        amount: item.yj_money
       };
       var data2 = {
         user_id: this.user_id,
@@ -306,42 +305,41 @@ export default class myHelp extends wepy.page {
     }
   };
   events = {};
-  getList(suppliers_id) {
+  async getList(suppliers_id) {
     var that = this;
-    wx.request({
-      url: api.card_promotion,
-      data: {
-        suppliers_id
-      },
-      success: res => {
-        wx.hideLoading();
-        if (res.data.code == 0) {
-          var datas = res.data.data;
-          for (var i = 0; i < datas.length; i++) {
-            datas[i].start_time = utils.formatTime(
-              new Date(datas[i].start_time * 1000),
-              'yyyy-MM-dd hh:mm:ss'
-            );
-            datas[i].end_time = utils.formatTime(
-              new Date(datas[i].end_time * 1000),
-              'yyyy-MM-dd hh:mm:ss'
-            );
-            datas[i].yj_money =
-              parseFloat(datas[i].card_fee) + parseFloat(datas[i].free_money);
-          }
-          this.activitylist = datas;
-          this.$apply();
-        }
+    let data = {
+      suppliers_id
+    };
+    var res = await newapi.card_promotion(data);
+
+    wx.hideLoading();
+    if (res.data.code == 0) {
+      var datas = res.data.data;
+      for (var i = 0; i < datas.length; i++) {
+        datas[i].start_time = utils.formatTime(
+          new Date(datas[i].start_time * 1000),
+          'yyyy-MM-dd hh:mm:ss'
+        );
+        datas[i].end_time = utils.formatTime(
+          new Date(datas[i].end_time * 1000),
+          'yyyy-MM-dd hh:mm:ss'
+        );
+        datas[i].yj_money =
+          parseFloat(datas[i].card_fee) + parseFloat(datas[i].free_money);
       }
-    });
+      this.activitylist = datas;
+      this.$apply();
+    }
   }
   flashPage(item, pay_type = 0) {
-    console.log("item",item)
+    console.log('item', item);
     try {
       if (pay_type == 1) {
         var tbc_amount = this.$parent.$pages['/Shop/pages/cardDetail'].list
           .tbc_amount;
-        tbc_amount = (parseFloat(tbc_amount) + parseFloat(item.yj_money)).toFixed(2);
+        tbc_amount = (
+          parseFloat(tbc_amount) + parseFloat(item.yj_money)
+        ).toFixed(2);
         this.$parent.$pages[
           '/Shop/pages/cardDetail'
         ].list.tbc_amount = tbc_amount;
