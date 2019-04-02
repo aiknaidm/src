@@ -1,5 +1,4 @@
 import wepy from 'wepy'
-import api from '../API/api'
 import newapi from '../API/newapi';
 export default class testMixin extends wepy.mixin {
   config = {

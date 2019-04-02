@@ -191,7 +191,6 @@
 </template>
 <script>
 import wepy from 'wepy';
-import api from '../../API/api';
 import newapi from '../../API/newapi';
 import noOrder from '../../components/noOrder';
 import popupbox from '../../components/popupbox';

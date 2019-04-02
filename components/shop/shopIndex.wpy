@@ -255,7 +255,6 @@ image {
 <script>
 let that;
 import wepy from 'wepy';
-import api from '../../API/api';
 import newapi from '../../API/newapi';
 import noorder from '../../components/noOrder';
 import loadingOrder from '../../components/loadingOrder';

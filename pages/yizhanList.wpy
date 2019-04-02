@@ -70,7 +70,6 @@
 
 <script>
 import wepy from 'wepy';
-import api from '../API/api';
 import newapi from '../API/newapi';
 import noorder from '../components/noOrder';
 import orderList from '../components/shop/orderList';
@@ -231,9 +230,9 @@ export default class yizhanList extends wepy.page {
       order_id: orderId,
       user_id: this.userId
     };
-    let res = await newapi.zlyd(data);
+    let res0 = await newapi.zlyd(data);
     wx.hideLoading();
-    if (res.data.code === '0') {
+    if (res0.data.code === '0') {
       wx.showToast({
         title: '加入购物车成功', //提示的内容,
         icon: 'none', //图标,

@@ -180,7 +180,6 @@
 
 <script>
 import wepy from 'wepy';
-import api from '../../API/api';
 import newapi from '../../API/newapi';
 import search from '../../components/search';
 import statusTap from '../../components/statusTap';
@@ -240,8 +239,7 @@ export default class searchlist extends wepy.page {
             phoneNumber: phoneList[res.tapIndex]
           });
         },
-        fail(res) {
-        }
+        fail(res) {}
       });
     },
     stop() {
@@ -276,11 +274,7 @@ export default class searchlist extends wepy.page {
         property.goods_attr_id
       );
       this.carIndex = showproindex;
-        '被点击的规格id',
-        this.cartList,
-        property.goods_attr_id,
-        this.carIndex
-      );
+
       this.goodsDetail.property = property;
       this.goodsDetail.property.buy_number = buy_number;
       this.goodsDetail.buy_number = buy_number;

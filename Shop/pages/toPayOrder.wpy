@@ -439,7 +439,6 @@ label.label text {
 
 <script>
 import wepy from 'wepy';
-import api from '../../API/api';
 import newapi from '../../API/newapi';
 import goodsList from '../../components/shop/goodsList';
 import wxpay1 from '../../utils/index.js';

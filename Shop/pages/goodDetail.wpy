@@ -283,7 +283,6 @@ color: #999;
 
 <script>
 import wepy from 'wepy';
-import api from '../../API/api';
 import newapi from '../../API/newapi';
 import shopCartPopup from '../../components/shop/shopCartPopup';
 import htmlParser from '../../components/htmlParser';

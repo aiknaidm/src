@@ -24,7 +24,6 @@
 
 <script>
 import wepy from 'wepy';
-import api from '../../API/api';
 import newapi from '../../API/newapi';
 import statusTap from '../../components/statusTap';
 import noorder from '../../components/noOrder';

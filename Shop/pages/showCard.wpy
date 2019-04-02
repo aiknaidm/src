@@ -113,7 +113,6 @@ page {
 
 <script>
 import wepy from 'wepy';
-import api from '../../API/api';
 import newapi from '../../API/newapi';
 import noOrder from '../../components/noOrder';
 export default class myHelp extends wepy.page {

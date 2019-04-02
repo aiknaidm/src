@@ -405,7 +405,6 @@ page {
 
 <script>
 import wepy from 'wepy';
-import api from '../../API/api';
 import newapi from '../../API/newapi';
 import shopCartPopup from '../../components/shop/shopCartPopup';
 import loadingOrder from '../../components/loadingOrder';
@@ -892,9 +891,6 @@ export default class shopCart extends wepy.page {
     this.getShopCartInfo(this.user_id);
     try {
       this.friend_suppliers_id = this.$parent.globalData.friend_suppliers_id;
-        '工长分享的店铺',
-        this.$parent.globalData.friend_suppliers_id
-      );
     } catch (error) {}
   }
 }

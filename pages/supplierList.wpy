@@ -347,7 +347,6 @@ button.ss-my-d {
 <script>
 var that;
 import wepy from 'wepy';
-import api from '../API/api';
 import newapi from '../API/newapi';
 import noorder from '../components/noOrder';
 export default class suppliersList extends wepy.page {
