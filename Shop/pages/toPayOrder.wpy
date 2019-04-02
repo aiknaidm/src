@@ -765,20 +765,6 @@ export default class toPayOrder extends wepy.page {
     let data = { id };
     return await newapi.cardpay(data);
   }
-  // isShowCardPay(){
-  //   var supplierList=[]
-  //  this.shopCarList.forEach((index,item)=>{
-  //     supplierList.push(item.suppliers_id)
-  //  })
-  //  wepy.request({
-  //       url: api.cardinfo, //开发者服务器接口地址",
-  //       data:{
-  //         suppliers:supplierList
-  //       }
-  //     }).then(res=>{
-  //     });
-  //   // apicardinfo
-  // }
   // 获取会员信息
   async getYizhanInfo() {
     // shopCarList[0].suppliers_id

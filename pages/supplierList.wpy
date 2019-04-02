@@ -405,40 +405,51 @@ export default class suppliersList extends wepy.page {
           itemLists[e.tapIndex] == '解除关系'
         ) {
           that.changeSuppliersStatus(
-            api.unfriend,
+            'unfriend',
             user_id,
             suppliers_id,
             itemLists[e.tapIndex]
           );
         } else if (itemLists[e.tapIndex] == '取消店铺首页') {
           that.changeSuppliersStatus(
-            api.removeindex,
+            'removeindex',
             user_id,
             suppliers_id,
             itemLists[e.tapIndex]
           );
         } else if (itemLists[e.tapIndex] == '设为店铺首页') {
           that.changeSuppliersStatus(
-            api.setIndex,
+            'setIndex',
             user_id,
             suppliers_id,
             itemLists[e.tapIndex]
           );
         }
       },
-      fail: function(res) {
-      }
+      fail: function(res) {}
     });
   }
   async changeSuppliersStatus(url, user_id, suppliers_id, msg) {
     // 解除关系
-    var res = await wepy.request({
-      url: url,
-      data: {
-        user_id,
-        suppliers_id
-      }
-    });
+    let data = {
+      user_id,
+      suppliers_id
+    };
+    var res;
+    if (url == 'unfriend') {
+      res = await newapi.unfriend(data);
+    } else if (url == 'removeindex') {
+      res = await newapi.removeindex(data);
+    } else if (url == 'setIndex') {
+      res = await newapi.setIndex(data);
+    } else {
+      wx.showToast({
+        title: '失败', //提示的内容,
+        icon: 'none', //图标,
+        duration: 2000, //延迟时间,
+        mask: true //显示透明蒙层，防止触摸穿透,
+      });
+    }
     this.getyizhanList(user_id);
     if (res.data.code == '0') {
       wx.showToast({
