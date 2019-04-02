@@ -17,7 +17,6 @@ export default class shopcart extends wepy.mixin {
 
     },
     "addShopCar2": async (goodsDetail, index) => {
-      console.log("goodsDetail", goodsDetail, that.friend_id, index);
       var goodsDetail = await that.goodsInit(that.userId, goodsDetail, that.friend_id);
       that.goodsListIndex = index;
       //没有规格
@@ -136,7 +135,6 @@ export default class shopcart extends wepy.mixin {
   buliduBuyNowInfo() {
     var shopCarInfo = [{}];
     var goodsList = [{}];
-    console.log('直接购买', this.goodsDetail);
     goodsList[0].goods_id = this.goodsDetail.goods_id;
     if (
       this.goodsDetail.original_img == '' &&
@@ -167,12 +165,10 @@ export default class shopcart extends wepy.mixin {
     shopCarInfo[0].goodsList = goodsList;
     shopCarInfo[0].yunfei = this.goodsDetail.yunfei;
 
-    console.log('立即购买：', shopCarInfo);
     wx.setStorageSync('shopCarInfo', shopCarInfo);
   }
   // 列表页面加入购物车
   async addShopCar3(goodsDetail, isShowToast) {
-    console.log("加入购物车", goodsDetail.buy_number)
     var goodsDetail = goodsDetail;
     var user_id = this.userId;
     var goods_id = goodsDetail.goods_id;
@@ -201,7 +197,6 @@ export default class shopcart extends wepy.mixin {
 
     that.closePopupTap();
     if (res.data.code == 0) {
-      console.log("加入购物车成功")
       that.shopNum = res.data.data.gouwuche;
       try {
         await that.$parent.$pages['/Shop/pages/searchList'].showCart();
@@ -244,13 +239,11 @@ export default class shopcart extends wepy.mixin {
       friend_id
     };
     let res = await newapi.SheheStauts(data);
-    console.log('shenhe', res.data.data.shenhe);
     // 返回2是会员 1是普通
     return res.data.data.shenhe == 2 ? 2 : 1;
   }
   async onShow() {
     that = this;
-    console.log("that", that)
 
   }
 

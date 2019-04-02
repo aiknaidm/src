@@ -342,7 +342,6 @@ export default class goodDetail extends wepy.page {
   };
   methods = {
     callTel() {
-      console.log('电话列表-', this.goodsDetail.kefu);
       var kefu = this.goodsDetail.kefu;
       var phoneList = [];
 
@@ -355,7 +354,6 @@ export default class goodDetail extends wepy.page {
       kefu.forEach(function(item, index) {
         phoneList.push(item.kefu_name + ' ' + item.mobile);
       });
-      console.log('电话列表', phoneList);
       wx.showActionSheet({
         itemList: phoneList,
         success(res) {
@@ -364,7 +362,6 @@ export default class goodDetail extends wepy.page {
           });
         },
         fail(res) {
-          console.log(res.errMsg);
         }
       });
     }
@@ -379,7 +376,6 @@ export default class goodDetail extends wepy.page {
     let res = await newapi.GoodsInfo(data);
 
     wx.hideLoading();
-    console.log('商品信息', res.data.data);
 
     this.goodsDetail = res.data.data;
     this.shopNum = res.data.data.gouwuche;

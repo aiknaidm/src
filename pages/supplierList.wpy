@@ -428,13 +428,11 @@ export default class suppliersList extends wepy.page {
         }
       },
       fail: function(res) {
-        console.log(res.errMsg);
       }
     });
   }
   async changeSuppliersStatus(url, user_id, suppliers_id, msg) {
     // 解除关系
-    console.log('解除关系');
     var res = await wepy.request({
       url: url,
       data: {

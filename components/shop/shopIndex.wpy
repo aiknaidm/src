@@ -333,7 +333,6 @@ export default class shop extends wepy.component {
     toKnow() {
       wx.setStorageSync('frist_open', '1');
       this.frist_open = '1';
-      console.log(111111111111);
     },
     toCardDetail() {
       wx.navigateTo({
@@ -346,7 +345,6 @@ export default class shop extends wepy.component {
       });
     },
     toShare() {
-      console.log('易站信息', this.yizhan);
       try {
         this.itemList =
           this.yizhan && this.yizhan.is_friend && this.shenhe == 2
@@ -359,7 +357,6 @@ export default class shop extends wepy.component {
     },
     toPoster(index) {
       if (index == 2) {
-        console.log('跳转海报页面');
         wx.navigateTo({
           url:
             '/Shop/pages/share?suppliers_id=' +
@@ -409,7 +406,6 @@ export default class shop extends wepy.component {
         if (res.confirm) {
           // // 吉采专营弹出支付
           // if (this.yizhan.suppliers_id == 76) {
-          //   console.log("支付");
           //   return;
           // }
           let data = {
@@ -438,7 +434,6 @@ export default class shop extends wepy.component {
             });
           }
         } else if (res.cancel) {
-          console.log('用户点击取消');
         }
       }
     }

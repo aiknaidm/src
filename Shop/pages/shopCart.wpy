@@ -440,7 +440,6 @@ export default class shopCart extends wepy.page {
         confirmColor: '#e50012' //确定按钮的文字颜色,
       });
       if (res.cancel) {
-        console.log('用户点击取消');
         return;
       }
       var idList = [];
@@ -520,7 +519,6 @@ export default class shopCart extends wepy.page {
       this.$apply();
     },
     async jiaBtnTap(x, y, buy_number) {
-      // console.log("加", buy_number)
       var list = this.list;
       var goods_number = list[x].goodsList[y].goods_number; //库存
       //零售价
@@ -559,7 +557,6 @@ export default class shopCart extends wepy.page {
       }
       var buy_number = parseInt(e.detail.value);
       var goods_number = list[x].goodsList[y].goods_number; //库存
-      console.log(buy_number);
       if (buy_number >= goods_number) {
         var buy_number = goods_number;
         wx.showToast({
@@ -590,7 +587,6 @@ export default class shopCart extends wepy.page {
         this.user_id,
         friend_id,
         function(goods_price, buy_number) {
-          // console.log(buy_number, goods_price,list[x].goodsList[y].goods_price )
           list[x].goodsList[y].goods_price = goods_price;
           that.$apply();
           that.setData({
@@ -609,7 +605,6 @@ export default class shopCart extends wepy.page {
         confirmColor: '#e50012' //确定按钮的文字颜色,
       });
       if (showRes.confirm) {
-        console.log('用户确认删除');
         var list = this.list;
         var idList = [];
         for (var i = 0; i < list.length; i++) {
@@ -783,7 +778,6 @@ export default class shopCart extends wepy.page {
       this.saveHidden = !this.saveHidden;
     },
     toGoodDetailsTap(id) {
-      console.log('跳转到详情');
       wx.navigateTo({
         url: '/Shop/pages/goodDetail?id=' + id
       });
@@ -857,7 +851,6 @@ export default class shopCart extends wepy.page {
     let data = { user_id };
     let res = await newapi.showCart(data);
     this.isLoading = false;
-    console.log('购物车数据：', res.data.data);
     if (res.data.code == 0) {
       this.list = res.data.data;
       this.totalPrice = 0;
@@ -899,7 +892,6 @@ export default class shopCart extends wepy.page {
     this.getShopCartInfo(this.user_id);
     try {
       this.friend_suppliers_id = this.$parent.globalData.friend_suppliers_id;
-      console.log(
         '工长分享的店铺',
         this.$parent.globalData.friend_suppliers_id
       );

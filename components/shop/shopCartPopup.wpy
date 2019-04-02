@@ -279,7 +279,6 @@
           });
           return;
         }
-        // console.log("this.goodsDetail.shopType ",this.goodsDetail.shopType)
         if (this.goodsDetail.shopType == 'addShopCar') {
           this.$emit('addShopCar', this.goodsDetail);
         } else {
@@ -311,10 +310,8 @@
             success: res => {}
           });
           buy_number = buyNumMax;
-          console.log("buyNumMax", buyNumMax)
         }
         // this.goodsDetail.buy_number = buy_number;
-        console.log("this.goodsDetail.buy_number", this.goodsDetail.buy_number,buy_number)
      
 this.goodsDetail.buy_number=1;
 this.$apply();
@@ -351,7 +348,6 @@ this.$apply();
           property.floor_price;
         goodsDetail.selectPrice = price;
       }
-      console.log("goodsDetail.selectPrice",goodsDetail.selectPrice);
 
     }
     async onLoad() {}

@@ -323,7 +323,6 @@ export default class shopCart extends wepy.component {
     },
     // 直接修改数量
     shopNumChange(e) {
-      console.log('e', e);
       var buy_number = e.detail.value;
       if (buy_number >= this.goodsDetail.goods_number) {
         buy_number = this.goodsDetail.goods_number;

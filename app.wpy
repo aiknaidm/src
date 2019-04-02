@@ -271,11 +271,9 @@ export default class extends wepy.app {
         // });
         // if (confirm.confirm) {
         //   var status = await wepy.openSetting();
-        //   console.log(status);
         // } else {
         //   return false;
         // }
-        console.log('没有获取用户信息的权限');
         return false;
       } else {
         return true;
@@ -284,7 +282,6 @@ export default class extends wepy.app {
   }
   async testAsync() {
     const data = await this.sleep(3);
-    console.log(data);
   }
 
   async loginInfo() {

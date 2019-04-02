@@ -181,11 +181,9 @@
     methods = {
       // 商品详情
       toGoodDetailsTap(id) {
-        console.log('id', id);
         this.$emit('goodDetail', id);
       },
       tobuy(goods,index) {
-         console.log('goodsListIndex',index);
 
       this.$emit('addShopCar2', goods,index);
       },

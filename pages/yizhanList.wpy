@@ -128,7 +128,6 @@ export default class yizhanList extends wepy.page {
           // 相同 =》直接下单
           this.toShopCart(orderId);
         } else {
-          console.log('店铺id不相同', this.orderList[index].friend_id);
           // 判断店铺是否有friend_id
           if (this.orderList[index].friend_id == '0') {
             // 没有friend_id=>直接下单
@@ -152,9 +151,7 @@ export default class yizhanList extends wepy.page {
               );
               this.ishowList = true;
               this.$apply();
-              console.log('工长列表', this.friendList);
             } else if (res.cancel) {
-              console.log('用户点击取消');
               // 直接下单
               this.toShopCart(orderId);
             }
@@ -183,15 +180,12 @@ export default class yizhanList extends wepy.page {
             );
             this.ishowList = true;
             this.$apply();
-            console.log('工长列表', this.friendList);
           } else if (res.cancel) {
-            console.log('用户点击取消');
             // 直接下单
             this.toShopCart(orderId);
           }
         }
       }
-      console.log('父组件再来一单', suppliersId, orderId);
     }
   };
   events = {};
@@ -285,7 +279,6 @@ export default class yizhanList extends wepy.page {
       this.isMoreData = false;
     }
     this.$apply();
-    console.log('订单列表', this.orderList);
   }
   async onShow() {
     var userId = await this.$parent.loginInfo();

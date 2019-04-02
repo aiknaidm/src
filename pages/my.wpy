@@ -122,14 +122,11 @@ export default class my extends wepy.page {
   computed = {};
   methods = {
     async getUserInfo(e, evt) {
-      console.log(e.detail.userInfo);
       if (e.detail.userInfo) {
-        console.log('获取用户信息成功');
         this.userInfo = e.detail.userInfo;
         this.upUserInfo();
         this.isShowprompt = false;
         this.$apply();
-      } else console.log('获取用户信息失败');
 
       this.$apply();
     },
@@ -165,12 +162,10 @@ export default class my extends wepy.page {
     };
     let res = await newapi.orderNum(data);
 
-    console.log('订单数量', res);
     this.orderList[0].unreadNum = res.data.data.daifukuan;
     this.orderList[1].unreadNum = res.data.data.daifahuo;
     this.orderList[2].unreadNum = res.data.data.yifahuo;
     if (res.data.data.daiqueren != 0) {
-      console.log('你有待审核的订单');
 
       this.tabList = [
         {
@@ -274,16 +269,12 @@ export default class my extends wepy.page {
           }
         });
       }
-      console.log('已获取权限');
-      console.log('userInfo', this.userInfo);
       this.$apply();
     } else {
       this.isShowprompt = true;
       this.$apply();
-      console.log('显示获取信息的提示未获取权限');
     }
 
-    // console.log('userInfo', userInfo);
   }
   async onShow() {
     this.userId = await this.$parent.loginInfo();

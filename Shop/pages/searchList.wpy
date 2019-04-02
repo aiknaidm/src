@@ -222,7 +222,6 @@ export default class searchlist extends wepy.page {
   computed = {};
   methods = {
     callTel() {
-      console.log('电话列表-', this.goodsDetail.kefu);
       var kefu = this.goodsDetail.kefu;
       var phoneList = [];
       if (this.goodsDetail.kefu.length == 1) {
@@ -234,7 +233,6 @@ export default class searchlist extends wepy.page {
       kefu.forEach(function(item, index) {
         phoneList.push(item.kefu_name + ' ' + item.mobile);
       });
-      console.log('电话列表', phoneList);
       wx.showActionSheet({
         itemList: phoneList,
         success(res) {
@@ -243,7 +241,6 @@ export default class searchlist extends wepy.page {
           });
         },
         fail(res) {
-          console.log(res.errMsg);
         }
       });
     },
@@ -279,7 +276,6 @@ export default class searchlist extends wepy.page {
         property.goods_attr_id
       );
       this.carIndex = showproindex;
-      console.log(
         '被点击的规格id',
         this.cartList,
         property.goods_attr_id,
@@ -324,7 +320,6 @@ export default class searchlist extends wepy.page {
         this.cartList[index].buy_number = buyNumMax;
       }
 
-      // console.log("buy_number1", this.cartList[index].buy_number,buy_number,buyNumMax);
       this.$parent.$pages['/Shop/pages/shopCart'].changeCartNum(
         this.list,
         0,
@@ -335,7 +330,6 @@ export default class searchlist extends wepy.page {
         function(price, buy_number) {
           that.cartList[index].goods_price = parseFloat(price).toFixed(2);
           // that.cartList[index].buy_number = that.cartList[index].buy_number;
-          // console.log("buy_number2",buy_number);
           that.setData({
             cartList: that.cartList
           });
@@ -344,12 +338,10 @@ export default class searchlist extends wepy.page {
       var arr1 = this.compareList(this.goodsList, this.cartList);
       this.goodsList = arr1;
       this.cartNum();
-      console.log('this.cartList', this.cartList[index]);
       this.$apply();
     },
     // isList ==1 来自于商品列表的点击
     async numJiaTap(goodsDetail, index, isList) {
-      console.log('点击+', goodsDetail, index, isList);
       var buyNumMax = goodsDetail.goods_number; //库存
       var buy_number = goodsDetail.buy_number; //购买数量
       this.goodsList[index].show_buy_number =
@@ -543,7 +535,6 @@ export default class searchlist extends wepy.page {
       }
       this.cartNum();
       this.compareList(this.goodsList, this.cartList);
-      console.log('商品数量', this.goodsList);
     }
     this.$apply();
   }
@@ -568,7 +559,6 @@ export default class searchlist extends wepy.page {
   }
   // 下拉刷新
   onReachBottom() {
-    console.log('page', this.ishideShopPopup);
     if (this.isMoreData) {
       wx.showLoading({
         title: '加载中', //提示的内容,
@@ -585,11 +575,9 @@ export default class searchlist extends wepy.page {
     await this.showCart();
     await this.getGoodsList(this.initdata);
     // this.goodsList = this.compareList(this.goodsList, this.cartList);
-    console.log('商品列表', this.goodsList);
     this.cartNum();
   }
   async onLoad(option) {
-    console.log('传递的值', option);
     wx.removeStorageSync('pinpainame');
     wx.removeStorageSync('pinpailist');
     wx.removeStorageSync('catlist');
@@ -623,7 +611,6 @@ export default class searchlist extends wepy.page {
       this.suppliers_id,
       this.friend_id
     );
-    console.log(' this.status', this.status);
     this.$apply();
   }
   //
@@ -637,9 +624,7 @@ export default class searchlist extends wepy.page {
         //   for (var k = 0; k < arr1[i].properties.length; k++) {
         //     if (arr1[i].properties[k].goods_attr_id == arr2[j].goods_attr_id) {
         //       // 相同规格
-        //       console.log("k", k, arr2[j].buy_number);
         //       arr1[i].properties[k].buy_number = arr2[j].buy_number;
-        //       console.log(arr1[i],k, arr1[i].properties[k].buy_number)
         //     }
         //   }
         // } else
@@ -654,7 +639,6 @@ export default class searchlist extends wepy.page {
       }
       // if (arr1[i].properties.length != 0) {
       //   arr1[i].buy_number = this.propertiesNum(arr1[i].properties);
-      //   console.log(i, arr1[i].buy_number)
       // }
     }
     return arr1;
@@ -680,7 +664,6 @@ export default class searchlist extends wepy.page {
     properties.forEach(function(item, index) {
       propertiesNum += item.buy_number;
     });
-    console.log('计算有规格总数量', propertiesNum);
     return propertiesNum;
   }
   showProNum(arr, id) {
@@ -718,7 +701,6 @@ export default class searchlist extends wepy.page {
           : property.floor_price;
       goodsDetail.selectPrice = price;
     }
-    console.log(price);
   }
 }
 </script>

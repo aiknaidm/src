@@ -67,7 +67,6 @@ export default class home extends wepy.page {
       var path = '/Shop/pages/index?suppliers_id=' + this.suppliers_id;
       var userId = this.userId;
       if (res.from === 'button') {
-        console.log(res.target.dataset.index);
         // 工长分享
           if (res.target.dataset.index == 1)
           var path =
@@ -78,7 +77,6 @@ export default class home extends wepy.page {
             '&friend_name=' +
             this.nickName;
       }
-      console.log('分享的路径', path);
       return {
         title: this.yizhan.suppliers_name,
         path: path

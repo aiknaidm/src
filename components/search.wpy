@@ -120,7 +120,6 @@ export default class List extends wepy.component {
   events = {};
   methods = {
     searchIpt(e) {
-      console.log("keyword",e)
       this.keyword=e.detail.value
      
     },

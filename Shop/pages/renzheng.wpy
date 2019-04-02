@@ -235,13 +235,11 @@ export default class renzheng extends wepy.page {
   computed = {};
   methods = {
     listenerPhoneInput(e) {
-      console.log('输入的值', e.detail.value);
       this.phone = e.detail.value;
     },
     //联网获取验证码
     async getSmsCode(phone = '') {
       this.smsCodeDisabled = true;
-      console.log('输入的电话号码', phone);
       //点击了获取验证码先在本地验证手机号的合法性
       if (this.checkPhone(phone)) {
         try {
@@ -256,7 +254,6 @@ export default class renzheng extends wepy.page {
             }
           });
           if (res.data.code == 0) {
-            console.log('点击了获取验证码' + res.data.data);
             //将获取的验证码赋值
             this.code = res.data.data;
             wx.showModal({
@@ -287,7 +284,6 @@ export default class renzheng extends wepy.page {
     },
     // 获取商品列表信息
     async formSubmit(e) {
-      console.log('form提交的内容', e);
       var phone = e.detail.value.phone;
       var smscode = e.detail.value.smscode;
       var user_name = e.detail.value.user_name;
@@ -383,7 +379,6 @@ export default class renzheng extends wepy.page {
   //检查输入的手机号
   checkPhone(param) {
     var phone = util.regexConfig().phone;
-    console.log(util);
     var inputUserName = param.trim();
     if (phone.test(inputUserName)) {
       return true;
@@ -398,7 +393,6 @@ export default class renzheng extends wepy.page {
   }
 
   async onLoad(option) {
-    console.log('传递的值', option.suppliers_id);
     this.user_id = await this.$parent.loginInfo();
     this.user_info = await this.$parent.getUserInfo(this.user_id);
     this.$apply();

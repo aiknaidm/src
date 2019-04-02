@@ -212,7 +212,6 @@ export default class myHelp extends wepy.page {
   methods = {
     async formSubmit(e) {
       // tijiao
-      console.log('e', e.detail.value.pay_note);
       // order_amount user_id suppliers_id id pay_note
       let data = {
         user_id: this.user_id,
@@ -246,7 +245,6 @@ export default class myHelp extends wepy.page {
         itemList: itemList, //按钮的文字数组，数组长度最大为6个,
         itemColor: '#000000' //按钮的文字颜色,
       });
-      console.log('cardRes', cardRes);
 
       var modalRes = await wepy.showModal({
         title: '提示', //提示的标题,
@@ -260,7 +258,6 @@ export default class myHelp extends wepy.page {
 
       if (modalRes.confirm) {
         if (cardRes.tapIndex == 1) {
-          console.log('开始线下支付');
           this.item = item;
           this.popupdata = {
             isshowpopup: true,
@@ -332,7 +329,6 @@ export default class myHelp extends wepy.page {
     }
   }
   flashPage(item, pay_type = 0) {
-    console.log('item', item);
     try {
       if (pay_type == 1) {
         var tbc_amount = this.$parent.$pages['/Shop/pages/cardDetail'].list
@@ -357,7 +353,6 @@ export default class myHelp extends wepy.page {
         ].amount = this.$parent.$pages['/Shop/pages/cardDetail'].list.amount;
       }
     } catch (error) {
-      console.log(error);
     }
   }
   async onLoad(option) {

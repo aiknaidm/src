@@ -47,7 +47,6 @@ var wxpay1 = async function(orderId) {
         },
     })
     var result = res.data.data;
-    console.log(res.data)
     if (res.data.code == 0) {
         //  通知用
         var prepay_id = result.package.replace("prepay_id=", "");
@@ -80,7 +79,6 @@ var wxpay1 = async function(orderId) {
 
         } catch (err) {
             // 取消支付 
-            console.log("取消支付")
             return {
                 code: 2,
                 msg: "取消支付"
@@ -108,7 +106,6 @@ const pay = async function(data, data2, url, sucessUrl) {
         wx.hideLoading();
         data2.order_id = res.data.orderId
         var result = res.data.data;
-        console.log("resulit", result)
         if (res.data.code == 0) {
             //  通知用
             var prepay_id = result.package.replace("prepay_id=", "");
@@ -125,7 +122,6 @@ const pay = async function(data, data2, url, sucessUrl) {
 
             } catch (err) {
                 // 取消支付 
-                console.log("取消支付")
                 return {
                     code: 2,
                     msg: "取消支付"

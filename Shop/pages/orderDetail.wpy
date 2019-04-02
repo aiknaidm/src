@@ -68,12 +68,10 @@ export default class orderDetails extends wepy.page {
       'yyyy-MM-dd hh:mm:ss'
     );
     this.$apply();
-    console.log('订单详情', this.orderDetail);
   }
 
   async onLoad(option) {
     this.id = option.id;
-    console.log(option);
     if (option.is_friend) this.is_friend = option.is_friend;
     this.getOrderDetail(this.id);
     wx.showLoading({

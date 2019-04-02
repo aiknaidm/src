@@ -75,7 +75,6 @@
           this.sales_name;
       var userId = this.userId;
       if (res.from === 'button') {
-        console.log(res.target.dataset.index);
         // 工长分享
         if (res.target.dataset.index == 1)
           var path =
@@ -87,14 +86,12 @@
             this.nickName;
            
       }
-      console.log('分享的路径', path);
       return {
         title: this.yizhan.suppliers_name,
         path: path
       };
     }
     async onLoad(options) {
-      console.log('options', options);
       wx.showLoading({
         title: '加载中...', //提示的内容,
         mask: true, //显示透明蒙层，防止触摸穿透,
@@ -127,7 +124,6 @@
           var sales_name=  unescape(options.sales_name.replace(/\u/g, "%u"));
           sales_name=sales_name.replace(/\\/g, "")
           //  options.sales_name.replace()
-          // console.log(options.sales_name.replace(/\u/g, "%u"),sales_name)
           wx.setStorageSync('sales_name'+options.suppliers_id, sales_name);
         }
         var sales_name = wx.getStorageSync('sales_name'+options.suppliers_id);
@@ -136,8 +132,6 @@
         if (sales_id) {
             this.sales_name = sales_name;
             this.sales_id = sales_id; 
-            console.log("id",this.sales_id);
-            console.log("name",this.sales_name);
           }
      
       // }

@@ -112,7 +112,6 @@ export default class myHelp extends wepy.page {
     let res = await newapi.helpList();
     this.helpList = res.data.data;
     this.$apply();
-    console.log('帮助中心', this.helpList);
   }
 
   async onLoad(option) {

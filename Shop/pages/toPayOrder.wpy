@@ -477,9 +477,7 @@ export default class toPayOrder extends wepy.page {
       // ) {
       //   try {
       //        let address =await  wepy.chooseAddress()
-      // console.log("address",address)
       //   } catch (error) {
-      //     console.log("用户拒绝了请求")
       //   }
       // }else{
       //    wx.openSetting()
@@ -487,14 +485,12 @@ export default class toPayOrder extends wepy.page {
       wx.getSetting({
         success: res => {
           var that = this;
-          // console.log(res.authSetting)
           if (
             res.authSetting['scope.address'] == undefined ||
             res.authSetting['scope.address']
           ) {
             wx.chooseAddress({
               success(res) {
-                // console.log(res)
                 var address = {
                   region: res.provinceName + res.cityName + res.countyName,
                   address: res.detailInfo,
@@ -513,7 +509,6 @@ export default class toPayOrder extends wepy.page {
                 if (res.authSetting['scope.address']) {
                   wx.chooseAddress({
                     success(res) {
-                      // console.log(res)
                       var address = {
                         region:
                           res.provinceName + res.cityName + res.countyName,
@@ -538,7 +533,6 @@ export default class toPayOrder extends wepy.page {
         var res = await wepy.showActionSheet({
           itemList: this.itemList
         });
-        console.log('res', res);
         // 0是线上 2是线下 4会员卡
         if (res.tapIndex == 0) this.payId = 0;
         if (res.tapIndex == 1) this.payId = 2;
@@ -563,7 +557,6 @@ export default class toPayOrder extends wepy.page {
         this.payIndex = res.tapIndex;
         this.$apply();
       } catch (error) {
-        console.log('取消选择', error);
         wx.showToast({
           title: error.ReferenceError, //提示的内容,
           icon: 'none', //图标,
@@ -714,7 +707,6 @@ export default class toPayOrder extends wepy.page {
         }
         // 调起支付
         var payResult = await wxpay1.wxpay1(res.data.data);
-        console.log('支付', payResult);
         wx.showToast({
           title: payResult.msg, //提示的内容,
           icon: 'success', //图标,
@@ -734,7 +726,6 @@ export default class toPayOrder extends wepy.page {
           });
         }
       } catch (error) {
-        console.log(error);
         wx.showToast({
           title: '错误' + error, //提示的内容,
           icon: 'none', //图标,
@@ -780,7 +771,6 @@ export default class toPayOrder extends wepy.page {
   //  this.shopCarList.forEach((index,item)=>{
   //     supplierList.push(item.suppliers_id)
   //  })
-  //  console.log("supplierList",supplierList)
   //  wepy.request({
   //       url: api.cardinfo, //开发者服务器接口地址",
   //       data:{
@@ -798,7 +788,6 @@ export default class toPayOrder extends wepy.page {
       suppliers_id: this.suppliers_id
     };
     let res = await newapi.yizhanBanner(data);
-    console.log(res, res.data.yizhan.is_kthy, res.data.yizhan.is_is_kthy == 0);
     if (res.data.yizhan.is_kthy == 1) {
       this.itemList = ['微信支付', '线下支付', '会员卡支付'];
     } else {

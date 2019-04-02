@@ -17,7 +17,6 @@ export default class testMixin extends wepy.mixin {
       if (res.data.code == "0") {
         this.goodsKind = res.data.data;
         this.erji = res.data.erji;
-        console.log("goodsKind", this.erji);
         this.$apply();
       } else {
         this.text = "获取失败";
@@ -65,13 +64,10 @@ export default class testMixin extends wepy.mixin {
     this.$apply();
     var end_time = this.yizhan.end_time;
     if (end_time !== 0 && new Date().getTime() - end_time * 1000 > 0) {
-      console.log('店铺已过期');
       this.isguoqi = true;
       this.text = '店铺已关闭，暂时无法购买';
       this.$apply();
     }
-    console.log('yizhanBanner', this.yizhanBanner);
-    console.log('yizhan', this.yizhan);
   }
 
 

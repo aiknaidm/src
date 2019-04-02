@@ -91,7 +91,6 @@ export default class newslist extends wepy.page {
   computed = {};
   methods = {
     radioChange(e) {
-      console.log(e.detail.value);
       this.pay_id = e.detail.value;
       // 0是线上 2是线下 4会员卡支付
       if (e.detail.value == 2) {
@@ -130,7 +129,6 @@ export default class newslist extends wepy.page {
       if (mRes.cancel) {
         return;
       }
-      console.log(this.pay_id);
       wx.showLoading({
         title: '支付中...', //提示的内容,
         mask: true, //显示透明蒙层，防止触摸穿透,
@@ -188,7 +186,6 @@ export default class newslist extends wepy.page {
     },
     // 订单详情
     orderDetail(id, evt) {
-      console.log('orderDetail?id=' + id);
       wx.navigateTo({
         url: 'orderDetail?id=' + id
       });
@@ -235,7 +232,6 @@ export default class newslist extends wepy.page {
       this.isMoreData = false;
     }
     this.$apply();
-    console.log('订单列表', this.orderList);
   }
   async onLoad(option) {
     var user_id = await this.$parent.loginInfo();
