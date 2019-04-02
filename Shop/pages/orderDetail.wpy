@@ -50,7 +50,7 @@ export default class orderDetails extends wepy.page {
   };
   async getOrderDetail(id) {
     let data = { id };
-    var res = await newapi.orderDetail(data);
+    let res = await newapi.orderDetail(data);
 
     wx.hideLoading();
     this.orderDetail = res.data.data.orderList;

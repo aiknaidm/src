@@ -156,7 +156,7 @@ export default class newslist extends wepy.page {
           pay_id,
           pay_note
         };
-        var res = await newapi.xianxiaorder(data);
+        let res = await newapi.xianxiaorder(data);
         wx.hideLoading();
         if (res.data && res.data.code == 0) {
           this.getOrderList(this.user_id);
@@ -213,7 +213,7 @@ export default class newslist extends wepy.page {
       order_status: 9,
       page
     };
-    var res = await newapi.orderList(data);
+    let res = await newapi.orderList(data);
 
     wx.hideLoading();
     var orderList = res.data.data.orderList;

@@ -376,7 +376,7 @@ export default class goodDetail extends wepy.page {
         goods_id: id,
         user_id: userId
       };
-    var res = await newapi.GoodsInfo(data);
+    let res = await newapi.GoodsInfo(data);
 
     wx.hideLoading();
     console.log('商品信息', res.data.data);

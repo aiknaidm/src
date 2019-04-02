@@ -124,7 +124,7 @@ export default class orderlist extends wepy.page {
     let data2 = {
       user_id: this.userId
     };
-    var res = await newapi.orderNum(data2);
+    let res = await newapi.orderNum(data2);
     if (res.data.data.daishenhe != 0) {
       this.statusType = [
         '全部',

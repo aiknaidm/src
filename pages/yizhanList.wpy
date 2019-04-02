@@ -205,7 +205,7 @@ export default class yizhanList extends wepy.page {
       suppliers_id,
       user_id
     };
-    var res = await newapi.friend_list(data);
+    let res = await newapi.friend_list(data);
     wx.hideLoading();
     if (res.data.code === '0') {
       return res.data.data;
@@ -237,7 +237,7 @@ export default class yizhanList extends wepy.page {
       order_id: orderId,
       user_id: this.userId
     };
-    var res = await newapi.zlyd(data);
+    let res = await newapi.zlyd(data);
     wx.hideLoading();
     if (res.data.code === '0') {
       wx.showToast({
@@ -257,7 +257,7 @@ export default class yizhanList extends wepy.page {
       let data = {
         suppliers_id
       };
-      var res = await newapi.tjdd(data);
+      let res = await newapi.tjdd(data);
       this.otherList = res.data.data.orderList;
       this.otherMap = res.data.data.goodsMap;
       this.$apply();
@@ -270,7 +270,7 @@ export default class yizhanList extends wepy.page {
       order_status: 4,
       page
     };
-    var res = await newapi.orderList(data);
+    let res = await newapi.orderList(data);
     wx.hideLoading();
     var orderList = res.data.data.orderList;
     var goodsMap = res.data.data.goodsMap;

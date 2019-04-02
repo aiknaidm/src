@@ -141,7 +141,7 @@ export default class myHelp extends wepy.page {
     let data = {
       user_id: this.user_id
     };
-    var res = await newapi.cardlist(data);
+    let res = await newapi.cardlist(data);
     console.log(res);
     if (res.data.code == 0) {
       this.list = res.data.data;

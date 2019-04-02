@@ -153,7 +153,7 @@ export default class my extends wepy.page {
       avatarUrl: this.userInfo.avatarUrl,
       nickName: this.userInfo.nickName
     };
-    var res = await newapi.upUserInfo(data);
+    let res = await newapi.upUserInfo(data);
     wx.showToast({
       title: '提交信息成功', //提示的内容,
       icon: 'none' //图标,
@@ -163,7 +163,7 @@ export default class my extends wepy.page {
     let data = {
       user_id
     };
-    var res = await newapi.orderNum(data);
+    let res = await newapi.orderNum(data);
 
     console.log('订单数量', res);
     this.orderList[0].unreadNum = res.data.data.daifukuan;

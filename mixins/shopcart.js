@@ -197,7 +197,7 @@ export default class shopcart extends wepy.mixin {
       attr_price,
       suppliers_id
     };
-    var res = await newapi.addCart(data);
+    let res = await newapi.addCart(data);
 
     that.closePopupTap();
     if (res.data.code == 0) {
@@ -243,7 +243,7 @@ export default class shopcart extends wepy.mixin {
       user_id,
       friend_id
     };
-    var res = await newapi.SheheStauts(data);
+    let res = await newapi.SheheStauts(data);
     console.log('shenhe', res.data.data.shenhe);
     // 返回2是会员 1是普通
     return res.data.data.shenhe == 2 ? 2 : 1;

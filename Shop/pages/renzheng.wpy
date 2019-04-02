@@ -320,7 +320,7 @@ export default class renzheng extends wepy.page {
         mobile: phone,
         user_name: user_name
       };
-      var res = await newapi.renzheng(data);
+      let res = await newapi.renzheng(data);
       if (res.data.code == '0') {
         var sales_id = wx.getStorageSync('sales_id' + this.suppliers_id);
         var suppliers_id = wx.getStorageSync(

@@ -648,7 +648,7 @@ export default class toPayOrder extends wepy.page {
           pay_note,
           friend_id
         };
-        var res = await newapi.createOrder(data);
+        let res = await newapi.createOrder(data);
         wx.hideLoading();
         if (res.data.code != 0) {
           wx.showModal({
@@ -766,7 +766,7 @@ export default class toPayOrder extends wepy.page {
   // 获取地址信息
   async getAddress(user_id) {
     let data = { user_id };
-    var res = await newapi.getAddress(data);
+    let res = await newapi.getAddress(data);
     this.address = res.data.data;
     this.$apply();
   }
@@ -797,7 +797,7 @@ export default class toPayOrder extends wepy.page {
       user_id: this.userId,
       suppliers_id: this.suppliers_id
     };
-    var res = await newapi.yizhanBanner(data);
+    let res = await newapi.yizhanBanner(data);
     console.log(res, res.data.yizhan.is_kthy, res.data.yizhan.is_is_kthy == 0);
     if (res.data.yizhan.is_kthy == 1) {
       this.itemList = ['微信支付', '线下支付', '会员卡支付'];

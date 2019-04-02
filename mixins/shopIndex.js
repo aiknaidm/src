@@ -12,7 +12,7 @@ export default class testMixin extends wepy.mixin {
       let data = {
         suppliers_id
       };
-      var res = await newapi.goodsKind(data);
+      let res = await newapi.goodsKind(data);
       this.isLoading = false;
       if (res.data.code == "0") {
         this.goodsKind = res.data.data;
@@ -32,7 +32,7 @@ export default class testMixin extends wepy.mixin {
     let data = {
       user_id: userId
     };
-    var res = await newapi.yizhanIndex(data);
+    let res = await newapi.yizhanIndex(data);
     // this.yizhanIndex = res.data.data;
     var suppliers_id =
       res.data.data && res.data.data.suppliers_id ?
@@ -50,7 +50,7 @@ export default class testMixin extends wepy.mixin {
       user_id: userId,
       suppliers_id: suppliers_id
     };
-    var res = await newapi.yizhanBanner(data);
+    let res = await newapi.yizhanBanner(data);
     wx.hideLoading();
     this.yizhanBanner = res.data.data;
     this.yizhan = res.data.yizhan;

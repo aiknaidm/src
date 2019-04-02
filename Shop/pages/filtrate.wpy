@@ -205,7 +205,7 @@ export default class filtrate extends wepy.page {
       cat_id,
       suppliers_id
     };
-    var res = await newapi.goodsBrand(data);
+    let res = await newapi.goodsBrand(data);
 
     if (res.data.code == '0') this.pinpailist = res.data.data;
     console.log('品牌列表', this.pinpailist);
@@ -219,7 +219,7 @@ export default class filtrate extends wepy.page {
       parent_id,
       suppliers_id
     };
-    var res = await newapi.catlist(data);
+    let res = await newapi.catlist(data);
     if (res.data.code == '0') this.catlist = res.data.data;
     console.log('品牌列表', this.catlist);
     this.$apply();

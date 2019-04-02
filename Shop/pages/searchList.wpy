@@ -503,7 +503,7 @@ export default class searchlist extends wepy.page {
   events = {};
   // 获取商品列表信息
   async getGoodsList(data) {
-    var res = await newapi.goodsList(data);
+    let res = await newapi.goodsList(data);
     if (res.data.code) {
       wx.hideLoading();
       if (data.page == 1) {
@@ -530,7 +530,7 @@ export default class searchlist extends wepy.page {
       user_id: this.userId,
       suppliers_id: this.suppliers_id
     };
-    var res = await newapi.showCart(data);
+    let res = await newapi.showCart(data);
     if (res.data.code) {
       wx.hideLoading();
       this.cartList =

@@ -461,7 +461,7 @@ export default class suppliersList extends wepy.page {
   }
   async getyizhanList(user_id) {
     let data = { user_id };
-    var res = await newapi.yizhanList(data);
+    let res = await newapi.yizhanList(data);
     wx.hideLoading();
     that.yizhanList = res.data.data;
     that.$apply();

@@ -109,7 +109,7 @@ export default class myHelp extends wepy.page {
   };
   events = {};
   async getHelpList() {
-    var res = await newapi.helpList();
+    let res = await newapi.helpList();
     this.helpList = res.data.data;
     this.$apply();
     console.log('帮助中心', this.helpList);

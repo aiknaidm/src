@@ -222,7 +222,7 @@ export default class myHelp extends wepy.page {
         pay_note: e.detail.value.pay_note,
         amount: this.item.yj_money
       };
-      var res = await newapi.cardxxpay(data);
+      let res = await newapi.cardxxpay(data);
       if (res.data.code == 0) {
         wx.showToast({
           title: '支付成功', //提示的内容,
@@ -310,7 +310,7 @@ export default class myHelp extends wepy.page {
     let data = {
       suppliers_id
     };
-    var res = await newapi.card_promotion(data);
+    let res = await newapi.card_promotion(data);
 
     wx.hideLoading();
     if (res.data.code == 0) {

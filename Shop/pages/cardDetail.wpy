@@ -228,7 +228,7 @@ export default class myHelp extends wepy.page {
       suppliers_id,
       user_id: this.user_id
     };
-    var res = await newapi.cardinfo(data);
+    let res = await newapi.cardinfo(data);
     wx.hideLoading();
     if (res.data.code == 0) {
       this.list = res.data.data;

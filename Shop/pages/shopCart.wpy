@@ -685,7 +685,7 @@ export default class shopCart extends wepy.page {
         id: this.goodsDetail.id,
         friend_id
       };
-      var res = await newapi.updateCart(data);
+      let res = await newapi.updateCart(data);
       if (res.data.code != '0') {
         wx.showToast({
           title: '修改失败', //提示的内容,
@@ -799,7 +799,7 @@ export default class shopCart extends wepy.page {
     let data = {
       id: idList
     };
-    var res = await newapi.delCart(data);
+    let res = await newapi.delCart(data);
     if (res.data.code == '0') {
       this.getShopCartInfo(this.user_id);
       if (ishiddenToast) {
@@ -839,7 +839,7 @@ export default class shopCart extends wepy.page {
       id,
       friend_id
     };
-    var res = await newapi.updateCart(data);
+    let res = await newapi.updateCart(data);
     if (res.data.code != '0') {
       wx.showToast({
         title: '修改失败', //提示的内容,
@@ -855,7 +855,7 @@ export default class shopCart extends wepy.page {
   // 购物车列表
   async getShopCartInfo(user_id) {
     let data = { user_id };
-    var res = await newapi.showCart(data);
+    let res = await newapi.showCart(data);
     this.isLoading = false;
     console.log('购物车数据：', res.data.data);
     if (res.data.code == 0) {
