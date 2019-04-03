@@ -108,7 +108,7 @@
 }
 .buy-num-box .num-box {
   display: flex;
-  align-items: center
+  align-items: center;
 }
 .buy-num-box .num-box .num-jian,
 .buy-num-box .num-box .num-jia {
@@ -162,14 +162,14 @@
 .red {
   color: #e50012;
 }
-.qidingliang{
-  padding:30rpx;
+.qidingliang {
+  padding: 30rpx;
   font-size: 28rpx;
-  color: #e50012 
+  color: #e50012;
 }
-.purple{
-  color:#a78dd3;
-  font-weight: bold
+.purple {
+  color: #a78dd3;
+  font-weight: bold;
 }
 </style>
 <template>
@@ -223,6 +223,7 @@
 </template>
 <script>
 import wepy from 'wepy';
+import util from '../../utils/index';
 export default class shopCart extends wepy.component {
   props = {
     goodsDetail: {
@@ -234,11 +235,10 @@ export default class shopCart extends wepy.component {
       type: String,
       default: '-1'
     },
-    status:{
+    status: {
       type: Number,
       default: -1
     }
-
   };
   methods = {
     labelItemTap(property) {
@@ -274,7 +274,8 @@ export default class shopCart extends wepy.component {
     },
     // 是否可以加入购物车
     addShopCar() {
-      var buy_number = this.goodsDetail.buy_number==0?1:this.goodsDetail.buy_number; //购买数
+      var buy_number =
+        this.goodsDetail.buy_number == 0 ? 1 : this.goodsDetail.buy_number; //购买数
       var goods_number = this.goodsDetail.goods_number; //库存
       var price = this.goodsDetail.selectSizePrice; //价格
       var properties = this.goodsDetail.properties; //规则
@@ -284,37 +285,18 @@ export default class shopCart extends wepy.component {
         this.goodsDetail.shopType == 'tobuy'
       ) {
         if (price == 0) {
-          wx.showToast({
-            title: '该商品暂无价格不能购买',
-            icon: 'none'
-          });
+          util.showToast('该商品暂无价格不能购买');
           return;
         }
         if (buy_number > goods_number) {
-          wx.showModal({
-            title: '提示',
-            content: '购买量不能大于库存！',
-            showCancel: false
-          });
+          util.showToast('购买量不能大于库存！');
           return;
         }
         if (properties.length != 0 && property && !property.goods_attr_id) {
-          wx.showModal({
-            title: '提示',
-            content: '请选择商品规格！',
-            showCancel: false
-          });
+          util.showToast('请选择商品规格！');
           return;
         }
       }
-      // if (buy_number < 1) {
-      //   wx.showModal({
-      //     title: '提示',
-      //     content: '购买数量不能为0！',
-      //     showCancel: false
-      //   });
-      //   return;
-      // }
       if (this.goodsDetail.shopType == 'addShopCar') {
         this.$emit('addShopCar', this.goodsDetail);
       } else {

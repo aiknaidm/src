@@ -40,6 +40,7 @@
 <script>
 import wepy from 'wepy';
 import newapi from '../API/newapi';
+import util from '../utils/index';
 import userInfo from '../components/userinfo';
 import myList from '../components/myList';
 import myOrderList from '../components/myOrderList';
@@ -150,10 +151,7 @@ export default class my extends wepy.page {
       nickName: this.userInfo.nickName
     };
     let res = await newapi.upUserInfo(data);
-    wx.showToast({
-      title: '提交信息成功', //提示的内容,
-      icon: 'none' //图标,
-    });
+    util.showToast('提交信息成功');
   }
   async orderNum(user_id) {
     let data = {
@@ -239,11 +237,6 @@ export default class my extends wepy.page {
     // this.orderList[3].unreadNum = res.data.data.chenggong;
   }
   async onLoad() {
-    // wx.showLoading({
-    //   title: '加载中...', //提示的内容,
-    //   mask: true, //显示透明蒙层，防止触摸穿透,
-    //   success: res => {}
-    // });
     let that = this;
     this.userId = await this.$parent.loginInfo();
 

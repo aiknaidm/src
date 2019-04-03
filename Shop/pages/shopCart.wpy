@@ -406,6 +406,7 @@ page {
 <script>
 import wepy from 'wepy';
 import newapi from '../../API/newapi';
+import util from '../../utils/index';
 import shopCartPopup from '../../components/shop/shopCartPopup';
 import loadingOrder from '../../components/loadingOrder';
 export default class shopCart extends wepy.page {
@@ -429,16 +430,8 @@ export default class shopCart extends wepy.page {
   computed = {};
   methods = {
     async delGoods(id) {
-      var res = await wepy.showModal({
-        title: '提示', //提示的标题,
-        content: '你确定要删除该商品吗', //提示的内容,
-        showCancel: true, //是否显示取消按钮,
-        cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
-        cancelColor: '#000000', //取消按钮的文字颜色,
-        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-        confirmColor: '#e50012' //确定按钮的文字颜色,
-      });
-      if (res.cancel) {
+      let mRes = await util.showModalBig('你确定要删除该商品吗');
+      if (mRes.cancel) {
         return;
       }
       var idList = [];
@@ -496,12 +489,7 @@ export default class shopCart extends wepy.page {
       if (buy_number > 1) {
         buy_number--;
       } else {
-        wx.showToast({
-          title: '不能小于零', //提示的内容,
-          icon: 'none', //图标,
-          duration: 2000, //延迟时间,
-          mask: true //显示透明蒙层，防止触摸穿透,
-        });
+        util.showToast('不能小于零');
         return;
       }
       if (list[x].suppliers_id == this.$parent.globalData.friend_suppliers_id)
@@ -524,12 +512,7 @@ export default class shopCart extends wepy.page {
       if (buy_number < goods_number) {
         buy_number++;
       } else {
-        wx.showToast({
-          title: '不能大于库存', //提示的内容,
-          icon: 'none', //图标,
-          duration: 2000, //延迟时间,
-          mask: true //显示透明蒙层，防止触摸穿透,
-        });
+        util.showToast('不能大于库存');
         return;
       }
       if (list[x].suppliers_id == this.$parent.globalData.friend_suppliers_id)
@@ -558,10 +541,7 @@ export default class shopCart extends wepy.page {
       var goods_number = list[x].goodsList[y].goods_number; //库存
       if (buy_number >= goods_number) {
         var buy_number = goods_number;
-        wx.showToast({
-          title: '超过库存', //提示的内容,
-          icon: 'none' //图标,
-        });
+        util.showToast('超过库存');
       } else if (
         buy_number <= 0 ||
         buy_number == '' ||
@@ -569,10 +549,7 @@ export default class shopCart extends wepy.page {
         buy_number == 'NaN'
       ) {
         var buy_number = 1;
-        wx.showToast({
-          title: '不能小于1', //提示的内容,
-          icon: 'none' //图标,
-        });
+        util.showToast('不能小于1');
       }
       list[x].goodsList[y].buy_number = buy_number;
       //  that.$apply()
@@ -597,13 +574,8 @@ export default class shopCart extends wepy.page {
     },
     // 删除商品
     async deleteSelected(x, y) {
-      var showRes = await wepy.showModal({
-        title: '提示', //提示的标题,
-        content: '你确定要删除吗', //提示的内容,
-        cancelColor: '#000000', //取消按钮的文字颜色,
-        confirmColor: '#e50012' //确定按钮的文字颜色,
-      });
-      if (showRes.confirm) {
+      let mRes = await util.showModalBig('你确定要删除吗');
+      if (mRes.confirm) {
         var list = this.list;
         var idList = [];
         for (var i = 0; i < list.length; i++) {
@@ -681,11 +653,7 @@ export default class shopCart extends wepy.page {
       };
       let res = await newapi.updateCart(data);
       if (res.data.code != '0') {
-        wx.showToast({
-          title: '修改失败', //提示的内容,
-          icon: 'none', //图标,
-          mask: true //显示透明蒙层，防止触摸穿透,
-        });
+        util.showToast('修改失败');
       } else {
         this.goodsDetail.goods_price = res.data.data;
       }
@@ -710,13 +678,7 @@ export default class shopCart extends wepy.page {
               list[i].goodsList[j].properties.length != 0 &&
               list[i].goodsList[j].goods_attr_id == ''
             ) {
-              wx.showToast({
-                title: '有商品未选择规格，请在购物车查看', //提示的内容,
-                icon: 'none',
-                duration: 1000, //延迟时间,
-                mask: true, //显示透明蒙层，防止触摸穿透,
-                success: res => {}
-              });
+              util.showToast('有商品未选择规格，请在购物车查看');
               return;
             }
             if (
@@ -749,24 +711,14 @@ export default class shopCart extends wepy.page {
               this.$parent.globalData.friend_suppliers_id &&
             goodsList.length > 1
           ) {
-            wx.showToast({
-              title: '代下单商品不能与其他商品一起提交', //提示的内容,
-              icon: 'none', //图标,
-              duration: 2000, //延迟时间,
-              mask: true, //显示透明蒙层，防止触摸穿透,
-              success: res => {}
-            });
+            util.showToast('代下单商品不能与其他商品一起提交');
             return;
           }
         }
       } catch (error) {}
       wx.setStorageSync('shopCarInfo', goodsList);
       if (goodsList.length <= 0) {
-        wx.showToast({
-          title: '请先选择商品',
-          icon: 'none',
-          duration: 1000
-        });
+        util.showToast('请先选择商品');
       } else {
         wx.navigateTo({
           url: '/Shop/pages/toPayOrder?orderType='
@@ -785,10 +737,7 @@ export default class shopCart extends wepy.page {
   events = {};
   // 删除购物车商品
   async delCartGoods(idList, ishiddenToast) {
-    wx.showLoading({
-      title: '加载中', //提示的内容,
-      mask: true //显示透明蒙层，防止触摸穿透,
-    });
+    util.showLoading();
     let data = {
       id: idList
     };
@@ -799,17 +748,9 @@ export default class shopCart extends wepy.page {
         wx.hideLoading();
         return;
       }
-      wx.showToast({
-        title: '删除成功', //提示的内容,
-        icon: 'none', //图标,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
+      util.showToast('删除成功');
     } else {
-      wx.showToast({
-        title: '删除失败', //提示的内容,
-        icon: 'none', //图标,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
+      util.showToast('删除失败');
     }
   }
   // 改变购物车数量
@@ -834,11 +775,7 @@ export default class shopCart extends wepy.page {
     };
     let res = await newapi.updateCart(data);
     if (res.data.code != '0') {
-      wx.showToast({
-        title: '修改失败', //提示的内容,
-        icon: 'none', //图标,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
+      util.showToast('修改失败');
     } else {
       this.$apply();
       if (back) back(res.data.data, buy_number);

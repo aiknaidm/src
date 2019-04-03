@@ -349,6 +349,7 @@ var that;
 import wepy from 'wepy';
 import newapi from '../API/newapi';
 import noorder from '../components/noOrder';
+import util from '../utils/index';
 export default class suppliersList extends wepy.page {
   config = {
     navigationBarTitleText: '供货商'
@@ -389,10 +390,7 @@ export default class suppliersList extends wepy.page {
   events = {};
   onLoad() {
     that = this;
-    wepy.showLoading({
-      title: '加载中', //提示的内容,
-      mask: true //显示透明蒙层，防止触摸穿透,
-    });
+    util.showLoading();
   }
   async showActionSheet(itemLists, suppliers_id) {
     var user_id = await this.$parent.loginInfo();
@@ -443,28 +441,13 @@ export default class suppliersList extends wepy.page {
     } else if (url == 'setIndex') {
       res = await newapi.setIndex(data);
     } else {
-      wx.showToast({
-        title: '失败', //提示的内容,
-        icon: 'none', //图标,
-        duration: 2000, //延迟时间,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
+      util.showToast('失败');
     }
     this.getyizhanList(user_id);
     if (res.data.code == '0') {
-      wx.showToast({
-        title: msg + '成功', //提示的内容,
-        icon: 'none', //图标,
-        duration: 2000, //延迟时间,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
+      util.showToast(msg + '成功');
     } else {
-      wx.showToast({
-        title: msg + '失败', //提示的内容,
-        icon: 'none', //图标,
-        duration: 2000, //延迟时间,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
+      util.showToast(msg + '失败');
     }
   }
   async getyizhanList(user_id) {

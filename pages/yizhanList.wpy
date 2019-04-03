@@ -71,6 +71,7 @@
 <script>
 import wepy from 'wepy';
 import newapi from '../API/newapi';
+import util from '../utils/index';
 import noorder from '../components/noOrder';
 import orderList from '../components/shop/orderList';
 export default class yizhanList extends wepy.page {
@@ -134,23 +135,15 @@ export default class yizhanList extends wepy.page {
           } else {
             //不相同=》提示是否切换
             // 选择friend_id=>下单
-            var res = await wepy.showModal({
-              title: '提示', //提示的标题,
-              content: '你确定要.....', //提示的内容,
-              showCancel: true, //是否显示取消按钮,
-              cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
-              cancelColor: '#000000', //取消按钮的文字颜色,
-              confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-              confirmColor: '#e50012' //确定按钮的文字颜色,
-            });
-            if (res.confirm) {
+            let mRes = await util.showModalBig('请选择工长');
+            if (mRes.confirm) {
               this.friendList = await this.getFriendList(
                 suppliersId,
                 this.userId
               );
               this.ishowList = true;
               this.$apply();
-            } else if (res.cancel) {
+            } else if (mRes.cancel) {
               // 直接下单
               this.toShopCart(orderId);
             }
@@ -163,23 +156,15 @@ export default class yizhanList extends wepy.page {
           this.toShopCart(orderId);
         } else {
           // 选择friend_id=>下单
-          var res = await wepy.showModal({
-            title: '提示', //提示的标题,
-            content: '你确定要.....', //提示的内容,
-            showCancel: true, //是否显示取消按钮,
-            cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
-            cancelColor: '#000000', //取消按钮的文字颜色,
-            confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-            confirmColor: '#e50012' //确定按钮的文字颜色,
-          });
-          if (res.confirm) {
+          let mRes = await util.showModalBig('请选择工长');
+          if (mRes.confirm) {
             this.friendList = await this.getFriendList(
               suppliersId,
               this.userId
             );
             this.ishowList = true;
             this.$apply();
-          } else if (res.cancel) {
+          } else if (mRes.cancel) {
             // 直接下单
             this.toShopCart(orderId);
           }
@@ -190,10 +175,7 @@ export default class yizhanList extends wepy.page {
   events = {};
   // 工长列表
   async getFriendList(suppliers_id, user_id) {
-    wx.showLoading({
-      title: '', //提示的内容,
-      mask: true //显示透明蒙层，防止触摸穿透,
-    });
+    util.showLoading();
     let data = {
       suppliers_id,
       user_id
@@ -203,29 +185,15 @@ export default class yizhanList extends wepy.page {
     if (res.data.code === '0') {
       return res.data.data;
     } else {
-      wx.showToast({
-        title: '获取工长列表失败', //提示的内容,
-        icon: 'none' //图标,
-      });
+      util.showToast('获取工长列表失败');
     }
   }
   async toShopCart(orderId) {
-    var res = await wepy.showModal({
-      title: '提示', //提示的标题,
-      content: '你确定要加入购物车吗', //提示的内容,
-      showCancel: true, //是否显示取消按钮,
-      cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
-      cancelColor: '#000000', //取消按钮的文字颜色,
-      confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-      confirmColor: '#e50012' //确定按钮的文字颜色,
-    });
-    if (res.cancel) {
+    let mRes = await util.showModalBig('你确定要加入购物车吗');
+    if (mRes.cancel) {
       return;
     }
-    wx.showLoading({
-      title: '加载中', //提示的内容,
-      mask: true //显示透明蒙层，防止触摸穿透,
-    });
+    util.showLoading();
     let data = {
       order_id: orderId,
       user_id: this.userId
@@ -233,13 +201,7 @@ export default class yizhanList extends wepy.page {
     let res0 = await newapi.zlyd(data);
     wx.hideLoading();
     if (res0.data.code === '0') {
-      wx.showToast({
-        title: '加入购物车成功', //提示的内容,
-        icon: 'none', //图标,
-        duration: 2000, //延迟时间,
-        mask: true, //显示透明蒙层，防止触摸穿透,
-        success: res => {}
-      });
+      util.showToast('加入购物车成功');
     }
   }
   async getOtherList() {
@@ -288,10 +250,7 @@ export default class yizhanList extends wepy.page {
     this.getOtherList();
   }
   async onLoad() {
-    wepy.showLoading({
-      title: '加载中', //提示的内容,
-      mask: true //显示透明蒙层，防止触摸穿透,
-    });
+    util.showLoading();
   }
   onReachBottom() {
     if (this.isMoreData) {

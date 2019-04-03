@@ -1,21 +1,21 @@
 <style lang="less">
-  // .backIndex.active {
-  //   width: 200rpx;
-  // }
-  // .backIndex .icon-arrow-right {
-  //   display: inline-block;
-  //   transform: rotate(180deg);
-  //   -webkit-transform: rotate(180deg);
-  //   margin: 0 10rpx;
-  //   position: relative;
-  // }
-  // .backIndex.active .icon-arrow-right {
-  //   transform: rotateX(180deg);
-  //   -webkit-transform: rotateX(180deg);
-  // }
-  .backIndex2 {
-    bottom: 300rpx;
-  }
+// .backIndex.active {
+//   width: 200rpx;
+// }
+// .backIndex .icon-arrow-right {
+//   display: inline-block;
+//   transform: rotate(180deg);
+//   -webkit-transform: rotate(180deg);
+//   margin: 0 10rpx;
+//   position: relative;
+// }
+// .backIndex.active .icon-arrow-right {
+//   transform: rotateX(180deg);
+//   -webkit-transform: rotateX(180deg);
+// }
+.backIndex2 {
+  bottom: 300rpx;
+}
 </style>
 <template>
   <view class="container">
@@ -28,139 +28,135 @@
 
 
 <script>
-  import wepy from 'wepy';
-  import noorder from '../../components/noOrder';
-  import shopIndexc from '../../components/shop/shopIndex';
-  import shopIndex from '../../mixins/shopIndex';
-  export default class shop extends wepy.page {
-    config = {
-      navigationBarTitleText: '吉采易站'
-    };
-    data = {
-      yizhanBanner: [],
-      yizhan: [],
-      goodsKind: [],
-      isguoqi: false,
-      text: '暂无分类',
-      shenhe: 0,
-      isLoading: true,
-      erji: 0,
-      isShowShare: false,
-      itemList: [],
-      sales_name: '',
-      friend_name: ''
-    };
-    components = {
-      shopIndexc
-    };
-    mixins = [shopIndex];
-    computed = {};
-    methods = {
-      backIndex() {
-        wx.switchTab({
-          url: '/pages/shop'
-        });
-      }
-    };
-    events = {};
-    onShareAppMessage(res) {
-      var path = '/Shop/pages/index?suppliers_id=' + this.suppliers_id;
-      if (this.sales_id)
+import wepy from 'wepy';
+import noorder from '../../components/noOrder';
+import shopIndexc from '../../components/shop/shopIndex';
+import shopIndex from '../../mixins/shopIndex';
+import util from '../../utils/index';
+export default class shop extends wepy.page {
+  config = {
+    navigationBarTitleText: '吉采易站'
+  };
+  data = {
+    yizhanBanner: [],
+    yizhan: [],
+    goodsKind: [],
+    isguoqi: false,
+    text: '暂无分类',
+    shenhe: 0,
+    isLoading: true,
+    erji: 0,
+    isShowShare: false,
+    itemList: [],
+    sales_name: '',
+    friend_name: ''
+  };
+  components = {
+    shopIndexc
+  };
+  mixins = [shopIndex];
+  computed = {};
+  methods = {
+    backIndex() {
+      wx.switchTab({
+        url: '/pages/shop'
+      });
+    }
+  };
+  events = {};
+  onShareAppMessage(res) {
+    var path = '/Shop/pages/index?suppliers_id=' + this.suppliers_id;
+    if (this.sales_id)
+      var path =
+        '/Shop/pages/index?suppliers_id=' +
+        this.suppliers_id +
+        '&sales_id=' +
+        this.sales_id +
+        '&sales_name=' +
+        this.sales_name;
+    var userId = this.userId;
+    if (res.from === 'button') {
+      // 工长分享
+      if (res.target.dataset.index == 1)
         var path =
           '/Shop/pages/index?suppliers_id=' +
           this.suppliers_id +
-          '&sales_id=' +
-          this.sales_id +
-          '&sales_name=' +
-          this.sales_name;
-      var userId = this.userId;
-      if (res.from === 'button') {
-        // 工长分享
-        if (res.target.dataset.index == 1)
-          var path =
-            '/Shop/pages/index?suppliers_id=' +
-            this.suppliers_id +
-            '&friend_id=' +
-            userId +
-            '&friend_name=' +
-            this.nickName;
-           
-      }
-      return {
-        title: this.yizhan.suppliers_name,
-        path: path
-      };
+          '&friend_id=' +
+          userId +
+          '&friend_name=' +
+          this.nickName;
     }
-    async onLoad(options) {
-      wx.showLoading({
-        title: '加载中...', //提示的内容,
-        mask: true, //显示透明蒙层，防止触摸穿透,
-        success: res => {}
-      });
-      this.sales_name = '';
-      // 店铺id
-      this.suppliers_id = options.suppliers_id;
-      if (!this.suppliers_id) {
-        wx.showToast({
-          title: '错误', //提示的内容,
-          icon: 'none' //图标,
-        });
-        return;
-      }
-      // // 是否来自业务员跳转
-      // if (options.is_sales) this.is_sales = options.is_sales;
-      // // 业务员
-      // if (options.sales_id&&options.sales_id!="" && options.is_sales == 1) {
-      //   this.sales_id = options.sales_id;
-      //   this.show_sales_name = options.sales_name;
-      // }
-      // // 来自业务员分享
-      // else {
-       
-        if (options.sales_id&&options.sales_id!=0&&options.sales_id!='') {
-          wx.setStorageSync('sales_id'+options.suppliers_id, options.sales_id);
-          wx.setStorageSync('suppliers_id'+options.suppliers_id, options.suppliers_id);
-         
-          var sales_name=  unescape(options.sales_name.replace(/\u/g, "%u"));
-          sales_name=sales_name.replace(/\\/g, "")
-          //  options.sales_name.replace()
-          wx.setStorageSync('sales_name'+options.suppliers_id, sales_name);
-        }
-        var sales_name = wx.getStorageSync('sales_name'+options.suppliers_id);
-        var sales_id = wx.getStorageSync('sales_id'+options.suppliers_id);
-        var suppliers_id = wx.getStorageSync('suppliers_id'+options.suppliers_id);
-        if (sales_id) {
-            this.sales_name = sales_name;
-            this.sales_id = sales_id; 
-          }
-     
-      // }
-      // 来自工长id friend_id
-      if (options.friend_id) {
-        this.$parent.globalData.friend_id = options.friend_id;
-        // var friend_name=  unescape(options.friend_name.replace(/\\u/g, "%u"));
-        var friend_name=  unescape(options.friend_name.replace(/\u/g, "%u"));
-          friend_name=friend_name.replace(/\\/g, "")
-        this.$parent.globalData.friend_name =friend_name;
-        this.$parent.globalData.friend_suppliers_id = options.suppliers_id;
-      }
-      if (this.$parent.globalData.friend_suppliers_id == this.suppliers_id)
-        this.friend_name = this.$parent.globalData.friend_name;
-      this.$apply();
-      // this.friend_id = this.$parent.globalData.friend_id;
+    return {
+      title: this.yizhan.suppliers_name,
+      path: path
+    };
+  }
+  async onLoad(options) {
+    util.showLoading();
+    this.sales_name = '';
+    // 店铺id
+    this.suppliers_id = options.suppliers_id;
+    if (!this.suppliers_id) {
+      util.showToast('错误');
+      return;
     }
-    async onShow() {
-      // 判断是工长还是用户
-      var userId = await this.$parent.loginInfo();
-      var userInfo = await this.$parent.getUserInfo(userId);
-      this.nickName = userInfo.nickName;
-      this.userId = userId;
-      if (this.suppliers_id) {
-        this.getShopBanner(userId, this.suppliers_id);
-        this.getMaterialsList(this.suppliers_id);
-      } else {
-        this.getShopIndex(this.userId);
-      }
+    // // 是否来自业务员跳转
+    // if (options.is_sales) this.is_sales = options.is_sales;
+    // // 业务员
+    // if (options.sales_id&&options.sales_id!="" && options.is_sales == 1) {
+    //   this.sales_id = options.sales_id;
+    //   this.show_sales_name = options.sales_name;
+    // }
+    // // 来自业务员分享
+    // else {
+
+    if (options.sales_id && options.sales_id != 0 && options.sales_id != '') {
+      wx.setStorageSync('sales_id' + options.suppliers_id, options.sales_id);
+      wx.setStorageSync(
+        'suppliers_id' + options.suppliers_id,
+        options.suppliers_id
+      );
+
+      var sales_name = unescape(options.sales_name.replace(/\u/g, '%u'));
+      sales_name = sales_name.replace(/\\/g, '');
+      //  options.sales_name.replace()
+      wx.setStorageSync('sales_name' + options.suppliers_id, sales_name);
+    }
+    var sales_name = wx.getStorageSync('sales_name' + options.suppliers_id);
+    var sales_id = wx.getStorageSync('sales_id' + options.suppliers_id);
+    var suppliers_id = wx.getStorageSync('suppliers_id' + options.suppliers_id);
+    if (sales_id) {
+      this.sales_name = sales_name;
+      this.sales_id = sales_id;
+    }
+
+    // }
+    // 来自工长id friend_id
+    if (options.friend_id) {
+      this.$parent.globalData.friend_id = options.friend_id;
+      // var friend_name=  unescape(options.friend_name.replace(/\\u/g, "%u"));
+      var friend_name = unescape(options.friend_name.replace(/\u/g, '%u'));
+      friend_name = friend_name.replace(/\\/g, '');
+      this.$parent.globalData.friend_name = friend_name;
+      this.$parent.globalData.friend_suppliers_id = options.suppliers_id;
+    }
+    if (this.$parent.globalData.friend_suppliers_id == this.suppliers_id)
+      this.friend_name = this.$parent.globalData.friend_name;
+    this.$apply();
+    // this.friend_id = this.$parent.globalData.friend_id;
+  }
+  async onShow() {
+    // 判断是工长还是用户
+    var userId = await this.$parent.loginInfo();
+    var userInfo = await this.$parent.getUserInfo(userId);
+    this.nickName = userInfo.nickName;
+    this.userId = userId;
+    if (this.suppliers_id) {
+      this.getShopBanner(userId, this.suppliers_id);
+      this.getMaterialsList(this.suppliers_id);
+    } else {
+      this.getShopIndex(this.userId);
     }
   }
+}
 </script>

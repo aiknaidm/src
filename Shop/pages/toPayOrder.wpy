@@ -440,6 +440,7 @@ label.label text {
 <script>
 import wepy from 'wepy';
 import newapi from '../../API/newapi';
+import util from '../../utils/index';
 import goodsList from '../../components/shop/goodsList';
 import wxpay1 from '../../utils/index.js';
 export default class toPayOrder extends wepy.page {
@@ -542,43 +543,24 @@ export default class toPayOrder extends wepy.page {
             if (item.hdky == 0) is_hdky = false;
           });
           if (!is_hdky) {
-            wx.showModal({
-              title: '提示', //提示的标题,
-              content:
-                '您提交的订单中有不支持会员卡支付的商品，请单独提交支持会员卡支付的商品。', //提示的内容,
-              showCancel: false, //是否显示取消按钮,
-              confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-              confirmColor: '#e50012' //确定按钮的文字颜色,
-            });
+            util.showModal(
+              '您提交的订单中有不支持会员卡支付的商品，请单独提交支持会员卡支付的商品。'
+            );
             return;
           } else this.payId = 4;
         }
         this.payIndex = res.tapIndex;
         this.$apply();
       } catch (error) {
-        wx.showToast({
-          title: error.ReferenceError, //提示的内容,
-          icon: 'none', //图标,
-          duration: 2000, //延迟时间,
-          mask: true, //显示透明蒙层，防止触摸穿透,
-          success: res => {}
-        });
+        util.showToast(error.ReferenceError);
       }
     },
     // 提交订单
     async createOrder(e) {
       if (this.friend_id == 0) {
         var msg = this.itemList[this.payIndex];
-        var showRes = await wepy.showModal({
-          title: '提示', //提示的标题,
-          content: '你确定使用' + msg + '吗？', //提示的内容,
-          showCancel: true, //是否显示取消按钮,
-          cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
-          cancelColor: '#000000', //取消按钮的文字颜色,
-          confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-          confirmColor: '#3CC51F' //确定按钮的文字颜色,
-        });
-        if (showRes.cancel) {
+        let mRes = await util.showModalBig('你确定使用' + msg + '吗？');
+        if (mRes.cancel) {
           return;
         }
       }
@@ -597,33 +579,18 @@ export default class toPayOrder extends wepy.page {
       var pay_note = pay_id == 2 ? e.detail.value.paynote1 : '';
       var friend_id = this.friend_id;
       if (consignee == '' || mobile == undefined) {
-        wx.showModal({
-          title: '提示',
-          content: '请填写联系人姓名',
-          showCancel: false
-        });
+        util.showModal('请填写联系人姓名');
         return;
       }
       if (mobile == '' || mobile == undefined) {
-        wx.showModal({
-          title: '提示',
-          content: '请填写手机号码',
-          showCancel: false
-        });
+        util.showModal('请填写手机号码');
         return;
       }
       if (address == '' || address == null || address == undefined) {
-        wx.showModal({
-          title: '提示',
-          content: '请填写详细地址',
-          showCancel: false
-        });
+        util.showModal('请填写详细地址');
         return;
       }
-      wx.showLoading({
-        title: '提交订单中...', //提示的内容,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
+      util.showLoading('提交订单中...');
       try {
         let data = {
           user_id,
@@ -643,21 +610,14 @@ export default class toPayOrder extends wepy.page {
         let res = await newapi.createOrder(data);
         wx.hideLoading();
         if (res.data.code != 0) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-            // success: res => {
-            //   if (res.confirm) wx.navigateBack({});
-            // }
-          });
+          util.showModal(res.data.message);
           return;
         }
         // 刷新购物车
         this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo(
           this.userId
         );
-        this.$parent.$pages['/Shop/pages/searchList'].initF();
+        // this.$parent.$pages['/Shop/pages/searchList'].initF();
         if (res.data.data == '' || res.data.data == null) {
           wx.redirectTo({
             url: '/Shop/pages/orderList?order_status=1'
@@ -689,29 +649,16 @@ export default class toPayOrder extends wepy.page {
               url: '/Shop/pages/orderList?order_status=2'
             });
           } else {
-            wx.showModal({
-              title: '提示', //提示的标题,
-              content: cardPayRes.data.message, //提示的内容,
-              showCancel: false, //是否显示取消按钮,
-              confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-              confirmColor: '#e50012', //确定按钮的文字颜色,
-              success: res => {
-                wx.redirectTo({
-                  url: '/Shop/pages/orderList?order_status=1'
-                });
-              }
+            await util.showModal(cardPayRes.data.message);
+            wx.redirectTo({
+              url: '/Shop/pages/orderList?order_status=1'
             });
           }
           return;
         }
         // 调起支付
         var payResult = await wxpay1.wxpay1(res.data.data);
-        wx.showToast({
-          title: payResult.msg, //提示的内容,
-          icon: 'success', //图标,
-          duration: 2000, //延迟时间,
-          mask: true //显示透明蒙层，防止触摸穿透,
-        });
+        util.showToast(payResult.msg);
         // 取消支付
         if (payResult.code == 2) {
           wx.redirectTo({
@@ -725,12 +672,7 @@ export default class toPayOrder extends wepy.page {
           });
         }
       } catch (error) {
-        wx.showToast({
-          title: '错误' + error, //提示的内容,
-          icon: 'none', //图标,
-          duration: 2000, //延迟时间,
-          mask: true //显示透明蒙层，防止触摸穿透,
-        });
+        util.showToast('错误' + error);
       }
     }
   };
@@ -793,13 +735,7 @@ export default class toPayOrder extends wepy.page {
       this.suppliers_id == this.$parent.globalData.friend_suppliers_id &&
       shopCarList.length > 1
     ) {
-      wx.showToast({
-        title: '代下单商品不能和其他商品一起购买', //提示的内容,
-        icon: 'none', //图标,
-        duration: 2000, //延迟时间,
-        mask: true, //显示透明蒙层，防止触摸穿透,
-        success: res => {}
-      });
+      util.showToast('代下单商品不能和其他商品一起购买');
       wx.navigateBack({
         delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
       });

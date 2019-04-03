@@ -255,18 +255,9 @@ export default class renzheng extends wepy.page {
           if (res.data.code == 0) {
             //将获取的验证码赋值
             this.code = res.data.data;
-            wx.showModal({
-              title: '提示', //提示的标题,
-              content: '验证码发送成功', //提示的内容,
-              showCancel: false, //是否显示取消按钮,
-              confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-              confirmColor: '#e50012' //确定按钮的文字颜色,
-            });
+            util.showModal('验证码发送成功');
           } else {
-            wx.showToast({
-              title: res.data.message + '',
-              icon: 'none'
-            });
+            util.showToast(res.data.message);
             this.smsCodeDisabled = false;
             this.$apply();
           }
@@ -291,23 +282,11 @@ export default class renzheng extends wepy.page {
         return;
       }
       if (this.code != smscode) {
-        wx.showModal({
-          title: '提示', //提示的标题,
-          content: '验证码不正确', //提示的内容,
-          showCancel: false, //是否显示取消按钮,
-          confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-          confirmColor: '#e50012' //确定按钮的文字颜色,
-        });
+        util.showModal('验证码不正确');
         return;
       }
       if (!user_name) {
-        wx.showModal({
-          title: '提示', //提示的标题,
-          content: '真实姓名不能为空', //提示的内容,
-          showCancel: false, //是否显示取消按钮,
-          confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-          confirmColor: '#e50012' //确定按钮的文字颜色,
-        });
+        util.showModal('真实姓名不能为空');
         return;
       }
       let data = {
@@ -328,28 +307,14 @@ export default class renzheng extends wepy.page {
         };
         var res1 = await newapi.applyMember(data1);
         if (res1.data.code == '0') {
-          wx.showModal({
-            title: '提示', //提示的标题,
-            content: '发送成功，等待易站同意', //提示的内容,
-            showCancel: false, //是否显示取消按钮,
-            confirmColor: '#e50012', //确定按钮的文字颜色,
-            success: res => {
-              wepy.navigateBack({
-                delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-              });
-            }
+          await util.showModal('发送成功，等待易站同意');
+          wepy.navigateBack({
+            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
           });
         } else {
-          wx.showModal({
-            title: '提示', //提示的标题,
-            content: '发送失败', //提示的内容,
-            showCancel: false, //是否显示取消按钮,
-            confirmColor: '#e50012', //确定按钮的文字颜色,
-            success: res => {
-              wepy.navigateBack({
-                delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-              });
-            }
+          await util.showModal('发送失败');
+          wepy.navigateBack({
+            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
           });
         }
       }
@@ -382,11 +347,7 @@ export default class renzheng extends wepy.page {
     if (phone.test(inputUserName)) {
       return true;
     } else {
-      wx.showModal({
-        title: '提示',
-        showCancel: false,
-        content: '请输入正确的手机号码'
-      });
+      util.showModal('请输入正确的手机号码');
       return false;
     }
   }
@@ -396,12 +357,7 @@ export default class renzheng extends wepy.page {
     this.user_info = await this.$parent.getUserInfo(this.user_id);
     this.$apply();
     if (option.suppliers_id) this.suppliers_id = option.suppliers_id;
-    else
-      wx.showToast({
-        title: '参数错误', //提示的内容,
-        icon: 'none', //图标,
-        duration: 1000 //延迟时间,
-      });
+    else util.showToast('参数错误');
   }
 }
 </script>

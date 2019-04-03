@@ -103,36 +103,18 @@ export default class newslist extends wepy.page {
     },
     async payTap(id) {
       if (!this.pay_id) {
-        wx.showToast({
-          title: '请选择支付方式', //提示的内容,
-          icon: 'none', //图标,
-          duration: 2000, //延迟时间,
-          mask: true, //显示透明蒙层，防止触摸穿透,
-          success: res => {}
-        });
+        util.showToast('请选择支付方式');
         return;
       }
 
       if (this.pay_id == 0) var pay_name = '线上支付';
-      if (this.pay_id == 2) var pay_name = '线下支付';
-      if (this.pay_id == 4) var pay_name = '会员卡支付';
-      var mRes = await wepy.showModal({
-        title: '提示', //提示的标题,
-        content: '你确定使用' + pay_name + '吗', //提示的内容,
-        showCancel: true, //是否显示取消按钮,
-        cancelText: '取消', //取消按钮的文字，默认为取消，最多 4 个字符,
-        cancelColor: '#000000', //取消按钮的文字颜色,
-        confirmText: '确定', //确定按钮的文字，默认为取消，最多 4 个字符,
-        confirmColor: '#e50012' //确定按钮的文字颜色,
-      });
+      else if (this.pay_id == 2) var pay_name = '线下支付';
+      else if (this.pay_id == 4) var pay_name = '会员卡支付';
+      let mRes = await util.showModalBig('你确定使用' + pay_name + '吗');
       if (mRes.cancel) {
         return;
       }
-      wx.showLoading({
-        title: '支付中...', //提示的内容,
-        mask: true, //显示透明蒙层，防止触摸穿透,
-        success: res => {}
-      });
+      util.showLoading('支付中...');
       // 线上支付
       if (this.pay_id == 0) {
         var res = await util.wxpay1(id);
@@ -140,10 +122,7 @@ export default class newslist extends wepy.page {
         if (res.code == 1) {
           this.getOrderList(this.user_id);
         }
-        wx.showToast({
-          title: res.msg, //提示的内容,
-          icon: 'none' //图标,
-        });
+        util.showToast(res.msg);
       } else if (this.pay_id == 2) {
         // 线下支付
         var pay_id = this.pay_id;
@@ -157,10 +136,7 @@ export default class newslist extends wepy.page {
         wx.hideLoading();
         if (res.data && res.data.code == 0) {
           this.getOrderList(this.user_id);
-          wx.showToast({
-            title: '支付成功', //提示的内容,
-            icon: 'none' //图标,
-          });
+          util.showToast('支付成功');
         }
       } else {
         var pay_id = this.pay_id;
@@ -168,15 +144,9 @@ export default class newslist extends wepy.page {
         wx.hideLoading();
         if (cardPayRes.data && cardPayRes.data.code == 0) {
           this.getOrderList(this.user_id);
-          wx.showToast({
-            title: '支付成功', //提示的内容,
-            icon: 'none' //图标,
-          });
+          util.showToast('支付成功');
         } else {
-          wx.showToast({
-            title: cardPayRes.data.message, //提示的内容,
-            icon: 'none' //图标,
-          });
+          util.showToast(cardPayRes.data.message);
         }
       }
     },
@@ -199,11 +169,7 @@ export default class newslist extends wepy.page {
   //  订单列表
   async getOrderList(user_id, page = 1) {
     var friend_id = user_id;
-    wx.showLoading({
-      title: '加载中...', //提示的内容,
-      mask: true, //显示透明蒙层，防止触摸穿透,
-      success: res => {}
-    });
+    util.showLoading();
     let data = {
       friend_id,
       order_status: 9,
@@ -241,11 +207,7 @@ export default class newslist extends wepy.page {
   }
   onReachBottom() {
     if (this.isMoreData) {
-      wx.showLoading({
-        title: '加载中', //提示的内容,
-        mask: true, //显示透明蒙层，防止触摸穿透,
-        success: res => {}
-      });
+      util.showLoading();
       this.page = this.page + 1;
       this.getOrderList(this.userId, this.page);
     }

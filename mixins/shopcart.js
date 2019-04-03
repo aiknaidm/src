@@ -57,10 +57,7 @@ export default class shopcart extends wepy.mixin {
     tobuy() {
       var goodsDetail = this.goodsDetail;
       if (goodsDetail.selectSizePrice == 0) {
-        wx.showToast({
-          title: '该商品暂无价格不能购买',
-          icon: 'none'
-        });
+        util.showToast('该商品暂无价格不能购买');
         return;
       }
       this.goodsDetail.shopType = 'tobuy';
@@ -81,10 +78,7 @@ export default class shopcart extends wepy.mixin {
     toAddShopCar() {
       var goodsDetail = this.goodsDetail;
       if (goodsDetail.selectSizePrice == 0) {
-        wx.showToast({
-          title: '该商品暂无价格不能购买',
-          icon: 'none'
-        });
+        util.showToast('该商品暂无价格不能购买');
         return;
       }
       this.goodsDetail.shopType = 'addShopCar';
@@ -214,19 +208,10 @@ export default class shopcart extends wepy.mixin {
         return
       }
       that.ishideShopPopup = false;
-      wx.showToast({
-        title: '加入购物车成功',
-        icon: 'success',
-        duration: 1000
-      });
+      util.showToast('加入购物车成功');
       this.$apply();
     } else {
-      wx.showToast({
-        title: res.data.message, //提示的内容,
-        icon: 'none', //图标,
-        duration: 1000, //延迟时间,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
+      util.showToast(res.data.message);
     }
   }
   // 获取会员状态

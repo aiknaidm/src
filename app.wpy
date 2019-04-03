@@ -101,6 +101,7 @@ import 'wepy-async-function';
 import { setStore } from 'wepy-redux';
 import configStore from './store';
 import newapi from './API/newapi';
+import util from './utils/index';
 
 const store = configStore();
 setStore(store);
@@ -308,13 +309,7 @@ export default class extends wepy.app {
     let data = { user_id: userId };
     let userInfo = await newapi.getUserInfo(data);
     if (userInfo.data.code == '0') return userInfo.data.data;
-    else
-      wx.showToast({
-        title: '获取用户信息失败', //提示的内容,
-        icon: 'none', //图标,
-        duration: 2000, //延迟时间,
-        mask: true //显示透明蒙层，防止触摸穿透,
-      });
+    else util.showToast('获取用户信息失败');
     return 0;
   }
 }

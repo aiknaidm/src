@@ -189,6 +189,7 @@ page {
 <script>
 import wepy from 'wepy';
 import newapi from '../../API/newapi';
+import util from '../../utils/index';
 import noOrder from '../../components/noOrder';
 export default class myHelp extends wepy.page {
   config = {
@@ -236,27 +237,17 @@ export default class myHelp extends wepy.page {
     }
   }
   async onLoad(option) {
-    wx.showLoading({
-      title: '加载中', //提示的内容,
-      mask: true, //显示透明蒙层，防止触摸穿透,
-      success: res => {}
-    });
+    util.showLoading();
     this.user_id = await this.$parent.loginInfo();
     if (option.suppliers_id) {
       this.suppliers_id = option.suppliers_id;
       this.detail(option.suppliers_id);
-    } else
-      wx.showToast({
-        title: '数据错误', //提示的内容,
-        icon: 'none', //图标,
-        duration: 2000, //延迟时间,
-        mask: true, //显示透明蒙层，防止触摸穿透,
-        success: res => {
-          wx.navigateBack({
-            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-          });
-        }
+    } else {
+      await util.showToast('数据错误');
+      wx.navigateBack({
+        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
       });
+    }
   }
 }
 </script>
