@@ -221,7 +221,7 @@ export default class searchlist extends wepy.page {
   mixins = [shopCart];
   computed = {};
   methods = {
-    callTel() {
+    async callTel() {
       var kefu = this.goodsDetail.kefu;
       var phoneList = [];
       if (this.goodsDetail.kefu.length == 1) {
@@ -233,14 +233,9 @@ export default class searchlist extends wepy.page {
       kefu.forEach(function(item, index) {
         phoneList.push(item.kefu_name + ' ' + item.mobile);
       });
-      wx.showActionSheet({
-        itemList: phoneList,
-        success(res) {
-          wx.makePhoneCall({
-            phoneNumber: phoneList[res.tapIndex]
-          });
-        },
-        fail(res) {}
+      let mRes = await util.showActionSheet(phoneList);
+      wx.makePhoneCall({
+        phoneNumber: phoneList[mRes.tapIndex]
       });
     },
     stop() {

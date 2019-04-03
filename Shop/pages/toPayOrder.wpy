@@ -530,9 +530,10 @@ export default class toPayOrder extends wepy.page {
     // 选择支付方式
     async selectPayStyle() {
       try {
-        var res = await wepy.showActionSheet({
-          itemList: this.itemList
-        });
+        var res = await util.showActionSheet(this.itemList);
+        if (!res) {
+          return;
+        }
         // 0是线上 2是线下 4会员卡
         if (res.tapIndex == 0) this.payId = 0;
         if (res.tapIndex == 1) this.payId = 2;

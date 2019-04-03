@@ -395,37 +395,32 @@ export default class suppliersList extends wepy.page {
   async showActionSheet(itemLists, suppliers_id) {
     var user_id = await this.$parent.loginInfo();
     var that = this;
-    wx.showActionSheet({
-      itemList: itemLists,
-      success: function(e) {
-        if (
-          itemLists[e.tapIndex] == '取消申请' ||
-          itemLists[e.tapIndex] == '解除关系'
-        ) {
-          that.changeSuppliersStatus(
-            'unfriend',
-            user_id,
-            suppliers_id,
-            itemLists[e.tapIndex]
-          );
-        } else if (itemLists[e.tapIndex] == '取消店铺首页') {
-          that.changeSuppliersStatus(
-            'removeindex',
-            user_id,
-            suppliers_id,
-            itemLists[e.tapIndex]
-          );
-        } else if (itemLists[e.tapIndex] == '设为店铺首页') {
-          that.changeSuppliersStatus(
-            'setIndex',
-            user_id,
-            suppliers_id,
-            itemLists[e.tapIndex]
-          );
-        }
-      },
-      fail: function(res) {}
-    });
+    let mRes = await util.showActionSheet(itemLists);
+    if (
+      itemLists[mRes.tapIndex] == '取消申请' ||
+      itemLists[mRes.tapIndex] == '解除关系'
+    ) {
+      that.changeSuppliersStatus(
+        'unfriend',
+        user_id,
+        suppliers_id,
+        itemLists[mRes.tapIndex]
+      );
+    } else if (itemLists[mRes.tapIndex] == '取消店铺首页') {
+      that.changeSuppliersStatus(
+        'removeindex',
+        user_id,
+        suppliers_id,
+        itemLists[mRes.tapIndex]
+      );
+    } else if (itemLists[mRes.tapIndex] == '设为店铺首页') {
+      that.changeSuppliersStatus(
+        'setIndex',
+        user_id,
+        suppliers_id,
+        itemLists[mRes.tapIndex]
+      );
+    }
   }
   async changeSuppliersStatus(url, user_id, suppliers_id, msg) {
     // 解除关系

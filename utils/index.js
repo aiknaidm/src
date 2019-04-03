@@ -9,7 +9,7 @@ const formatTime = function (time, fmt) {
     "q+": Math.floor((time.getMonth() + 3) / 3), //季度 
     "S": time.getMilliseconds() //毫秒 
   };
-  if (/(y+)/.test(fmt)) {
+  if (/(y + )/.test(fmt)) {
     fmt = fmt.replace(RegExp.$1, (time.getFullYear() + "").substr(4 - RegExp.$1.length));
   }
   for (var k in o) {
@@ -147,8 +147,8 @@ const pay = async function (data, data2, url, sucessUrl) {
 //邮箱以及手机的正则表达式
 const regexConfig = function () {
   var reg = {
-    email: /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/,
-    phone: /^1(3|4|5|7|8)\d{9}$/
+    email: /^(\w -  * \. * ) + @(\w -?) + (\.\w {2, }) + $/,
+    phone: /^1(3 | 4 | 5 | 7 | 8)\d {9}$/
   }
   return reg;
 }
@@ -158,13 +158,13 @@ const html_decode = function (str) {
   // s = str.replace(/&gt;/g, "&");
   s = str.replace(/\r/g, "");
   s = s.replace(/\n/g, "<br/>");
-  s = s.replace(/&amp;/g, "&");
-  s = s.replace(/&amp;/g, "&");
-  s = s.replace(/&lt;/g, "<");
-  s = s.replace(/&gt;/g, ">");
-  s = s.replace(/&nbsp;/g, " ");
-  s = s.replace(/&#39;/g, "\'");
-  s = s.replace(/&quot;/g, "\"");
+  s = s.replace(/& amp; /g, "&");
+  s = s.replace(/& amp; /g, "&");
+  s = s.replace(/& lt; /g, "<");
+  s = s.replace(/& gt; /g, ">");
+  s = s.replace(/& nbsp; /g, " ");
+  s = s.replace(/& #39; /g, "\'");
+  s = s.replace(/& quot; /g, "\"");
 
   return s;
 }
@@ -207,6 +207,20 @@ const showModalBig = async function (content, title = '提示') {
   });
   return res;
 }
+const showActionSheet = async function (itemList) {
+  return new Promise((resolve, reject) => {
+    wx.showActionSheet({
+      itemList: itemList,
+      success: function (res) {
+        resolve(res);
+      },
+      fail: function (res) {
+        console.log('用户取消');
+        resolve(null);
+      }
+    });
+  })
+}
 export default {
   formatTime,
   wxpay1,
@@ -218,4 +232,5 @@ export default {
   showToast,
   showModal,
   showModalBig,
+  showActionSheet,
 }
