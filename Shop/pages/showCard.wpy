@@ -93,7 +93,7 @@ page {
             <view class='shopList'>
               <view class='left'>
                 <view class="imgBox">
-                  <image mode="aspectFill" src='{{item.img}}'></image>
+                  <image mode="aspectFill" src='{{item.img}}'/>
                 </view>
                 <view class='nameBox'>
                   <view class='name'> {{item.suppliers_name}}</view>

@@ -290,14 +290,8 @@ export default class myHelp extends wepy.page {
     if (res.data.code == 0) {
       var datas = res.data.data;
       for (var i = 0; i < datas.length; i++) {
-        datas[i].start_time = util.formatTime(
-          new Date(datas[i].start_time * 1000),
-          'yyyy-MM-dd hh:mm:ss'
-        );
-        datas[i].end_time = util.formatTime(
-          new Date(datas[i].end_time * 1000),
-          'yyyy-MM-dd hh:mm:ss'
-        );
+        datas[i].start_time = util.formatTime(datas[i].start_time);
+        datas[i].end_time = util.formatTime(datas[i].end_time);
         datas[i].yj_money =
           parseFloat(datas[i].card_fee) + parseFloat(datas[i].free_money);
       }

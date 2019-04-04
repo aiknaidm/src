@@ -68,7 +68,7 @@
 <template>
   <view class="container">
     <view class="banner">
-      <image src="/images/help.gif" mode="aspectFill"></image>
+      <image src="/images/help.gif" mode="aspectFill"/>
     </view>
     <view class="droplist">
       <block wx:for="{{helpList}}" wx:key="{{index}}">

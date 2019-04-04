@@ -366,7 +366,7 @@ label.label text {
               <view class="row-box">
                 <view class="row-label">买家留言</view>
                 <view class="right-text">
-                  <input name="remark" type="text" class="liuyan" placeholder="如需备注请输入" @input="changeRemark({{index}})"></input>
+                  <input name="remark" type="text" class="liuyan" placeholder="如需备注请输入" @input="changeRemark({{index}})"/>
                 </view>
               </view>
             </view>
@@ -395,7 +395,7 @@ label.label text {
                         <view wx:if="{{payId==2}}">
                           <label class='radio-label'>
                             <text>我的微信昵称：</text>
-                            <input name="paynote1"></input>
+                            <input name="paynote1"/>
                           </label>
                         </view>
                         <label>
@@ -403,7 +403,7 @@ label.label text {
                         <view wx:if="{{payId==3}}">
                           <label class='radio-label'>
                             <text>我的银行卡号：</text>
-                            <input name="paynote2"></input>
+                            <input name="paynote2"/>
                           </label>
                         </view>
                           </radio-group>-->

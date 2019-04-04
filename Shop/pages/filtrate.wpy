@@ -89,9 +89,9 @@ checkbox-group.pinpai-check {
   <view class='shaixuan-jiage'>
     <view class='title'>价格区间</view>
     <view class='shaixuan-ipt'>
-      <input type='number' placeholder="最低价" bindinput="listenerLowInput" name="priceMin" value="{{initdata.price_min}}"></input>
+      <input type='number' placeholder="最低价" bindinput="listenerLowInput" name="priceMin" value="{{initdata.price_min}}"/>
       ——
-      <input type='number' placeholder="最高价" bindinput="listenerHighInput" name="priceMax" value="{{initdata.price_max}}"></input>
+      <input type='number' placeholder="最高价" bindinput="listenerHighInput" name="priceMax" value="{{initdata.price_max}}"/>
     </view>
   </view>
 

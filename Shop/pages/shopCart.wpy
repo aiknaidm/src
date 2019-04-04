@@ -361,8 +361,8 @@ page {
             <view class="a-goods-conts {{item.active? 'active':''}}" @tap="selectTap({{indexx}},{{indexy}})">
               <view class="goods-info">
                 <view class="img-box" @tap.stop="toGoodDetailsTap({{item.goods_id}})">
-                  <image src='http://maijia.jicaizx.com/{{item.original_img}}' wx:if="{{item.original_img!=''}}" class="img" mode="aspectFit"></image>
-                  <image src='{{item.original_img1}}' wx:elif="{{item.original_img1!=''}}" class="img" mode="aspectFit"></image>
+                  <image src='http://maijia.jicaizx.com/{{item.original_img}}' wx:if="{{item.original_img!=''}}" class="img" mode="aspectFit"/>
+                  <image src='{{item.original_img1}}' wx:elif="{{item.original_img1!=''}}" class="img" mode="aspectFit"/>
                   <image src="http://wsc.jicaizx.com/images/no_picture.gif" wx:else class="img" mode="aspectFit" wx:else/>
                 </view>
                 <view class="text-box">

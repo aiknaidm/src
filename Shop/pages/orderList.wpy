@@ -93,10 +93,7 @@ export default class orderlist extends wepy.page {
     var orderList = res0.data.data.orderList;
     var goodsMap = res0.data.data.goodsMap;
     orderList.forEach((item, index) => {
-      orderList[index].add_time = util.formatTime(
-        new Date(item.add_time * 1000),
-        'yyyy-MM-dd'
-      );
+      orderList[index].add_time = util.formatDate(item.add_time);
     });
     if (page == 1) {
       this.orderList = orderList;
