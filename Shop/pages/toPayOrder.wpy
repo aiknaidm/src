@@ -319,7 +319,7 @@ label.label text {
                           <view></view>
                         </view>
                         <view class="address-more">
-                          <image src="/images/enter.png">
+                          <image src="/images/enter.png"/>
                         </view>
                       </button>
         <!-- </radio-group> -->
@@ -409,7 +409,7 @@ label.label text {
                           </radio-group>-->
             <label class="label">
                             <text>备注：</text>
-                            <input name="paynote1">
+                            <input name="paynote1"/>
                           </label>
           </view>
           <!-- <picker bindchange="bindPickerChange" value="{{index}}" range="{{yhqList}}" wx:if="{{yhqList.length}}">

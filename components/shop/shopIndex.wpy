@@ -201,7 +201,7 @@ image {
         <swiper class="swiper_box" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
           <block wx:for="{{yizhanBanner}}" wx:key="{{index}}">
             <swiper-item>
-              <image data-adid="{{item.ad_id}}" src="{{item.img}}" class="slide-image">
+              <image data-adid="{{item.ad_id}}" src="{{item.img}}" class="slide-image"/>
                 <view class="yizhan-name">
                   <view class="yizhan-name-titile">
                     <text>{{yizhan.suppliers_name}}</text>

@@ -315,7 +315,7 @@ button.ss-my-d {
           @tap="viewYiZhanDetails({{item.suppliers_id}})"
         >
           <view class="list-box-img">
-            <image src="{{item.img}}">
+            <image src="{{item.img}}"/>
           </view>
           <view class="list-box-content">
             <view class="list-box-title">

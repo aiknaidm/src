@@ -152,8 +152,8 @@
     <view class="popup-contents">
       <view class="pop-goods-info" wx:if="{{thisindex==-1}}">
         <view class="pop-img-box">
-          <image src="http://maijia.jicaizx.com/{{goodsDetail.original_img}}" class="goods-thumbnail" mode="aspectFit" lazy-load="true" wx:if="{{goodsDetail.original_img1==''}}">
-            <image src="{{goodsDetail.original_img1}}" class="goods-thumbnail" mode="aspectFit" lazy-load="true" wx:else>
+          <image src="http://maijia.jicaizx.com/{{goodsDetail.original_img}}" class="goods-thumbnail" mode="aspectFit" lazy-load="true" wx:if="{{goodsDetail.original_img1==''}}"/>
+            <image src="{{goodsDetail.original_img1}}" class="goods-thumbnail" mode="aspectFit" lazy-load="true" wx:else/>
         </view>
         <view class="pop-goods-des">
           <view class="pop-goods-title">{{goodsDetail.goods_name}}</view>
@@ -176,7 +176,7 @@
         <view class="num-box">
           <view class="num-jian {{goodsDetail.buy_number == 1 ? 'hui': ''}}" @tap="numJianTap">-</view>
           <view class="num-input">
-            <input type="number" value="{{goodsDetail.buy_number}}" bindinput="shopNumChange">
+            <input type="number" value="{{goodsDetail.buy_number}}" bindinput="shopNumChange"/>
           </view>
           <view class="num-jia" @tap="numJiaTap">+</view>
         </view>

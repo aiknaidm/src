@@ -190,10 +190,10 @@ const hideLoading = function () {
   wx.hideLoading();
 }
 const showToast = async function (title, icon = 'none', duration = 2000) {
-  wx.showToast({
+  await wx.showToast({
     title: title, //提示的内容,
-    icon: 'none', //图标,
-    duration: 2000, //延迟时间,
+    icon: icon, //图标,
+    duration: duration, //延迟时间,
     mask: true, //显示透明蒙层，防止触摸穿透,
   });
 }
@@ -228,7 +228,6 @@ const showActionSheet = async function (itemList) {
       },
       fail: function (res) {
         console.log('用户取消');
-        resolve(null);
       }
     });
   })

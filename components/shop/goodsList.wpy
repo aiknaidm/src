@@ -11,7 +11,7 @@
   border-top: 16rpx solid #f0f0f0;
   display: flex;
 }
-.goods-list .list-title text{
+.goods-list .list-title text {
   color: #e50012;
   font-size: 45rpx;
   margin-right: 10rpx;
@@ -55,15 +55,15 @@
   justify-content: space-between;
 }
 
-.goods-name{
-text{
+.goods-name {
+  text {
     background: #e50012;
-      color: #fff;
-      padding: 4rpx 8rpx;
-      margin-left: 10rpx;
-      font-size: 20rpx;
-      border-radius: 5rpx;
-      font-weight: 100;
+    color: #fff;
+    padding: 4rpx 8rpx;
+    margin-left: 10rpx;
+    font-size: 20rpx;
+    border-radius: 5rpx;
+    font-weight: 100;
   }
 }
 .a-goods .text-box .arow01 {
@@ -102,7 +102,7 @@ text{
         <block wx:for-items="{{goodsMap}}" wx:key="{{index}}">
           <view class="a-goods" @tap="toGoodDetailsTap({{item.goods_id}})">
             <view class="img-box">
-              <image src="{{item.goods_imgs}}" class="img">
+              <image src="{{item.goods_imgs}}" class="img"/>
             </view>
             <view class="text-box">
               <view class="arow01">
@@ -147,8 +147,8 @@ export default class goodslist extends wepy.component {
   events = {};
 
   methods = {
-    toGoodDetailsTap (goods_id){
-      wx.navigateTo({ url: "/Shop/pages/goodDetail?id="+goods_id });
+    toGoodDetailsTap(goods_id) {
+      wx.navigateTo({ url: '/Shop/pages/goodDetail?id=' + goods_id });
     }
   };
 
