@@ -119,8 +119,8 @@ const pay = async function (data, data2) {
 //邮箱以及手机的正则表达式
 const regexConfig = function () {
   var reg = {
-    email: /^(\w -  * \. * ) + @(\w -?) + (\.\w {2, }) + $/,
-    phone: /^1(3 | 4 | 5 | 7 | 8)\d {9}$/
+    email: /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/,
+    phone: /^1[34578]\d{9}$/
   }
   return reg;
 }

@@ -421,8 +421,8 @@ export default class shop extends wepy.component {
     }
   };
   async onLoad() {
-    // await this.$parent.$parent.loginInfo();
-    // this.user_info = await this.$parent.$parent.getUserInfo();
+    await this.$parent.$parent.loginInfo();
+    this.user_info = await this.$parent.$parent.getUserInfo();
     this.frist_open = wx.getStorageSync('frist_open');
   }
 }

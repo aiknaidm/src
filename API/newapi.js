@@ -4,6 +4,12 @@ const host_chk = "https://lmbge.com/wxapi/pifabanchk"
 const host_pay = "https://lmbge.com/wxapi/pifabanpay"
 const newapi = {
   login: (data) => fetch(`${host}/denglu`, 'GET', data), //登录
+  message: () => fetch(`${host}/zixun`, 'GET'), //资讯
+  carousel: (data) => fetch(`${host}/lunbo`, 'GET', data), //轮播图
+  articleDetail: (data) => fetch(`${host}/ggnr`, 'GET', data), //文章详情
+  newsKind: () => fetch(`${host}/ggfl`, 'GET'), //新闻分类
+  newsList: (data) => fetch(`${host}/gglb`, 'GET', data), //新闻列表
+  helpList: () => fetch(`${host}/bangzhu`, 'GET'), //帮助中心
   
   cardwxpay: (data) => fetch(`${host_pay}/cardwxpay`, 'GET', data),
   cardpaysuccess: (data) => fetch(`${host_pay}/cardpaysuccess`, 'GET', data),
@@ -12,8 +18,6 @@ const newapi = {
 
   getUserInfo: () => fetch(`${host_chk}/get_user_info`, 'GET'), //用户信息
   upUserInfo: (data) => fetch(`${host_chk}/up_user_info`, 'GET', data),
-  message: () => fetch(`${host_chk}/zixun`, 'GET'), //资讯
-  carousel: (data) => fetch(`${host_chk}/lunbo`, 'GET', data), //轮播图
   yizhanIndex: () => fetch(`${host_chk}/wdyz`, 'GET'), //商城首页
   yizhanBanner: (data) => fetch(`${host_chk}/yzgg`, 'GET', data), //首页广告
   orderList: (data) => fetch(`${host_chk}/orderlist`, 'GET', data), //进货记录（已完成订单）
@@ -21,10 +25,6 @@ const newapi = {
   goodsKind: (data) => fetch(`${host_chk}/categorys`, 'GET', data), //商品分类
   goodsBrand: (data) => fetch(`${host_chk}/pinpai`, 'GET', data), //商品品牌
   goodsList: (data) => fetch(`${host_chk}/search`, 'GET', data), //商品列表
-  helpList: () => fetch(`${host_chk}/bangzhu`, 'GET'), //帮助中心
-  articleDetail: (data) => fetch(`${host_chk}/ggnr`, 'GET', data), //文章详情
-  newsKind: () => fetch(`${host_chk}/ggfl`, 'GET'), //新闻分类
-  newsList: (data) => fetch(`${host_chk}/gglb`, 'GET', data), //新闻列表
   unfriend: (data) => fetch(`${host_chk}/jcgx`, 'GET', data), //解除关系//取消申请
   setIndex: (data) => fetch(`${host_chk}/swxb`, 'GET', data), //设为店铺首页
   removeindex: (data) => fetch(`${host_chk}/qxxb`, 'GET', data), //取消店铺首页
@@ -53,6 +53,7 @@ const newapi = {
   card_promotion: (data) => fetch(`${host_chk}/card_promotion`, 'GET', data),
   cardpay: (data) => fetch(`${host_chk}/cardpay`, 'GET', data),
   cardxxpay: (data) => fetch(`${host_chk}/cardxxpay`, 'GET', data),
+  yzm: (data) => fetch(`${host_chk}/yzm`, 'GET', data),
   set_unionid: (data) => fetch(`${host_chk}/set_unionid`, 'GET', data),
 
 }

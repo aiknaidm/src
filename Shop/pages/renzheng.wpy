@@ -242,16 +242,10 @@ export default class renzheng extends wepy.page {
       //点击了获取验证码先在本地验证手机号的合法性
       if (this.checkPhone(phone)) {
         try {
-          var res = await wepy.request({
-            url: 'https://lmbge.com/wxapi/jicai/yzm?',
-            mothod: 'GET',
-            data: {
-              mobile: phone
-            },
-            header: {
-              'content-type': 'application/json' // 默认值
-            }
-          });
+          let data = {
+            mobile: phone
+          };
+          let res = await newapi.yzm(data);
           if (res.data.code == 0) {
             //将获取的验证码赋值
             this.code = res.data.data;
@@ -341,6 +335,7 @@ export default class renzheng extends wepy.page {
   checkPhone(param) {
     var phone = util.regexConfig().phone;
     var inputUserName = param.trim();
+    // if ((/^1[34578]\d{9}$/.test(inputUserName))) {
     if (phone.test(inputUserName)) {
       return true;
     } else {
