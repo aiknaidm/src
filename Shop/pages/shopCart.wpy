@@ -441,7 +441,7 @@ export default class shopCart extends wepy.page {
     // 去逛逛
     toIndexPage() {
       wx.switchTab({
-        url: '/pages/shop'
+        url: '/pages/zz'
       });
     },
     toShop(id) {

@@ -39,7 +39,7 @@ export default class List extends wepy.component {
 
   methods = {
     xuanhuoTap() {
-      wx.switchTab({ url: '/pages/shop' });
+      wx.switchTab({ url: '/pages/zz' });
     }
   };
   onLoad() {

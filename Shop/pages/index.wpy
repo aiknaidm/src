@@ -59,7 +59,7 @@ export default class shop extends wepy.page {
   methods = {
     backIndex() {
       wx.switchTab({
-        url: '/pages/shop'
+        url: '/pages/zz'
       });
     }
   };
