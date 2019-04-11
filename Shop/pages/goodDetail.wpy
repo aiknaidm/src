@@ -360,10 +360,9 @@ export default class goodDetail extends wepy.page {
   };
   mixins = [shopCart];
   // 获取商品详情
-  async getGoodsInfo(userId, id) {
+  async getGoodsInfo(id) {
     let data = {
       goods_id: id,
-      user_id: userId
     };
     let res = await newapi.GoodsInfo(data);
 
@@ -374,8 +373,8 @@ export default class goodDetail extends wepy.page {
     var friend_id =
       res.data.data.suppliers_id == this.$parent.globalData.friend_suppliers_id
         ? this.$parent.globalData.friend_id
-        : await this.$parent.loginInfo();
-    this.goodsInit(userId, this.goodsDetail, friend_id);
+        : 0;
+    this.goodsInit(this.goodsDetail, friend_id);
     this.goodsDetail.buy_number = 1;
     var img = [{}];
     img[0].img_url = this.goodsDetail.original_img
@@ -387,9 +386,8 @@ export default class goodDetail extends wepy.page {
   }
   async onLoad(option) {
     util.showLoading();
-    let userId = await this.$parent.loginInfo();
-    this.userId = userId;
-    this.getGoodsInfo(userId, option.id);
+    await this.$parent.loginInfo();
+    this.getGoodsInfo(option.id);
   }
 }
 </script>

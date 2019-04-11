@@ -146,18 +146,14 @@ export default class my extends wepy.page {
   events = {};
   async upUserInfo() {
     let data = {
-      user_id: this.userId,
       avatarUrl: this.userInfo.avatarUrl,
       nickName: this.userInfo.nickName
     };
     let res = await newapi.upUserInfo(data);
     util.showToast('提交信息成功');
   }
-  async orderNum(user_id) {
-    let data = {
-      user_id
-    };
-    let res = await newapi.orderNum(data);
+  async orderNum() {
+    let res = await newapi.orderNum();
 
     this.orderList[0].unreadNum = res.data.data.daifukuan;
     this.orderList[1].unreadNum = res.data.data.daifahuo;
@@ -238,10 +234,10 @@ export default class my extends wepy.page {
   }
   async onLoad() {
     let that = this;
-    this.userId = await this.$parent.loginInfo();
+    await this.$parent.loginInfo();
 
     let isSettingStatus = await this.$parent.checkSettingStatus();
-    let userInfo = await this.$parent.getUserInfo(this.userId);
+    let userInfo = await this.$parent.getUserInfo();
     this.userInfo = userInfo;
     // 是否有获取用户信息的权限
     if (isSettingStatus) {
@@ -267,8 +263,7 @@ export default class my extends wepy.page {
     }
   }
   async onShow() {
-    this.userId = await this.$parent.loginInfo();
-    this.orderNum(this.userId);
+    this.orderNum();
   }
 }
 </script>

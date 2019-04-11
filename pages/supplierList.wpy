@@ -393,7 +393,7 @@ export default class suppliersList extends wepy.page {
     util.showLoading();
   }
   async showActionSheet(itemLists, suppliers_id) {
-    var user_id = await this.$parent.loginInfo();
+    await this.$parent.loginInfo();
     var that = this;
     let mRes = await util.showActionSheet(itemLists);
     if (
@@ -402,30 +402,26 @@ export default class suppliersList extends wepy.page {
     ) {
       that.changeSuppliersStatus(
         'unfriend',
-        user_id,
         suppliers_id,
         itemLists[mRes.tapIndex]
       );
     } else if (itemLists[mRes.tapIndex] == '取消店铺首页') {
       that.changeSuppliersStatus(
         'removeindex',
-        user_id,
         suppliers_id,
         itemLists[mRes.tapIndex]
       );
     } else if (itemLists[mRes.tapIndex] == '设为店铺首页') {
       that.changeSuppliersStatus(
         'setIndex',
-        user_id,
         suppliers_id,
         itemLists[mRes.tapIndex]
       );
     }
   }
-  async changeSuppliersStatus(url, user_id, suppliers_id, msg) {
+  async changeSuppliersStatus(url, suppliers_id, msg) {
     // 解除关系
     let data = {
-      user_id,
       suppliers_id
     };
     var res;
@@ -438,23 +434,22 @@ export default class suppliersList extends wepy.page {
     } else {
       util.showToast('失败');
     }
-    this.getyizhanList(user_id);
+    this.getyizhanList();
     if (res.data.code == '0') {
       util.showToast(msg + '成功');
     } else {
       util.showToast(msg + '失败');
     }
   }
-  async getyizhanList(user_id) {
-    let data = { user_id };
-    let res = await newapi.yizhanList(data);
+  async getyizhanList() {
+    let res = await newapi.yizhanList();
     wx.hideLoading();
     that.yizhanList = res.data.data;
     that.$apply();
   }
   async onShow() {
-    var userId = await this.$parent.loginInfo();
-    this.getyizhanList(userId);
+    await this.$parent.loginInfo();
+    this.getyizhanList();
   }
 }
 </script>

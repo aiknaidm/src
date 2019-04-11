@@ -226,19 +226,17 @@ export default class myHelp extends wepy.page {
     var that = this;
     let data = {
       suppliers_id,
-      user_id: this.user_id
     };
     let res = await newapi.cardinfo(data);
     wx.hideLoading();
     if (res.data.code == 0) {
       this.list = res.data.data;
-
       this.$apply();
     }
   }
   async onLoad(option) {
     util.showLoading();
-    this.user_id = await this.$parent.loginInfo();
+    await this.$parent.loginInfo();
     if (option.suppliers_id) {
       this.suppliers_id = option.suppliers_id;
       this.detail(option.suppliers_id);

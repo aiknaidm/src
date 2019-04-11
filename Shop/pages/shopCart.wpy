@@ -499,7 +499,6 @@ export default class shopCart extends wepy.page {
         x,
         y,
         buy_number,
-        this.user_id,
         friend_id
       );
       list[x].goodsList[y].goods_price = goods_price;
@@ -522,7 +521,6 @@ export default class shopCart extends wepy.page {
         x,
         y,
         buy_number,
-        this.user_id,
         friend_id
       );
       list[x].goodsList[y].goods_price = goods_price;
@@ -555,21 +553,16 @@ export default class shopCart extends wepy.page {
       //  that.$apply()
       if (list[x].suppliers_id == this.$parent.globalData.friend_suppliers_id)
         var friend_id = this.$parent.globalData.friend_id;
-      this.changeCartNum(
-        list,
-        x,
-        y,
-        buy_number,
-        this.user_id,
-        friend_id,
-        function(goods_price, buy_number) {
-          list[x].goodsList[y].goods_price = goods_price;
-          that.$apply();
-          that.setData({
-            list: list
-          });
-        }
-      );
+      this.changeCartNum(list, x, y, buy_number, friend_id, function(
+        goods_price,
+        buy_number
+      ) {
+        list[x].goodsList[y].goods_price = goods_price;
+        that.$apply();
+        that.setData({
+          list: list
+        });
+      });
       this.$apply();
     },
     // 删除商品
@@ -642,7 +635,6 @@ export default class shopCart extends wepy.page {
           : this.goodsDetail.buy_number;
       this.ishideShopPopup = false;
       let data = {
-        user_id: this.user_id,
         goods_id: this.goodsDetail.goods_id,
         buy_number: this.goodsDetail.buy_number,
         goods_attr_id: this.goodsDetail.goods_attr_id,
@@ -743,7 +735,7 @@ export default class shopCart extends wepy.page {
     };
     let res = await newapi.delCart(data);
     if (res.data.code == '0') {
-      this.getShopCartInfo(this.user_id);
+      this.getShopCartInfo();
       if (ishiddenToast) {
         wx.hideLoading();
         return;
@@ -754,7 +746,7 @@ export default class shopCart extends wepy.page {
     }
   }
   // 改变购物车数量
-  async changeCartNum(list, x, y, buy_number, user_id, friend_id = '', back) {
+  async changeCartNum(list, x, y, buy_number, friend_id = '', back) {
     var goodsDetail = list[x].goodsList[y];
     var is_hy = list[x].is_hy; //是否是会员
     var goods_attr_id = goodsDetail.goods_attr_id;
@@ -764,7 +756,6 @@ export default class shopCart extends wepy.page {
     var id = goodsDetail.id;
     goodsDetail.buy_number = buy_number;
     let data = {
-      user_id,
       goods_id,
       buy_number,
       goods_attr_id,
@@ -783,8 +774,8 @@ export default class shopCart extends wepy.page {
     }
   }
   // 购物车列表
-  async getShopCartInfo(user_id) {
-    let data = { user_id };
+  async getShopCartInfo() {
+    let data = {};
     let res = await newapi.showCart(data);
     this.isLoading = false;
     if (res.data.code == 0) {
@@ -823,9 +814,9 @@ export default class shopCart extends wepy.page {
     this.totalPrice = this.totalPrice.toFixed(2);
   }
   async onLoad() {
-    this.user_id = await this.$parent.loginInfo();
+    await this.$parent.loginInfo();
     this.allSelect = false;
-    this.getShopCartInfo(this.user_id);
+    this.getShopCartInfo();
     try {
       this.friend_suppliers_id = this.$parent.globalData.friend_suppliers_id;
     } catch (error) {}

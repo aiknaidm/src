@@ -210,10 +210,7 @@ export default class myHelp extends wepy.page {
   computed = {};
   methods = {
     async formSubmit(e) {
-      // tijiao
-      // order_amount user_id suppliers_id id pay_note
       let data = {
-        user_id: this.user_id,
         suppliers_id: this.item.suppliers_id,
         id: this.item.card_id,
         order_amount: this.item.card_fee,
@@ -261,17 +258,15 @@ export default class myHelp extends wepy.page {
       }
 
       var data = {
-        user_id: this.user_id,
         suppliers_id: item.suppliers_id,
         id: item.card_id,
         order_amount: item.card_fee,
         amount: item.yj_money
       };
       var data2 = {
-        user_id: this.user_id,
         order_id: ''
       };
-      var res = await util.pay(data, data2, api.cardwxpay, api.cardpaysuccess);
+      var res = await util.pay(data, data2);
       if (res.code == 1) {
         this.flashPage(item);
       }
@@ -327,7 +322,7 @@ export default class myHelp extends wepy.page {
   }
   async onLoad(option) {
     util.showLoading();
-    this.user_id = await this.$parent.loginInfo();
+    await this.$parent.loginInfo();
     if (option.suppliers_id) this.getList(option.suppliers_id);
     else {
       await util.showToast('数据错误');

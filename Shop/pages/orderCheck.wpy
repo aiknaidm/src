@@ -120,7 +120,7 @@ export default class newslist extends wepy.page {
         var res = await util.wxpay1(id);
         wx.hideLoading();
         if (res.code == 1) {
-          this.getOrderList(this.user_id);
+          this.getOrderList();
         }
         util.showToast(res.msg);
       } else if (this.pay_id == 2) {
@@ -135,7 +135,7 @@ export default class newslist extends wepy.page {
         let res = await newapi.xianxiaorder(data);
         wx.hideLoading();
         if (res.data && res.data.code == 0) {
-          this.getOrderList(this.user_id);
+          this.getOrderList();
           util.showToast('支付成功');
         }
       } else {
@@ -143,7 +143,7 @@ export default class newslist extends wepy.page {
         var cardPayRes = await this.cardPay(id);
         wx.hideLoading();
         if (cardPayRes.data && cardPayRes.data.code == 0) {
-          this.getOrderList(this.user_id);
+          this.getOrderList();
           util.showToast('支付成功');
         } else {
           util.showToast(cardPayRes.data.message);
@@ -151,7 +151,7 @@ export default class newslist extends wepy.page {
       }
     },
     cancelOrderTap() {
-      this.getOrderList(this.user_id, 1);
+      this.getOrderList(1);
     },
     // 订单详情
     orderDetail(id, evt) {
@@ -167,8 +167,8 @@ export default class newslist extends wepy.page {
     return await newapi.cardpay(data);
   }
   //  订单列表
-  async getOrderList(user_id, page = 1) {
-    var friend_id = user_id;
+  async getOrderList(page = 1) {
+    var friend_id = this.user_id;
     util.showLoading();
     let data = {
       friend_id,
@@ -196,17 +196,18 @@ export default class newslist extends wepy.page {
     this.$apply();
   }
   async onLoad(option) {
-    var user_id = await this.$parent.loginInfo();
-    this.user_id = user_id;
+    await this.$parent.loginInfo();
+    var userInfo = await this.$parent.getUserInfo();
+    this.user_id = userInfo.user_id;
     this.isMoreData = true;
-    this.getOrderList(user_id);
+    this.getOrderList();
     this.$apply();
   }
   onReachBottom() {
     if (this.isMoreData) {
       util.showLoading();
       this.page = this.page + 1;
-      this.getOrderList(this.userId, this.page);
+      this.getOrderList(this.page);
     }
   }
 }

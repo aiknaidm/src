@@ -16,7 +16,7 @@ export default class shopcart extends wepy.mixin {
 
     },
     "addShopCar2": async (goodsDetail, index) => {
-      var goodsDetail = await that.goodsInit(that.userId, goodsDetail, that.friend_id);
+      var goodsDetail = await that.goodsInit(goodsDetail, that.friend_id);
       that.goodsListIndex = index;
       //没有规格
       if (that.goodsDetail.properties.length == 0) {
@@ -163,7 +163,6 @@ export default class shopcart extends wepy.mixin {
   // 列表页面加入购物车
   async addShopCar3(goodsDetail, isShowToast) {
     var goodsDetail = goodsDetail;
-    var user_id = this.userId;
     var goods_id = goodsDetail.goods_id;
     var buy_number = goodsDetail.buy_number == 0 || !goodsDetail.buy_number ? 1 : goodsDetail.buy_number;
     var goods_name = goodsDetail.goods_name;
@@ -177,7 +176,6 @@ export default class shopcart extends wepy.mixin {
     var suppliers_id = goodsDetail.suppliers_id;
 
     let data = {
-      user_id,
       goods_id,
       buy_number,
       goods_name,
@@ -196,9 +194,7 @@ export default class shopcart extends wepy.mixin {
       } catch (error) {}
       // 刷新购物车
       try {
-        await that.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo(
-          that.userId
-        );
+        await that.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo();
       } catch (error) {
 
       }
@@ -215,11 +211,10 @@ export default class shopcart extends wepy.mixin {
     }
   }
   // 获取会员状态
-  async getSheheStauts(user_id, id = '', suppliers_id = '', friend_id = '') {
+  async getSheheStauts(id = '', suppliers_id = '', friend_id = '') {
     let data = {
       goods_id: id,
       suppliers_id,
-      user_id,
       friend_id
     };
     let res = await newapi.SheheStauts(data);
@@ -232,13 +227,13 @@ export default class shopcart extends wepy.mixin {
   }
 
   // 
-  async goodsInit(userId, goodsDetail, friend_id = "") {
+  async goodsInit(goodsDetail, friend_id = "") {
     this.goodsDetail = goodsDetail
     var id = goodsDetail.goods_id
 
     // 2是会员 1不是会员
 
-    this.status = await this.getSheheStauts(userId, id, '', friend_id);
+    this.status = await this.getSheheStauts(id, '', friend_id);
 
     if (this.goodsDetail.goods_desc) {
       this.articleDetail.post_content = this.goodsDetail.goods_desc;

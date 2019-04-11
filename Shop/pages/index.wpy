@@ -74,7 +74,6 @@ export default class shop extends wepy.page {
         this.sales_id +
         '&sales_name=' +
         this.sales_name;
-    var userId = this.userId;
     if (res.from === 'button') {
       // 工长分享
       if (res.target.dataset.index == 1)
@@ -82,7 +81,7 @@ export default class shop extends wepy.page {
           '/Shop/pages/index?suppliers_id=' +
           this.suppliers_id +
           '&friend_id=' +
-          userId +
+          this.user_id +
           '&friend_name=' +
           this.nickName;
     }
@@ -147,15 +146,15 @@ export default class shop extends wepy.page {
   }
   async onShow() {
     // 判断是工长还是用户
-    var userId = await this.$parent.loginInfo();
-    var userInfo = await this.$parent.getUserInfo(userId);
+    await this.$parent.loginInfo();
+    var userInfo = await this.$parent.getUserInfo();
     this.nickName = userInfo.nickName;
-    this.userId = userId;
+    this.user_id = userInfo.user_id;
     if (this.suppliers_id) {
-      this.getShopBanner(userId, this.suppliers_id);
+      this.getShopBanner(this.suppliers_id);
       this.getMaterialsList(this.suppliers_id);
     } else {
-      this.getShopIndex(this.userId);
+      this.getShopIndex();
     }
   }
 }

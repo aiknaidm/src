@@ -442,7 +442,6 @@ import wepy from 'wepy';
 import newapi from '../../API/newapi';
 import util from '../../utils/index';
 import goodsList from '../../components/shop/goodsList';
-import wxpay1 from '../../utils/index.js';
 export default class toPayOrder extends wepy.page {
   config = {
     navigationBarTitleText: '支付订单'
@@ -571,7 +570,6 @@ export default class toPayOrder extends wepy.page {
       var mobile = that.address ? that.data.address.mobile : '';
       var region = that.address ? that.data.address.region : '';
       var address = that.address ? that.data.address.address : '';
-      var user_id = this.userId;
       var order_amount = that.allGoodsPrice;
       var yunfei = that.yunPrice;
       var bonus_id = that.youhuiId ? that.youhuiId : '';
@@ -594,7 +592,6 @@ export default class toPayOrder extends wepy.page {
       util.showLoading('提交订单中...');
       try {
         let data = {
-          user_id,
           form_id,
           consignee,
           region,
@@ -615,9 +612,7 @@ export default class toPayOrder extends wepy.page {
           return;
         }
         // 刷新购物车
-        this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo(
-          this.userId
-        );
+        this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo();
         // this.$parent.$pages['/Shop/pages/searchList'].initF();
         if (res.data.data == '' || res.data.data == null) {
           wx.redirectTo({
@@ -658,7 +653,7 @@ export default class toPayOrder extends wepy.page {
           return;
         }
         // 调起支付
-        var payResult = await wxpay1.wxpay1(res.data.data);
+        var payResult = await util.wxpay1(res.data.data);
         util.showToast(payResult.msg);
         // 取消支付
         if (payResult.code == 2) {
@@ -697,9 +692,8 @@ export default class toPayOrder extends wepy.page {
     ).toFixed(2);
   }
   // 获取地址信息
-  async getAddress(user_id) {
-    let data = { user_id };
-    let res = await newapi.getAddress(data);
+  async getAddress() {
+    let res = await newapi.getAddress();
     this.address = res.data.data;
     this.$apply();
   }
@@ -710,9 +704,7 @@ export default class toPayOrder extends wepy.page {
   }
   // 获取会员信息
   async getYizhanInfo() {
-    // shopCarList[0].suppliers_id
     let data = {
-      user_id: this.userId,
       suppliers_id: this.suppliers_id
     };
     let res = await newapi.yizhanBanner(data);
@@ -726,8 +718,7 @@ export default class toPayOrder extends wepy.page {
 
   // }
   async onLoad() {
-    var userId = await this.$parent.loginInfo();
-    this.userId = userId;
+    await this.$parent.loginInfo();
     this.payId = '0';
     var shopCarList = wx.getStorageSync('shopCarInfo');
     this.shopCarList = shopCarList;
@@ -747,7 +738,7 @@ export default class toPayOrder extends wepy.page {
         ? this.$parent.globalData.friend_id
         : 0;
     this.count(shopCarList);
-    this.getAddress(userId);
+    this.getAddress();
     if (this.shopCarList.length > 1) {
       this.itemList = ['微信支付', '线下支付'];
     } else {

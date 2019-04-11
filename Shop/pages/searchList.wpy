@@ -303,7 +303,6 @@ export default class searchlist extends wepy.page {
         0,
         index,
         this.cartList[index].buy_number,
-        this.userId,
         this.friend_id,
         function(price, buy_number) {
           that.cartList[index].goods_price = parseFloat(price).toFixed(2);
@@ -349,7 +348,6 @@ export default class searchlist extends wepy.page {
           0,
           index,
           buy_number,
-          this.userId,
           this.friend_id
         );
         this.cartList[index].goods_price = price;
@@ -394,7 +392,6 @@ export default class searchlist extends wepy.page {
           0,
           index,
           buy_number,
-          this.userId,
           this.friend_id
         );
         this.cartList[index].goods_price = price;
@@ -479,7 +476,6 @@ export default class searchlist extends wepy.page {
   async showCart() {
     util.showLoading();
     let data = {
-      user_id: this.userId,
       suppliers_id: this.suppliers_id
     };
     let res = await newapi.showCart(data);
@@ -501,7 +497,6 @@ export default class searchlist extends wepy.page {
   //初始化数据
   initData() {
     var initdata = {
-      user_id: this.userId,
       cat_id: this.cat_id,
       keyword: '',
       order: '', //
@@ -525,8 +520,8 @@ export default class searchlist extends wepy.page {
       this.getGoodsList(this.initdata);
     }
   }
-  async initF(userId) {
-    this.userId = await this.$parent.loginInfo();
+  async initF() {
+    await this.$parent.loginInfo();
     this.initdata = this.initData();
     await this.showCart();
     await this.getGoodsList(this.initdata);
@@ -563,7 +558,6 @@ export default class searchlist extends wepy.page {
     this.initF();
     // 是否是会员
     this.status = await this.getSheheStauts(
-      this.userId,
       '',
       this.suppliers_id,
       this.friend_id

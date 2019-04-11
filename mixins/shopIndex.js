@@ -26,26 +26,21 @@ export default class testMixin extends wepy.mixin {
     }
   }
   // 我的易站 审核状态 店铺id
-  async getShopIndex(userId) {
-    let data = {
-      user_id: userId
-    };
-    let res = await newapi.yizhanIndex(data);
-    // this.yizhanIndex = res.data.data;
+  async getShopIndex() {
+    let res = await newapi.yizhanIndex();
     var suppliers_id =
       res.data.data && res.data.data.suppliers_id ?
       res.data.data.suppliers_id :
       76;
 
-    this.getShopBanner(userId, suppliers_id);
+    this.getShopBanner(suppliers_id);
     this.getMaterialsList(suppliers_id);
     // this.$apply();
 
   }
   // 顶部banner 店铺名字
-  async getShopBanner(userId, suppliers_id = '') {
+  async getShopBanner(suppliers_id = '') {
     let data = {
-      user_id: userId,
       suppliers_id: suppliers_id
     };
     let res = await newapi.yizhanBanner(data);

@@ -404,7 +404,6 @@ export default class shop extends wepy.component {
           //   return;
           // }
           let data = {
-            user_id: this.user_id,
             suppliers_id: this.yizhan.suppliers_id,
             sales_id: sales_id ? sales_id : 0
           };
@@ -422,8 +421,8 @@ export default class shop extends wepy.component {
     }
   };
   async onLoad() {
-    this.user_id = await this.$parent.$parent.loginInfo();
-    this.user_info = await this.$parent.$parent.getUserInfo(this.user_id);
+    // await this.$parent.$parent.loginInfo();
+    // this.user_info = await this.$parent.$parent.getUserInfo();
     this.frist_open = wx.getStorageSync('frist_open');
   }
 }

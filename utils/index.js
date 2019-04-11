@@ -1,8 +1,9 @@
 import wepy from 'wepy'
+import newapi from '../API/newapi';
 const formatTime = function (d) {
-  var date = new Date(); 
+  var date = new Date();
   if (d) {
-    date.setTime(d * 1000); 
+    date.setTime(d * 1000);
   }
 
   var year = date.getFullYear()
@@ -16,9 +17,9 @@ const formatTime = function (d) {
   return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 const formatDate = function (d) {
-  var date = new Date(); 
+  var date = new Date();
   if (d) {
-    date.setTime(d * 1000); 
+    date.setTime(d * 1000);
   }
 
   var year = date.getFullYear()
@@ -29,153 +30,112 @@ const formatDate = function (d) {
 }
 const formatNumber = function (n) {
   n = n.toString()
-  return n[1]?n:'0' + n
+  return n[1] ? n : '0' + n
 }
 
 // orderId 订单id redirectUrl 跳转url failUrl 失败跳转
 var wxpay1 = async function (orderId) {
-  //   let remark = "在线充值";
-  //   let nextAction = {};
-  //   if (orderId != 0) {
-  //    let remark = "支付订单 ：" + orderId;
-  //    let nextAction = {
-  //       type: 0,
-  //       id: orderId
-  //     };
-  //   }
-  var res0 = await wepy.login()
-  var code = res0.code
-  if ( ! code) {
-    return {
-      code:0, 
-      msg:"登录失败"
-    }; 
-  }
-  var res = await wepy.request( {
-    url:'https://lmbge.com/wxapi/jicai/wxpay1',
-data: {
-      weixin:res0.code, 
-      id:orderId
-    }, 
-  })
-  var result = res.data.data; 
+  showLoading('支付中...');
+  let data1 = {
+    id: orderId
+  };
+  let res = await newapi.wxpay1(data1);
+  wx.hideLoading();
+  var result = res.data.data;
   if (res.data.code == 0) {
     //  通知用
-    var prepay_id = result.package.replace("prepay_id=", ""); 
+    var prepay_id = result.package.replace("prepay_id=", "");
     // 发起支付
-
     try {
-      var payres = await wepy.requestPayment( {
-        timeStamp:result.timeStamp, 
-        nonceStr:result.nonceStr, 
-        package:result.package, 
-        signType:result.signType, 
-        paySign:result.paySign, 
-
+      var payres = await wepy.requestPayment({
+        timeStamp: result.timeStamp,
+        nonceStr: result.nonceStr,
+        package: result.package,
+        signType: result.signType,
+        paySign: result.paySign,
       })
-      wepy.request( {
-        url:'https://lmbge.com/wxapi/jicai/paysuccess',
-data: {
-          id:orderId
-        }, 
-      })
-
-      // wx.redirectTo({
-      //     url: redirectUrl
-      // });
-      return {
-
-        code:1, 
-        msg:"支付成功"
-      }; 
-
-    }catch (err) {
+    } catch (err) {
       // 取消支付 
       return {
-        code:2, 
-        msg:"取消支付"
-      }; 
-
+        code: 2,
+        msg: "取消支付"
+      };
     }
-  }else {
+    let data2 = {
+      id: orderId
+    };
+    newapi.paysuccess(data2);
+    // wx.redirectTo({
+    //     url: redirectUrl
+    // });
     return {
-      code:3, 
-      msg:"服务器忙"
-    }; 
+      code: 1,
+      msg: "支付成功"
+    };
+  } else {
+    return {
+      code: 3,
+      msg: "服务器忙"
+    };
   }
 }
-const pay = async function (data, data2, url, sucessUrl) {
-  wx.showLoading( {
-    title:'支付中...', //提示的内容,
-mask:true, //显示透明蒙层，防止触摸穿透,
-}); 
-
-  var res = await wepy.request( {
-    url, 
-    data, 
-  })
-  wx.hideLoading(); 
+const pay = async function (data, data2) {
+  showLoading('支付中...');
+  let res = await newapi.cardwxpay(data);
+  wx.hideLoading();
   data2.order_id = res.data.orderId
-  var result = res.data.data; 
+  var result = res.data.data;
   if (res.data.code == 0) {
     //  通知用
-    var prepay_id = result.package.replace("prepay_id=", ""); 
+    var prepay_id = result.package.replace("prepay_id=", "");
     // 发起支付
     try {
-      var payres = await wepy.requestPayment( {
-        timeStamp:result.timeStamp, 
-        nonceStr:result.nonceStr, 
-        package:result.package, 
-        signType:result.signType, 
-        paySign:result.paySign, 
+      var payres = await wepy.requestPayment({
+        timeStamp: result.timeStamp,
+        nonceStr: result.nonceStr,
+        package: result.package,
+        signType: result.signType,
+        paySign: result.paySign,
       })
-
-
-    }catch (err) {
+    } catch (err) {
       // 取消支付 
       return {
-        code:2, 
-        msg:"取消支付"
-      }; 
-
+        code: 2,
+        msg: "取消支付"
+      };
     }
-
-    if (sucessUrl)
-      wepy.request( {
-        url:sucessUrl, 
-        data:data2, 
-      })
+    newapi.cardpaysuccess(data2);
     return {
-      code:1, 
-      msg:"支付成功"
-    }; 
-  }else {
+      code: 1,
+      msg: "支付成功"
+    };
+  } else {
     return {
-      code:3, 
-      msg:"服务器忙"
-    }; 
+      code: 3,
+      msg: "服务器忙"
+    };
   }
 }
 //邮箱以及手机的正则表达式
 const regexConfig = function () {
-  var reg =  {
-    email:/^(\w -  * \. * ) + @(\w -?) + (\.\w {2, }) + $/, 
-    phone:/^1(3 | 4 | 5 | 7 | 8)\d {9}$/
+  var reg = {
+    email: /^(\w -  * \. * ) + @(\w -?) + (\.\w {2, }) + $/,
+    phone: /^1(3 | 4 | 5 | 7 | 8)\d {9}$/
   }
-  return reg; 
+  return reg;
 }
 const html_decode = function (str) {
-  var s = ""; 
-  if (str.length == 0)return ""; 
+  var s = "";
+  if (str.length == 0) return "";
   // s = str.replace(/&gt;/g, "&");
-  s = str.replace(/\r/g, ""); 
-  s = s.replace(/\n/g, "<br/>"); 
-  s = s.replace(/& amp; /g, "&"); 
-  s = s.replace(/& amp; /g, "&"); 
-  s = s.replace(/& lt; /g, "<"); 
-  s = s.replace(/& gt; /g, ">"); 
-  s = s.replace(/& nbsp; /g, " "); 
-  s = s.replace(/& #39; /g, "\'"); 
+  s = str.replace(/\r/g, "");
+  s = s.replace(/\n/g, "<br/>");
+  s = s.replace(/& amp; /g, "&");
+  s = s.replace(/& amp; /g, "&");
+  s = s.replace(/& lt; /g, "<");
+  s = s.replace(/& gt; /g, ">");
+  s = s.replace(/& nbsp; /g, " ");
+  s = s.replace(/& #39; /g, "\'");
   s = s.replace(/& quot; /g, "\"");
 
   return s;

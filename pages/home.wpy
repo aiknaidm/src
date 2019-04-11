@@ -42,20 +42,20 @@ export default class home extends wepy.page {
     util.showLoading();
   }
   async onShow() {
-    this.userId = await this.$parent.loginInfo();
-    var userInfo = await this.$parent.getUserInfo(this.userId);
+    await this.$parent.loginInfo();
+    var userInfo = await this.$parent.getUserInfo();
     this.nickName = userInfo.nickName;
+    this.user_id = userInfo.user_id;
     if (this.suppliers_id) {
-      this.getShopBanner(this.userId, this.suppliers_id);
+      this.getShopBanner(this.suppliers_id);
       this.getMaterialsList(this.suppliers_id);
     } else {
-      this.getShopIndex(this.userId);
+      this.getShopIndex();
     }
   }
   // 分享
   onShareAppMessage(res) {
     var path = '/Shop/pages/index?suppliers_id=' + this.suppliers_id;
-    var userId = this.userId;
     if (res.from === 'button') {
       // 工长分享
       if (res.target.dataset.index == 1)
@@ -63,7 +63,7 @@ export default class home extends wepy.page {
           '/Shop/pages/index?suppliers_id=' +
           this.suppliers_id +
           '&friend_id=' +
-          userId +
+          this.user_id +
           '&friend_name=' +
           this.nickName;
     }

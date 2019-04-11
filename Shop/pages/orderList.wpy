@@ -55,13 +55,13 @@ export default class orderlist extends wepy.page {
     cancelOrderTap: res => {
       this.page = 1;
       this.isMoreData = true;
-      this.getOrderList(this.userId, this.thisindex, 1);
+      this.getOrderList(this.thisindex, 1);
     },
     // 确认订单
     confirmBtnTap: res => {
       this.page = 1;
       this.isMoreData = true;
-      this.getOrderList(this.userId, this.thisindex, 1);
+      this.getOrderList(this.thisindex, 1);
     }
   };
   methods = {
@@ -71,7 +71,7 @@ export default class orderlist extends wepy.page {
       this.thisindex = this.statusIndex[index];
       this.page = 1;
       this.isMoreData = true;
-      this.getOrderList(this.userId, this.thisindex, this.page);
+      this.getOrderList(this.thisindex, this.page);
     },
     // 订单详情
     orderDetail(id, evt) {
@@ -81,10 +81,9 @@ export default class orderlist extends wepy.page {
     }
   };
   //  订单列表
-  async getOrderList(user_id, order_status = '0', page = 1) {
+  async getOrderList(order_status = '0', page = 1) {
     util.showLoading();
     let data = {
-      user_id,
       order_status,
       page
     };
@@ -107,10 +106,7 @@ export default class orderlist extends wepy.page {
     }
     //this.$apply();
 
-    let data2 = {
-      user_id: this.userId
-    };
-    let res = await newapi.orderNum(data2);
+    let res = await newapi.orderNum();
     if (res.data.data.daishenhe != 0) {
       this.statusType = [
         '全部',
@@ -138,18 +134,17 @@ export default class orderlist extends wepy.page {
   }
   async onLoad(option) {
     util.showLoading();
-    let userId = await this.$parent.loginInfo();
-    this.userId = userId;
+    await this.$parent.loginInfo();
     this.thisindex = option.order_status;
     this.isMoreData = true;
     this.page = 1;
-    this.getOrderList(userId, this.thisindex, this.page);
+    this.getOrderList(this.thisindex, this.page);
   }
   onReachBottom() {
     if (this.isMoreData) {
       util.showLoading();
       this.page = this.page + 1;
-      this.getOrderList(this.userId, this.thisindex, this.page);
+      this.getOrderList(this.thisindex, this.page);
     }
   }
 }

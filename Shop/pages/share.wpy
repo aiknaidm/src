@@ -106,7 +106,9 @@ export default class shoperweima extends wepy.page {
   };
   events = {};
   async onLoad(options) {
-    this.user_id = await this.$parent.loginInfo();
+    await this.$parent.loginInfo();
+    var userInfo = await this.$parent.getUserInfo();
+    this.user_id = userInfo.user_id;
     this.suppliers_id = options.suppliers_id;
     this.friend_name = options.friend_name;
     this.suppliers_name = options.suppliers_name;

@@ -57,7 +57,7 @@
     <view class='body-bg' bindtap='hiddenShopList' touchstart='hiddenbg' touchmove="hiddenbg" wx:if="{{ishowList}}">
       <view class='list'>
         <view style="color:red" @tap.stop="stop"> 选择工长</view>
-        <view wx:for="{{friendList}}" wx:key="{{index}}" @tap='changeList({{item.user_id}},{{item.user_name}})'>
+        <view wx:for="{{friendList}}" wx:key="{{index}}" @tap='changeList({{item.user_id}})'>
           {{item.user_name}}
         </view>
       </view>
@@ -102,8 +102,8 @@ export default class yizhanList extends wepy.page {
         url: '/Shop/pages/orderDetail?id=' + id
       });
     },
-    changeList(user_id) {
-      this.$parent.globalData.friend_id = user_id;
+    changeList(friend_id) {
+      this.$parent.globalData.friend_id = friend_id;
       this.$parent.globalData.friend_suppliers_id = this.orderList[
         this.orderIndex
       ].suppliers_id;
@@ -139,7 +139,6 @@ export default class yizhanList extends wepy.page {
             if (mRes.confirm) {
               this.friendList = await this.getFriendList(
                 suppliersId,
-                this.userId
               );
               this.ishowList = true;
               this.$apply();
@@ -160,7 +159,6 @@ export default class yizhanList extends wepy.page {
           if (mRes.confirm) {
             this.friendList = await this.getFriendList(
               suppliersId,
-              this.userId
             );
             this.ishowList = true;
             this.$apply();
@@ -174,11 +172,10 @@ export default class yizhanList extends wepy.page {
   };
   events = {};
   // 工长列表
-  async getFriendList(suppliers_id, user_id) {
+  async getFriendList(suppliers_id) {
     util.showLoading();
     let data = {
       suppliers_id,
-      user_id
     };
     let res = await newapi.friend_list(data);
     wx.hideLoading();
@@ -196,7 +193,6 @@ export default class yizhanList extends wepy.page {
     util.showLoading();
     let data = {
       order_id: orderId,
-      user_id: this.userId
     };
     let res0 = await newapi.zlyd(data);
     wx.hideLoading();
@@ -219,9 +215,8 @@ export default class yizhanList extends wepy.page {
       wx.hideLoading();
     }
   }
-  async getOrderList(userId, page = 1) {
+  async getOrderList(page = 1) {
     let data = {
-      user_id: userId,
       order_status: 4,
       page
     };
@@ -242,11 +237,10 @@ export default class yizhanList extends wepy.page {
     this.$apply();
   }
   async onShow() {
-    var userId = await this.$parent.loginInfo();
+    await this.$parent.loginInfo();
     this.isMoreData = true;
     this.page = 1;
-    this.userId = userId;
-    this.getOrderList(userId);
+    this.getOrderList();
     this.getOtherList();
   }
   async onLoad() {
@@ -255,7 +249,7 @@ export default class yizhanList extends wepy.page {
   onReachBottom() {
     if (this.isMoreData) {
       this.page = this.page + 1;
-      this.getOrderList(this.userId, this.page);
+      this.getOrderList(this.page);
     }
   }
 }

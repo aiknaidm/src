@@ -285,14 +285,9 @@ export default class extends wepy.app {
   }
 
   async loginInfo() {
-    let userId = this.globalData.userId;
-    if (userId) {
-      return userId;
-    }
-    userId = wx.getStorageSync('userId');
-    if (userId) {
-      this.globalData.userId = userId;
-      return userId;
+    let token = wx.getStorageSync('Token') || '';
+    if (token) {
+      return;
     }
     let code = await wepy.login();
     let data = {
@@ -300,15 +295,14 @@ export default class extends wepy.app {
       sex: '未知',
       avatar: 'https://lmbge.com/upload/avatar/weixin1.png'
     };
-    let loginInfo = await newapi.login(data);
-    wx.setStorageSync('userId', loginInfo.data.data.user_id);
-    this.globalData.userId = loginInfo.data.data.user_id;
-    return loginInfo.data.data.user_id;
+    let res = await newapi.login(data);
+    
+    wx.setStorageSync('Token', res.data.data.token);
+    return;
   }
-  async getUserInfo(userId) {
-    let data = { user_id: userId };
-    let userInfo = await newapi.getUserInfo(data);
-    if (userInfo.data.code == '0') return userInfo.data.data;
+  async getUserInfo() {
+    let res = await newapi.getUserInfo();
+    if (res.data.code == '0') return res.data.data;
     else util.showToast('获取用户信息失败');
     return 0;
   }
