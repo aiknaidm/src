@@ -253,7 +253,6 @@ image {
 </template>
 
 <script>
-let that;
 import wepy from 'wepy';
 import newapi from '../../API/newapi';
 import util from '../../utils/index';
@@ -403,19 +402,20 @@ export default class shop extends wepy.component {
           // if (this.yizhan.suppliers_id == 76) {
           //   return;
           // }
+          util.showLoading();
           let data = {
             suppliers_id: this.yizhan.suppliers_id,
             sales_id: sales_id ? sales_id : 0
           };
           var res1 = await newapi.applyMember(data);
-          if (res1.data.data) {
+          wx.hideLoading();
+          if (res1.data.code == 0) {
             util.showModal('申请发送成功');
             this.shenhe = 1;
             this.$apply();
           } else {
-            util.showToast(res.message);
+            util.showModal(res1.data.message);
           }
-        } else if (mRes.cancel) {
         }
       }
     }

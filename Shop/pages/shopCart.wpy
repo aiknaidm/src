@@ -644,10 +644,10 @@ export default class shopCart extends wepy.page {
         friend_id
       };
       let res = await newapi.updateCart(data);
-      if (res.data.code != '0') {
-        util.showToast('修改失败');
-      } else {
+      if (res.data.code == 0) {
         this.goodsDetail.goods_price = res.data.data;
+      } else {
+        util.showToast('修改失败');
       }
     },
     //去结算
@@ -734,7 +734,7 @@ export default class shopCart extends wepy.page {
       id: idList
     };
     let res = await newapi.delCart(data);
-    if (res.data.code == '0') {
+    if (res.data.code == 0) {
       this.getShopCartInfo();
       if (ishiddenToast) {
         wx.hideLoading();
@@ -765,12 +765,12 @@ export default class shopCart extends wepy.page {
       friend_id
     };
     let res = await newapi.updateCart(data);
-    if (res.data.code != '0') {
-      util.showToast('修改失败');
-    } else {
+    if (res.data.code == 0) {
       this.$apply();
       if (back) back(res.data.data, buy_number);
       return res.data.data;
+    } else {
+      util.showToast('修改失败');
     }
   }
   // 购物车列表

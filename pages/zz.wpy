@@ -446,7 +446,6 @@ export default class home extends wepy.page {
 
   async onLoad() {
     util.showLoading();
-    let that = this;
     await this.$parent.loginInfo();
     var userInfo = await this.$parent.getUserInfo();
     this.getMessage();

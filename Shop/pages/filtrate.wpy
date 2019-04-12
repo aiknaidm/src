@@ -198,25 +198,23 @@ export default class filtrate extends wepy.page {
   //获取品牌list
   //http://lmbge.com/wxapi//pinpai?keyword=%E9%97%A8&cat_id=811    keyword  关键词   cat_id  商品分类
   async getPinPaiList(cat_id, suppliers_id) {
-    var that = this;
     let data = {
       cat_id,
       suppliers_id
     };
     let res = await newapi.goodsBrand(data);
 
-    if (res.data.code == '0') this.pinpailist = res.data.data;
+    if (res.data.code == 0) this.pinpailist = res.data.data;
     this.$apply();
   }
   // 获取分类列表
   async getcatlist(parent_id, suppliers_id) {
-    var that = this;
     let data = {
       parent_id,
       suppliers_id
     };
     let res = await newapi.catlist(data);
-    if (res.data.code == '0') this.catlist = res.data.data;
+    if (res.data.code == 0) this.catlist = res.data.data;
     this.$apply();
   }
   events = {};

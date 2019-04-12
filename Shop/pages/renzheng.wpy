@@ -287,7 +287,7 @@ export default class renzheng extends wepy.page {
         user_name: user_name
       };
       let res = await newapi.renzheng(data);
-      if (res.data.code == '0') {
+      if (res.data.code == 0) {
         var sales_id = wx.getStorageSync('sales_id' + this.suppliers_id);
         var suppliers_id = wx.getStorageSync(
           'suppliers_id' + this.suppliers_id
@@ -297,13 +297,13 @@ export default class renzheng extends wepy.page {
           sales_id: suppliers_id ? sales_id : 0
         };
         var res1 = await newapi.applyMember(data1);
-        if (res1.data.code == '0') {
+        if (res1.data.code == 0) {
           await util.showModal('发送成功，等待易站同意');
           wepy.navigateBack({
             delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
           });
         } else {
-          await util.showModal('发送失败');
+          await util.showModal(res1.data.message);
           wepy.navigateBack({
             delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
           });

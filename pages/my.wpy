@@ -233,7 +233,6 @@ export default class my extends wepy.page {
     // this.orderList[3].unreadNum = res.data.data.chenggong;
   }
   async onLoad() {
-    let that = this;
     await this.$parent.loginInfo();
 
     let isSettingStatus = await this.$parent.checkSettingStatus();

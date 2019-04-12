@@ -13,7 +13,7 @@ export default class testMixin extends wepy.mixin {
       };
       let res = await newapi.goodsKind(data);
       this.isLoading = false;
-      if (res.data.code == "0") {
+      if (res.data.code == 0) {
         this.goodsKind = res.data.data;
         this.erji = res.data.erji;
         this.$apply();

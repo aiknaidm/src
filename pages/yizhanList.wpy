@@ -179,7 +179,7 @@ export default class yizhanList extends wepy.page {
     };
     let res = await newapi.friend_list(data);
     wx.hideLoading();
-    if (res.data.code === '0') {
+    if (res.data.code == 0) {
       return res.data.data;
     } else {
       util.showToast('获取工长列表失败');
@@ -196,7 +196,7 @@ export default class yizhanList extends wepy.page {
     };
     let res0 = await newapi.zlyd(data);
     wx.hideLoading();
-    if (res0.data.code === '0') {
+    if (res0.data.code == 0) {
       util.showToast('加入购物车成功');
     }
   }

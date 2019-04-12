@@ -32,24 +32,20 @@ export default class orderbutton extends wepy.component {
     },
     // 取消订单
     async cancelOrderTap(id) {
-      var that = this;
       let mRes = await util.showModalBig('你确定要取消订单吗');
       if (mRes.confirm) {
         var res = await this.toCancelOrder(id);
         if (res.data.code == 0) this.$emit('cancelOrderTap');
         else util.showToast('取消失败');
-      } else if (mRes.cancel) {
       }
     },
     // 确认收货
     async confirmBtnTap(id) {
-      var that = this;
       let mRes = await util.showModalBig('你确定收货吗');
       if (mRes.confirm) {
         var res = await this.toConfirmBtn(id);
         if (res.data.code == 0) this.$emit('confirmBtnTap');
         else util.showToast('确认收货失败');
-      } else if (mRes.cancel) {
       }
     },
     // 马上付款
@@ -57,13 +53,12 @@ export default class orderbutton extends wepy.component {
       if (this.orderDetail.pay_id == 4) {
         var res = await this.cardPay(id);
         if (res.data.code == 0) util.showToast('支付成功');
-        else if (res.data.code == 1) {
+        else {
           let mRes = await util.showModalBig(res.data.message);
           if (mRes.confirm) {
             wx.navigateTo({
               url: 'cardPay?suppliers_id=' + this.orderDetail.suppliers_id
             });
-          } else if (mRes.cancel) {
           }
         }
       } else {

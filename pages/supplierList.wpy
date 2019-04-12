@@ -420,6 +420,7 @@ export default class suppliersList extends wepy.page {
     }
   }
   async changeSuppliersStatus(url, suppliers_id, msg) {
+    util.showLoading();
     // 解除关系
     let data = {
       suppliers_id
@@ -427,19 +428,29 @@ export default class suppliersList extends wepy.page {
     var res;
     if (url == 'unfriend') {
       res = await newapi.unfriend(data);
+      if (res.data.code == 0) {
+        util.showToast(msg + '成功');
+      } else {
+        util.showModal(res.data.message);
+      }
     } else if (url == 'removeindex') {
       res = await newapi.removeindex(data);
+      if (res.data.code == 0) {
+        util.showToast(msg + '成功');
+      } else {
+        util.showModal(msg + '失败');
+      }
     } else if (url == 'setIndex') {
       res = await newapi.setIndex(data);
+      if (res.data.code == 0) {
+        util.showToast(msg + '成功');
+      } else {
+        util.showModal(msg + '失败');
+      }
     } else {
       util.showToast('失败');
     }
     this.getyizhanList();
-    if (res.data.code == '0') {
-      util.showToast(msg + '成功');
-    } else {
-      util.showToast(msg + '失败');
-    }
   }
   async getyizhanList() {
     let res = await newapi.yizhanList();

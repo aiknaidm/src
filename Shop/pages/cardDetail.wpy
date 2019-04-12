@@ -223,7 +223,6 @@ export default class myHelp extends wepy.page {
   };
   events = {};
   async detail(suppliers_id) {
-    var that = this;
     let data = {
       suppliers_id,
     };
