@@ -202,7 +202,7 @@ wx-button[disabled]:not([type]) {
       <view class="section">
         <view class="label">
           <text>*</text>真实姓名</view>
-        <input name="user_name" class="input" type="text" value="{{user_info.nickName}}" />
+        <input name="user_name" class="input" type="text" value="" />
       </view>
    
     </view>
