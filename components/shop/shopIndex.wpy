@@ -10,7 +10,7 @@
   height: 100%;
 }
 .swiper-container {
-  height: 320rpx;
+  height: 260rpx;
   position: relative;
 }
 .swiper-item {
@@ -219,6 +219,8 @@ image {
         </swiper>
       </view>
     </view>
+    <search @buttonTap.user="buttonTap">
+    </search>
     <view class="materials">
       <view class="materials-titile">商品分类</view>
       <loadingOrder wx:if="{{isLoading}}"></loadingOrder>
@@ -259,8 +261,10 @@ import util from '../../utils/index';
 import noorder from '../../components/noOrder';
 import loadingOrder from '../../components/loadingOrder';
 import itemList from '../../components/itemList';
+import search from '../../components/search';
 export default class shop extends wepy.component {
   components = {
+    search,
     noorder,
     loadingOrder,
     itemList
@@ -366,6 +370,24 @@ export default class shop extends wepy.component {
             this.user_info.nickName
         });
       }
+    },
+    // 点击确定 搜索商品
+    buttonTap(keyword) {
+      keyword = keyword || '';
+      wx.navigateTo({
+        url:
+          '/Shop/pages/searchList?suppliers_id=' +
+          this.yizhan.suppliers_id +
+          '&navigationTitle=' +
+          this.yizhan.suppliers_name +
+          '-' +
+          keyword +
+          '&keyword=' +
+          keyword
+      });
+      // this.initdata.keyword = keyword;
+      // this.initdata.page = 1;
+      // this.getGoodsList(this.initdata);
     },
     // 分类跳转
     toFenLeiTap(id, suppliers_id, suppliers_name, cat_name) {

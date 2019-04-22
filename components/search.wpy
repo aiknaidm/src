@@ -1,21 +1,21 @@
 
 <style lang="less">
-.ss-my{
+.ss-my {
   display: flex;
   text-align: center;
- padding: 24rpx;
- border-bottom: 1px solid #f0f0f0;
- background: #fff
+  padding: 24rpx;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fff;
 }
-.ss-my-c{
+.ss-my-c {
   display: flex;
   flex: 1;
 }
-.ss-my-c image{
+.ss-my-c image {
   width: 30rpx;
   height: 30rpx;
 }
-.ss-my-c-img{
+.ss-my-c-img {
   background-color: #f0f0f0;
   width: 60rpx;
   height: 60rpx;
@@ -24,19 +24,19 @@
   align-items: center;
   border-radius: 90px 0 0 90px;
 }
-.ss-my-c-ipt{
+.ss-my-c-ipt {
   background-color: #f0f0f0;
   height: 60rpx;
   line-height: 60rpx;
   flex: 1;
 }
 
-.ss-my-c-ipt input{
-width: 100%;
-height: 100%;
-font-size: 30rpx;
+.ss-my-c-ipt input {
+  width: 100%;
+  height: 100%;
+  font-size: 30rpx;
 }
-.ss-my-c-x{
+.ss-my-c-x {
   background-color: #f0f0f0;
   width: 60rpx;
   height: 60rpx;
@@ -45,7 +45,7 @@ font-size: 30rpx;
   align-items: center;
   border-radius: 0px 90px 90px 0px;
 }
-.ss-my-d{
+.ss-my-d {
   width: 100rpx;
   height: 60rpx;
   border: 1px solid #f0f0f0;
@@ -56,39 +56,37 @@ font-size: 30rpx;
   background-color: #fafafa;
   margin-left: 10rpx;
 }
-.ss-hot{
+.ss-hot {
   padding: 24rpx;
   background-color: #fff;
 }
-.ss-title{
+.ss-title {
   display: flex;
   justify-content: space-between;
   font-size: 30rpx;
 }
-.ss-title view:last-child{
+.ss-title view:last-child {
   font-size: 28rpx;
   color: #e50112;
 }
-.ss-content{
+.ss-content {
   display: flex;
   margin-top: 24rpx;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   flex: 1;
 }
-.ss-content view{
+.ss-content view {
   margin-right: 24rpx;
-  padding:15rpx 20rpx;
-  background-color: #f0f0f0; 
+  padding: 15rpx 20rpx;
+  background-color: #f0f0f0;
   margin-bottom: 24rpx;
   border-radius: 10rpx;
   font-size: 30rpx;
 }
-.queding{
+.queding {
   background-color: #fff;
   color: #333;
 }
-
-
 </style>
 <template>
    <view class='ss-my'>
@@ -112,24 +110,20 @@ font-size: 30rpx;
 <script>
 import wepy from 'wepy';
 export default class List extends wepy.component {
-    props ={
-     keyword:""
-    }
+  props = {
+    keyword: { type: String, default: '' }
+  };
   data = {};
-    
+
   events = {};
   methods = {
     searchIpt(e) {
-      this.keyword=e.detail.value
-     
+      this.keyword = e.detail.value;
     },
-    buttonTap(){
-      this.$emit("buttonTap",this.keyword)
-
+    buttonTap() {
+      this.$emit('buttonTap', this.keyword);
     }
   };
-  onLoad() {
-
-  }
+  onLoad() {}
 }
 </script>

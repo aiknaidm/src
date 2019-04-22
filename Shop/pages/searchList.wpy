@@ -136,7 +136,7 @@
 </style>
 <template>
   <view class="container">
-    <search @buttonTap.user="buttonTap">
+    <search :keyword.sync="keyword" @buttonTap.user="buttonTap">
     </search>
     <statusTap :statusType.sync="statusType" @statusTap.user="statusTap" type="shop">
       <view slot="other" class="status-label" @tap="shaixuan">筛选
@@ -216,7 +216,8 @@ export default class searchlist extends wepy.page {
     is_picture: 0,
     status: 1,
     goodsListIndex: '0',
-    isLoading: true
+    isLoading: true,
+    keyword: ''
   };
   mixins = [shopCart];
   computed = {};
@@ -343,13 +344,7 @@ export default class searchlist extends wepy.page {
         this.cartNum();
         var price = await this.$parent.$pages[
           '/Shop/pages/shopCart'
-        ].changeCartNum(
-          this.list,
-          0,
-          index,
-          buy_number,
-          this.friend_id
-        );
+        ].changeCartNum(this.list, 0, index, buy_number, this.friend_id);
         this.cartList[index].goods_price = price;
         this.$apply();
       } else {
@@ -387,13 +382,7 @@ export default class searchlist extends wepy.page {
         this.cartNum();
         var price = await this.$parent.$pages[
           '/Shop/pages/shopCart'
-        ].changeCartNum(
-          this.list,
-          0,
-          index,
-          buy_number,
-          this.friend_id
-        );
+        ].changeCartNum(this.list, 0, index, buy_number, this.friend_id);
         this.cartList[index].goods_price = price;
         this.$apply();
       }
@@ -498,7 +487,7 @@ export default class searchlist extends wepy.page {
   initData() {
     var initdata = {
       cat_id: this.cat_id,
-      keyword: '',
+      keyword: this.keyword,
       order: '', //
       sort: '', //排序的方式
       price_max: '', //加个
@@ -538,6 +527,8 @@ export default class searchlist extends wepy.page {
         title: option.navigationTitle
       });
     }
+    // 搜索关键词
+    this.keyword = option.keyword ? option.keyword : '';
     // 分类id
     this.cat_id = option.cat_id ? option.cat_id : '';
     // 是否图片模式
@@ -545,7 +536,8 @@ export default class searchlist extends wepy.page {
       ? this.$parent.globalData.yizhan.is_picture
       : 0;
     // 分类
-    this.cat_name = option.cat_name ? option.cat_gname : '';
+    this.cat_name = option.cat_name ? option.cat_name : '';
+
     // 店铺
     this.suppliers_id = option.suppliers_id ? option.suppliers_id : '';
     // 工长id
@@ -553,8 +545,7 @@ export default class searchlist extends wepy.page {
       this.suppliers_id == this.$parent.globalData.friend_suppliers_id
         ? this.$parent.globalData.friend_id
         : 0;
-  }
-  async onShow(option) {
+
     this.initF();
     // 是否是会员
     this.status = await this.getSheheStauts(
@@ -564,6 +555,7 @@ export default class searchlist extends wepy.page {
     );
     this.$apply();
   }
+  async onShow() {}
   //
   compareList(arr1, arr2) {
     var thisindex;

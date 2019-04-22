@@ -176,7 +176,16 @@ export default class filtrate extends wepy.page {
       wx.setStorageSync('catlist', this.catlist);
 
       initdata.brand = e.detail.value.brand.toString();
-      initdata.ch_cat_id = e.detail.value.cat.toString();
+      if (e.detail.value.cat) {
+        initdata.cat_id = e.detail.value.cat.toString();
+      }
+      // if (this.cat_id) {
+      //   initdata.cat_id = this.cat_id;
+      //   initdata.ch_cat_id = e.detail.value.cat.toString();
+      // } else {
+      //   initdata.cat_id = e.detail.value.cat.toString();
+      //   initdata.ch_cat_id = '';
+      // }
       // initdata.brand = e.detail.value.brand.toString();
       initdata.price_max = e.detail.value.priceMax;
       initdata.price_min = e.detail.value.priceMin;
@@ -220,6 +229,7 @@ export default class filtrate extends wepy.page {
   events = {};
   onLoad(options) {
     var cat_id = options.cat_id;
+    this.cat_id = cat_id;
     var cat_name = options.cat_name;
     var suppliers_id = options.suppliers_id;
     var pinpainame = wx.getStorageSync('pinpainame');
