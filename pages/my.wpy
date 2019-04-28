@@ -21,9 +21,9 @@
         <myList :tabItem="item"></myList>
       </repeat>
     </view>
-    <view class='ad' @tap='toBannerDetail2'>
+    <!-- <view class='ad' @tap='toBannerDetail2'>
       <image src='http://wsc.jicaizx.com/images/ad1.jpg' mode='aspectFill' />
-    </view>
+    </view> -->
     <!-- 遮罩层 -->
     <mask wx:if="{{isShowprompt}}"></mask>
     <!-- 为获取用户信息的提示 -->
