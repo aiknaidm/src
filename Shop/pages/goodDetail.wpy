@@ -230,7 +230,7 @@ swiper-item image {
   <view class="container {{ishideShopPopup?'hidden':''}}">
     <view class="swiper-container">
       <swiper class="swiper_box" autoplay="{{autoplay}}" interval="{{interval}}" indicator-active-color="#666666" duration="{{duration}}" indicator-dots="true" circular="true">
-        <swiper-item wx:for="{{goodsDetail.img_url}}" wx:key="{{index}}">
+        <swiper-item wx:for="{{goodsDetail.img_url}}" wx:key="{{index}}" @tap="toImgDetail({{index}})">
           <image src="{{item.img_url}}" class="image" mode="aspectFit" lazy-load="true"/>
             <!-- <image src="{{goodsDetail.original_img1}}" class="image" mode="aspectFit" lazy-load="true" wx:else> -->
         </swiper-item>
@@ -308,6 +308,7 @@ export default class goodDetail extends wepy.page {
     articleDetail: {}
   };
   events = {
+   
     // 规格被点击
     labelItemTap: (property, $event) => {
       this.goodsDetail.goods_attr_id = property.goods_attr_id;
@@ -339,6 +340,12 @@ export default class goodDetail extends wepy.page {
     }
   };
   methods = {
+     toImgDetail(index){
+      wx.previewImage({
+        current: this.url[index], // 当前显示图片的http链接
+        urls: this.url// 需要预览的图片http链接列表
+      })
+    },
     async callTel() {
       var kefu = this.goodsDetail.kefu;
       var phoneList = [];
@@ -382,6 +389,11 @@ export default class goodDetail extends wepy.page {
       : this.goodsDetail.original_img1;
     this.goodsDetail.img_url =
       this.goodsDetail.img_url.length == 0 ? img : this.goodsDetail.img_url;
+      this.url=[];
+      this.goodsDetail.img_url.forEach((item,index)=>{
+        this.url.push(item.img_url)
+      })
+      
     this.$apply();
   }
   async onLoad(option) {

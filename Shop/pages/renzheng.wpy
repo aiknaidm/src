@@ -298,7 +298,7 @@ export default class renzheng extends wepy.page {
         };
         var res1 = await newapi.applyMember(data1);
         if (res1.data.code == 0) {
-          await util.showModal('发送成功，等待易站同意');
+          await util.showModal('发送成功，等待商家同意');
           wepy.navigateBack({
             delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
           });
