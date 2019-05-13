@@ -59,7 +59,7 @@
   font-size: 28rpx;
   text-align: left;
   padding: 10rpx 50rpx;
-  width: 60%;
+  /* width: 60%; */
 }
 .type-navbar {
   white-space: nowrap;
@@ -153,6 +153,7 @@
   padding-left: 50rpx;
   position: relative;
   top: -10rpx;
+  min-height: 30rpx;
 } // 提示
 
 image {
