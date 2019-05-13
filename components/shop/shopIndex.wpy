@@ -23,7 +23,7 @@
 }
 .yizhan-name {
   position: absolute;
-  top: 60rpx;
+  top: 50rpx;
   left: 0px;
   display: block;
   width: 100%;
