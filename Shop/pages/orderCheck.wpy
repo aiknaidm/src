@@ -168,10 +168,9 @@ export default class newslist extends wepy.page {
   }
   //  订单列表
   async getOrderList(page = 1) {
-    var friend_id = this.user_id;
+    // var friend_id = this.user_id;
     util.showLoading();
     let data = {
-      friend_id,
       order_status: 9,
       page
     };
@@ -197,8 +196,8 @@ export default class newslist extends wepy.page {
   }
   async onLoad(option) {
     await this.$parent.loginInfo();
-    var userInfo = await this.$parent.getUserInfo();
-    this.user_id = userInfo.user_id;
+    // var userInfo = await this.$parent.getUserInfo();
+    // this.user_id = userInfo.user_id;
     this.isMoreData = true;
     this.getOrderList();
     this.$apply();
