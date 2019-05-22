@@ -225,6 +225,7 @@
   .canvasdrawer {
     position: absolute;
     left: 1000px;
+    top: 0px;
   }
 </style>
 <template>
@@ -279,7 +280,7 @@
       <view class="now-buy" @tap.stop="tobuy({{goodsDetail.goods_id}})">立即购买</view>
     </view>
     <shopCartPopup :goodsDetail.sync="goodsDetail" :status.sync="status" wx:if="{{ishideShopPopup}}"></shopCartPopup>
-    <canvasdrawer painting="{{painting}}" class="canvasdrawer" bindgetImage="eventGetImage" wx:if="{{goodsDetail.suppliers_id == 76}}" />
+    <!-- <canvasdrawer painting="{{painting}}" class="canvasdrawer" bindgetImage="eventGetImage" wx:if="{{goodsDetail.suppliers_id == 76}}" /> -->
   </view>
 </template>
 
@@ -396,7 +397,7 @@
       })
       if (this.goodsDetail.suppliers_id == 76) {
         wx.showShareMenu();
-        this.eventDraw();
+        // this.eventDraw();
       } else {
         wx.hideShareMenu();
       }
@@ -407,74 +408,74 @@
       await this.$parent.loginInfo();
       this.getGoodsInfo(option.id);
     }
-    async eventDraw() {
-      var that = this;
-      var a = wx.getSystemInfoSync().windowWidth / 375;
-      var height = wx.getSystemInfoSync().windowHeight;
-      var width = wx.getSystemInfoSync().windowWidth;
-      var url = this.url[0];
-      var url2 = this.url[0];
-      if (this.url.length > 1) {
-        url2 = this.url[1];
-      }
-      that.data.painting = {
-        width: 375 * a,
-        height: 375 * a,
-        clear: true,
-        views: [{
-            type: 'image',
-            url: url,
-            top: 80 * a,
-            left: 0,
-            width: 150 * a,
-            height: 150 * a,
-          },
-          {
-            type: 'image',
-            url: url2,
-            top: 80 * a,
-            left: 180 * a,
-            width: 150 * a,
-            height: 150 * a,
-          },
-          {
-            type: 'text',
-            content: '批发价：¥' + that.goodsDetail.shop_price,
-            top: 0,
-            left: 0,
-            fontSize: 20 * a,
-            width: 180 * a,
-            bolder: false,
-            textAlign: 'left',
-            color: '#e64340'
-          },
-          {
-            type: 'text',
-            content: '零售价：¥' + that.goodsDetail.floor_price,
-            top: 40 * a,
-            left: 0,
-            fontSize: 16 * a,
-            width: 180 * a,
-            bolder: false,
-            textAlign: 'left',
-            color: '#333'
-          },
-        ]
-      };
-      that.setData({
-        painting: that.data.painting
-      });
-    }
-    eventGetImage(event) {
-      this.shareImage = event.detail.tempFilePath;
-    }
+    // async eventDraw() {
+    //   var that = this;
+    //   var a = wx.getSystemInfoSync().windowWidth / 375;
+    //   var height = wx.getSystemInfoSync().windowHeight;
+    //   var width = wx.getSystemInfoSync().windowWidth;
+    //   var url = this.url[0];
+    //   var url2 = this.url[0];
+    //   if (this.url.length > 1) {
+    //     url2 = this.url[1];
+    //   }
+    //   that.data.painting = {
+    //     width: 375 * a,
+    //     height: 375 * a,
+    //     clear: true,
+    //     views: [{
+    //         type: 'image',
+    //         url: url,
+    //         top: 80 * a,
+    //         left: 0,
+    //         width: 150 * a,
+    //         height: 150 * a,
+    //       },
+    //       {
+    //         type: 'image',
+    //         url: url2,
+    //         top: 80 * a,
+    //         left: 180 * a,
+    //         width: 150 * a,
+    //         height: 150 * a,
+    //       },
+    //       {
+    //         type: 'text',
+    //         content: '批发价：¥' + that.goodsDetail.shop_price,
+    //         top: 0,
+    //         left: 0,
+    //         fontSize: 20 * a,
+    //         width: 180 * a,
+    //         bolder: false,
+    //         textAlign: 'left',
+    //         color: '#e64340'
+    //       },
+    //       {
+    //         type: 'text',
+    //         content: '零售价：¥' + that.goodsDetail.floor_price,
+    //         top: 40 * a,
+    //         left: 0,
+    //         fontSize: 16 * a,
+    //         width: 180 * a,
+    //         bolder: false,
+    //         textAlign: 'left',
+    //         color: '#333'
+    //       },
+    //     ]
+    //   };
+    //   that.setData({
+    //     painting: that.data.painting
+    //   });
+    // }
+    // eventGetImage(event) {
+    //   this.shareImage = event.detail.tempFilePath;
+    // }
     // 分享
     onShareAppMessage(res) {
       var path = '/Shop/pages/index?id=' + this.goodsDetail.goods_id;
       return {
         title: this.goodsDetail.goods_name,
         path: path,
-        imageUrl: this.shareImage
+        // imageUrl: this.shareImage
       };
     }
   }
