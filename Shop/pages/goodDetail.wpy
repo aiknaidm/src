@@ -1,239 +1,239 @@
 <style lang="less">
-.container {
-  background-color: #f2f2f2;
-  min-height: 100%;
-  padding: 0 0 100rpx 0;
-}
-.swiper-container {
-  width: 100%;
-  position: relative;
-}
-.swiper_box {
-  width: 100%;
-  height: 748rpx;
-}
-swiper-item image {
-  width: 100%;
-  display: inline-block;
-  overflow: hidden;
-  height: 748rpx;
-}
-.swiper-container .dots {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 20rpx;
-  display: flex;
-  justify-content: center;
-}
-.swiper-container .dots .dot {
-  margin: 0 8rpx;
-  width: 14rpx;
-  height: 14rpx;
-  background: #000;
-  border-radius: 50%;
-  transition: all 0.6s;
-  opacity: 0.3;
-}
-.swiper-container .dots .dot.active {
-  opacity: 0.6;
-}
-.goods-info {
-  background-color: #fff;
-  padding: 35rpx 0;
-  margin-bottom: 24rpx;
-  width: 100%;
-}
-.goods-info .goods-title {
-  box-sizing: border-box;
-  padding: 0 35rpx;
-  font-size: 32rpx;
-  line-height: 1.4;
-  color: #000;
-  margin-bottom: 28rpx;
-  text {
-    background: #e50012;
-    color: #fff;
-    padding: 4rpx 8rpx;
-    margin-left: 10rpx;
-    font-size: 20rpx;
-    border-radius: 5rpx;
+  .container {
+    background-color: #f2f2f2;
+    min-height: 100%;
+    padding: 0 0 100rpx 0;
+  }
+  .swiper-container {
+    width: 100%;
+    position: relative;
+  }
+  .swiper_box {
+    width: 100%;
+    height: 748rpx;
+  }
+  swiper-item image {
+    width: 100%;
+    display: inline-block;
+    overflow: hidden;
+    height: 748rpx;
+  }
+  .swiper-container .dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 20rpx;
+    display: flex;
+    justify-content: center;
+  }
+  .swiper-container .dots .dot {
+    margin: 0 8rpx;
+    width: 14rpx;
+    height: 14rpx;
+    background: #000;
+    border-radius: 50%;
+    transition: all 0.6s;
+    opacity: 0.3;
+  }
+  .swiper-container .dots .dot.active {
+    opacity: 0.6;
+  }
+  .goods-info {
+    background-color: #fff;
+    padding: 35rpx 0;
+    margin-bottom: 24rpx;
+    width: 100%;
+  }
+  .goods-info .goods-title {
+    box-sizing: border-box;
+    padding: 0 35rpx;
+    font-size: 32rpx;
+    line-height: 1.4;
+    color: #000;
+    margin-bottom: 28rpx;
+    text {
+      background: #e50012;
+      color: #fff;
+      padding: 4rpx 8rpx;
+      margin-left: 10rpx;
+      font-size: 20rpx;
+      border-radius: 5rpx;
+      font-weight: 100;
+    }
+  }
+  .goods-info .goods-share {
+    box-sizing: border-box;
+    padding: 0 35rpx;
+    font-size: 25rpx;
+    line-height: 1.4;
+    color: #c00;
+    margin-bottom: 28rpx;
+  }
+  .goods-price {
+    box-sizing: border-box;
+    color: #999;
+    font-size: 26rpx; // font-weight: bold;
+    padding-bottom: 20rpx;
+    padding: 0 35rpx;
+    display: flex;
+    justify-content: space-between;
+    /* width: 30%; */
+    /* float: left; */
+  }
+  .goods-price2 {
+    font-size: 32rpx;
+    color: #e64340;
+    box-sizing: border-box;
+    font-weight: bold;
+    padding-bottom: 20rpx;
+    padding: 0 35rpx;
+    display: flex;
+    justify-content: space-between;
+  }
+  .goods-price view {
+    color: #333;
     font-weight: 100;
   }
-}
-.goods-info .goods-share {
-  box-sizing: border-box;
-  padding: 0 35rpx;
-  font-size: 25rpx;
-  line-height: 1.4;
-  color: #c00;
-  margin-bottom: 28rpx;
-}
-.goods-price {
-  box-sizing: border-box;
-  color: #999;
-  font-size: 26rpx;
-  // font-weight: bold;
-  padding-bottom: 20rpx;
-  padding: 0 35rpx;
-  display: flex;
-  justify-content: space-between;
-  /* width: 30%; */
-  /* float: left; */
-}
-.goods-price2 {
-  font-size: 32rpx;
-  color: #e64340;
-  box-sizing: border-box;
-
-  font-weight: bold;
-  padding-bottom: 20rpx;
-  padding: 0 35rpx;
-  display: flex;
-  justify-content: space-between;
-}
-.goods-price view {
-  color: #333;
-  font-weight: 100;
-}
-/*库存起订量  */
-.goods-txt {
-  padding: 0 35rpx;
-  display: flex;
-  justify-content: space-between;
-  font-size: 26rpx;
-  line-height: 50rpx;
-  margin-top: 20rpx;
-}
-.pop-goods-des .goods-txt {
-  padding: 0;
-  font-size: 20rpx;
-  color: #666;
-}
-/*库存起订量end  */
-.row-arrow {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0 120rpx 0 35rpx;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  height: 102rpx;
-  font-size: 28rpx;
-  line-height: 102rpx;
-  margin-bottom: 28rpx;
-  background: #fff url(https://cdn.it120.cc/images/weappshop/arrow-right.png)
-    no-repeat 697rpx center;
-  background-size: 18rpx auto;
-}
-.goods-des-info {
-  width: 100%;
-  box-sizing: border-box;
-  background-color: #fff;
-}
-.label-title {
-  font-size: 28rpx;
-  color: #000;
-  padding: 30rpx;
-}
-.goods-text {
-  padding: 0 30rpx;
-  font-size: 28rpx;
-  color: #666;
-  line-height: 56rpx;
-  margin-bottom: 30rpx;
-}
-.des-imgs {
-  width: 100%;
-}
-.des-imgs image {
-  width: 100%;
-}
-.footer-box {
-  width: 100%;
-  height: 100rpx;
-  background-color: #fff;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  box-shadow: 0 0 8rpx 0;
-}
-.footer-box .contact {
-  position: relative;
-  width: 120rpx;
-  height: 100%;
-  line-height: 110rpx;
-  text-align: center;
-  padding-top: 26rpx;
-  font-size: 20rpx;
-  color: #10b3b0;
-  box-sizing: border-box;
-  background: url(https://lmbge.com/upload/images/1.png)  no-repeat  center;
-  background-position-y: 20rpx;
-  background-size: 50rpx 50rpx;
-  overflow: hidden;
-}
-.footer-box .shop-cart-btn {
-  position: relative;
-  width: 150rpx;
-  height: 100%;
-  /* line-height: 110rpx;  */
-  text-align: center;
-  padding-top: 26rpx;
-  padding-bottom: 10rpx;
-  font-size: 20rpx;
-  color: #acacb7;
-  box-sizing: border-box;
-  background: url('https://cdn.it120.cc/images/weappshop/cart.png') no-repeat
-    center 21rpx;
-  background-size: 44rpx auto;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-}
-.footer-box .shop-cart-btn .shop-num {
-  color: #e50112;
-}
-.footer-box .join-shop-cart {
-  text-align: center;
-  width: 250rpx;
-  height: 100%;
-  line-height: 100rpx;
-  background-color: #ff6850;
-  color: #fff;
-  font-size: 30rpx;
-}
-.footer-box .now-buy {
-  text-align: center;
-  height: 100%;
-  width: 250rpx;
-  line-height: 100rpx;
-  background-color: #e64340;
-  color: #fff;
-  font-size: 30rpx;
-}
-.body {
-  padding: 0 !important;
-}
-.goods_brief {
-  background: #fff;
-  padding: 35rpx 30rpx;
-  margin-bottom: 24rpx;
-}
-.purple {
-  color: #a78dd3;
-  font-weight: bold;
-}
+  /*库存起订量  */
+  .goods-txt {
+    padding: 0 35rpx;
+    display: flex;
+    justify-content: space-between;
+    font-size: 26rpx;
+    line-height: 50rpx;
+    margin-top: 20rpx;
+  }
+  .pop-goods-des .goods-txt {
+    padding: 0;
+    font-size: 20rpx;
+    color: #666;
+  }
+  /*库存起订量end  */
+  .row-arrow {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 120rpx 0 35rpx;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    height: 102rpx;
+    font-size: 28rpx;
+    line-height: 102rpx;
+    margin-bottom: 28rpx;
+    background: #fff url(https://cdn.it120.cc/images/weappshop/arrow-right.png) no-repeat 697rpx center;
+    background-size: 18rpx auto;
+  }
+  .goods-des-info {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+  }
+  .label-title {
+    font-size: 28rpx;
+    color: #000;
+    padding: 30rpx;
+  }
+  .goods-text {
+    padding: 0 30rpx;
+    font-size: 28rpx;
+    color: #666;
+    line-height: 56rpx;
+    margin-bottom: 30rpx;
+  }
+  .des-imgs {
+    width: 100%;
+  }
+  .des-imgs image {
+    width: 100%;
+  }
+  .footer-box {
+    width: 100%;
+    height: 100rpx;
+    background-color: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    box-shadow: 0 0 8rpx 0;
+  }
+  .footer-box .contact {
+    position: relative;
+    width: 120rpx;
+    height: 100%;
+    line-height: 110rpx;
+    text-align: center;
+    padding-top: 26rpx;
+    font-size: 20rpx;
+    color: #10b3b0;
+    box-sizing: border-box;
+    background: url(https://lmbge.com/upload/images/1.png) no-repeat center;
+    background-position-y: 20rpx;
+    background-size: 50rpx 50rpx;
+    overflow: hidden;
+  }
+  .footer-box .shop-cart-btn {
+    position: relative;
+    width: 150rpx;
+    height: 100%;
+    /* line-height: 110rpx;  */
+    text-align: center;
+    padding-top: 26rpx;
+    padding-bottom: 10rpx;
+    font-size: 20rpx;
+    color: #acacb7;
+    box-sizing: border-box;
+    background: url('https://cdn.it120.cc/images/weappshop/cart.png') no-repeat center 21rpx;
+    background-size: 44rpx auto;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  .footer-box .shop-cart-btn .shop-num {
+    color: #e50112;
+  }
+  .footer-box .join-shop-cart {
+    text-align: center;
+    width: 250rpx;
+    height: 100%;
+    line-height: 100rpx;
+    background-color: #ff6850;
+    color: #fff;
+    font-size: 30rpx;
+  }
+  .footer-box .now-buy {
+    text-align: center;
+    height: 100%;
+    width: 250rpx;
+    line-height: 100rpx;
+    background-color: #e64340;
+    color: #fff;
+    font-size: 30rpx;
+  }
+  .body {
+    padding: 0 !important;
+  }
+  .goods_brief {
+    background: #fff;
+    padding: 35rpx 30rpx;
+    margin-bottom: 24rpx;
+  }
+  .purple {
+    color: #a78dd3;
+    font-weight: bold;
+  }
+  .canvasdrawer {
+    position: absolute;
+    left: 1000px;
+  }
 </style>
 <template>
   <view class="container {{ishideShopPopup?'hidden':''}}">
     <view class="swiper-container">
       <swiper class="swiper_box" autoplay="{{autoplay}}" interval="{{interval}}" indicator-active-color="#666666" duration="{{duration}}" indicator-dots="true" circular="true">
         <swiper-item wx:for="{{goodsDetail.img_url}}" wx:key="{{index}}" @tap="toImgDetail({{index}})">
-          <image src="{{item.img_url}}" class="image" mode="aspectFit" lazy-load="true"/>
-            <!-- <image src="{{goodsDetail.original_img1}}" class="image" mode="aspectFit" lazy-load="true" wx:else> -->
+          <image src="{{item.img_url}}" class="image" mode="aspectFit" lazy-load="true" />
+          <!-- <image src="{{goodsDetail.original_img1}}" class="image" mode="aspectFit" lazy-load="true" wx:else> -->
         </swiper-item>
       </swiper>
       <view class="dots">
@@ -242,7 +242,6 @@ swiper-item image {
         </block>
       </view>
     </view>
-
     <view class="goods-info">
       <view class="goods-title">{{goodsDetail.goods_name}}<text wx:if="{{goodsDetail.hdky==1}}">支持会员卡</text></view>
       <view class="goods-price2 goods-price " style="fonts-size:46rpx;" wx:if="{{status>1}}">批发价：¥ {{goodsDetail.shop_price}}</view>
@@ -251,7 +250,9 @@ swiper-item image {
         <view class>销量：{{goodsDetail.salenum}}</view>
       </view>
       <view class="goods-txt">
-        <view wx:if="{{status>1}}" class="purple">{{goodsDetail.qidingliang}}{{danwei}}可以享受批发价<view >￥{{goodsDetail.shop_price}}</view></view>
+        <view wx:if="{{status>1}}" class="purple">{{goodsDetail.qidingliang}}{{danwei}}可以享受批发价
+          <view>￥{{goodsDetail.shop_price}}</view>
+        </view>
         <view>库存:{{goodsDetail.goods_number}}</view>
         <view @tap="viewYiZhanDetails({{goodsDetail.suppliers_id}})">批发商:{{goodsDetail.suppliers_name}}</view>
       </view>
@@ -278,129 +279,203 @@ swiper-item image {
       <view class="now-buy" @tap.stop="tobuy({{goodsDetail.goods_id}})">立即购买</view>
     </view>
     <shopCartPopup :goodsDetail.sync="goodsDetail" :status.sync="status" wx:if="{{ishideShopPopup}}"></shopCartPopup>
+    <canvasdrawer painting="{{painting}}" class="canvasdrawer" bindgetImage="eventGetImage" wx:if="{{goodsDetail.suppliers_id == 76}}" />
   </view>
 </template>
 
 <script>
-import wepy from 'wepy';
-import newapi from '../../API/newapi';
-import util from '../../utils/index';
-import shopCartPopup from '../../components/shop/shopCartPopup';
-import htmlParser from '../../components/htmlParser';
-import shopCart from '../../mixins/shopCart';
-export default class goodDetail extends wepy.page {
-  config = {
-    navigationBarTitleText: '商品详情'
-  };
-  components = {
-    shopCartPopup,
-    htmlParser
-  };
-  data = {
-    autoplay: true,
-    interval: 3000,
-    duration: 1000,
-    goodsDetail: {},
-    shopNum: 0,
-    ishideShopPopup: false,
-    buy_number: 1,
-    status: 1,
-    danwei: '件',
-    articleDetail: {}
-  };
-  events = {
-   
-    // 规格被点击
-    labelItemTap: (property, $event) => {
-      this.goodsDetail.goods_attr_id = property.goods_attr_id;
-      this.goodsDetail.goods_number = property.goods_number;
-      this.goodsDetail.property = property;
-      this.goodsDetail = this.showPrice(this.goodsDetail);
-      this.$apply();
-    },
-    numJiaTap: (buy_number, $event) => {
-      this.goodsDetail.buy_number = buy_number;
-      this.$apply();
-    },
-    numJianTap: (buy_number, $event) => {
-      this.goodsDetail.buy_number = buy_number;
-      this.$apply();
-    },
-    shopNumChange: (buy_number, $event) => {
-      this.goodsDetail.buy_number = buy_number;
-
-      this.$apply();
-    },
-    buyNow: goodsDetail => {
-      var goodsDetail = goodsDetail;
-      this.buliduBuyNowInfo();
-      this.closePopupTap();
-      wx.navigateTo({
-        url: '/Shop/pages/toPayOrder?orderType=buyNow'
-      });
-    }
-  };
-  methods = {
-     toImgDetail(index){
-      wx.previewImage({
-        current: this.url[index], // 当前显示图片的http链接
-        urls: this.url// 需要预览的图片http链接列表
-      })
-    },
-    async callTel() {
-      var kefu = this.goodsDetail.kefu;
-      var phoneList = [];
-
-      if (this.goodsDetail.kefu.length == 1) {
-        wx.makePhoneCall({
-          phoneNumber: this.goodsDetail.kefu[0].mobile
-        });
-        return;
+  import wepy from 'wepy';
+  import newapi from '../../API/newapi';
+  import util from '../../utils/index';
+  import shopCartPopup from '../../components/shop/shopCartPopup';
+  import htmlParser from '../../components/htmlParser';
+  import shopCart from '../../mixins/shopCart';
+  export default class goodDetail extends wepy.page {
+    config = {
+      navigationBarTitleText: '商品详情',
+      usingComponents: {
+        canvasdrawer: '/components/canvasdrawer/canvasdrawer'
       }
-      kefu.forEach(function(item, index) {
-        phoneList.push(item.kefu_name + ' ' + item.mobile);
-      });
-      let mRes = await util.showActionSheet(phoneList);
-      wx.makePhoneCall({
-        phoneNumber: phoneList[mRes.tapIndex]
-      });
-    }
-  };
-  mixins = [shopCart];
-  // 获取商品详情
-  async getGoodsInfo(id) {
-    let data = {
-      goods_id: id,
     };
-    let res = await newapi.GoodsInfo(data);
-
-    wx.hideLoading();
-
-    this.goodsDetail = res.data.data;
-    this.shopNum = res.data.data.gouwuche;
-    var friend_id =
-      res.data.data.suppliers_id == this.$parent.globalData.friend_suppliers_id
-        ? this.$parent.globalData.friend_id
-        : 0;
-    this.goodsInit(this.goodsDetail, friend_id);
-    this.goodsDetail.buy_number = 1;
-    var img = [{}];
-    img[0].img_url = this.goodsDetail.original_img
-      ? 'http://maijia.jicaizx.com/' + this.goodsDetail.original_img
-      : this.goodsDetail.original_img1;
-    this.goodsDetail.img_url =
-      this.goodsDetail.img_url.length == 0 ? img : this.goodsDetail.img_url;
-      this.url=[];
-      this.goodsDetail.img_url.forEach((item,index)=>{
+    components = {
+      shopCartPopup,
+      htmlParser
+    };
+    data = {
+      autoplay: true,
+      interval: 3000,
+      duration: 1000,
+      goodsDetail: {},
+      shopNum: 0,
+      ishideShopPopup: false,
+      buy_number: 1,
+      status: 1,
+      danwei: '件',
+      articleDetail: {}
+    };
+    events = {
+      // 规格被点击
+      labelItemTap: (property, $event) => {
+        this.goodsDetail.goods_attr_id = property.goods_attr_id;
+        this.goodsDetail.goods_number = property.goods_number;
+        this.goodsDetail.property = property;
+        this.goodsDetail = this.showPrice(this.goodsDetail);
+        this.$apply();
+      },
+      numJiaTap: (buy_number, $event) => {
+        this.goodsDetail.buy_number = buy_number;
+        this.$apply();
+      },
+      numJianTap: (buy_number, $event) => {
+        this.goodsDetail.buy_number = buy_number;
+        this.$apply();
+      },
+      shopNumChange: (buy_number, $event) => {
+        this.goodsDetail.buy_number = buy_number;
+        this.$apply();
+      },
+      buyNow: goodsDetail => {
+        var goodsDetail = goodsDetail;
+        this.buliduBuyNowInfo();
+        this.closePopupTap();
+        wx.navigateTo({
+          url: '/Shop/pages/toPayOrder?orderType=buyNow'
+        });
+      }
+    };
+    methods = {
+      toImgDetail(index) {
+        wx.previewImage({
+          current: this.url[index], // 当前显示图片的http链接
+          urls: this.url // 需要预览的图片http链接列表
+        })
+      },
+      async callTel() {
+        var kefu = this.goodsDetail.kefu;
+        var phoneList = [];
+        if (this.goodsDetail.kefu.length == 1) {
+          wx.makePhoneCall({
+            phoneNumber: this.goodsDetail.kefu[0].mobile
+          });
+          return;
+        }
+        kefu.forEach(function(item, index) {
+          phoneList.push(item.kefu_name + ' ' + item.mobile);
+        });
+        let mRes = await util.showActionSheet(phoneList);
+        wx.makePhoneCall({
+          phoneNumber: phoneList[mRes.tapIndex]
+        });
+      }
+    };
+    mixins = [shopCart];
+    // 获取商品详情
+    async getGoodsInfo(id) {
+      let data = {
+        goods_id: id,
+      };
+      let res = await newapi.GoodsInfo(data);
+      wx.hideLoading();
+      this.goodsDetail = res.data.data;
+      this.shopNum = res.data.data.gouwuche;
+      var friend_id =
+        res.data.data.suppliers_id == this.$parent.globalData.friend_suppliers_id ?
+        this.$parent.globalData.friend_id :
+        0;
+      this.goodsInit(this.goodsDetail, friend_id);
+      this.goodsDetail.buy_number = 1;
+      var img = [{}];
+      img[0].img_url = this.goodsDetail.original_img ?
+        'http://maijia.jicaizx.com/' + this.goodsDetail.original_img :
+        this.goodsDetail.original_img1;
+      this.goodsDetail.img_url =
+        this.goodsDetail.img_url.length == 0 ? img : this.goodsDetail.img_url;
+      this.url = [];
+      this.goodsDetail.img_url.forEach((item, index) => {
         this.url.push(item.img_url)
       })
-      
-    this.$apply();
+      if (this.goodsDetail.suppliers_id == 76) {
+        wx.showShareMenu();
+        this.eventDraw();
+      } else {
+        wx.hideShareMenu();
+      }
+      this.$apply();
+    }
+    async onLoad(option) {
+      util.showLoading();
+      await this.$parent.loginInfo();
+      this.getGoodsInfo(option.id);
+    }
+    async eventDraw() {
+      var that = this;
+      var a = wx.getSystemInfoSync().windowWidth / 375;
+      var height = wx.getSystemInfoSync().windowHeight;
+      var width = wx.getSystemInfoSync().windowWidth;
+      var url = this.url[0];
+      var url2 = this.url[0];
+      if (this.url.length > 1) {
+        url2 = this.url[1];
+      }
+      that.data.painting = {
+        width: 375 * a,
+        height: 375 * a,
+        clear: true,
+        views: [{
+            type: 'image',
+            url: url,
+            top: 80 * a,
+            left: 0,
+            width: 150 * a,
+            height: 150 * a,
+          },
+          {
+            type: 'image',
+            url: url2,
+            top: 80 * a,
+            left: 180 * a,
+            width: 150 * a,
+            height: 150 * a,
+          },
+          {
+            type: 'text',
+            content: '批发价：¥' + that.goodsDetail.shop_price,
+            top: 0,
+            left: 0,
+            fontSize: 20 * a,
+            width: 180 * a,
+            bolder: false,
+            textAlign: 'left',
+            color: '#e64340'
+          },
+          {
+            type: 'text',
+            content: '零售价：¥' + that.goodsDetail.floor_price,
+            top: 40 * a,
+            left: 0,
+            fontSize: 16 * a,
+            width: 180 * a,
+            bolder: false,
+            textAlign: 'left',
+            color: '#333'
+          },
+        ]
+      };
+      that.setData({
+        painting: that.data.painting
+      });
+    }
+    eventGetImage(event) {
+      this.shareImage = event.detail.tempFilePath;
+    }
+    // 分享
+    onShareAppMessage(res) {
+      var path = '/Shop/pages/index?id=' + this.goodsDetail.goods_id;
+      return {
+        title: this.goodsDetail.goods_name,
+        path: path,
+        imageUrl: this.shareImage
+      };
+    }
   }
-  async onLoad(option) {
-    util.showLoading();
-    await this.$parent.loginInfo();
-    this.getGoodsInfo(option.id);
-  }
-}
 </script>
