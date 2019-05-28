@@ -424,7 +424,7 @@ export default class searchlist extends wepy.page {
     // 商品详情
     toGoodDetailsTap(id, evt) {
       wx.navigateTo({
-        url: 'goodDetail?id=' + id
+        url: 'goodDetail?id=' + id+'&suppliers_id='+this.initdata.suppliers_id
       });
     },
     // 点击确定 搜索商品

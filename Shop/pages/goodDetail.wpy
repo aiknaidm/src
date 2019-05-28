@@ -244,7 +244,7 @@
       </view>
     </view>
     <view class="goods-info">
-      <view class="goods-title">{{goodsDetail.goods_name}}<text wx:if="{{goodsDetail.hdky==1}}">支持会员卡</text></view>
+      <view class="goods-title">{{goodsDetail.goods_name}}<text wx:if="{{goodsDetail.hdky==1}}">支持会员卡</text><text wx:if="{{goodsDetail.vip_level>=1}}">{{goodsDetail.vip_level_text}}</text></view>
       <view class="goods-price2 goods-price " style="fonts-size:46rpx;" wx:if="{{status>1}}">批发价：¥ {{goodsDetail.shop_price}}</view>
       <view class=" {{status>1?'goods-price':'goods-price2'}} ">
         零售价：¥ {{goodsDetail.floor_price}}
@@ -371,13 +371,34 @@
     };
     mixins = [shopCart];
     // 获取商品详情
-    async getGoodsInfo(id) {
+    async getGoodsInfo(id,suppliers_id) {
       let data = {
         goods_id: id,
+        suppliers_id
       };
       let res = await newapi.GoodsInfo(data);
       wx.hideLoading();
       this.goodsDetail = res.data.data;
+
+      switch (this.goodsDetail.vip_level) {
+            case 1:
+                this.goodsDetail.vip_level_text = '一级会员'
+                break;
+            case 2:
+                this.goodsDetail.vip_level_text = '二级会员'
+                break;
+            case 3:
+                this.goodsDetail.vip_level_text = '三级会员'
+                break;
+            case 4:
+                this.goodsDetail.vip_level_text = '四级会员'
+                break;
+            case 5:
+                this.goodsDetail.vip_level_text = '五级会员'
+                break;
+            default:
+                break;
+        }
       this.shopNum = res.data.data.gouwuche;
       var friend_id =
         res.data.data.suppliers_id == this.$parent.globalData.friend_suppliers_id ?
@@ -406,7 +427,8 @@
     async onLoad(option) {
       util.showLoading();
       await this.$parent.loginInfo();
-      this.getGoodsInfo(option.id);
+      this.suppliers_id=option.suppliers_id?option.suppliers_id:''
+      this.getGoodsInfo(option.id, this.suppliers_id);
     }
     // async eventDraw() {
     //   var that = this;
@@ -471,7 +493,7 @@
     // }
     // 分享
     onShareAppMessage(res) {
-      var path = '/Shop/pages/index?id=' + this.goodsDetail.goods_id;
+      var path = '/Shop/pages/index?id=' + this.goodsDetail.goods_id+'&suppliers_id='+this.suppliers_id;
       return {
         title: this.goodsDetail.goods_name,
         path: path,

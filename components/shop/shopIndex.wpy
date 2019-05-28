@@ -206,7 +206,7 @@ image {
                 <view class="yizhan-name">
                   <view class="yizhan-name-titile">
                     <text>{{yizhan.suppliers_name}}</text>
-                    <button class="apply" wx:if="{{shenhe==2}}" @tap="{{yizhan.is_kthy==1?'toCardDetail':''}}">会员</button>
+                    <button class="apply" wx:if="{{shenhe==2}}" @tap="{{yizhan.is_kthy==1?'toCardDetail':''}}">{{yizhan.vip_level_text}}</button>
                     <button class wx:if="{{shenhe==1}}">申请中</button>
                     <button class wx:if="{{shenhe==0}}" @tap="apply({{sale_id}})">申请会员</button>
                   </view>
