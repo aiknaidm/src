@@ -35,7 +35,7 @@ import shopIndex from '../../mixins/shopIndex';
 import util from '../../utils/index';
 export default class shop extends wepy.page {
   config = {
-    navigationBarTitleText: '吉采易站'
+    navigationBarTitleText: ''
   };
   data = {
     yizhanBanner: [],
