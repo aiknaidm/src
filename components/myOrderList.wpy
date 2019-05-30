@@ -30,9 +30,7 @@
   .weui_cell_hd {
     margin-bottom: 10rpx;
   }
-  .weui_cell_hd {
-    margin-right: 10rpx;
-  }
+
 }
 </style>
 <template>

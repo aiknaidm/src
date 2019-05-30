@@ -4,11 +4,13 @@
   .weui_cell {
     position: relative;
     display: flex;
-    padding: 15px;
+    margin:auto 40rpx ;
+    padding: 30rpx 0;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
     border-bottom: 1px solid #eee; 
+    align-items: center
   }
   .weui_cell_hd {
     display: inline-block;
@@ -21,8 +23,8 @@
     vertical-align: -2px;
   }
   .weui_cell_hd {
-    margin-bottom: 10rpx;
-    
+    // margin-bottom: 10rpx;
+      margin-right: 10rpx;
   }
   
 }

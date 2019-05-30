@@ -53,6 +53,7 @@
 
 .icon-youcecaidan {
   padding-left: 30rpx;
+  padding-bottom: 30rpx;
 }
 
 .other {

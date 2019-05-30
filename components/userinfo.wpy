@@ -22,11 +22,12 @@
     border-top: 1rpx solid #f0f0f0;
   }
   .userinfo-bg {
-    width: 96%;
+    width: 93%;
     height: 50%;
     background: #fff;
     position: absolute;
     bottom: 0px;
+    border-radius: 20rpx 20rpx 0 0
   }
   .userinfo-nickname {
     color: #333;
