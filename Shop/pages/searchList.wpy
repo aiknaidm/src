@@ -188,7 +188,7 @@ import searchList1 from '../../components/searchList';
 import searchList2 from '../../components/searchList1';
 import noOrder from '../../components/noOrder';
 import loadingOrder from '../../components/loadingOrder';
-import shopCart from '../../mixins/shopCart';
+import shopCart from '../../mixins/shopcart';
 import shopCartPopup from '../../components/shop/shopCartPopup2';
 export default class searchlist extends wepy.page {
   config = {
@@ -492,7 +492,7 @@ export default class searchlist extends wepy.page {
       sort: '', //排序的方式
       price_max: '', //加个
       price_min: '',
-      brand: '',
+      brand: this.brand,
       attr_value: '',
       page: 1,
       suppliers_id: this.suppliers_id,
@@ -527,6 +527,8 @@ export default class searchlist extends wepy.page {
         title: option.navigationTitle
       });
     }
+    // 品牌
+    this.brand = option.brand ? option.brand : '';
     // 搜索关键词
     this.keyword = option.keyword ? option.keyword : '';
     // 分类id

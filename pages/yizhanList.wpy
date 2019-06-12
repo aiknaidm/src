@@ -34,7 +34,7 @@
 </style>
 <template>
   <view class="container">
-    <noorder show="1" wx:if="{{orderList.length==0&&otherList.length==0}}"></noorder>
+    <noorder show="1" src="/images/no-order.png" wx:if="{{orderList.length==0&&otherList.length==0}}"></noorder>
     <repeat for="{{orderList}}" wx:key="{{index}}">
       <orderList :orderList.sync="item" :goodsMap.sync="goodsMap[index]" @orderDetail.user="orderDetail">
         <view slot="btn">

@@ -19,7 +19,7 @@
 </style>
 <template>
   <view class="container">
-    <shopIndexc :yizhan.sync="yizhan" :sales_name.sync="sales_name" :friend_name.sync="friend_name" :yizhanBanner.sync="yizhanBanner" :shenhe.sync="shenhe" :goodsKind.sync="goodsKind" :isguoqi.sync="isguoqi" :isLoading.sync="isLoading" :text.sync="text" :erji.sync="erji"></shopIndexc>
+    <shopIndexc :goods.sync="goods"  :brands.sync="brands" :yizhan.sync="yizhan" :sales_name.sync="sales_name" :friend_name.sync="friend_name" :yizhanBanner.sync="yizhanBanner" :shenhe.sync="shenhe" :goodsKind.sync="goodsKind" :isguoqi.sync="isguoqi" :isLoading.sync="isLoading" :text.sync="text" :erji.sync="erji"></shopIndexc>
     <view class="backIndex backIndex2 " @tap='backIndex'>
       <text class='iconfont icon-shouye-copy'></text>
     </view>
@@ -49,7 +49,9 @@ export default class shop extends wepy.page {
     isShowShare: false,
     itemList: [],
     sales_name: '',
-    friend_name: ''
+    friend_name: '',
+    goods:[],
+    brands:[],
   };
   components = {
     shopIndexc
@@ -153,6 +155,8 @@ export default class shop extends wepy.page {
     if (this.suppliers_id) {
       this.getShopBanner(this.suppliers_id);
       this.getMaterialsList(this.suppliers_id);
+      this.getGoodsList(this.suppliers_id);
+      this.getBrandsList(this.suppliers_id);
     } else {
       this.getShopIndex();
     }

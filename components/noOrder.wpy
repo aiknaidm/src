@@ -17,12 +17,17 @@
   color: #999;
   /* text-align: center */
 }
-
+.no-order image{
+  width: 136rpx;
+  height:161rpx;
+  margin-bottom: 114rpx;
+  margin-top: 300rpx;
+}
 .no-order {
   width: 100%;
   text-align: center;
   background-color: #f2f2f2;
-  padding-top: 80rpx;
+  padding: 80rpx 0;
 }
 
 .no-order-img {
@@ -66,13 +71,15 @@
 </style>
 <template>
   <view class="no-order" show="进货无记录">
-    <view class="text" wx:if="{{show==1}}">当前没有进货记录， 赶紧去
-      <text class="xuanhuo" @tap="xuanhuoTap">选货</text>
+    <image src="{{src}}" wx:if="{{src}}"></image>
+    <view class="text" wx:if="{{show==1}}" >当前没有进货记录， 赶紧去
+      <text class="xuanhuo"  @tap="xuanhuoTap">选货</text>
     </view>
  <view class="text" text="你还没有供应商" wx:if="{{show==2}}">
          <!-- <view class="loading-order" wx:if="{{loading}}">
         <text class="weui-loading"></text>卖力加载中
     </view> -->
+     <image src="{{src}}"  wx:if="{{src}}"></image>
       {{text}}
       </view>
   </view>
@@ -83,7 +90,8 @@ import wepy from 'wepy';
 export default class List extends wepy.component {
   props = {
     show: String,
-    text: String
+    text: String,
+    src:String,
     // goodsList: {
     //     type: Array,
     //     default: ["-1"],

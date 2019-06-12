@@ -314,7 +314,7 @@
   import util from '../../utils/index';
   import shopCartPopup from '../../components/shop/shopCartPopup';
   import htmlParser from '../../components/htmlParser';
-  import shopCart from '../../mixins/shopCart';
+  import shopCart from '../../mixins/shopcart';
   export default class goodDetail extends wepy.page {
     config = {
       navigationBarTitleText: '商品详情',

@@ -1,250 +1,272 @@
 
 <style lang="less">
-/* pages/my/qb-hy-detail/index.wxss */
-/* pages/my/qb-hy/index.wxss */
-page {
-  background-color: #fff;
-}
-.container {
-  //   padding: 30rpx;
-}
-.card {
-  padding: 30rpx;
-}
-.shopName {
-  position: relative;
-  padding: 40rpx 30rpx;
-  border-radius: 15rpx;
-  background-color: #008080;
-  margin-bottom: 30rpx;
-}
-.imgBox image {
-  width: 128rpx;
-  height: 118rpx;
-  vertical-align: middle;
-  border-radius: 50%;
-}
-.nameBox {
-  margin-left: 10rpx;
-}
-.shopList {
-  background-color: transparent;
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-}
-.left {
-  display: flex;
-  align-items: center;
-  flex: 4;
-}
-.toShop {
-  text-align: center;
-  background-color: #fff;
-  height: 30rpx;
-  line-height: 30rpx;
-  border-radius: 20rpx;
-  position: absolute;
-  top: 20rpx;
-  right: 20rpx;
-  font-size: 28rpx;
-  padding: 0 20rpx;
-}
-.name {
-  text-align: left;
-  font-size: 28rpx;
-  color: #fff;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  /*后面的3是设置显示几行*/
-}
-.txt .name {
-  text-align: left;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  font-size: 28rpx;
-  color: #666;
-}
-.text {
-  color: #fff;
-  font-size: 36rpx;
-}
-.border {
-  font-size: 30rpx;
-  color: #fff;
-  text-align: center;
-  margin: 20rpx 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.countBox {
-  text-align: center;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.amount {
-  font-size: 38rpx;
-}
-.tips {
-  font-size: 28rpx;
-  color: #fff;
-}
-.toPay {
-  border: 1px solid#ff802b;
-  height: 66rpx;
-  line-height: 66rpx;
-  text-align: center;
-  width: 200rpx;
-  border-radius: 15rpx;
-}
-.box {
-  display: flex;
-  justify-content: center;
-}
-.xinxi {
-  border-bottom: 1px solid#e4e4e4;
-  font-size: 30rpx;
-  background-color: #fff;
-}
-.xinxi .main {
-  height: 80rpx;
-  line-height: 80rpx;
-  border-top: 1px solid#e4e4e4;
-  padding-left: 30rpx;
-}
-.Xx {
-  padding-left: 30rpx;
-  // border-bottom: 1px solid#e4e4e4;
-  color: #747373;
-  line-height: 60rpx;
-}
-.Xx view {
-  height: 60rpx;
-}
-.dotted {
-  border-bottom: 2px dotted#fff;
-  height: 10rpx;
-  width: 250rpx;
-}
+  /* pages/my/qb-hy-detail/index.wxss */
+  /* pages/my/qb-hy/index.wxss */
+  page {
+    background-color: #fff;
+  }
+  .container {
+    //   padding: 30rpx;
+  }
+  .card {
+    // padding: 40rpx;
+    background: url("https://lmbge.com/upload/1234/card-bg.png") no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .card-border {
+    position: absolute;
+    bottom: -75rpx;
+    width: 100%;
+    height: 140rpx;
+    border-radius: 50%;
+    background: #fff;
+    z-index: 2;
+    left: 0;
+  }
+  .shopName {
+    position: relative;
+    padding: 40rpx 30rpx;
+    border-radius: 15rpx;
+    background: linear-gradient(153deg, rgba(246, 200, 118, 1), rgba(251, 220, 166, 1));
+    margin-bottom: 30rpx;
+    color: #8F6728;
+    width: 575rpx;
+    height: 487rpx;
+    border-radius: 20rpx;
+    margin: auto;
+    position: relative;
+    top: 50rpx;
+    z-index: 1;
+  }
+  .shopList {
+    .left {
+      display: flex;
+      align-items: center;
+      font-size: 36rpx;
+      line-height: 70rpx;
+      // font-weight: bold;
+    }
+    .name {
+      border-bottom: 2px solid #fff;
+    }
+  }
+  .imgBox image {
+    width: 128rpx;
+    height: 128rpx;
+    vertical-align: middle;
+    border-radius: 50%;
+    margin-right: 40rpx;
+    background: #fff;
+  }
+  .toShop {
+    text-align: right;
+    text {
+      text-align: center;
+      background-color: #484848;
+      color: #fff;
+      height: 30rpx;
+      line-height: 30rpx;
+      border-radius: 20rpx;
+      display: inline-block;
+      font-size: 24rpx;
+      padding: 10rpx 20rpx;
+    }
+  }
+  .toPay {
+    z-index: 3;
+    width: 355rpx;
+    height: 70rpx;
+    color: #fff;
+    background: linear-gradient(153deg, rgba(39, 41, 46, 1), rgba(72, 72, 72, 1));
+    border-radius: 35rpx;
+    text-align: center;
+    line-height: 70rpx;
+    position: relative;
+    margin: auto;
+    top: -30rpx;
+  }
+  .countBox{
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    font-size: 30rpx;
+    margin-top: 90rpx;
+    .countBox-money{
+      font-size: 42rpx;
+      font-weight: bold;
+      line-height: 70rpx;
+    }
+  }
+  .box {
+    display: flex;
+    justify-content: center;
+  }
+  .xinxi {
+    // border-bottom: 1px solid#e4e4e4;
+   
+    background-color: #fff;
+    position: relative;
+    z-index: 20;
+    padding: 20rpx 70rpx;
+  }
+  .xinxi .main {
+   padding: 20rpx 0;
+    // border-top: 1px solid#e4e4e4;
+    padding-left: 30rpx;
+    position: relative;
+    color: #27292E;
+    font-size: 32rpx;
+  }
+  .xinxi .main::before{
+    content: "";
+    width:8rpx;
+height:27rpx;
+background:rgba(39,41,46,1);
+border-radius:4px;
+position: absolute;
+left: 10rpx;
+top:50%;
+margin-top: -14rpx;
+  }
+  .xinxi .main image{
+    width: 27rpx;
+    height: 27rpx;
+    margin-left: 20rpx;
+    transition: transform 0.3s;
+    // -webkit-transform:transform 0.5s;
+  }
+  .xinxi .main image.active{
+    width: 27rpx;
+    height: 27rpx;
+    transform:rotate(180deg);
+-ms-transform:rotate(180deg); 	/* IE 9 */
+-moz-transform:rotate(180deg); 	/* Firefox */
+-webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+-o-transform:rotate(180deg); 	
+  }
+  .Xx {
+    padding-left: 30rpx; // border-bottom: 1px solid#e4e4e4;
+    color: #747373;
+    line-height: 55rpx;
+  }
+  .Xx view {
+    height: 55rpx;
+  }
 </style>
 <template>
-    <view class='container'>
-        <view class="card">
-            <view class='shopName' data-id="{{list.id}}" style="{{list.card_img?'background:url(' + list.card_img + ') no-repeat;background-size:cover':'background-color:#008080;'}}">
-                <view class='shopList'>
-                    <view class='left'>
-                        <view class="imgBox">
-                            <image mode="aspectFill" src='{{list.img}}'/>
-                        </view>
-                        <view class='nameBox'>
-                            <view class='name'> {{list.suppliers_name}}</view>
-                            <view class='text'>
-                                <text>会员卡</text> </view>
-                        </view>
-                    </view>
-                    <view class='toShop'>积分：{{list.jifen}}</view>
-                </view>
-                <view class='border'>
-                    <view class='dotted'></view>
-                    <text class='iconfont icon-star_full'></text>
-                    <view class='dotted'></view>
-                </view>
-                <view class='countBox'>
-                    <view class='amount'>可用余额：￥{{list.amount}}</view>
-                    <view class='tips' wx:if="{{list.tbc_amount}}">待确认余额：￥{{list.tbc_amount}}</view>
-                </view>
+  <view class='container'>
+    <view class="card">
+      <view class="card-border"></view>
+      <view class='shopName' data-id="{{list.id}}"  style="{{list.card_img?'background:url(' + list.card_img + ') no-repeat;background-size:cover':''}}">
+        <view class='toShop'><text>积分：{{list.jifen}}</text></view>
+        <view class='shopList'>
+          <view class='left'>
+            <view class="imgBox">
+              <image mode="aspectFill" src='{{list.img}}' />
             </view>
-            <view class='box'>
-                <view class='toPay' @tap='toPay({{list.suppliers_id}})' >
-                    会员充值
-                </view>
+            <view class='nameBox'>
+              <view class='name'> {{list.suppliers_name}}</view>
+              <view class='text'>
+                <text>会员卡</text> </view>
             </view>
+          </view>
         </view>
-        <view class='xinxi'>
-            <view bindtap='showXx' class='main'>会员信息</view>
-            <view hidden='{{Xx}}' class='Xx'>
-                <view>姓名：{{list.hyxx_name}}</view>
-                <view>电话：{{list.hyxx_mobile}}</view>
-            </view>
-            <view bindtap='showGz' class='main'>会员卡使用规则</view>
-            <view hidden='{{Gz}}' class='Xx'>
-               <rich-text nodes="{{list.card_rules}}" bindtap="tap"></rich-text>
-            </view>
-            <view bindtap='showJf' class='main'>会员积分</view>
-            <view hidden='{{Jf}}' class='Xx'>
-                当前积分：{{list.jifen}}
-            </view>
+        <view class='countBox'>
+          <view class='amount'>
+            <view class="countBox-money">{{list.amount}}</view>
+            <view>可用余额：</view>
+          </view>
+          <view class='tips'>
+            <view class="countBox-money">{{list.tbc_amount}}</view>
+            <view>待确认余额：</view>
+          </view>
         </view>
+      </view>
+      <view class='box'>
+        <view class='toPay' @tap='toPay({{list.suppliers_id}})'>
+          会员充值
+        </view>
+      </view>
     </view>
+    <view class='xinxi'>
+      <view bindtap='showXx' class='main'>会员信息<image class="{{Xx?'':'active'}}" src="/images/jiantou.png"></image></view>
+      <view hidden='{{Xx}}' class='Xx'>
+        <view>姓名：{{list.hyxx_name}}</view>
+        <view>电话：{{list.hyxx_mobile}}</view>
+      </view>
+      <view bindtap='showGz' class='main'>会员卡使用规则<image class="{{Gz?'':'active'}}" src="/images/jiantou.png"></image></view>
+      <view hidden='{{Gz}}' class='Xx'>
+        <rich-text nodes="{{list.card_rules}}" bindtap="tap"></rich-text>
+      </view>
+      <view bindtap='showJf' class='main'>会员积分<image class="{{Jf?'':'active'}}" src="/images/jiantou.png"></image></view>
+      <view hidden='{{Jf}}' class='Xx'>
+        当前积分：{{list.jifen}}
+      </view>
+    </view>
+  </view>
 </template>
 
 <script>
-import wepy from 'wepy';
-import newapi from '../../API/newapi';
-import util from '../../utils/index';
-import noOrder from '../../components/noOrder';
-export default class myHelp extends wepy.page {
-  config = {
-    navigationBarTitleText: '我的卡包'
-  };
-  components = {
-    noOrder
-  };
-  data = {
-    list: '',
-    Xx: true,
-    Gz: true,
-    Jf: true
-  };
-  computed = {};
-  methods = {
-    showXx: function() {
-      this.Xx = !this.Xx;
-    },
-    showGz: function() {
-      this.Gz = !this.Gz;
-    },
-    showJf: function() {
-      this.Jf = !this.Jf;
-    },
-    toPay(suppliers_id) {
-      wx.navigateTo({
-        url: 'cardPay?suppliers_id=' + suppliers_id
-      });
-    }
-  };
-  events = {};
-  async detail(suppliers_id) {
-    let data = {
-      suppliers_id,
+  import wepy from 'wepy';
+  import newapi from '../../API/newapi';
+  import util from '../../utils/index';
+  import noOrder from '../../components/noOrder';
+  export default class myHelp extends wepy.page {
+    config = {
+      navigationBarTitleText: '我的卡包'
     };
-    let res = await newapi.cardinfo(data);
-    wx.hideLoading();
-    if (res.data.code == 0) {
-      this.list = res.data.data;
-      this.$apply();
+    components = {
+      noOrder
+    };
+    data = {
+      list: '',
+      Xx: true,
+      Gz: true,
+      Jf: true
+    };
+    computed = {};
+    methods = {
+      showXx: function() {
+        this.Xx = !this.Xx;
+      },
+      showGz: function() {
+        this.Gz = !this.Gz;
+      },
+      showJf: function() {
+        this.Jf = !this.Jf;
+      },
+      toPay(suppliers_id) {
+        wx.navigateTo({
+          url: 'cardPay?suppliers_id=' + suppliers_id
+        });
+      }
+    };
+    events = {};
+    async detail(suppliers_id) {
+      let data = {
+        suppliers_id,
+      };
+      let res = await newapi.cardinfo(data);
+      wx.hideLoading();
+      if (res.data.code == 0) {
+        this.list = res.data.data;
+        this.$apply();
+      }
+    }
+    async onLoad(option) {
+      util.showLoading();
+      await this.$parent.loginInfo();
+      if (option.suppliers_id) {
+        this.suppliers_id = option.suppliers_id;
+        this.detail(option.suppliers_id);
+      } else {
+        await util.showToast('数据错误');
+        wx.navigateBack({
+          delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+        });
+      }
     }
   }
-  async onLoad(option) {
-    util.showLoading();
-    await this.$parent.loginInfo();
-    if (option.suppliers_id) {
-      this.suppliers_id = option.suppliers_id;
-      this.detail(option.suppliers_id);
-    } else {
-      await util.showToast('数据错误');
-      wx.navigateBack({
-        delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-      });
-    }
-  }
-}
 </script>

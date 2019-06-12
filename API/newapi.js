@@ -24,6 +24,7 @@ const newapi = {
     yizhanList: () => fetch(`${host_chk}/yzlb_my`, 'GET'), //易站列表
     goodsKind: (data) => fetch(`${host_chk}/categorys`, 'GET', data), //商品分类
     goodsBrand: (data) => fetch(`${host_chk}/pinpai`, 'GET', data), //商品品牌
+    indexBrand: (data) => fetch(`${host_chk}/shouye_pinpai`, 'GET', data), //商品品牌
     goodsList: (data) => fetch(`${host_chk}/search`, 'GET', data), //商品列表
     unfriend: (data) => fetch(`${host_chk}/jcgx`, 'GET', data), //解除关系//取消申请
     setIndex: (data) => fetch(`${host_chk}/swxb`, 'GET', data), //设为店铺首页

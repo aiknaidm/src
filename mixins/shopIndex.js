@@ -1,5 +1,6 @@
 import wepy from 'wepy'
 import newapi from '../API/newapi';
+import util from '../utils/index';
 export default class testMixin extends wepy.mixin {
     config = {
         navigationBarTitleText: '吉采易站'
@@ -35,8 +36,23 @@ export default class testMixin extends wepy.mixin {
 
             this.getShopBanner(suppliers_id);
             this.getMaterialsList(suppliers_id);
+            this.getGoodsList(suppliers_id);
+            this.getBrandsList(suppliers_id);
+
             // this.$apply();
 
+        }
+        // 活动列表
+    async getGoodsList(suppliers_id) {
+            let res = await newapi.goodsList({ is_best: 1, suppliers_id: suppliers_id, sort: '' });
+            if (res.data.code) this.goods = res.data.data
+            this.$apply()
+        }
+        // 品牌列表
+    async getBrandsList(suppliers_id) {
+            let res = await newapi.indexBrand({ suppliers_id: suppliers_id });
+            if (res.data.code) this.brands = res.data.data
+            this.$apply()
         }
         // 顶部banner 店铺名字
     async getShopBanner(suppliers_id = '') {
@@ -45,28 +61,36 @@ export default class testMixin extends wepy.mixin {
         };
         let res = await newapi.yizhanBanner(data);
         wx.hideLoading();
-        this.yizhanBanner = res.data.data;
+        this.yizhanBanner = res.data.guanggao;
         this.yizhan = res.data.yizhan;
         this.yizhan.suppliers_id = suppliers_id
+        this.yizhan.jianjie = util.html_decode(this.yizhan.jianjie)
         this.suppliers_id = suppliers_id
+        this.yizhan.markers = [{
 
+            id: 0,
+            latitude: this.yizhan.latitude,
+            longitude: this.yizhan.longitude,
+            width: 50,
+            height: 50
+        }]
         this.$parent.globalData.yizhan = this.yizhan
         this.$parent.globalData.vip_level = this.yizhan.vip_level
         switch (this.yizhan.vip_level) {
             case 1:
-                this.yizhan.vip_level_text = '一级会员'
+                this.yizhan.vip_level_img = '/images/vip/1.png'
                 break;
             case 2:
-                this.yizhan.vip_level_text = '二级会员'
+                this.yizhan.vip_level_img = '/images/vip/2.png'
                 break;
             case 3:
-                this.yizhan.vip_level_text = '三级会员'
+                this.yizhan.vip_level_img = '/images/vip/3.png'
                 break;
             case 4:
-                this.yizhan.vip_level_text = '四级会员'
+                this.yizhan.vip_level_img = '/images/vip/4.png'
                 break;
             case 5:
-                this.yizhan.vip_level_text = '五级会员'
+                this.yizhan.vip_level_img = '/images/vip/5.png'
                 break;
             default:
                 break;
