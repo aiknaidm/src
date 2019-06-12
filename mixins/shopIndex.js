@@ -44,7 +44,7 @@ export default class testMixin extends wepy.mixin {
         }
         // 活动列表
     async getGoodsList(suppliers_id) {
-            let res = await newapi.goodsList({ is_best: 1, suppliers_id: suppliers_id, sort: '' });
+            let res = await newapi.goodsList({ is_hot: 1, suppliers_id: suppliers_id, sort: '' });
             if (res.data.code) this.goods = res.data.data
             this.$apply()
         }
