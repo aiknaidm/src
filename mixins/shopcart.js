@@ -56,7 +56,7 @@ export default class shopcart extends wepy.mixin {
         // 直接购买
         tobuy() {
             var goodsDetail = this.goodsDetail;
-            if (goodsDetail.selectSizePrice == 0) {
+            if (goodsDetail.selectPrice == 0) {
                 util.showToast('该商品暂无价格不能购买');
                 return;
             }
@@ -77,7 +77,8 @@ export default class shopcart extends wepy.mixin {
         // 添加购物车
         toAddShopCar() {
             var goodsDetail = this.goodsDetail;
-            if (goodsDetail.selectSizePrice == 0) {
+            console.log("goodsDetail", goodsDetail);
+            if (goodsDetail.selectPrice == 0) {
                 util.showToast('该商品暂无价格不能购买');
                 return;
             }

@@ -1,5 +1,8 @@
 
 <style lang="less">
+.container{
+  background: transparent
+}
 .list-title {
   padding: 20rpx 40rpx;
   background-color: #f0f0f0;
@@ -7,10 +10,14 @@
 
 .list-box {
   display: flex;
-  padding: 20rpx 40rpx;
+  margin: 30rpx;
   font-size: 28rpx;
   border-bottom: 1px solid #f0f0f0;
-  padding-right: 0;
+  background: #fff;
+  padding:20rpx 15rpx;
+  border-radius: 20rpx;
+  position: relative;
+  overflow: hidden;
 }
 
 .text {
@@ -32,9 +39,21 @@
 .list-box-content {
   flex: 3;
   padding-left: 20rpx;
-  line-height: 40rpx;
+  line-height:50rpx;
 }
-
+.list-box-content .list-box-image{
+  display: flex;
+  align-items: center
+}
+.list-box-content .list-box-image view{
+  max-width: 250rpx;
+  overflow: hidden;white-space: nowrap;text-overflow: ellipsis;
+}
+.list-box-content .list-box-image image{
+  width: 28rpx;
+  height:31rpx;
+  margin-right: 10rpx;
+}
 .list-box-content .list-box-title {
   font-weight: bold;
   line-height: 50rpx;
@@ -45,12 +64,27 @@
 
 .list-box-status {
   font-weight: 100;
-  margin-right: 20rpx;
+  // margin-right: 20rpx;
   position: relative;
   z-index: 10;
   text-align: right;
 }
-
+.list-box-status image{
+  width:7rpx;
+  height:35rpx;
+  padding:0 10rpx 0 40rpx;
+}
+.list-box-status2{
+  position: absolute;
+ right: 0;
+ bottom: 0;
+ width: 117rpx;
+ height: 112rpx;
+}
+.list-box-status2 image{
+  width: 100%;
+  height:100%;
+}
 .icon-youcecaidan {
   padding-left: 30rpx;
   padding-bottom: 30rpx;
@@ -323,19 +357,19 @@ button.ss-my-d {
               {{item.suppliers_desc}}
               <view class="shenhe">
                 <view class="list-box-status orange" wx:if="{{item.shenhe==0}}">审核中</view>
-                <view class="list-box-status orange" wx:if="{{item.xingji==1}}">商城首页店铺</view>
+                <view class="list-box-status2" wx:if="{{item.xingji==1}}">
+                  <image src="/images/index/index-flag.png"></image>
+                </view>
 
-                <view class="list-box-status orange">
-                  <text
-                    class="iconfont icon-youcecaidan"
-                    @tap.stop="changeStatus({{item.suppliers_id}},{{item.xingji}},{{item.shenhe}})"
-                  ></text>
+                <view class="list-box-status">
+                  <image  @tap.stop="changeStatus({{item.suppliers_id}},{{item.xingji}},{{item.shenhe}})" src="/images/index/dian.png"></image>
+                
                 </view>
               </view>
             </view>
-            <view>联系人：{{item.username}}</view>
-            <view catchtap="phoneCallTap({{item.mobile}})" >
-              手机号码：{{item.mobile}}
+            <view class="list-box-image"><image src="/images/index/name.png"></image><view>联系人：{{item.username}}</view></view>
+            <view class="list-box-image" catchtap="phoneCallTap({{item.mobile}})" >
+              <image src="/images/index/phone2.png"></image>手机号码：{{item.mobile}}
               <text class="iconfont icon-shouji"></text>
             </view>
           </view>
@@ -360,7 +394,7 @@ export default class suppliersList extends wepy.page {
   };
 
   data = {
-    yizhanList: []
+    yizhanList: -1
   };
 
   computed = {};

@@ -3,6 +3,7 @@
   #top {
     background: url(https://lmbge.com/upload/1234/index-bg.png) no-repeat;
     background-size: 100% 100%;
+    background-position: center;
     position: relative;
     padding-bottom: 20rpx;
     margin-bottom: 10rpx;
@@ -13,9 +14,9 @@
     position: relative;
     z-index: 100;
   }
-  .ss-my-d{
+  .ss-my-d {
     background: #e50012;
-    height:55rpx;
+    height: 55rpx;
     line-height: 55rpx;
     color: #fff;
     border: 0px solid;
@@ -69,7 +70,7 @@
   .materials-list {
     display: flex;
     /* justify-content: space-between;
-                 */
+                     */
     flex-wrap: wrap;
     padding: 40rpx;
     color: #797979;
@@ -119,11 +120,12 @@
     transition: all 1s;
     -webkit-transition: all 1s;
     align-items: center;
-    width: 80rpx;
-    height: 80rpx;
+    width: 40rpx;
+    height: 40rpx;
     text-align: center;
     justify-content: center; // overflow: hidden;
     z-index: 100;
+    padding: 20rpx;
   }
   .backIndex3 {
     bottom: 100rpx;
@@ -133,11 +135,12 @@
     margin-right: 10px;
   }
   .from {
-    text-align: left;
-    padding-left: 50rpx;
-    position: relative;
-    top: -10rpx;
-    min-height: 30rpx;
+    // text-align: left;
+    // // padding-left: 50rpx;
+    // position: relative;
+    // top: -10rpx;
+    // min-height: 30rpx;
+    font-size: 25rpx;
   } // 提示
   image {
     width: 300rpx;
@@ -177,6 +180,17 @@
     font-size: 35rpx;
     margin-bottom: 40rpx;
   }
+  .index-title-info2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+    font-size: 35rpx;
+    margin-bottom: 40rpx;
+  }
+  .index-title-info2 .index-title-img {
+    margin-bottom: 10rpx;
+  }
   .index-title-img {
     width: 200rpx;
     height: 200rpx;
@@ -190,6 +204,8 @@
   }
   .index-title-name {
     padding-left: 20rpx;
+    font-size: 35rpx;
+    line-height: 60rpx;
   }
   .yizhan-name-titile {
     position: absolute;
@@ -212,13 +228,12 @@
     color: #fff;
     border-radius: 50rpx;
     font-size: 30rpx;
-    padding:10rpx 20rpx;
-
+    padding: 10rpx 20rpx;
   }
-    .yizhan-name-titile button.apply image{
-width:36rpx;
-height:27rpx;
-    }
+  .yizhan-name-titile button.apply image {
+    width: 36rpx;
+    height: 27rpx;
+  }
   .yizhan-num {
     border-radius: 20rpx;
     background: #ffffff;
@@ -287,29 +302,43 @@ height:27rpx;
   .gonggao {
     // width: 690rpx;
     margin: 0 40rpx;
-    display: -webkit-box;
+    padding: 30rpx 55rpx; //  max-height: 7800rpx;
     background: #FFD59B;
     color: #D22D25;
     border-radius: 50px;
     overflow: hidden;
     font-size: 27rpx;
+    position: relative;
     text {
       color: #424242;
     }
   }
-  .gonggao.no-active {
-    padding: 0 35rpx;
-    height: 78rpx;
-    line-height: 78rpx;
+  .gonggao.no-active .left {
+    width: 450rpx;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
+    -webkit-line-clamp: 3;
     transition: max-height 100s;
+    overflow: hidden;
+    display: -webkit-box;
+    line-height: 50rpx;
   }
-  .gonggao.active {
+  .gonggao .right {
+    position: absolute;
+    right: -40rpx;
+    bottom: -10rpx;
+  }
+  .gonggao .right image {
+    width: 187rpx;
+    height: 150rpx;
+  } // .gonggao.no-active {
+  //   height: 150rpx;
+  //   line-height: 50rpx;
+  // }
+  .gonggao.active .left {
     height: inherit;
     overflow: inherit;
-    padding: 30rpx 55rpx;
-    //  max-height: 7800rpx;
+    width: 450rpx;
+    line-height: 50rpx;
   }
   .gonggao2 {
     text-align: center;
@@ -332,24 +361,24 @@ height:27rpx;
     }
   } // 活动商品
   .goods-title {
-      line-height: 100rpx;
-      font-size: 38rpx;
-      text-align: center;
-    }
-    .goods-title::before,
-    .goods-title::after {
-      content: "";
-      display: inline-block;
-      width: 25rpx;
-      background: url("https://lmbge.com/upload/1234/juxing.png") no-repeat;
-      height: 25rpx;
-      background-size: 100%;
-      margin: 0 10rpx;
-      background-position: center;
-    }
-  .goods-lists,.brand-lists {
+    line-height: 100rpx;
+    font-size: 38rpx;
+    text-align: center;
+  }
+  .goods-title::before,
+  .goods-title::after {
+    content: "";
+    display: inline-block;
+    width: 25rpx;
+    background: url("https://lmbge.com/upload/1234/juxing.png") no-repeat;
+    height: 25rpx;
+    background-size: 100%;
+    margin: 0 10rpx;
+    background-position: center;
+  }
+  .goods-lists,
+  .brand-lists {
     margin: 10rpx 0;
-    
     overflow: hidden;
   }
   .goods-list {
@@ -364,88 +393,98 @@ height:27rpx;
       overflow: hidden;
     }
   }
- .goods-name{
-   display: -webkit-box;
--webkit-box-orient: vertical;
--webkit-line-clamp: 1;
-overflow: hidden;
-height: 40rpx;
- }
- .goods-money{
-   color: #e50012;
- }
-  .brand-list{
+  .goods-name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    height: 40rpx;
+  }
+  .goods-money {
+    color: #e50012;
+  }
+  .brand-list {
     float: left;
-    width: calc(100vw / 4 - 88rpx);
-    height: calc(100vw / 4 - 88rpx);
-     margin: 40rpx;
-     border-radius: 20rpx;  border:1px solid #f0f0f0;
-      overflow: hidden;
-      text-align: center;
+    width: calc(100vw / 4 - 68rpx);
+    height: calc(100vw / 4 - 68rpx);
+    margin: 20rpx 30rpx;
+    border-radius: 20rpx;
+    border: 1px solid #f0f0f0;
+    overflow: hidden;
+    text-align: center;
     image {
-      width:100%;
-      height:100%;
+      width: 100%;
+      height: 100%;
     }
-    text{
+    text {
       width: 100%;
       height: 100%;
       display: flex;
-    justify-content: center;
-    align-items: center;
+      justify-content: center;
+      align-items: center;
     }
-  }
-  // 关于我们
-  .about{
-    padding:40rpx;
-  }
-  // 联系我们
-  .contect-list{
-    margin:0 40rpx ;
+  } // 关于我们
+  .about {
+    padding: 40rpx;
+  } // 联系我们
+  .contect-list {
+    margin: 0 40rpx;
     padding: 15rpx 0;
     border-bottom: 1px solid #bfbfbf;
     line-height: 50rpx;
-    color:#424242;
-    image{
+    color: #424242;
+    image {
       width: 42rpx;
-      height:42rpx;
+      height: 42rpx;
       margin-right: 5rpx;
     }
-    .contect-list-name{
+    .contect-list-name {
       display: flex;
       align-items: center;
     }
   }
-  .more{
+  .more {
     display: inline-block;
-    float: right;position: absolute;
-    right:0;
-  padding-right: 40rpx;
-  font-size: 27rpx;
-
-    image{
-        width:30rpx;
-    height:30rpx;
-    position: relative;
-    top: 4rpx;
-    margin-left: 5rpx;
+    float: right;
+    position: absolute;
+    right: 0;
+    padding-right: 40rpx;
+    font-size: 27rpx;
+    image {
+      width: 30rpx;
+      height: 30rpx;
+      position: relative;
+      top: 4rpx;
+      margin-left: 5rpx;
     }
+  }
+  .no-order{
+    padding:80rpx 40rpx;width:auto;
   }
 </style>
 <template>
   <view class="container">
-   
     <!-- <view class="tishi" wx:if="{{frist_open!=1&&shenhe==0}}">
-                <image src="/images/tishi.png" mode="widthFix" lazy-load="false">
-                </image>
-                <text class="iconfont icon-guanbi1"  @tap.stop="toKnow"></text>
-              </view> -->
+                    <image src="/images/tishi.png" mode="widthFix" lazy-load="false">
+                    </image>
+                    <text class="iconfont icon-guanbi1"  @tap.stop="toKnow"></text>
+                  </view> -->
     <!-- <view class="btn" @tap.stop="toKnow">我知道了</view> -->
-    <view id="top">
+    <view id="top" style="background:url({{yizhan.bg_img}}) no-repeat; background-size: 100% 100%; background-position: center;">
       <view class="mengban"></view>
       <search @buttonTap.user="buttonTap">
       </search>
       <view class="index-title">
-        <view class="index-title-info">
+        <view class="index-title-info2" wx:if="{{sales_name==''&&friend_name==''}}">
+          <view class="index-title-img">
+            <image src="{{yizhan.img}}" mode="scaleToFill" lazy-load="false">
+            </image>
+          </view>
+          <view class="index-title-name">
+            <view>{{yizhan.suppliers_name}}</view>
+          </view>
+        </view>
+        <view class="index-title-info"  wx:else>
           <view class="index-title-img">
             <image src="{{yizhan.img}}" mode="scaleToFill" lazy-load="false">
             </image>
@@ -457,11 +496,12 @@ height: 40rpx;
             </view>
           </view>
         </view>
+        
         <view class="yizhan-name-titile">
           <button class="apply" wx:if="{{shenhe==2}}" @tap="{{yizhan.is_kthy==1?'toCardDetail':''}}">
-            
-            <image src="{{yizhan.vip_level_img}}"></image>
-            </button>
+                
+                <image src="{{yizhan.vip_level_img}}"></image>
+                </button>
           <button class wx:if="{{shenhe==1}}">申请中</button>
           <button class wx:if="{{shenhe==0}}" @tap="apply({{sale_id}})">申请会员</button>
         </view>
@@ -476,92 +516,108 @@ height: 40rpx;
           </view>
         </view>
       </view>
-      <statusTap :statusType.sync="statusType" @statusTap.user="statusTap"></statusTap>
-      <!-- <view class="faguang">
-          
-        </view> -->
-    </view>
-     <block wx:if="{{status==0}}">
-    <view class="swiper-container" wx:if="{{yizhanBanner.length>0}}">
-      <swiper class="swiper_box" >
-        <block wx:for="{{yizhanBanner}}" wx:key="{{index}}" wx:if="{{item.content!=''}}">
-          <swiper-item >
-            <image data-adid="{{item.ad_id}}" src="{{item.content}}" class="slide-image" />
-            <view class="yizhan-name">
-              <view class="yizhan-name-txt" wx:if="{{(!friend_name||friend_name=='')&&shenhe!=2}}">您还不是该店的会员，暂不能享受该店的会员权益</view>
-            </view>
-          </swiper-item>
-        </block>
-      </swiper>
-    </view>
-    <view class="gonggao {{isclick?'active':'no-active'}}" wx:if="{{yizhan.gonggao&&yizhan.gonggao!==''}}">
-      公告栏：<text>{{yizhan.gonggao}}</text>
-    </view>
-    <view class="gonggao2 {{isclick?'active':''}}" @tap="guanggaoTap" wx:if="{{yizhan.gonggao&&yizhan.gonggao!==''}}">
-      <image src="/images/jiantou2.png" mode="scaleToFill" lazy-load="false">
-      </image>
-    </view>
-    <!--活动商品 -->
-    <view class="goods-lists">
-      <view class="goods-title">
-        活动商品
-      </view>
-      <view class="goods-list" wx:for="{{goods}}" wx:key="{{index}}" @tap="toGoodsDetails({{item.goods_id}})">
-        <view class="goods-list-img" >
-         
-          <image src="{{item.original_img1?item.original_img1:item.original_img2}}"  lazy-load="true"></image>
-        </view>
-        <view class="goods-name">
-          {{item.goods_name}}
-        </view>
-        <view class="goods-money">
-          {{item.floor_price}}
-        </view>
-      </view>
-      <!-- <view  class="no-order" wx:if="{{goods.length==0}}">暂无活动商品</view> -->
-    </view>
-    <!--品牌列表 -->
-    <view class="brand-lists">
-      <view class="goods-title">
-        合作品牌
-      </view>
-      <view class="brand-list" wx:for="{{brands}}" wx:key="{{index}}" @tap="toSearchList({{item.brand_id}},{{item.brand_name}})">
-        
-          <image src="{{item.brand_logo}}" wx:if="{{item.brand_logo}}"></image>
-          <text wx:else>{{item.brand_name}}</text>
-   
-      </view>
-       <!-- <view class="no-order" wx:if="{{brands.length==0}}">暂无合作品牌</view> -->
-    </view>
-    </block>
-    <view class="materials" wx:if="{{status==1}}">
       
-      <loadingOrder wx:if="{{isLoading}}"></loadingOrder>
-      <noorder show="2" :goodsList.sync="goodsKind" :text.sync="text" wx:elif="{{(goodsKind.length==0&&!isLoading)||isguoqi}}"></noorder>
-      <block wx:elif="{{erji==0}}">
+      <statusTap wx:if="{{!(shenhe!=2&&yizhan.is_chakan==0)}}" :statusType.sync="statusType" @statusTap.user="statusTap" ></statusTap>
+
+     
+      <!-- <view class="faguang">
+              
+            </view> -->
+    </view>
+    <block wx:if="{{shenhe!=2&&yizhan.is_chakan==0}}">
+       <view class="no-order" >该店暂时不支持非会员查看，你可以点击申请会员查看商品</view>
+      <!-- <noorder show="2" :text.sync="text2">
+
         
-        <view class="materials-list">
-          <view wx:for="{{goodsKind}}" wx:key="{{index}}" @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})">
-            {{item.cat_name}}
+      </noorder> -->
+    </block>
+    <block wx:else>
+      <block wx:if="{{status==0}}">
+        <view class="swiper-container" wx:if="{{yizhanBanner.length>0}}">
+          <swiper class="swiper_box">
+            <block wx:for="{{yizhanBanner}}" wx:key="{{index}}" wx:if="{{item.content!=''}}">
+              <swiper-item>
+                <image data-adid="{{item.ad_id}}" src="{{item.content}}" class="slide-image" />
+                <!-- <view class="yizhan-name">
+                  <view class="yizhan-name-txt" wx:if="{{(!friend_name||friend_name=='')&&shenhe!=2}}">您还不是该店的会员，暂不能享受该店的会员权益</view>
+                </view> -->
+              </swiper-item>
+            </block>
+          </swiper>
+        </view>
+        <view class="gonggao {{isclick?'active':'no-active'}}" wx:if="{{yizhan.gonggao&&yizhan.gonggao!==''}}">
+          <view class="left">
+            公告栏：<text>{{yizhan.gonggao}}</text>
+          </view>
+          <view class="right">
+            <image src="/images/gonggaolan.png"></image>
           </view>
         </view>
-      </block>
-      <block wx:else>
-        <view wx:for-items="{{goodsKind}}" wx:key="{{index}}">
-          <view class="goods-title" @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})">{{item.cat_name}}<view class="more">更多<image src="/images/index/more.png"></image></view></view>
-          <view class="materials-list" wx:if="{{item.ch_cats.length}}">
-            <view wx:for="{{item.ch_cats}}" wx:for-index="index2" wx:for-item="item2" wx:key="{{index2}}" @tap="toFenLeiTap({{item2.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item2.cat_name}})">
-              {{item2.cat_name}}
+        <view class="gonggao2 {{isclick?'active':''}}" @tap="guanggaoTap" wx:if="{{yizhan.gonggao&&yizhan.gonggao!==''}}">
+          <image src="/images/jiantou2.png" mode="scaleToFill" lazy-load="false">
+          </image>
+        </view>
+        <!--活动商品 -->
+        <view class="goods-lists" wx:if="{{goods!=-1&&goods.length>0}}">
+          <view class="goods-title">
+            活动商品
+          </view>
+          <view class="goods-list" wx:for="{{goods}}" wx:key="{{index}}" @tap="toGoodsDetails({{item.goods_id}})">
+            <view class="goods-list-img">
+              <image src="{{item.original_img1?item.original_img1:item.original_img2}}" lazy-load="true"></image>
+            </view>
+            <view class="goods-name">
+              {{item.goods_name}}
+            </view>
+            <view class="goods-money">
+              {{item.floor_price}}
             </view>
           </view>
+          <!-- <view  class="no-order" wx:if="{{goods.length==0}}">暂无活动商品</view> -->
+        </view>
+        <!--品牌列表 -->
+        <view class="brand-lists" wx:if="{{brands!=-1&&brands.length>0}}">
+          <view class="goods-title">
+            合作品牌
+            <!-- {{yizhan.suppliers_id==76?"易站专属品牌":"合作品牌"}} -->
+          </view>
+          <view class="brand-list" wx:for="{{brands}}" wx:key="{{index}}" @tap="toSearchList({{item.brand_id}},{{item.brand_name}})">
+            <image src="{{item.brand_logo}}" wx:if="{{item.brand_logo}}"></image>
+            <text wx:else>{{item.brand_name}}</text>
+          </view>
+          <!-- <view class="no-order" wx:if="{{brands.length==0}}">暂无合作品牌</view> -->
         </view>
       </block>
-    </view>
-    <block wx:if="{{status==2}}">
-       <view class="about" wx:if="{{yizhan.jianjie!=''}}"> <rich-text type="node" nodes="{{yizhan.jianjie}}" ></rich-text></view>
-       <view class="about" wx:else>商家很懒啥都没有写</view>
-    </block>
-    <block wx:if="{{status==3}}">
+      <view class="materials" wx:if="{{status==1}}">
+        <loadingOrder wx:if="{{isLoading}}"></loadingOrder>
+        <noorder show="2" :goodsList.sync="goodsKind" :text.sync="text" wx:elif="{{(goodsKind.length==0&&!isLoading)||isguoqi}}"></noorder>
+        <block wx:elif="{{erji==0}}">
+          <view class="materials-list">
+            <view wx:for="{{goodsKind}}" wx:key="{{index}}" @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})">
+              {{item.cat_name}}
+            </view>
+          </view>
+        </block>
+        <block wx:else>
+          <view wx:for-items="{{goodsKind}}" wx:key="{{index}}">
+            <view class="goods-title" @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})">{{item.cat_name}}
+              <!-- <view class="more">更多<image src="/images/index/more.png"></image></view> -->
+            </view>
+            <view class="materials-list" wx:if="{{item.ch_cats.length}}">
+              <view wx:for="{{item.ch_cats}}" wx:for-index="index2" wx:for-item="item2" wx:key="{{index2}}" @tap="toFenLeiTap({{item2.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item2.cat_name}})">
+                {{item2.cat_name}}
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+      <block wx:if="{{status==2}}">
+        <view class="about" wx:if="{{yizhan.jianjie!=''}}">
+          <rich-text type="node" nodes="{{yizhan.jianjie}}"></rich-text>
+        </view>
+        <view class="about" wx:else>商家很懒啥都没有写</view>
+      </block>
+      <block wx:if="{{status==3}}">
         <view class="contect-list">
           <view class="contect-list-name">
             <image src="/images/index/company.png"></image>店铺名称
@@ -570,34 +626,41 @@ height: 40rpx;
             {{yizhan.suppliers_name}}
           </view>
         </view>
-         <view class="contect-list">
+        <view class="contect-list">
           <view class="contect-list-name">
             <image src="/images/index/address.png"></image>地址
           </view>
           <view>{{yizhan.sheng}}{{yizhan.shi}}{{yizhan.qu}}{{yizhan.address}}</view>
         </view>
-         <view class="contect-list">
+        <view class="contect-list">
           <view class="contect-list-name">
             <image src="/images/index/phone.png"></image>电话
           </view>
-          <view>{{yizhan.mobile}}</view>
+          <block wx:if="{{yizhan.kefu.length>0}}">
+          <view wx:for="{{yizhan.kefu}}" wx:key="{{index}}">
+            {{item.kefu_name}}:{{item.mobile}}
+
+          </view>
+          </block>
+          <view wx:else>{{yizhan.mobile}}</view>
         </view>
-         <view class="contect-list">
+        <view class="contect-list">
           <view class="contect-list-name">
             <image src="/images/index/people.png"></image>联系人
           </view>
           <view>{{yizhan.username}}</view>
         </view>
         <view class="map" style="width:90%;margin:auto;padding-top:30rpx; height: 600rpx;">
-        <map id="map" style="width:100%;height:100%" longitude="{{yizhan.longitude}}" latitude="{{yizhan.latitude}}" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{yizhan.markers}}" bindmarkertap="markertap" polyline="{{polyline}}" bindregionchange="regionchange" show-location ></map>
-
+          <map id="map" style="width:100%;height:100%" longitude="{{yizhan.longitude}}" latitude="{{yizhan.latitude}}" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{yizhan.markers}}" bindmarkertap="markertap" polyline="{{polyline}}"
+            bindregionchange="regionchange" show-location></map>
         </view>
+      </block>
     </block>
     <cover-view class="backIndex " @tap='toShare'>
-      <cover-img class='iconfont icon-fenxiang3'></cover-img>
+      <cover-image src="/images/index/zhuanfa.png"></cover-image>
     </cover-view>
     <cover-view class="backIndex3 " @tap='toCart'>
-      <text class='iconfont icon-gouwuchekong'></text>
+      <cover-image src="/images/index/shopcart.png"></cover-image>
     </cover-view>
     <itemList :isShowShare.sync="isShowShare" :itemList.sync="itemList" @toPoster.user="toPoster"></itemList>
   </view>
@@ -619,7 +682,6 @@ height: 40rpx;
       loadingOrder,
       itemList,
       statusTap,
-
     };
     data = {
       itemList: [],
@@ -641,12 +703,12 @@ height: 40rpx;
         default: [],
         twoWay: true
       },
-      goods:{
+      goods: {
         type: Array,
         default: -1,
         twoWay: true
       },
-      brands:{
+      brands: {
         type: Array,
         default: -1,
         twoWay: true
@@ -698,9 +760,9 @@ height: 40rpx;
       }
     };
     methods = {
-      toGoodsDetails(id){
-         wx.navigateTo({
-          url: '/Shop/pages/goodDetail?id=' +id
+      toGoodsDetails(id) {
+        wx.navigateTo({
+          url: '/Shop/pages/goodDetail?id=' + id
         });
       },
       statusTap(e) {
@@ -748,14 +810,14 @@ height: 40rpx;
           });
         }
       },
-      toSearchList(brand_id,brand_name){
+      toSearchList(brand_id, brand_name) {
         wx.navigateTo({
           url: '/Shop/pages/searchList?suppliers_id=' +
             this.yizhan.suppliers_id +
             '&navigationTitle=' +
             this.yizhan.suppliers_name +
-            '-' +brand_name+
-           "&brand="+brand_id
+            '-' + brand_name +
+            "&brand=" + brand_id
         });
       },
       // 点击确定 搜索商品

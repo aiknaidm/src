@@ -31,7 +31,7 @@
     border-radius: 15rpx;
     background: linear-gradient(153deg, rgba(246, 200, 118, 1), rgba(251, 220, 166, 1));
     margin-bottom: 30rpx;
-    color: #8F6728;
+    color: #fff;
     width: 575rpx;
     height: 487rpx;
     border-radius: 20rpx;

@@ -20,9 +20,10 @@
 <template>
   <view class="container">
     <shopIndexc :goods.sync="goods"  :brands.sync="brands" :yizhan.sync="yizhan" :sales_name.sync="sales_name" :friend_name.sync="friend_name" :yizhanBanner.sync="yizhanBanner" :shenhe.sync="shenhe" :goodsKind.sync="goodsKind" :isguoqi.sync="isguoqi" :isLoading.sync="isLoading" :text.sync="text" :erji.sync="erji"></shopIndexc>
-    <view class="backIndex backIndex2 " @tap='backIndex'>
-      <text class='iconfont icon-shouye-copy'></text>
-    </view>
+    <cover-view class="backIndex backIndex2 " @tap='backIndex'>
+      <cover-image src="/images/index/index.png"></cover-image>
+    </cover-view>
+   
   </view>
 </template>
 

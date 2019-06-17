@@ -536,7 +536,12 @@ export default class searchlist extends wepy.page {
     // 是否图片模式
     this.is_picture = this.$parent.globalData.yizhan
       ? this.$parent.globalData.yizhan.is_picture
-      : 0;
+      : (await this.$parent.getYizhanInfo()).is_picture;
+    // 非会员是否可以查看
+     this.is_chakan = this.$parent.globalData.yizhan
+      ? this.$parent.globalData.yizhan.is_chakan
+      :(await this.$parent.getYizhanInfo()).is_chakan;
+    
     // 分类
     this.cat_name = option.cat_name ? option.cat_name : '';
 
@@ -555,6 +560,11 @@ export default class searchlist extends wepy.page {
       this.suppliers_id,
       this.friend_id
     );
+    if( this.status!=2&&this.is_chakan==0){
+   var mRes= await  util.showModal("该店暂不支持非会员查看，快去申请会员吧~")
+
+   if(mRes.confirm) wx.switchTab({ url: '/pages/home' });
+    }
     this.$apply();
   }
   async onShow() {}

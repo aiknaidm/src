@@ -67,7 +67,6 @@ export default class testMixin extends wepy.mixin {
         this.yizhan.jianjie = util.html_decode(this.yizhan.jianjie)
         this.suppliers_id = suppliers_id
         this.yizhan.markers = [{
-
             id: 0,
             latitude: this.yizhan.latitude,
             longitude: this.yizhan.longitude,

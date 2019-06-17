@@ -61,7 +61,7 @@ input {
 .orange {
   color: #f60;
 }
-mask {
+mask,.mask {
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
   height: 100%;
@@ -306,6 +306,13 @@ export default class extends wepy.app {
     if (res.data.code == 0) return res.data.data;
     else util.showToast('获取用户信息失败');
     return 0;
+  }
+  async getYizhanInfo(suppliers_id = ''){
+   let data = {
+            suppliers_id: suppliers_id
+        };
+     let res = await newapi.yizhanBanner(data);
+     return res.data.yizhan;
   }
 }
 </script>

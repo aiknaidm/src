@@ -6,7 +6,8 @@
   position: fixed;
   bottom: 0;
   width: 100%;
-  z-index: 100;
+  z-index: 101;
+  background: #fff;
 }
 .itemList button {
   line-height: 108rpx;
@@ -19,17 +20,35 @@
 .itemList button:last-child {
   border-bottom: 10rpx solid #f0f0f0;
 }
+.itemLists{
+  position: fixed;
+  top: 0;
+  left:0;
+  width: 100%;
+  height:100%;
+  // background: rgba(0,0,0,0.5);
+  z-index: 100;
+}
+.mask{
+  position: fixed;
+  top: 0;
+  left:0;
+  width: 100%;
+  height:100%;
+
+}
+
 </style>
 
 <template>
-  <view>
-       <mask wx:if="{{isShowShare}}" @tap.stop="hiddenShare"></mask>
-<view class="itemList" wx:if="{{isShowShare}}">
-  <button wx:for="{{itemList}}" open-type="{{index!=2?'share':''}}" @tap="toPoster({{index}})" data-index="{{index}}">
-    {{item}}
-  </button>
-</view>
-  </view>
+  <cover-view class="itemLists" wx:if="{{isShowShare}}">
+       <cover-view class="mask" wx:if="{{isShowShare}}" @tap.stop="hiddenShare"></cover-view>
+      <cover-view class="itemList" wx:if="{{isShowShare}}">
+        <button wx:for="{{itemList}}" open-type="{{index!=2?'share':''}}" @tap="toPoster({{index}})" data-index="{{index}}">
+          {{item}}
+        </button>
+      </cover-view>
+  </cover-view>
 </template>
 
 <script>
@@ -55,6 +74,7 @@ export default class itemList extends wepy.component {
 
   methods = {
     toPoster(index) {
+       this.isShowShare = false;
       this.$emit('toPoster', index);
     },
     hiddenShare() {

@@ -269,15 +269,18 @@
       </view>
     </view>
     <view class="goods-info">
-      <view class="goods-title">{{goodsDetail.goods_name}}<text wx:if="{{goodsDetail.hdky==1}}">支持会员卡</text><text wx:if="{{goodsDetail.vip_level>=1}}">{{goodsDetail.vip_level_text}}</text></view>
+      <view class="goods-title">{{goodsDetail.goods_name}}<text wx:if="{{goodsDetail.hdky==1&&status>1}}">支持会员卡</text><text wx:if="{{goodsDetail.vip_level>=1&&status>1}}">{{goodsDetail.vip_level_text}}</text></view>
       <view class="goods-price2 goods-price " style="fonts-size:46rpx;" wx:if="{{status>1}}">批发价：¥ {{goodsDetail.shop_price}}<view class>销量：{{goodsDetail.salenum}}</view></view>
       <view class=" {{status>1?'goods-price':'goods-price2'}} ">
-        零售价：¥ {{goodsDetail.floor_price}}
+        <text wx:if="{{goodsDetail.floor_price!=0}}">零售价：¥ {{goodsDetail.floor_price}}</text>
         <view>库存:{{goodsDetail.goods_number}}</view>
       </view>
       <view class="goods-txt">
-        <view wx:if="{{status>1}}" class="purple">{{goodsDetail.qidingliang}}{{danwei}}可以享受批发价
+        <view>
+        <view wx:if="{{status>1}}" class="purple">
+          {{goodsDetail.qidingliang}}{{danwei}}可以享受批发价
           <view>￥{{goodsDetail.shop_price}}</view>
+        </view>
         </view>
         <view class="title" @tap="viewYiZhanDetails({{goodsDetail.suppliers_id}})">{{goodsDetail.suppliers_name}}</view>
       </view>
@@ -401,7 +404,12 @@
         suppliers_id
       };
       let res = await newapi.GoodsInfo(data);
+      
       wx.hideLoading();
+      if(res.data.code!=0){
+        util.showToast(res.data.message)
+        return
+      }
       this.goodsDetail = res.data.data;
 
       switch (this.goodsDetail.vip_level) {
@@ -440,6 +448,10 @@
       this.goodsDetail.img_url.forEach((item, index) => {
         this.url.push(item.img_url)
       })
+      if(this.goodsDetail.floor_price==0&&this.goodsDetail.shop_price==0){
+         var mRes= await  util.showModal("该商品不支持查看")
+          if(mRes.confirm) wx.switchTab({ url: '/pages/home' });
+      }
       if (this.goodsDetail.suppliers_id == 76) {
         wx.showShareMenu();
         // this.eventDraw();
@@ -450,7 +462,13 @@
     }
     async onLoad(option) {
       util.showLoading();
-      await this.$parent.loginInfo();
+      var res=await this.$parent.loginInfo();
+      // 非会员是否可以查看
+      console.log("await this.$parent.getYizhanInfo()",await this.$parent.getYizhanInfo())
+    //  this.is_chakan = this.$parent.globalData.yizhan
+    //   ? this.$parent.globalData.yizhan.is_chakan
+    //   :(await this.$parent.getYizhanInfo()).yizhan.is_chakan;
+
       this.suppliers_id=option.suppliers_id?option.suppliers_id:''
       this.getGoodsInfo(option.id, this.suppliers_id);
     }

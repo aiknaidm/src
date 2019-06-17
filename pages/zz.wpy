@@ -1,9 +1,20 @@
 <style lang="less">
+.banner .wx-swiper-dot{
+    margin-bottom: 20rpx;
+}
+.banner .wx-swiper-dots.wx-swiper-dots-horizontal{
+    //  margin-bottom: 20rpx;
+}
 .tab_list {
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: 20rpx;
+  border-radius: 20rpx 20rpx 0 0;
+  overflow: hidden;
+  position: relative;
+  top: -15rpx;
+  background: #fff;
 }
 .tab_list .weui_cell {
   border: 0px solid;
@@ -31,7 +42,7 @@
 
 .info_list {
   /* padding-top: 30rpx; */
-  border-top: 1rpx solid #f0f0f0;
+  // border-top: 1rpx solid #f0f0f0;
 }
 
 .userinfo-bg {
@@ -63,8 +74,9 @@
 }
 .weui_cell_hd {
   display: inline-block;
-  width: 50rpx;
-  height: 50rpx;
+  width:100rpx;
+  height: 100rpx;
+  padding: 0;
 }
 .tab_list .weui_cell_hd {
   margin-bottom: 10rpx;
@@ -192,7 +204,7 @@ button::after {
 
 .weui_cell_hd {
   background-color: #a68cd3;
-  padding: 20rpx;
+  // padding: 20rpx;
   border-radius: 50%;
 }
 .section {
@@ -202,16 +214,17 @@ button::after {
 .title {
   line-height: 88rpx;
   padding: 0px 40rpx;
-  font-size: 32rpx;
+  font-size: 38rpx;
   font-weight: bold;
-  border-top: 16rpx solid #f0f0f0;
+  // border-top: 16rpx solid #f0f0f0;
 }
 
 .section .content {
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid #f0f0f0;
+  // border-top: 1px solid #f0f0f0;
   padding: 40rpx;
+  background: #fff;
 }
 
 .section .txt {
@@ -223,6 +236,7 @@ button::after {
 .section .txt .txt-title {
   line-height: 50rpx;
   font-weight: bold;
+ 
 }
 
 .section .txt .txt-content {
@@ -300,6 +314,7 @@ button::after {
       class="banner"
       indicator-color="rgba(0,0,0,0.2)"
       indicator-active-color="rgba(0,0,0,0.5)"
+     
     >
       <!-- <swiper-item @tap="toBannerDetail2">
         <image src="http://wsc.jicaizx.com/images/ad2.jpg?{{date}}" mode="aspectFill"/>

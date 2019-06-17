@@ -53,13 +53,14 @@ page {
 }
 .name {
   text-align: left;
-  font-size: 28rpx;
+  font-size:36rpx;
   color: #fff;
   text-overflow: ellipsis;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1; /*后面的3是设置显示几行*/
+font-weight: bold;
 }
 
 .txt .name {
@@ -74,7 +75,7 @@ page {
 
 .text {
   color: #fff;
-  font-size: 36rpx;
+  font-size: 28rpx;
   display: flex;
   justify-content: space-between;
 }
@@ -122,7 +123,7 @@ export default class myHelp extends wepy.page {
   components = { noOrder };
 
   data = {
-    list: []
+    list: -1
   };
 
   computed = {};
