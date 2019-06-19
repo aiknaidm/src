@@ -149,17 +149,17 @@
     <loadingOrder wx:if="{{isLoading}}" show="2"></loadingOrder>
     <noOrder text="暂无商品" wx:elif="{{goodsList.length==0&&!isLoading}}" show="2"></noOrder>
     <repeat for="{{goodsList}}" key="{{index}}">
-      <searchList1 :goods.sync="item" :index.sync="index" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==1}}" @numJianTap1.user="numJianTap" @numJiaTap1.user="numJiaTap"></searchList1>
-      <searchList2 :goods.sync="item" :index.sync="index" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==0}}" @numJianTap1.user="numJianTap" @numJiaTap1.user="numJiaTap"></searchList2>
+      <searchList1 :goods.sync="item" :index.sync="index" :status.sync="status" :is_chakan.sync="is_chakan" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==1}}" @numJianTap1.user="numJianTap" @numJiaTap1.user="numJiaTap"></searchList1>
+      <searchList2 :goods.sync="item" :index.sync="index" :status.sync="status" :is_chakan.sync="is_chakan" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==0}}" @numJianTap1.user="numJianTap" @numJiaTap1.user="numJiaTap"></searchList2>
     </repeat>
-    <shopCartPopup :goodsDetail.sync="goodsDetail" :status.sync="status" :thisindex.sync="goodsListIndex" isshowbtn="0" @numJiaTap1.user="numJiaTap" @numJianTap1.user="numJianTap" @labelItemTap.user="labelItemTap" wx:if="{{ishideShopPopup}}"></shopCartPopup>
+    <shopCartPopup :goodsDetail.sync="goodsDetail" :status.sync="status" :is_chakan.sync="is_chakan" :thisindex.sync="goodsListIndex" isshowbtn="0" @numJiaTap1.user="numJiaTap" @numJianTap1.user="numJianTap" @labelItemTap.user="labelItemTap" wx:if="{{ishideShopPopup}}"></shopCartPopup>
     <!-- <suppliersCart></suppliersCart> -->
     <view class="shop-cart">
       <view class="shop-cart-list" wx:if="{{isShowCart}}">
         <view wx:for="{{cartList}}" wx:key="{{index}}" class="buy-num-box">
           <view class="buy-num-title">
             <view class="buy-num-title-top"><text class="name">{{item.goods_name}}</text><text class="card" wx:if="{{item.hdky==1}}">支持会员卡</text><text class="attr" wx:if="{{item.goods_attr!=''}}">{{item.goods_attr}}</text></view>
-            <view><text class="red">￥{{item.goods_price}} </text> <text class="purple">\t{{item.qidingliang}}件享受批发价￥{{item.shop_price}}</text></view>
+            <view><text class="red">￥{{item.goods_price}} </text> <text class="purple" wx:if="{{is_chakan==1}}">\t{{item.qidingliang}}件享受批发价￥{{item.shop_price}}</text></view>
           </view>
           <view class="num-box">
             <view @tap="numJianTap({{item}},{{index}})" class="num-jian">-</view>
@@ -214,6 +214,7 @@ export default class searchlist extends wepy.page {
     isShowCart: false,
     shopNum: 0,
     is_picture: 0,
+    is_chakan: 0,
     status: 1,
     goodsListIndex: '0',
     isLoading: true,

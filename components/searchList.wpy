@@ -133,14 +133,14 @@
     </view>
     <view class='img-contect2'>
       <view class="goods-title2"> {{goods.goods_name}} <text wx:if="{{goods.hdky==1}}">支持会员卡</text></view>
-      <view class="{{status==2?'':'goods-price2'}}">零售价¥ {{goods.floor_price}}</view>
+      <view wx:if="{{is_chakan==1}}" class="{{status==2?'':'goods-price2'}}">零售价¥ {{goods.floor_price}}</view>
       <view class="goods-text2">
         <view  class="goods-price2" wx:if="{{status==2}}"> 批发价¥ {{goods.shop_price}}</view>
          <view class="goods-name3" @tap.stop="toshop({{goods.suppliers_id}})">{{goods.suppliers_name}}</view>
       </view>
       <!-- <view class="goods-price2">¥ {{goods.shop_price}}</view> -->
       <view class="goods-price">
-        <view wx:if="{{status==2}}">起订量：{{goods.qidingliang}}</view>
+        <view wx:if="{{status==2 && is_chakan==1}}">起订量：{{goods.qidingliang}}</view>
         <!-- <view>库存：{{goods.goods_number}}</view> -->
       </view>
       <view class="goods-price">
@@ -171,6 +171,11 @@
         twoWay: true
       },
       status: {
+      type: Number,
+      default: 1,
+      twoWay: true
+    },
+    is_chakan: {
       type: Number,
       default: 1,
       twoWay: true

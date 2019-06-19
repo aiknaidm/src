@@ -97,12 +97,12 @@
              <view class="goods-style3 " @tap.stop="numJiaTap">+</view>
           </view>
       </view>
-      <view class="{{status==2?'':'goods-price3'}}">零售价¥ {{goods.floor_price}}</view>
+      <view wx:if="{{is_chakan==1}}" class="{{status==2?'':'goods-price3'}}">零售价¥ {{goods.floor_price}}</view>
       <view class="goods-pf">
        <view class="goods-price3"  wx:if="{{status==2}}"> 批发价¥ {{goods.shop_price}}</view>
         <view class="goods-kc">库存{{goods.goods_number}}</view>
       </view>
-      <view class="goods-text3" wx:if="{{status==2}}">起订量{{goods.qidingliang}}
+      <view class="goods-text3" wx:if="{{status==2 && is_chakan==1}}">起订量{{goods.qidingliang}}
         <view class="goods-name3" @tap.stop="toshop({{goods.suppliers_id}})">{{goods.suppliers_name}}</view>
       </view>
     </view>
@@ -118,6 +118,11 @@ export default class searchList1 extends wepy.component {
       twoWay: true
     },
     status: {
+      type: Number,
+      default: 1,
+      twoWay: true
+    },
+    is_chakan: {
       type: Number,
       default: 1,
       twoWay: true

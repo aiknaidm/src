@@ -212,7 +212,7 @@
           <view class="num-jia" @tap="numJiaTap">+</view>
         </view>
       </view>
-        <view class="qidingliang purple" wx:if="{{status==2}}">{{goodsDetail.qidingliang}}件即可享受批发价￥{{goodsDetail.property.attr_price?goodsDetail.property.attr_price:goodsDetail.shop_price}}</view>
+        <view class="qidingliang purple" wx:if="{{status==2 && is_chakan==1}}">{{goodsDetail.qidingliang}}件即可享受批发价￥{{goodsDetail.property.attr_price?goodsDetail.property.attr_price:goodsDetail.shop_price}}</view>
       <view wx:if="{{thisindex==-1}}">
         <view class="popup-join-btn" wx:if="{{goodsDetail.shopType =='addShopCar'}}" @tap="addShopCar({{goodsDetail}})">加入购物车</view>
         <view class="popup-join-btn" wx:elif="{{goodsDetail.shopType =='tobuy'}}" @tap="addShopCar">立即购买</view>
@@ -238,7 +238,12 @@ export default class shopCart extends wepy.component {
     status: {
       type: Number,
       default: -1
-    }
+    },
+    is_chakan: {
+      type: Number,
+      default: 1,
+      twoWay: true
+    },
   };
   methods = {
     labelItemTap(property) {
