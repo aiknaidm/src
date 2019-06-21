@@ -159,7 +159,7 @@
           <view class="pop-goods-title">{{goodsDetail.goods_name}}</view>
           <view class="pop-goods-price">¥ {{goodsDetail.selectPrice}}</view>
           <view class="goods-txt">
-            <view class="purple" wx:if="{{status==2 && is_chakan==1}}">{{goodsDetail.qidingliang}}件即可享受批发价￥{{goodsDetail.property.attr_price?goodsDetail.property.attr_price:goodsDetail.shop_price}}</view>
+            <view class="purple" wx:if="{{status==2}}">{{goodsDetail.qidingliang}}件即可享受批发价￥{{goodsDetail.property.attr_price?goodsDetail.property.attr_price:goodsDetail.shop_price}}</view>
             <view>库存:{{goodsDetail.property.goods_number}}</view>
           </view>
         </view>
@@ -206,12 +206,7 @@ export default class shopCart extends wepy.component {
     status: {
       type: Number,
       default: -1
-    },
-    is_chakan: {
-      type: Number,
-      default: 1,
-      twoWay: true
-    },
+    }
   };
   methods = {
     labelItemTap(property) {
