@@ -272,12 +272,12 @@
       <view class="goods-title">{{goodsDetail.goods_name}}<text wx:if="{{goodsDetail.hdky==1&&status>1}}">支持会员卡</text><text wx:if="{{goodsDetail.vip_level>=1&&status>1}}">{{goodsDetail.vip_level_text}}</text></view>
       <view class="goods-price2 goods-price " style="fonts-size:46rpx;" wx:if="{{status>1}}">批发价：¥ {{goodsDetail.shop_price}}<view class>销量：{{goodsDetail.salenum}}</view></view>
       <view class=" {{status>1?'goods-price':'goods-price2'}} ">
-        <text wx:if="{{is_chakan==1 && goodsDetail.floor_price!=0}}">零售价：¥ {{goodsDetail.floor_price}}</text>
+        <text wx:if="{{goodsDetail.floor_price!=0}}">零售价：¥ {{goodsDetail.floor_price}}</text>
         <view>库存:{{goodsDetail.goods_number}}</view>
       </view>
       <view class="goods-txt">
         <view>
-        <view wx:if="{{status>1 && is_chakan==1}}" class="purple">
+        <view wx:if="{{status>1}}" class="purple">
           {{goodsDetail.qidingliang}}{{danwei}}可以享受批发价
           <view>￥{{goodsDetail.shop_price}}</view>
         </view>
@@ -306,7 +306,7 @@
       <view class="join-shop-cart" @tap="toAddShopCar({{goodsDetail.goods_id}})">加入购物车</view>
       <view class="now-buy" @tap.stop="tobuy({{goodsDetail.goods_id}})">立即购买</view>
     </view>
-    <shopCartPopup :goodsDetail.sync="goodsDetail" :status.sync="status" :is_chakan.sync="is_chakan" wx:if="{{ishideShopPopup}}"></shopCartPopup>
+    <shopCartPopup :goodsDetail.sync="goodsDetail" :status.sync="status" wx:if="{{ishideShopPopup}}"></shopCartPopup>
     <!-- <canvasdrawer painting="{{painting}}" class="canvasdrawer" bindgetImage="eventGetImage" wx:if="{{goodsDetail.suppliers_id == 76}}" /> -->
   </view>
 </template>
@@ -338,7 +338,6 @@
       ishideShopPopup: false,
       buy_number: 1,
       status: 1,
-      is_chakan: 0,
       danwei: '件',
       articleDetail: {}
     };
@@ -466,9 +465,9 @@
       var res=await this.$parent.loginInfo();
       // 非会员是否可以查看
       console.log("await this.$parent.getYizhanInfo()",await this.$parent.getYizhanInfo())
-     this.is_chakan = this.$parent.globalData.yizhan
-      ? this.$parent.globalData.yizhan.is_chakan
-      :(await this.$parent.getYizhanInfo()).yizhan.is_chakan;
+    //  this.is_chakan = this.$parent.globalData.yizhan
+    //   ? this.$parent.globalData.yizhan.is_chakan
+    //   :(await this.$parent.getYizhanInfo()).yizhan.is_chakan;
 
       this.suppliers_id=option.suppliers_id?option.suppliers_id:''
       this.getGoodsInfo(option.id, this.suppliers_id);
