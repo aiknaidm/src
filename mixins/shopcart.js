@@ -129,6 +129,7 @@ export default class shopcart extends wepy.mixin {
     buliduBuyNowInfo() {
             var shopCarInfo = [{}];
             var goodsList = [{}];
+            goodsList[0] = this.goodsDetail;
             goodsList[0].goods_id = this.goodsDetail.goods_id;
             if (
                 this.goodsDetail.original_img == '' &&
@@ -141,8 +142,11 @@ export default class shopcart extends wepy.mixin {
                     'http://maijia.jicaizx.com/' + this.goodsDetail.original_img :
                     this.goodsDetail.original_img1;
             }
-
+            goodsList[0].weight = this.goodsDetail.properties.length ?
+                this.goodsDetail.property.weight :
+                goodsList[0].weight;
             goodsList[0].goods_price = this.goodsDetail.selectPrice;
+            goodsList[0].goods_sn = this.goodsDetail.goods_sn;
             goodsList[0].buy_number = this.goodsDetail.buy_number;
             goodsList[0].goods_name = this.goodsDetail.goods_name;
             goodsList[0].goods_attr_id = this.goodsDetail.properties.length ?
@@ -158,7 +162,6 @@ export default class shopcart extends wepy.mixin {
             shopCarInfo[0].suppliers_name = this.goodsDetail.suppliers_name;
             shopCarInfo[0].goodsList = goodsList;
             shopCarInfo[0].yunfei = this.goodsDetail.yunfei;
-
             wx.setStorageSync('shopCarInfo', shopCarInfo);
         }
         // 列表页面加入购物车
@@ -175,6 +178,10 @@ export default class shopcart extends wepy.mixin {
                 '';
             var attr_price = goodsDetail.selectPrice;
             var suppliers_id = goodsDetail.suppliers_id;
+            var goods_sn = goodsDetail.goods_sn;
+            var weight = goodsDetail.properties.length ?
+                goodsDetail.property.weight :
+                goodsDetail.weight;
 
             let data = {
                 goods_id,
@@ -183,7 +190,8 @@ export default class shopcart extends wepy.mixin {
                 goods_attr_id,
                 attr_value,
                 attr_price,
-                suppliers_id
+                suppliers_id,
+                weight
             };
             let res = await newapi.addCart(data);
 

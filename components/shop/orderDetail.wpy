@@ -283,12 +283,16 @@
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status>=1}}">订单编号：{{orderDetail.order_sn}}</view>
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status>=1}}">创建时间：{{orderDetail.add_time}}</view>
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status>=2&&orderDetail.order_status!=9}}">付款时间：{{orderDetail.pay_time}}</view>
-      <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status>=3&&orderDetail.order_status!=9}}">发货时间：{{orderDetail.confirm_time}}</view>
+      <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status>=2&&orderDetail.shipping_status==1}}">发货时间：{{orderDetail.confirm_time}}</view>
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status!=9&&orderDetail.pay_id==2}}">支付方式：线下支付</view>
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status!=9&&orderDetail.pay_id==0}}">支付方式：微信支付</view>
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status!=9&&orderDetail.pay_id==4}}">支付方式：会员卡支付</view>
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.pay_note}}">备注：{{orderDetail.pay_note}}</view>
+      <view class="wuliu-text wuliu-date " wx:if="{{orderDetail.yujisongda!=''}}">{{orderDetail.yujisongda}}</view>
+      <view class="wuliu-text wuliu-date " wx:if="{{orderDetail.peisongyuan!=''}}">{{orderDetail.peisongyuan}}</view>
       <view class="wuliu-text wuliu-date red" @tap="showFahuodan({{orderDetail.fahuodan}})" wx:if="{{orderDetail.fahuodan!=''}}">查看发货单</view>
+
+      
     </view>
     <!-- 按钮 -->
     <orderbutton :orderDetail.sync="orderDetail" :is_friend.sync="is_friend"></orderbutton>

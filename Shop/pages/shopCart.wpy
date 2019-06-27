@@ -627,6 +627,7 @@ export default class shopCart extends wepy.page {
       // delCartGoods
       var suppliers_id=this.list[this.x].suppliers_id
       this.goodsDetail.goods_attr_id = property.goods_attr_id;
+      this.goodsDetail.weight = property.weight;
       this.goodsDetail.goods_number = property.goods_number;
       this.goodsDetail.goods_price = this.goodsDetail.selectPrice;
       this.goodsDetail.goods_attr = this.goodsDetail.property.attr_value;
@@ -642,6 +643,7 @@ export default class shopCart extends wepy.page {
         is_hy: this.list[this.x].is_hy,
         attr_value: this.goodsDetail.goods_attr,
         id: this.goodsDetail.id,
+        weight: this.goodsDetail.weight,
         friend_id,
         suppliers_id
       };
@@ -755,6 +757,7 @@ export default class shopCart extends wepy.page {
     var goods_price = goodsDetail.goods_price;
     var goods_id = goodsDetail.goods_id;
     var attr_value = goodsDetail.goods_attr;
+    var weight = goodsDetail.weight;
     var id = goodsDetail.id;
     var suppliers_id=list[x].suppliers_id
     goodsDetail.buy_number = buy_number;
@@ -766,7 +769,8 @@ export default class shopCart extends wepy.page {
       attr_value,
       id,
       friend_id,
-      suppliers_id
+      suppliers_id,
+      weight
     };
     let res = await newapi.updateCart(data);
     if (res.data.code == 0) {

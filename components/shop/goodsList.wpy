@@ -87,6 +87,24 @@
   font-size: 26rpx;
   color: #999;
 }
+.wuliu{
+  color: #e50012;
+}
+.peisong-way{
+  position: fixed;
+  width: 500rpx;
+  min-height: 200rpx;
+  top: 50%;
+  left: 50%;
+  margin-top: -100rpx;
+  margin-left: -250rpx;
+  background: #fff;
+  padding: 20rpx;
+}
+.peisong-way image{
+  width: 200rpx;
+
+}
 </style>
 <template>
   <view>
@@ -108,28 +126,30 @@
               <view class="arow01">
                 <view class="goods-name">{{item.goods_name}}<text wx:if="{{item.hdky}}">可用会员卡</text></view>
                 <view class="goods-label">{{item.goods_attr}}</view>
+                <view class="goods-label" wx:if="{{item.shipping_status==1}}">已发货</view>
+                 <view class="wuliu"  wx:if="{{item.shipping_status==1}}" @tap.stop="showPeisong({{item}})">查看物流</view>
               </view>
               <view class="arow02">
                 <view class="goods-price">¥ {{item.goods_price}}</view>
                 <view class="goods-num">x {{item.buy_number}}</view>
               </view>
+             
             </view>
           </view>
         </block>
       </form>
     </view>
-    <!-- <view class="peisong-way" hidden="true">
-    <view class="row-box">
-      <view class="row-label">配送方式</view>
-      <view class="right-text">顺丰快递</view>
+    <view class="body-bg" wx:if="{{isshow_peisong}}" @tap.stop="hiddenPeisong" @scroll.stop="stop" ></view>
+    <view class="peisong-way" wx:if="{{isshow_peisong}}" >
+    <view >
+      <view >预计送达时间：{{wuliu.yujisongda}}</view>
+      <view >配送员信息：{{wuliu.peisongyuan}}</view>
+      <image src="{{wuliu.fahuodan}}" wx:if="{{wuliu.fahuodan}}" mode="widthFix">
+
+      </image>
     </view>
-    <view class="row-box">
-      <view class="row-label">留言</view>
-      <view class="right-text">
-        <input name="remark" type="text" class="liuyan" placeholder="如需留言请输入" />
-      </view>
+
     </view>
-    </view>-->
   </view>
 </template>
 <script>
@@ -142,13 +162,26 @@ export default class goodslist extends wepy.component {
       default: []
     }
   };
-  data = {};
+  data = {
+    isshow_peisong:false,
+    wuliu:''
+  };
 
   events = {};
 
   methods = {
+    stop(){
+      return
+    },
+    showPeisong(item){
+      this.isshow_peisong=true;
+      this.wuliu=item
+    },
     toGoodDetailsTap(goods_id) {
       wx.navigateTo({ url: '/Shop/pages/goodDetail?id=' + goods_id });
+    },
+    hiddenPeisong(){
+        this.isshow_peisong=false;
     }
   };
 

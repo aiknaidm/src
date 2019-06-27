@@ -70,12 +70,11 @@
   .materials-list {
     display: flex;
     /* justify-content: space-between;
-                     */
+                         */
     flex-wrap: wrap;
     padding: 40rpx;
     color: #797979;
-    padding-top: 15rpx;
-    border-bottom: 8rpx solid #f6f6f6;
+    padding-top: 15rpx; // border-bottom: 8rpx solid #f6f6f6;
   }
   .materials-list view {
     width: 30%;
@@ -85,6 +84,14 @@
     margin-top: 15rpx;
     margin-left: 15rpx;
     border-radius: 50px;
+  }
+  .materials-list .title {
+    background: #fff;
+    border-bottom: 2rpx solid #f0f0f0;
+    width: 100%;
+    text-align: left;
+    margin-top: 0;
+    color: #333;
   }
   .red {
     color: #e50012;
@@ -458,17 +465,36 @@
       margin-left: 5rpx;
     }
   }
-  .no-order{
-    padding:80rpx 40rpx;width:auto;
+  .no-order {
+    padding: 80rpx 40rpx;
+    width: auto;
+  } // 分类
+  .content {
+    display: flex;
+  }
+  .catScroll {
+    width: 150rpx;
+    height: 700rpx;
+    line-height: 80rpx;
+    text-align: center;
+  }
+  .secondScroll {
+    flex: 1;
+    height: 700rpx;
+  }
+  .selected {
+    background: #f0f0f0;
+    color: #e50012;
+    border-left: 6rpx solid #e50012
   }
 </style>
 <template>
   <view class="container">
     <!-- <view class="tishi" wx:if="{{frist_open!=1&&shenhe==0}}">
-                    <image src="/images/tishi.png" mode="widthFix" lazy-load="false">
-                    </image>
-                    <text class="iconfont icon-guanbi1"  @tap.stop="toKnow"></text>
-                  </view> -->
+                        <image src="/images/tishi.png" mode="widthFix" lazy-load="false">
+                        </image>
+                        <text class="iconfont icon-guanbi1"  @tap.stop="toKnow"></text>
+                      </view> -->
     <!-- <view class="btn" @tap.stop="toKnow">我知道了</view> -->
     <view id="top" style="background:url({{yizhan.bg_img}}) no-repeat; background-size: 100% 100%; background-position: center;">
       <view class="mengban"></view>
@@ -484,7 +510,7 @@
             <view>{{yizhan.suppliers_name}}</view>
           </view>
         </view>
-        <view class="index-title-info"  wx:else>
+        <view class="index-title-info" wx:else>
           <view class="index-title-img">
             <image src="{{yizhan.img}}" mode="scaleToFill" lazy-load="false">
             </image>
@@ -496,12 +522,11 @@
             </view>
           </view>
         </view>
-        
         <view class="yizhan-name-titile">
           <button class="apply" wx:if="{{shenhe==2}}" @tap="{{yizhan.is_kthy==1?'toCardDetail':''}}">
-                
-                <image src="{{yizhan.vip_level_img}}"></image>
-                </button>
+                    
+                    <image src="{{yizhan.vip_level_img}}"></image>
+                    </button>
           <button class wx:if="{{shenhe==1}}">申请中</button>
           <button class wx:if="{{shenhe==0}}" @tap="apply({{sale_id}})">申请会员</button>
         </view>
@@ -516,20 +541,16 @@
           </view>
         </view>
       </view>
-      
-      <statusTap wx:if="{{!(shenhe!=2&&yizhan.is_chakan==0)}}" :statusType.sync="statusType" @statusTap.user="statusTap" ></statusTap>
-
-     
+      <statusTap wx:if="{{!(shenhe!=2&&yizhan.is_chakan==0)}}" :statusType.sync="statusType" @statusTap.user="statusTap"></statusTap>
       <!-- <view class="faguang">
-              
-            </view> -->
+                  
+                </view> -->
     </view>
     <block wx:if="{{shenhe!=2&&yizhan.is_chakan==0}}">
-       <view class="no-order" >该店暂时不支持非会员查看，你可以点击申请会员查看商品</view>
+      <view class="no-order">该店暂时不支持非会员查看，你可以点击申请会员查看商品</view>
       <!-- <noorder show="2" :text.sync="text2">
-
-        
-      </noorder> -->
+            
+          </noorder> -->
     </block>
     <block wx:else>
       <block wx:if="{{status==0}}">
@@ -539,8 +560,8 @@
               <swiper-item>
                 <image data-adid="{{item.ad_id}}" src="{{item.content}}" class="slide-image" />
                 <!-- <view class="yizhan-name">
-                  <view class="yizhan-name-txt" wx:if="{{(!friend_name||friend_name=='')&&shenhe!=2}}">您还不是该店的会员，暂不能享受该店的会员权益</view>
-                </view> -->
+                      <view class="yizhan-name-txt" wx:if="{{(!friend_name||friend_name=='')&&shenhe!=2}}">您还不是该店的会员，暂不能享受该店的会员权益</view>
+                    </view> -->
               </swiper-item>
             </block>
           </swiper>
@@ -591,70 +612,87 @@
       <view class="materials" wx:if="{{status==1}}">
         <loadingOrder wx:if="{{isLoading}}"></loadingOrder>
         <noorder show="2" :goodsList.sync="goodsKind" :text.sync="text" wx:elif="{{(goodsKind.length==0&&!isLoading)||isguoqi}}"></noorder>
-        <block wx:elif="{{erji==0}}">
-          <view class="materials-list">
-            <view wx:for="{{goodsKind}}" wx:key="{{index}}" @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})">
-              {{item.cat_name}}
-            </view>
-          </view>
-        </block>
-        <block wx:else>
-          <view wx:for-items="{{goodsKind}}" wx:key="{{index}}">
-            <view class="goods-title" @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})">{{item.cat_name}}
-              <!-- <view class="more">更多<image src="/images/index/more.png"></image></view> -->
-            </view>
-            <view class="materials-list" wx:if="{{item.ch_cats.length}}">
-              <view wx:for="{{item.ch_cats}}" wx:for-index="index2" wx:for-item="item2" wx:key="{{index2}}" @tap="toFenLeiTap({{item2.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item2.cat_name}})">
+        <view class="content">
+          <scroll-view class='catScroll' scroll-y="true" style="" bindscrolltolower="">
+            <view class="catName {{selected==item.cat_id||(selected==''&&index==0)?'selected':''}}" wx:for-items="{{goodsKind}}" @tap='select({{item}},{{index}})'>{{item.cat_name}}</view>
+          </scroll-view>
+          <scroll-view class='secondScroll' scroll-y="true" style="" bindscrolltolower="loadMore">
+            <view class='materials-list'>
+              <view bindtap="toFenLeiTap({{goodsKind[thisindex].cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{goodsKind[thisindex].cat_name}})" class="title">
+                {{goodsKind[thisindex].cat_name}}
+              </view>
+              <view class='' wx:for-index='key' wx:for-item='item2' wx:key="{{key}}" wx:for-items="{{cat_item==-1?goodsKind[0].ch_cats:cat_item}}" @tap="toFenLeiTap({{item2.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item2.cat_name}})">
                 {{item2.cat_name}}
               </view>
+              <view class="no-order" wx:if="{{goodsKind[thisindex].ch_cats.length==0}}">
+                没有分类
+              </view>
             </view>
-          </view>
-        </block>
+          </scroll-view>
+        </view>
+        <!-- <block wx:elif="{{erji==0}}">
+              <view class="materials-list">
+                <view wx:for="{{goodsKind}}" wx:key="{{index}}" @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})">
+                  {{item.cat_name}}
+                </view>
+              </view>
+            </block>
+            <block wx:else>
+              <view wx:for-items="{{goodsKind}}" wx:key="{{index}}">
+                <view class="goods-title" @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})">{{item.cat_name}}
+                  <view class="more">更多<image src="/images/index/more.png"></image></view>
+                </view>
+                <view class="materials-list" wx:if="{{item.ch_cats.length}}">
+                  <view wx:for="{{item.ch_cats}}" wx:for-index="index2" wx:for-item="item2" wx:key="{{index2}}" @tap="toFenLeiTap({{item2.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item2.cat_name}})">
+                    {{item2.cat_name}}
+                  </view>
+                </view>
+              </view> -->
+    </block>
+    </view>
+    <block wx:if="{{status==2}}">
+      <view class="about" wx:if="{{yizhan.jianjie!=''}}">
+        <rich-text type="node" nodes="{{yizhan.jianjie}}"></rich-text>
       </view>
-      <block wx:if="{{status==2}}">
-        <view class="about" wx:if="{{yizhan.jianjie!=''}}">
-          <rich-text type="node" nodes="{{yizhan.jianjie}}"></rich-text>
+      <view class="about" wx:else>商家很懒啥都没有写</view>
+    </block>
+    <block wx:if="{{status==3}}">
+      <view class="contect-list">
+        <view class="contect-list-name">
+          <image src="/images/index/company.png"></image>店铺名称
         </view>
-        <view class="about" wx:else>商家很懒啥都没有写</view>
-      </block>
-      <block wx:if="{{status==3}}">
-        <view class="contect-list">
-          <view class="contect-list-name">
-            <image src="/images/index/company.png"></image>店铺名称
-          </view>
-          <view>
-            {{yizhan.suppliers_name}}
-          </view>
+        <view>
+          {{yizhan.suppliers_name}}
         </view>
-        <view class="contect-list">
-          <view class="contect-list-name">
-            <image src="/images/index/address.png"></image>地址
-          </view>
-          <view>{{yizhan.sheng}}{{yizhan.shi}}{{yizhan.qu}}{{yizhan.address}}</view>
+      </view>
+      <view class="contect-list">
+        <view class="contect-list-name">
+          <image src="/images/index/address.png"></image>地址
         </view>
-        <view class="contect-list">
-          <view class="contect-list-name">
-            <image src="/images/index/phone.png"></image>电话
-          </view>
-          <block wx:if="{{yizhan.kefu.length>0}}">
+        <view>{{yizhan.sheng}}{{yizhan.shi}}{{yizhan.qu}}{{yizhan.address}}</view>
+      </view>
+      <view class="contect-list">
+        <view class="contect-list-name">
+          <image src="/images/index/phone.png"></image>电话
+        </view>
+        <block wx:if="{{yizhan.kefu.length>0}}">
           <view wx:for="{{yizhan.kefu}}" wx:key="{{index}}">
             {{item.kefu_name}}:{{item.mobile}}
-
           </view>
-          </block>
-          <view wx:else>{{yizhan.mobile}}</view>
+        </block>
+        <view wx:else>{{yizhan.mobile}}</view>
+      </view>
+      <view class="contect-list">
+        <view class="contect-list-name">
+          <image src="/images/index/people.png"></image>联系人
         </view>
-        <view class="contect-list">
-          <view class="contect-list-name">
-            <image src="/images/index/people.png"></image>联系人
-          </view>
-          <view>{{yizhan.username}}</view>
-        </view>
-        <view class="map" style="width:90%;margin:auto;padding-top:30rpx; height: 600rpx;">
-          <map id="map" style="width:100%;height:100%" longitude="{{yizhan.longitude}}" latitude="{{yizhan.latitude}}" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{yizhan.markers}}" bindmarkertap="markertap" polyline="{{polyline}}"
-            bindregionchange="regionchange" show-location></map>
-        </view>
-      </block>
+        <view>{{yizhan.username}}</view>
+      </view>
+      <view class="map" style="width:90%;margin:auto;padding-top:30rpx; height: 600rpx;">
+        <map id="map" style="width:100%;height:100%" longitude="{{yizhan.longitude}}" latitude="{{yizhan.latitude}}" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{yizhan.markers}}" bindmarkertap="markertap" polyline="{{polyline}}"
+          bindregionchange="regionchange" show-location></map>
+      </view>
+    </block>
     </block>
     <cover-view class="backIndex " @tap='toShare'>
       <cover-image src="/images/index/zhuanfa.png"></cover-image>
@@ -690,7 +728,9 @@
       statusType: ['首页', '商品分类', '关于我们', '联系我们'],
       isclick: false,
       status: 0,
-     
+      cat_item: -1,
+      selected: "",
+      thisindex: 0
     };
     props = {
       yizhanBanner: {
@@ -760,6 +800,13 @@
       }
     };
     methods = {
+      // 点击一级分类
+      select(item, index) {
+        console.log("item", item, index)
+        this.cat_item = item.ch_cats;
+        this.selected = item.cat_id;
+        this.thisindex = index
+      },
       toGoodsDetails(id) {
         wx.navigateTo({
           url: '/Shop/pages/goodDetail?id=' + id

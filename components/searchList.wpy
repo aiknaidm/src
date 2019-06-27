@@ -46,14 +46,15 @@
   }
   .goods-title2 {
     font-weight: bold;
-    max-height: 100rpx;
+    max-height: 150rpx;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
     font-size: 34rpx;
     font-weight: bold;
-    line-height:80rpx;
+    // line-height:80rpx;
+    padding-bottom: 20rpx;
      text{
       background: #e50012;
       color: #fff;
@@ -100,8 +101,11 @@
 
   .goods-num view {
     display: inline-block;
-    margin: 10rpx;
+   
   }
+   .goods-num view.num{
+      margin: 10rpx;
+   }
   .goods-text2 {
   display: flex;
   justify-content: space-between;
@@ -149,7 +153,7 @@
         <view class="goods-style3" @tap.stop="tobuy({{goods}},{{index}})" wx:elif="{{!goods.buy_number}}">+</view>
         <view class="goods-num" wx:else>
           <view class="goods-style3  goods-style3-jian" @tap.stop="numJianTap">-</view>
-          <view>{{goods.buy_number}}</view>
+          <view class="num">{{goods.buy_number}}</view>
           <view class="goods-style3" @tap.stop="numJiaTap">+</view>
         </view>
       </view>
