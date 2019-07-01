@@ -555,7 +555,7 @@
     <block wx:else>
       <block wx:if="{{status==0}}">
         <view class="swiper-container" wx:if="{{yizhanBanner.length>0}}">
-          <swiper class="swiper_box">
+          <swiper class="swiper_box" autoplay="true" interval="3000" duration="1000">
             <block wx:for="{{yizhanBanner}}" wx:key="{{index}}" wx:if="{{item.content!=''}}">
               <swiper-item>
                 <image data-adid="{{item.ad_id}}" src="{{item.content}}" class="slide-image" />

@@ -1,355 +1,410 @@
 <style lang="less">
-.container {
-  background: #f0f0f0;
-}
-form {
-  display: flex;
-  flex-direction: column;
-  /* padding-top: 10px; */
-}
-.input-area {
-  border-bottom: 1px solid #f0f0f0;
-  background: #fff;
-}
-.section {
-  /* margin-top: 10px; */
-  flex: 1;
-  display: flex;
-  align-items: center;
-  /* justify-content: center; */
-  border-bottom: 1px solid #eee;
-  font-size: 30rpx;
-  padding: 20rpx 40rpx;
-}
-
-.section input,
-picker {
-  height: 60rpx;
-  /* background-color: pink; */
-  line-height: 60rpx;
-  text-align: left;
-  padding-left: 20rpx;
-  flex: 10;
-}
-
-.section image {
-  width: 43rpx;
-  height: 43rpx;
-}
-
-.yzm {
-  display: flex;
-  flex-direction: row;
-  margin-top: 20px;
-  border-bottom: 0px solid #c4c4c4;
-}
-
-.yzm input {
-  border: 1px solid #c4c4c4;
-  height: 35px;
-  width: 130px;
-  flex: 1;
-  text-align: left;
-  padding: 4px;
-}
-
-.yzm text {
-  height: 35px;
-  line-height: 35px;
-  margin-left: 10px;
-  flex: 1;
-  display: inline-block;
-  border: 1px solid #c4c4c4;
-  margin-top: 4px;
-  color: #09f;
-}
-
-button {
-  background-color: #e50012;
-  color: #fff;
-  height: 80rpx;
-  line-height: 80rpx;
-  font-size: 30rpx;
-  border-radius: 3px;
-  margin-top: 20rpx;
-  margin-bottom: 20rpx;
-}
-
-.picker {
-  color: #888;
-  flex: 10;
-}
-
-.section:last-child {
-  border: 0px solid;
-}
-
-.zhuce {
-  text-align: left;
-  border: 0px solid;
-  margin-top: 40rpx;
-  font-size: 26rpx;
-}
-
-.smsCode {
-  /* border: 0px solid #c4c4c4; */
-  border-bottom: 1rpx solid #eee;
-  /* justify-content: center; */
-  align-items: center;
-}
-.smsCode:last-child {
-  border-bottom: 1rpx solid #eee;
-}
-.smsCode input {
-  flex: 1;
-  /* height: 80rpx; */
-  /* border-bottom: 1rpx solid #c4c4c4; */
-  /* float: left; */
-}
-
-.smsCode .getSmsCodeBtn {
-  flex: 1;
-  font-size: 30rpx;
-  color: #fff;
-  box-sizing: border-box;
-  margin-right: 0;
-  border-radius: 0px;
-  margin: 0;
-  /* height: 84rpx;
-   line-height: 84rpx; */
-  background-color: #e50012;
-}
-.register {
-  background-color: #e50012;
-}
-.rz-submit {
-  width: 80%;
-  margin: auto;
-  margin-top: 40rpx;
-}
-/* @import "../login/index.wxss"; */
-.content {
-  font-size: 30rpx;
-}
-.smsCode {
-  display: flex;
-  /* justify-content: space-between; */
-  /* border-bottom: 1px solid #ddd;
-  padding-right: 10%; */
-}
-
-.smsCode input {
-  width: 336rpx;
-}
-
-.smsCode .getSmsCodeBtn {
-  font-size: 30rpx;
-  color: #fff;
-  width: 216rpx;
-  box-sizing: border-box;
-  height: 80rpx;
-  line-height: 80rpx;
-
-  background-color: #e50012;
-}
-
-.logo {
-  margin-top: 80rpx;
-  margin-bottom: 80rpx;
-}
-
-.logo image {
-  width: 600rpx;
-  height: 200rpx;
-}
-button {
-  background-color: #e50012;
-}
-button[disabled] {
-  color: #fff;
-}
-button[disabled][type='default'],
-wx-button[disabled]:not([type]) {
-  color: #fff;
-}
-.section .label text {
-  color: #e50012;
-  margin-right: 5rpx;
-}
-.section .label {
-  width: 160rpx;
-}
+  .container {
+    background: #f0f0f0;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    /* padding-top: 10px; */
+  }
+  .input-area {
+    border-bottom: 1px solid #f0f0f0;
+    background: #fff;
+  }
+  .section {
+    /* margin-top: 10px; */
+    flex: 1;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    border-bottom: 1px solid #eee;
+    font-size: 30rpx;
+    padding: 20rpx 40rpx;
+  }
+  .section input,
+  picker {
+    height: 60rpx;
+    /* background-color: pink; */
+    line-height: 60rpx;
+    text-align: left;
+    padding-left: 20rpx;
+    flex: 10;
+  }
+  .section image {
+    width: 43rpx;
+    height: 43rpx;
+  }
+  .yzm {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    border-bottom: 0px solid #c4c4c4;
+  }
+  .yzm input {
+    border: 1px solid #c4c4c4;
+    height: 35px;
+    width: 130px;
+    flex: 1;
+    text-align: left;
+    padding: 4px;
+  }
+  .yzm text {
+    height: 35px;
+    line-height: 35px;
+    margin-left: 10px;
+    flex: 1;
+    display: inline-block;
+    border: 1px solid #c4c4c4;
+    margin-top: 4px;
+    color: #09f;
+  }
+  button {
+    background-color: #e50012;
+    color: #fff;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 30rpx;
+    border-radius: 3px;
+    margin-top: 20rpx;
+    margin-bottom: 20rpx;
+  }
+  .picker {
+    color: #888;
+    flex: 10;
+  }
+  .section:last-child {
+    border: 0px solid;
+  }
+  .zhuce {
+    text-align: left;
+    border: 0px solid;
+    margin-top: 40rpx;
+    font-size: 26rpx;
+  }
+  .smsCode {
+    /* border: 0px solid #c4c4c4; */
+    border-bottom: 1rpx solid #eee;
+    /* justify-content: center; */
+    align-items: center;
+  }
+  .smsCode:last-child {
+    border-bottom: 1rpx solid #eee;
+  }
+  .smsCode input {
+    flex: 1;
+    /* height: 80rpx; */
+    /* border-bottom: 1rpx solid #c4c4c4; */
+    /* float: left; */
+  }
+  .smsCode .getSmsCodeBtn {
+    flex: 1;
+    font-size: 30rpx;
+    color: #fff;
+    box-sizing: border-box;
+    margin-right: 0;
+    border-radius: 0px;
+    margin: 0;
+    /* height: 84rpx;
+     line-height: 84rpx; */
+    background-color: #e50012;
+  }
+  .register {
+    background-color: #e50012;
+  }
+  .rz-submit {
+    width: 80%;
+    margin: auto;
+    margin-top: 40rpx;
+  }
+  /* @import "../login/index.wxss"; */
+  .content {
+    font-size: 30rpx;
+  }
+  .smsCode {
+    display: flex;
+    /* justify-content: space-between; */
+    /* border-bottom: 1px solid #ddd;
+    padding-right: 10%; */
+  }
+  .smsCode input {
+    width: 336rpx;
+  }
+  .smsCode .getSmsCodeBtn {
+    font-size: 30rpx;
+    color: #fff;
+    width: 216rpx;
+    box-sizing: border-box;
+    height: 80rpx;
+    line-height: 80rpx;
+    background-color: #e50012;
+  }
+  .logo {
+    margin-top: 80rpx;
+    margin-bottom: 80rpx;
+  }
+  .logo image {
+    width: 600rpx;
+    height: 200rpx;
+  }
+  button {
+    background-color: #e50012;
+  }
+  button[disabled] {
+    color: #fff;
+  }
+  button[disabled][type='default'],
+  wx-button[disabled]:not([type]) {
+    color: #fff;
+  }
+  .section .label text {
+    color: #e50012;
+    margin-right: 5rpx;
+  }
+  .section .label {
+    width: 160rpx;
+  }
 </style>
 <template>
   <view class="container">
-   <form bindsubmit="formSubmit">
-
-    <view class="input-area">
-
-      <view class="input-log section">
-        <view class="label">
-          <text>*</text>手机号码</view>
-        <input name="phone" maxlength='11' type="number" placeholder="手机号" @input="listenerPhoneInput" />
+    <form bindsubmit="formSubmit">
+      <view class="input-area">
+        <view class="input-log section">
+          <view class="label">
+            <text>*</text>手机号码</view>
+          <input name="phone" maxlength='11' type="number" value="{{user_info.mobile_phone}}" placeholder="手机号" @input="listenerPhoneInput" />
+        </view>
+        <view class="section smsCode ">
+          <view class="label">
+            <text>*</text>验证码</view>
+          <input name="smscode" maxlength='4' type="number" placeholder="验证码" />
+          <button @tap="getSmsCode({{phone}})" disabled="{{smsCodeDisabled}}" style="background-color:{{getSmsCodeBtnColor}}" class="getSmsCodeBtn">{{getSmsCodeBtnTxt}}</button>
+        </view>
+        <view class="section">
+          <view class="label">
+            <text>*</text>真实姓名</view>
+          <input name="nickName" class="input" type="text" value="{{user_info.nickName}}" />
+        </view>
+        <view class="section">
+          <view class="label">
+            <text>*</text>选择地区</view>
+            <picker mode="region" bindchange="bindMultiPickerChange" value="{{region}}">
+          <view class="picker">
+            <view class="type-container-adress">{{region[0]}}-{{region[1]}}-{{region[2]}}</view>
+          </view>
+        </picker>
+        </view>
       </view>
-
-      <view class="section smsCode ">
-        <view class="label">
-          <text>*</text>验证码</view>
-
-        <input name="smscode" maxlength='4' type="number" placeholder="验证码" />
-        <button @tap="getSmsCode({{phone}})" disabled="{{smsCodeDisabled}}" style="background-color:{{getSmsCodeBtnColor}}" class="getSmsCodeBtn">{{getSmsCodeBtnTxt}}</button>
-      </view>
-      <view class="section">
-        <view class="label">
-          <text>*</text>真实姓名</view>
-        <input name="user_name" class="input" type="text" value="" />
-      </view>
-   
-    </view>
-
-    <button class='rz-submit' formType="submit">提交</button>
-  </form>
+      <button class='rz-submit' formType="submit">提交</button>
+    </form>
   </view>
 </template>
 
 <script>
-import wepy from 'wepy';
-import newapi from '../../API/newapi';
-import util from '../../utils/index';
-
-export default class renzheng extends wepy.page {
-  config = {
-    navigationBarTitleText: '认证'
-  };
-  components = {};
-
-  data = {
-    getSmsCodeBtnTxt: '获取验证码',
-    getSmsCodeBtnColor: '#e50012',
-    smsCodeDisabled: false,
-    phone: '',
-    user_info: ''
-  };
-
-  computed = {};
-  methods = {
-    listenerPhoneInput(e) {
-      this.phone = e.detail.value;
-    },
-    //联网获取验证码
-    async getSmsCode(phone = '') {
-      this.smsCodeDisabled = true;
-      //点击了获取验证码先在本地验证手机号的合法性
-      if (this.checkPhone(phone)) {
-        try {
-          let data = {
-            mobile: phone
-          };
-          let res = await newapi.yzm(data);
-          if (res.data.code == 0) {
-            //将获取的验证码赋值
-            this.code = res.data.data;
-            util.showModal('验证码发送成功');
-          } else {
-            util.showToast(res.data.message);
+  import wepy from 'wepy';
+  import newapi from '../../API/newapi';
+  import util from '../../utils/index';
+// 引入SDK核心类
+var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
+// 实例化API核心类
+var qqmapsdk = new QQMapWX({
+    key: 'XRWBZ-H7JLS-H37O7-6S45H-SEJRK-FJB7R' // 必填
+});
+  export default class renzheng extends wepy.page {
+    config = {
+      navigationBarTitleText: '认证'
+    };
+    components = {};
+    data = {
+      getSmsCodeBtnTxt: '获取验证码',
+      getSmsCodeBtnColor: '#e50012',
+      smsCodeDisabled: false,
+      phone: '',
+      user_info: '',
+      region:[]
+    };
+    computed = {};
+    methods = {
+      bindMultiPickerChange(e) {
+        this.region = e.detail.value
+        this.$apply();
+      },
+      listenerPhoneInput(e) {
+        this.phone = e.detail.value;
+      },
+      //联网获取验证码
+      async getSmsCode(phone = '') {
+        this.smsCodeDisabled = true;
+        //点击了获取验证码先在本地验证手机号的合法性
+        if (this.checkPhone(phone)) {
+          try {
+            let data = {
+              mobile: phone
+            };
+            let res = await newapi.yzm(data);
+            if (res.data.code == 0) {
+              //将获取的验证码赋值
+              this.code = res.data.data;
+              util.showModal('验证码发送成功');
+            } else {
+              util.showToast(res.data.message);
+              this.smsCodeDisabled = false;
+              this.$apply();
+            }
+            var count = 120;
+            this.setTime(count);
+          } catch (error) {
             this.smsCodeDisabled = false;
             this.$apply();
           }
-          var count = 120;
-          this.setTime(count);
-        } catch (error) {
+        } else {
           this.smsCodeDisabled = false;
           this.$apply();
         }
-      } else {
-        this.smsCodeDisabled = false;
-        this.$apply();
-      }
-    },
-    // 获取商品列表信息
-    async formSubmit(e) {
-      var phone = e.detail.value.phone;
-      var smscode = e.detail.value.smscode;
-      var user_name = e.detail.value.user_name;
-      if (!this.checkPhone(phone)) {
-        return;
-      }
-      if (this.code != smscode) {
-        util.showModal('验证码不正确');
-        return;
-      }
-      if (!user_name) {
-        util.showModal('真实姓名不能为空');
-        return;
-      }
-      let data = {
-        mobile: phone,
-        user_name: user_name
-      };
-      let res = await newapi.renzheng(data);
-      if (res.data.code == 0) {
-        var sales_id = wx.getStorageSync('sales_id' + this.suppliers_id);
-        var suppliers_id = wx.getStorageSync(
-          'suppliers_id' + this.suppliers_id
-        );
-        let data1 = {
-          suppliers_id: this.suppliers_id,
-          sales_id: suppliers_id ? sales_id : 0
+      },
+      // 获取商品列表信息
+      async formSubmit(e) {
+        var phone = e.detail.value.phone;
+        var smscode = e.detail.value.smscode;
+        var user_name = e.detail.value.nickName;
+        var region = this.region;
+        if (!this.checkPhone(phone)) {
+          return;
+        }
+        if (!smscode) {
+          util.showModal('请输入验证码');
+          return;
+        }
+        if (this.code != smscode) {
+          util.showModal('验证码不正确');
+          return;
+        }
+        if (!user_name) {
+          util.showModal('真实姓名不能为空');
+          return;
+        }
+        let data = {
+          mobile: phone,
+          user_name: user_name,
+          province:region[0],
+          city:region[1],
+          district:region[2],
         };
-        var res1 = await newapi.applyMember(data1);
-        if (res1.data.code == 0) {
-          await util.showModal('发送成功，等待商家同意');
-          wepy.navigateBack({
-            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-          });
-        } else {
-          await util.showModal(res1.data.message);
-          wepy.navigateBack({
-            delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
-          });
+        let res = await newapi.renzheng(data);
+        if (this.suppliers_id) {
+          // if (res.data.code == 0) {
+            var sales_id = wx.getStorageSync('sales_id' + this.suppliers_id);
+            var suppliers_id = wx.getStorageSync(
+              'suppliers_id' + this.suppliers_id
+            );
+            let data1 = {
+              suppliers_id: this.suppliers_id,
+              sales_id: suppliers_id ? sales_id : 0
+            };
+            var res1 = await newapi.applyMember(data1);
+            if (res1.data.code == 0) {
+              await util.showModal('发送成功，等待商家同意');
+              wepy.navigateBack({
+                delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+              });
+            } else {
+              await util.showModal(res1.data.message);
+              wepy.navigateBack({
+                delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+              });
+            }
+          // }
+        }else{
+          await util.showModal('修改成功');
+              wepy.navigateBack({
+                delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
+              });
         }
       }
+    };
+    setTime(count) {
+      var count = count;
+      var that = this;
+      var si = setInterval(function() {
+        if (count > 0) {
+          count--;
+          that.getSmsCodeBtnTxt = count + ' s';
+          that.getSmsCodeBtnColor = '#999';
+          that.smsCodeDisabled = true;
+          that.$apply();
+        } else {
+          that.getSmsCodeBtnTxt = '重新获取';
+          that.getSmsCodeBtnColor = '#ff7701';
+          that.smsCodeDisabled = false;
+          clearInterval(si);
+          that.$apply();
+        }
+      }, 1000);
     }
-  };
-  setTime(count) {
-    var count = count;
-    var that = this;
-    var si = setInterval(function() {
-      if (count > 0) {
-        count--;
-        that.getSmsCodeBtnTxt = count + ' s';
-        that.getSmsCodeBtnColor = '#999';
-        that.smsCodeDisabled = true;
-        that.$apply();
+    events = {};
+    //检查输入的手机号
+    checkPhone(param) {
+      var phone = util.regexConfig().phone;
+      var inputUserName = param.trim();
+      // if ((/^1[34578]\d{9}$/.test(inputUserName))) {
+      if (phone.test(inputUserName)) {
+        return true;
       } else {
-        that.getSmsCodeBtnTxt = '重新获取';
-        that.getSmsCodeBtnColor = '#ff7701';
-        that.smsCodeDisabled = false;
-        clearInterval(si);
-        that.$apply();
+        util.showModal('请输入正确的手机号码');
+        return false;
       }
-    }, 1000);
-  }
-  events = {};
-  //检查输入的手机号
-  checkPhone(param) {
-    var phone = util.regexConfig().phone;
-    var inputUserName = param.trim();
-    // if ((/^1[34578]\d{9}$/.test(inputUserName))) {
-    if (phone.test(inputUserName)) {
-      return true;
-    } else {
-      util.showModal('请输入正确的手机号码');
-      return false;
+    }
+    getAddressInfo() {
+        var that = this
+        return new Promise((resolve, reject) => {
+            wepy.getLocation({
+                type: 'wgs84', //默认为 wgs84 返回 gps 坐标，gcj02 返回可用于wx.openLocation的坐标,
+            }).then(res => {
+                console.log("getLocation success: ", res);
+                const latitude = res.latitude
+                const longitude = res.longitude
+                const speed = res.speed
+                const accuracy = res.accuracy
+                var that = this;
+                qqmapsdk.reverseGeocoder({
+                    location: {
+                        latitude,
+                        longitude
+                    },
+                    success: function(res) {
+                        resolve(res);
+
+                    },
+                    fail: function(res) {
+                        reject(res)
+                    },
+                    complete: function(res) {
+                        //console.log(res);
+                    }
+                });
+            }).catch(res => {
+                console.log("res", that.isprompt)
+                that.isprompt = true;
+                that.$apply();
+                reject(res)
+            })
+        })
+    }
+    async onLoad(option) {
+      await this.$parent.loginInfo();
+      this.user_info = await this.$parent.getUserInfo();
+      this.phone = this.user_info.mobile_phone;
+      if(this.user_info.province && this.user_info.district){
+        this.region = [this.user_info.province ,this.user_info.city, this.user_info.district]
+      }else{
+        this.getAddressInfo().then(res => {
+                    var newAddress = res.result.address_component
+                    this.region = [newAddress.province, newAddress.city, newAddress.district]
+                    this.$apply();
+                })
+      }
+      this.$apply();
+      if (option.suppliers_id) this.suppliers_id = option.suppliers_id;
+      else this.suppliers_id = 0; //util.showToast('参数错误');
     }
   }
-
-  async onLoad(option) {
-    await this.$parent.loginInfo();
-    this.user_info = await this.$parent.getUserInfo();
-    this.$apply();
-    if (option.suppliers_id) this.suppliers_id = option.suppliers_id;
-    else util.showToast('参数错误');
-  }
-}
 </script>
