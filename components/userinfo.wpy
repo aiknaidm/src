@@ -36,12 +36,27 @@
     font-size: 30rpx;
     top: -5rpx;
   }
+  .userinfo-edit{
+    background:#e50012;
+    position: relative;
+    z-index: 4;
+    top: -5rpx;
+    color:#fff;
+    padding:4rpx 8rpx;
+    margin-left:10rpx;
+    font-size:20rpx;
+    border-radius:5rpx;
+    font-weight:100;
+  }
 </style>
 <template>
   <view class="userinfo" userData="用户信息">
     <image class="userinfo-avatar" src="{{userData.avatarUrl}}" background-size="cover" @tap="upTouxiang" />
-    <text class="userinfo-nickname" wx:if="{{userData.nickName.length > 0}}">{{userData.nickName}}</text>
-    <text class="userinfo-nickname" wx:else>jc{{userId}}</text>
+    <view>
+      <text class="userinfo-nickname" wx:if="{{userData.nickName.length > 0}}">{{userData.nickName}}</text>
+      <text class="userinfo-nickname" wx:else>jc{{userId}}</text>
+      <text class="userinfo-edit" @tap="toRenzheng">编辑</text>
+    </view>
     <view class="userinfo-bg"></view>
   </view>
 </template>
@@ -62,6 +77,12 @@
     methods = {
       upTouxiang() {
         this.$emit("upTouxiang")
+      },
+      toRenzheng() {
+        wx.navigateTo({
+            url: '/Shop/pages/renzheng'
+          });
+        
       }
     };
     async onLoad() {
