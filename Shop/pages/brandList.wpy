@@ -1,0 +1,123 @@
+<style lang="less">
+  .brand-lists {
+    margin: 10rpx 0;
+    overflow: hidden;
+  }
+  .brand-new {
+    float: left;
+    width: calc(100vw / 3 - 98rpx); // height: calc(100vw / 3 - 18rpx);
+    margin: 20rpx 48rpx;
+    text-align: center;
+    text {
+      width: 100%;
+      align-items: center;
+    }
+  }
+  .brand-list {
+    width: calc(100vw / 3 - 98rpx);
+    height: calc(100vw / 3 - 98rpx);
+    border-radius: 20rpx;
+    border: 1px solid #f0f0f0;
+    overflow: hidden;
+    text-align: center;
+    image {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .no-order {
+    padding: 80rpx 40rpx;
+    width: auto;
+  }
+</style>
+<template>
+  <view class="container">
+    <view class="brand-lists" wx:if="{{brands!=-1&&brands.length>0}}">
+      <view class="brand-new" wx:for="{{brands}}" wx:key="{{index}}" @tap="toSearchList({{item.brand_id}},{{item.brand_name}})">
+        <view class="brand-list">
+          <image src="{{item.brand_logo}}" wx:if="{{item.brand_logo}}" />
+          <image src="https://lmbge.com/upload/1234/moren2.png" wx:else />
+        </view>
+        <text>{{item.brand_name}}</text>
+      </view>
+      <view class="no-order" wx:if="{{brands.length==0}}">暂无合作品牌</view>
+    </view>
+  </view>
+</template>
+
+
+<script>
+  import wepy from 'wepy';
+  import noorder from '../../components/noOrder';
+  import util from '../../utils/index';
+  import newapi from '../../API/newapi';
+  export default class brandList extends wepy.page {
+    config = {
+      navigationBarTitleText: '合作品牌'
+    };
+    data = {
+      brands: []
+    };
+    components = {};
+    computed = {};
+    methods = {
+      toSearchList(brand_id, brand_name) {
+        wx.navigateTo({
+          url: '/Shop/pages/searchList?suppliers_id=' +
+            this.suppliers_id +
+            '&navigationTitle=' +
+            this.$parent.globalData.yizhan.suppliers_name +
+            '-' + brand_name +
+            "&brand=" + brand_id
+        });
+      },
+    };
+    events = {};
+    // 品牌列表
+    async getBrandsList(suppliers_id, page = 1) {
+      let res = await newapi.goodsBrand({
+        suppliers_id,
+        page
+      });
+      if (res.data.code)
+      {
+        var brands = res.data.data;
+        if (page == 1) {
+          this.brands = brands;
+        } else {
+          this.brands.push(...brands);
+        }
+        if (brands.length < 20) {
+          this.isMoreData = false;
+        }
+        this.$apply();
+      }
+      wx.hideLoading();
+    }
+    async onLoad(options) {
+      // 店铺id
+      this.suppliers_id = options.suppliers_id;
+      if (!this.suppliers_id) {
+        util.showToast('错误');
+        return;
+      }
+    }
+    async onShow() {
+      this.isMoreData = true;
+      this.page = 1;
+      if (this.suppliers_id) {
+        util.showLoading();
+        this.getBrandsList(this.suppliers_id);
+      } else {
+        return;
+      }
+    }
+    onReachBottom() {
+      if (this.isMoreData) {
+        util.showLoading();
+        this.page = this.page + 1;
+        this.getBrandsList(this.suppliers_id, this.page);
+      }
+    }
+  }
+</script>

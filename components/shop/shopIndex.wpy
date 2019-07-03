@@ -564,6 +564,9 @@
                     </view> -->
               </swiper-item>
             </block>
+              <swiper-item wx:if="{{yizhan.suppliers_id==76}}">
+                <image src="https://lmbge.com/upload/1234/bangbangmai.png" class="slide-image" @tap="toBBmai" />
+              </swiper-item>
           </swiper>
         </view>
         <view class="gonggao {{isclick?'active':'no-active'}}" wx:if="{{yizhan.gonggao&&yizhan.gonggao!==''}}">
@@ -602,9 +605,13 @@
             合作品牌
             <!-- {{yizhan.suppliers_id==76?"易站专属品牌":"合作品牌"}} -->
           </view>
+          
           <view class="brand-list" wx:for="{{brands}}" wx:key="{{index}}" @tap="toSearchList({{item.brand_id}},{{item.brand_name}})">
             <image src="{{item.brand_logo}}" wx:if="{{item.brand_logo}}"></image>
             <text wx:else>{{item.brand_name}}</text>
+          </view>
+          <view wx:if="{{brands.length>=7}}" class="brand-list" @tap="toBrands({{yizhan.suppliers_id}})">
+            <image src="https://lmbge.com/upload/1234/quanbu.png" ></image>
           </view>
           <!-- <view class="no-order" wx:if="{{brands.length==0}}">暂无合作品牌</view> -->
         </view>
@@ -806,6 +813,12 @@
         this.cat_item = item.ch_cats;
         this.selected = item.cat_id;
         this.thisindex = index
+      },
+      toBrands(suppliers_id) {
+        wx.navigateTo({ url: '/Shop/pages/brandList?suppliers_id='+suppliers_id});
+      },
+      toBBmai() {
+        wx.navigateTo({ url: '/Shop/pages/searchList?cat_id=4555&suppliers_id=76&navigationTitle=吉采企业购-帮帮卖&cat_name=帮帮卖'});
       },
       toGoodsDetails(id) {
         wx.navigateTo({
