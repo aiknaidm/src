@@ -465,9 +465,9 @@
       var res=await this.$parent.loginInfo();
       // 非会员是否可以查看
       console.log("await this.$parent.getYizhanInfo()",await this.$parent.getYizhanInfo())
-    //  this.is_chakan = this.$parent.globalData.yizhan
-    //   ? this.$parent.globalData.yizhan.is_chakan
-    //   :(await this.$parent.getYizhanInfo()).yizhan.is_chakan;
+     this.is_chakan = this.$parent.globalData.yizhan
+      ? this.$parent.globalData.yizhan.is_chakan
+      :(await this.$parent.getYizhanInfo()).is_chakan;
 
       this.suppliers_id=option.suppliers_id?option.suppliers_id:''
       this.getGoodsInfo(option.id, this.suppliers_id);
