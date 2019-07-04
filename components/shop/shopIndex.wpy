@@ -83,7 +83,7 @@
     background-color: #f2f2f2;
     margin-top: 15rpx;
     margin-left: 15rpx;
-    border-radius: 50px;
+    border-radius: 10px;
   }
   .materials-list .title {
     background: #fff;
