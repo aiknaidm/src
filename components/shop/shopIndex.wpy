@@ -444,7 +444,7 @@
   .contect-list {
     margin: 0 40rpx;
     padding: 15rpx 0;
-    border-bottom: 1px solid #bfbfbf;
+    border-bottom: 1px solid #e3e3e3;
     line-height: 50rpx;
     color: #424242;
     image {
