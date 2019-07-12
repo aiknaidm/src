@@ -258,6 +258,10 @@ export default class shopcart extends wepy.mixin {
                 /src="\//gi,
                 'src="http://maijia.jicaizx.com/'
             );
+            this.articleDetail.post_content = this.articleDetail.post_content.replace(
+                /style=""/gi,
+                ''
+            );
         }
 
         if (
