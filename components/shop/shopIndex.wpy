@@ -6,7 +6,7 @@
     background-position: center;
     position: relative;
     padding-bottom: 20rpx;
-    margin-bottom: 10rpx;
+    // margin-bottom: 10rpx;
   }
   .ss-my {
     background: transparent;
@@ -77,13 +77,16 @@
     padding-top: 15rpx; // border-bottom: 8rpx solid #f6f6f6;
   }
   .materials-list view {
-    width: 30%;
-    padding: 15rpx 0;
+    width: calc(30% - 20rpx)  ;
+    padding: 15rpx 10rpx;
     text-align: center;
     background-color: #f2f2f2;
     margin-top: 15rpx;
     margin-left: 15rpx;
-    border-radius: 50px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center
   }
   .materials-list .title {
     background: #fff;
@@ -312,7 +315,7 @@
     padding: 30rpx 55rpx; //  max-height: 7800rpx;
     background: #FFD59B;
     color: #D22D25;
-    border-radius: 50px;
+    border-radius: 15px;
     overflow: hidden;
     font-size: 27rpx;
     position: relative;
@@ -391,7 +394,7 @@
   .goods-list {
     width: calc(100% / 2 - 80rpx);
     float: left;
-    margin: 40rpx;
+    margin:20rpx 40rpx;
     line-height: 40rpx;
     image {
       width: 100%;

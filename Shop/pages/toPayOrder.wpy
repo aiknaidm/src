@@ -383,7 +383,7 @@
               <text class="iconfont icon-arrow-right"></text>
             </view>
           </view>
-          <view class="row-box row-box2" wx:if="{{payIndex==1}}">
+          <view class="row-box row-box2" wx:if="{{payId!=0}}">
             <!-- <radio-group class="radio-group" bindchange="radioChange">
                             <label>
                               <radio value="2" checked="{{item.checked}}" color="#e50012" />线下微信支付</label>
@@ -464,7 +464,8 @@
       itemList: ["微信支付", "线下支付"],
       payIndex: 0,
       pay_id: 0,
-      friend_id: 0
+      friend_id: 0,
+      payId:0
     };
     computed = {};
     methods = {

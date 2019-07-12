@@ -43,13 +43,18 @@ page {
   width: 100%;
   padding-top: 330rpx;
   text-align: center;
-  font-size: 28rpx;
+  font-size: 30rpx;
   color: #999;
-  background: url(https://cdn.it120.cc/images/weappshop/icon-cart.png) no-repeat
-    center 205rpx;
-  background-size: 100rpx auto;
+  // background: url(https://cdn.it120.cc/images/weappshop/icon-cart.png) no-repeat
+  //   center 205rpx;
+  // background-size: 100rpx auto;
   margin-bottom: 50rpx;
 }
+.title-box image{
+  width: 200rpx;
+margin-bottom: 40rpx;
+}
+
 .to-index-btn {
   color: #fff;
   background: #e50012;
@@ -336,8 +341,10 @@ page {
   <view class="container">
     <loadingOrder show="2" wx:if="{{isLoading}}"></loadingOrder>
     <view wx:elif="{{list.length==0}}">
+     
       <view class="title-box">
-        购物车空空如也～
+         <image src="/images/shopcart.png" mode="widthFix"></image>
+       <view> 购物车空空如也～</view>
       </view>
       <view class="to-index-btn" @tap="toIndexPage">
         去逛逛
