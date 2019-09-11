@@ -569,15 +569,12 @@
           <swiper class="swiper_box" autoplay="true" interval="3000" duration="1000">
             <block wx:for="{{yizhanBanner}}" wx:key="{{index}}" wx:if="{{item.content!=''}}">
               <swiper-item>
-                <image data-adid="{{item.ad_id}}" src="{{item.content}}" class="slide-image" />
+                <image bindtap="toBannerDetail({{item.url}})" data-adid="{{item.ad_id}}" src="{{item.content}}" class="slide-image" />
                 <!-- <view class="yizhan-name">
                       <view class="yizhan-name-txt" wx:if="{{(!friend_name||friend_name=='')&&shenhe!=2}}">您还不是该店的会员，暂不能享受该店的会员权益</view>
                     </view> -->
               </swiper-item>
             </block>
-              <swiper-item wx:if="{{yizhan.suppliers_id==76}}">
-                <image src="https://lmbge.com/upload/1234/bangbangmai.png" class="slide-image" @tap="toBBmai" />
-              </swiper-item>
           </swiper>
         </view>
         <view class="gonggao {{isclick?'active':'no-active'}}" wx:if="{{yizhan.gonggao&&yizhan.gonggao!==''}}">
@@ -828,6 +825,13 @@
       },
       toBrands(suppliers_id) {
         wx.navigateTo({ url: '/Shop/pages/brandList?suppliers_id='+suppliers_id});
+      },
+      toBannerDetail(url) {
+        if (url) {
+          wx.navigateTo({
+            url
+          });
+        }
       },
       toBBmai() {
         wx.navigateTo({ url: '/Shop/pages/searchList?cat_id=4555&suppliers_id=76&navigationTitle=吉采企业购-帮帮卖&cat_name=帮帮卖'});
