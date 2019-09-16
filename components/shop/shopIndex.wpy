@@ -498,6 +498,65 @@
     color: #e50012;
     border-left: 6rpx solid #e50012
   }
+  // 活动商品
+  .activity-title {
+    display: flex;
+    justify-content: space-between;
+    // align-items: center;
+    margin: 20rpx 16rpx; 
+    margin-bottom: 0;
+   font-size: 34rpx;
+    padding: 30rpx;
+    color: #fff;
+    background: linear-gradient(80deg, rgba(232, 24, 40, 1), rgba(236, 80, 64, 1));
+    border-radius: 10px 10px 0px 0px;
+    max-height: 87rpx;
+  }
+  .activity-title-left {
+    display: flex;
+    align-items: center;
+    image {
+      width: 22rpx;
+      height: 25rpx;
+      margin-right: 10rpx; // height:50rpx;
+    }
+  }
+  .activity-title-right {
+    display: flex;
+    align-items: center;
+    width: 120rpx;
+    line-height: 40rpx;
+    background: #fff;
+    border-radius: 20px;
+    font-size: 24rpx;
+    color: #E50012;
+    justify-content: center;
+    height: 40rpx;
+    image {
+      width: 10rpx;
+      height: 15rpx;
+      margin-left: 10rpx; // height:50rpx;
+    }
+  }
+.goods-money {
+  display: flex;
+  color: #e50012;
+}
+  .goods-money-new {
+    font-size: 30rpx;
+    line-height: 45rpx;
+    margin-top: 20rpx;
+    margin-right: 10rpx;
+  }
+  .goods-money-old {
+    font-size: 22rpx;
+    font-family: MicrosoftYaHei;
+    font-weight: 400;
+    text-decoration: line-through;
+    color: rgba(136, 136, 136, 1);
+    line-height: 45rpx;
+    margin-top: 20rpx;
+  }
 </style>
 <template>
   <view class="container">
@@ -590,7 +649,7 @@
           </image>
         </view>
         <!--活动商品 -->
-        <view class="goods-lists" wx:if="{{goods!=-1&&goods.length>0}}">
+        <!-- <view class="goods-lists" wx:if="{{goods!=-1&&goods.length>0}}">
           <view class="goods-title">
             活动商品
           </view>
@@ -605,8 +664,44 @@
               {{item.floor_price}}
             </view>
           </view>
-          <!-- <view  class="no-order" wx:if="{{goods.length==0}}">暂无活动商品</view> -->
+        </view> -->
+        <block wx:for="{{activity}}" wx:for-item="item_activity" wx:for-index="index_activity" wx:key="{{index-a}}">
+        <view class="activity-title" >
+          <view class="activity-title-left">
+            <image src="/images/index/huo.png" mode="widthFix" lazy-load="false">
+            </image>{{item_activity.act_name}}
+          </view>
+          <view class="activity-title-right" @tap.stop="toSearchList_act({{item_activity.act_id}})">
+            去逛逛
+            <image src="/images/index/you.png" mode="widthFix" lazy-load="false">
+            </image>
+          </view>
         </view>
+        
+        <swiper wx:if="{{!indexLoading}}"  style="height:880rpx;background:#fff;margin:0 16rpx;padding-top: 20rpx;padding-bottom:20rpx;">
+          <block wx:for="{{item_activity.actList}}" wx:key="{{index}}">
+            <swiper-item wx:key="{{index}}" class="goods-lists">
+              <view class="goods-list" wx:for="{{item}}" wx:key="{{index}}" @tap="toGoodDetailsTap({{item.goods_id}})">
+                <view class="goods-list-img">
+                  <image src="{{item.original_img1?item.original_img1:'http://maijia.jicaizx.com/'+item.original_img}}" lazy-load="true"></image>
+                </view>
+                <view class="goods-name">
+                  {{item.goods_name}}
+                </view>
+                <view class="goods-money">
+                  <view class="goods-money-new"> ￥{{item.shop_price}}</view>
+                  <view class="goods-money-old"> ￥{{item.floor_price}}</view>
+                </view>
+                  <view class="goods-coupon" wx:if="{{item.youhuiquan.length>0}}">
+  <view class="goods-coupon-new" > 满￥{{item.youhuiquan[0].buy_money}}</view>
+                  <view class="goods-coupon-old"> 减￥{{item.youhuiquan[0].rebate_money}}</view>
+                  </view>
+              </view>
+              <!-- <image src="{{item.original_img1?item.original_img1:item.original_img}}" class="slide-image" width="355" height="150" /> -->
+            </swiper-item>
+          </block>
+        </swiper>
+        </block>
         <!--品牌列表 -->
         <view class="brand-lists" wx:if="{{brands!=-1&&brands.length>0}}">
           <view class="goods-title">
@@ -813,7 +908,12 @@
         type: String,
         default: '',
         twoWay: true
-      }
+      },
+      activity: {
+        type: Array,
+        default: [],
+        twoWay: true
+      },
     };
     methods = {
       // 点击一级分类
@@ -885,6 +985,13 @@
               this.user_info.nickName
           });
         }
+      },
+      toSearchList_act(act_id) {
+        wx.navigateTo({
+            url: '/Shop/pages/searchList?suppliers_id=' +
+            this.yizhan.suppliers_id +
+            '&act_id=' + act_id
+          });
       },
       toSearchList(brand_id, brand_name) {
         wx.navigateTo({

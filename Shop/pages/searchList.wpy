@@ -217,7 +217,8 @@ export default class searchlist extends wepy.page {
     status: 1,
     goodsListIndex: '0',
     isLoading: true,
-    keyword: ''
+    keyword: '',
+    act_id:0
   };
   mixins = [shopCart];
   computed = {};
@@ -496,7 +497,8 @@ export default class searchlist extends wepy.page {
       attr_value: '',
       page: 1,
       suppliers_id: this.suppliers_id,
-      ch_cat_id: ''
+      ch_cat_id: '',
+      act_id: this.act_id,
     };
     this.isasc = true;
     return initdata;
@@ -552,7 +554,7 @@ export default class searchlist extends wepy.page {
       this.suppliers_id == this.$parent.globalData.friend_suppliers_id
         ? this.$parent.globalData.friend_id
         : 0;
-
+    this.act_id = option.act_id ? option.act_id : '';
     this.initF();
     // 是否是会员
     this.status = await this.getSheheStauts(

@@ -96,6 +96,23 @@ export default class testMixin extends wepy.mixin {
         }
 
         this.shenhe = res.data.shenhe
+
+        var activity = res.data.activity
+        activity.forEach(function(item, index) {
+            var actList = [];
+            var goods= item.goods;
+            goods.forEach(function(item2, index2) {
+                var i = Math.floor(index2/4);
+                var j = index2%4;
+                if(j==0){
+                    actList[i] = []
+                }
+                actList[i][j] = item2;
+            });
+            activity[index].actList = actList;
+          });
+        this.activity = activity;
+
         wx.setNavigationBarTitle({
             title: res.data.yizhan.suppliers_name
         });
