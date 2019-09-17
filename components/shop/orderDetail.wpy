@@ -268,10 +268,10 @@
         <view class="row-label">商品金额</view>
         <view class="right-text">¥ {{orderDetail.order_amount}}</view>
       </view>
-      <view class="row-box">
+      <!-- <view class="row-box">
         <view class="row-label">运费</view>
         <view class="right-text">+ ¥ {{orderDetail.yunfei}}</view>
-      </view>
+      </view> -->
       <view class="row-box" wx:if="{{orderDetail.bonus_money}}">
         <view class="row-label">优惠券</view>
         <view class="right-text">- ¥ {{orderDetail.bonus_money}}</view>

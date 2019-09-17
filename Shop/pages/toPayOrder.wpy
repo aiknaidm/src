@@ -372,10 +372,10 @@
             <view class="row-label">商品金额</view>
             <view class="right-text">¥ {{allGoodsPrice}}</view>
           </view>
-          <view class="row-box">
+          <!-- <view class="row-box">
             <view class="row-label">运费</view>
             <view class="right-text">+ ¥ {{yunPrice}}</view>
-          </view>
+          </view> -->
           <view class="row-box row-box2" @tap="selectPayStyle" wx:if="{{friend_id==0}}">
             <view class="row-label">支付方式</view>
             <view class="right-text">
