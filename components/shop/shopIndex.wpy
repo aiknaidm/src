@@ -681,7 +681,7 @@
         <swiper wx:if="{{!indexLoading}}"  style="height:880rpx;background:#fff;margin:0 16rpx;padding-top: 20rpx;padding-bottom:20rpx;">
           <block wx:for="{{item_activity.actList}}" wx:key="{{index}}">
             <swiper-item wx:key="{{index}}" class="goods-lists">
-              <view class="goods-list" wx:for="{{item}}" wx:key="{{index}}" @tap="toGoodDetailsTap({{item.goods_id}})">
+              <view class="goods-list" wx:for="{{item}}" wx:key="{{index}}" @tap="toGoodsDetails({{item.goods_id}})">
                 <view class="goods-list-img">
                   <image src="{{item.original_img1?item.original_img1:'http://maijia.jicaizx.com/'+item.original_img}}" lazy-load="true"></image>
                 </view>
