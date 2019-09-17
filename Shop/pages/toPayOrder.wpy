@@ -536,6 +536,8 @@
         try {
           if (this.itemList.length == 1)
            var  thisItem = this.itemList[0]
+
+          
           else {
             var res = await util.showActionSheet(this.itemList);         
             if (!res)
@@ -543,7 +545,7 @@
             else  var thisItem = this.itemList[res.tapIndex]
           }
           // 0是线上 2是线下 4会员卡
-         
+         console.log("thisItem",thisItem)
           if (thisItem == "微信支付") this.payId = 0;
           if (thisItem == "线下支付") this.payId = 2;
           if (thisItem == "会员卡支付") {
@@ -559,9 +561,11 @@
               return;
             } else this.payId = 4;
           }
-          this.payIndex = res.tapIndex;
+       
+          this.payIndex = res?res.tapIndex:0;
           this.$apply();
         } catch (error) {
+        console.log(error)
           util.showToast(error.ReferenceError);
         }
       },
@@ -694,6 +698,7 @@
           this.shopCarList[index].order_amount =
             parseFloat(this.shopCarList[index].order_amount) +
             parseFloat(item2.goods_price) * parseFloat(item2.buy_number);
+    
         });
       });
       this.allGoodsPrice = this.allGoodsPrice.toFixed(2);
@@ -722,6 +727,24 @@
       let res = await newapi.yizhanBanner(data);
       this.payStyle = res.data.yizhan.zhifu.split(',');
       this.itemList = [];
+      // 一个商品只能线下
+var isstop=false
+     this.shopCarList.forEach((item, index) => {
+      
+        item.goodsList.forEach((item2, index2) => {
+        
+            if(item2.goods_id==1331){
+              this.itemList = ['线下支付'];
+              this.payId = 2;
+              isstop=true;
+              this.$apply();
+            }
+        })
+        })
+        if(isstop){
+          return
+        }
+        // end
       for (var i = 0; i < this.payStyle.length; i++) {
         if (this.itemLists[parseInt(this.payStyle[i] - 1)].name) this.itemList[i] = this.itemLists[parseInt(this.payStyle[i] - 1)].name
         console.log("---------------", i, this.itemList);
