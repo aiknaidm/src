@@ -1,0 +1,663 @@
+<style lang="less">
+.container {
+  padding-bottom: 85rpx;
+  background-color: #f0f0f0;
+}
+.search-title {
+  display: flex;
+  justify-content: space-around;
+  line-height: 88rpx;
+  font-size: 30rpx;
+  border-bottom: 0px solid #eee;
+  align-items: center;
+}
+.search-title .active {
+  color: #e50012;
+}
+.search-title image {
+  width: 35rpx;
+  height: 35rpx;
+  margin-left: 5rpx;
+}
+.search-title .up .img {
+  transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  /* IE 9 */
+  -webkit-transform: rotate(180deg);
+  /* Safari and Chrome */
+}
+.status-box .status-label.active {
+  border-bottom: 6rpx solid #eee;
+}
+.shop-cart {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  z-index: 10;
+}
+.shop-cart-list {
+  background-color: #fff;
+  line-height: 50rpx;
+  max-height: 600rpx;
+  overflow-y: scroll;
+  .red {
+    color: #e50012;
+    display: inline-block;
+  }
+  .name {
+    max-width: 250rpx;
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .card {
+    display: inline-block;
+  }
+  .attr {
+    margin-left: 10rpx;
+    font-size: 24rpx;
+    color: #999;
+    max-width: 150rpx;
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+.buy-num-box {
+  margin-top: 0;
+  padding-top: 30rpx;
+  border-top: 1px solid #f0f0f0;
+}
+.shop-cart-num {
+  height: 80rpx;
+  position: relative;
+}
+.shop-cart-num text {
+  display: inline-block;
+  position: relative;
+  width: 100rpx;
+  height: 100rpx;
+  left: 20rpx;
+  font-size: 100rpx;
+  top: -20rpx;
+  color: #e50012;
+}
+.shop-cart-num .num {
+  font-size: 30rpx;
+  display: inline-block;
+  min-width: 35rpx;
+  height: 35rpx;
+  text-align: center;
+  line-height: 30rpx;
+  position: relative;
+  left: -15rpx;
+  top: -80rpx;
+  background: #f7bf30;
+  color: #fff;
+  border-radius: 50px;
+}
+.topay {
+  background-color: #e50012;
+  color: #fff;
+  height: 80rpx;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 0 50rpx;
+  line-height: 80rpx;
+}
+.icon-shaixuan1 {
+  color: #707070;
+  margin-left: 10rpx;
+  font-size: 30rpx;
+}
+.purple {
+  font-size: 24rpx;
+}
+.buy-num-title-top {
+  display: flex;
+  align-items: center;
+  .card {
+    background: #e50012;
+    color: #fff;
+    padding: 0 8rpx;
+    margin-left: 10rpx;
+    font-size: 20rpx;
+    border-radius: 5rpx;
+    font-weight: 100;
+    height: 40rpx;
+    line-height: 40rpx;
+  }
+}
+</style>
+<template>
+  <view class="container">
+    <search :keyword.sync="keyword" @buttonTap.user="buttonTap">
+    </search>
+    <statusTap :statusType.sync="statusType" @statusTap.user="statusTap" type="shop">
+      <view slot="other" class="status-label" @tap="shaixuan">筛选
+        <text class="iconfont icon-shaixuan1"></text>
+      </view>
+      <view slot="other" class="status-label" @tap="changeListStyle">
+        <text class="iconfont icon-hengshuqiehuanshu {{is_picture?'active':''}}"></text>
+      </view>
+    </statusTap>
+    <loadingOrder wx:if="{{isLoading}}" show="2"></loadingOrder>
+    <noOrder text="暂无商品" wx:elif="{{goodsList.length==0&&!isLoading}}" show="2"></noOrder>
+    <repeat for="{{goodsList}}" key="{{index}}">
+      <searchList1 :goods.sync="item" :index.sync="index" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==1}}" @numJianTap1.user="numJianTap" @numJiaTap1.user="numJiaTap"></searchList1>
+      <searchList2 :goods.sync="item" :index.sync="index" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==0}}" @numJianTap1.user="numJianTap" @numJiaTap1.user="numJiaTap"></searchList2>
+    </repeat>
+    <shopCartPopup :goodsDetail.sync="goodsDetail" :status.sync="status" :thisindex.sync="goodsListIndex" isshowbtn="0" @numJiaTap1.user="numJiaTap" @numJianTap1.user="numJianTap" @labelItemTap.user="labelItemTap" wx:if="{{ishideShopPopup}}"></shopCartPopup>
+    <!-- <suppliersCart></suppliersCart> -->
+    <view class="shop-cart">
+      <view class="shop-cart-list" wx:if="{{isShowCart}}">
+        <view wx:for="{{cartList}}" wx:key="{{index}}" class="buy-num-box">
+          <view class="buy-num-title">
+            <view class="buy-num-title-top"><text class="name">{{item.goods_name}}</text><text class="card" wx:if="{{item.hdky==1}}">支持会员卡</text><text class="attr" wx:if="{{item.goods_attr!=''}}">{{item.goods_attr}}</text></view>
+            <view><text class="red">￥{{item.goods_price}} </text> <text class="purple">\t{{item.qidingliang}}件享受批发价￥{{item.shop_price}}</text></view>
+          </view>
+          <view class="num-box">
+            <view @tap="numJianTap({{item}},{{index}})" class="num-jian">-</view>
+            <view class="num-input"><input value="{{item.buy_number}}" type="number" @input="shopNumChange({{item}},{{index}})" /></view>
+            <view @tap="numJiaTap({{item}},{{index}})" class="num-jia">+</view>
+          </view>
+        </view>
+      </view>
+      <view class="shop-cart-num" wx:if="{{cartList.length}}">
+        <view class="cart" @tap="showCart"><text class="iconfont icon-gouwuche1"></text>
+          <text class="num">{{shopNum}}</text></view>
+        <view class="topay" @tap="toPayOrder">去结算</view>
+      </view>
+    </view>
+    <mask wx:if="{{isShowCart&&shopNum!=0}}" @tap.stop="hiddenCart" @touchmove.stop="stop"></mask>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import newapi from '../../API/newapi';
+import util from '../../utils/index';
+import search from '../../components/search';
+import statusTap from '../../components/statusTap';
+import searchList1 from '../../components/searchList';
+import searchList2 from '../../components/searchList1';
+import noOrder from '../../components/noOrder';
+import loadingOrder from '../../components/loadingOrder';
+import shopCart from '../../mixins/shopcart';
+import shopCartPopup from '../../components/shop/shopCartPopup2';
+export default class searchlist extends wepy.page {
+  config = {
+    navigationBarTitleText: '搜索列表'
+  };
+  components = {
+    search,
+    searchList1,
+    searchList2,
+    statusTap,
+    noOrder,
+    shopCartPopup,
+    loadingOrder
+  };
+  data = {
+    goodsList: [],
+    statusType: ['综合', '销量', '价格'],
+    currentType: '',
+    isMoreData: true,
+    goodsDetail: {},
+    ishideShopPopup: false,
+    cartList: [],
+    isShowCart: false,
+    shopNum: 0,
+    is_picture: 0,
+    status: 1,
+    goodsListIndex: '0',
+    isLoading: true,
+    keyword: '',
+    act_id:0
+  };
+  mixins = [shopCart];
+  computed = {};
+  methods = {
+    async callTel() {
+      var kefu = this.goodsDetail.kefu;
+      var phoneList = [];
+      if (this.goodsDetail.kefu.length == 1) {
+        wx.makePhoneCall({
+          phoneNumber: this.goodsDetail.kefu[0].mobile
+        });
+        return;
+      }
+      kefu.forEach(function(item, index) {
+        phoneList.push(item.kefu_name + ' ' + item.mobile);
+      });
+      let mRes = await util.showActionSheet(phoneList);
+      wx.makePhoneCall({
+        phoneNumber: phoneList[mRes.tapIndex]
+      });
+    },
+    stop() {
+      return;
+    },
+    toPayOrder() {
+      this.$parent.$pages['/Shop/pages/shopCart'].methods.toPayOrder(
+        this.list,
+        this
+      );
+    },
+    hiddenCart() {
+      this.isShowCart = false;
+    },
+    shaixuan() {
+      wx.navigateTo({
+        url:
+          'filtrate?cat_id=' +
+          this.initdata.cat_id +
+          '&cat_name=' +
+          this.cat_name +
+          '&suppliers_id=' +
+          this.initdata.suppliers_id
+      });
+    },
+    // 点击规格
+    labelItemTap(property) {
+      var goods_attr_id = property.goods_attr_id;
+      // 点击规格的数量
+      var { buy_number, showproindex } = this.showProNum(
+        this.cartList,
+        property.goods_attr_id
+      );
+      this.carIndex = showproindex;
+
+      this.goodsDetail.property = property;
+      this.goodsDetail.property.buy_number = buy_number;
+      this.goodsDetail.buy_number = buy_number;
+      this.goodsList[this.goodsListIndex].buy_number = buy_number;
+      this.showPrice();
+      this.$apply();
+      // if (arr1[i].properties[k].goods_attr_id == goods_attr_id) {
+      //   // 相同规格
+      //   arr1[i].properties[k].buy_number = arr2[j].buy_number;
+      //   // arr1[i].properties[k].goods_attr_id = arr2[j].goods_attr_id;
+      // }
+    },
+    // 直接修改数量
+    shopNumChange(goodsDetail, index, e) {
+      var that = this;
+      var buyNumMax = goodsDetail.goods_number; //库存
+      var buy_number = e.detail.value;
+      if (buy_number <= 0) {
+        util.showToast('购买数量不能小于1');
+        this.cartList[index].buy_number = 1;
+      } else if (buy_number <= buyNumMax) {
+        this.cartList[index].buy_number = buy_number;
+      } else {
+        util.showToast('购买数量不能大于库存');
+        this.cartList[index].buy_number = buyNumMax;
+      }
+
+      this.$parent.$pages['/Shop/pages/shopCart'].changeCartNum(
+        this.list,
+        0,
+        index,
+        this.cartList[index].buy_number,
+        this.friend_id,
+        function(price, buy_number) {
+          that.cartList[index].goods_price = parseFloat(price).toFixed(2);
+          // that.cartList[index].buy_number = that.cartList[index].buy_number;
+          that.setData({
+            cartList: that.cartList
+          });
+        }
+      );
+      var arr1 = this.compareList(this.goodsList, this.cartList);
+      this.goodsList = arr1;
+      this.cartNum();
+      this.$apply();
+    },
+    // isList ==1 来自于商品列表的点击
+    async numJiaTap(goodsDetail, index, isList) {
+      var buyNumMax = goodsDetail.goods_number; //库存
+      var buy_number = goodsDetail.buy_number; //购买数量
+      this.goodsList[index].show_buy_number =
+        this.goodsList[index].show_buy_number + 1;
+      if (buy_number < buyNumMax) {
+        buy_number++;
+        if (isList == 1) {
+          if (this.goodsList[index].properties.length == 0) {
+            this.goodsList[index].buy_number = buy_number;
+            var index = this.compareIndex(this.cartList, goodsDetail.goods_id);
+          } else {
+            this.goodsDetail.buy_number = buy_number;
+            var index = this.carIndex;
+            this.showPrice();
+          }
+          this.cartList[index].buy_number = buy_number;
+        } else {
+          this.cartList[index].buy_number = buy_number;
+          var arr1 = this.compareList(this.goodsList, this.cartList);
+          this.goodsList = arr1;
+        }
+        this.cartNum();
+        var price = await this.$parent.$pages[
+          '/Shop/pages/shopCart'
+        ].changeCartNum(this.list, 0, index, buy_number, this.friend_id);
+        this.cartList[index].goods_price = price;
+        this.$apply();
+      } else {
+        util.showToast('超过库存');
+      }
+    },
+    async numJianTap(goodsDetail, index, isList) {
+      var buy_number = goodsDetail.buy_number; //购买数量
+      if (buy_number == 1) {
+        let mRes = await util.showModalBig('你确定要删除该商品吗');
+        if (mRes.cancel) {
+          return;
+        }
+      }
+      if (buy_number > 0) {
+        buy_number--;
+        if (isList == 1) {
+          this.goodsList[index].buy_number = buy_number;
+          if (this.goodsList[index].properties.length == 0) {
+            var index = this.compareIndex(this.cartList, goodsDetail.goods_id);
+            this.cartList[index].buy_number = buy_number;
+          } else {
+            this.goodsDetail.buy_number = buy_number;
+            this.goodsList[index].show_buy_number =
+              this.goodsList[index].show_buy_number - 1;
+            var index = this.carIndex;
+            this.cartList[index].buy_number = buy_number;
+            this.showPrice();
+          }
+        } else {
+          this.cartList[index].buy_number = buy_number;
+          var arr1 = this.compareList(this.goodsList, this.cartList);
+          this.goodsList = arr1;
+        }
+        this.cartNum();
+        var price = await this.$parent.$pages[
+          '/Shop/pages/shopCart'
+        ].changeCartNum(this.list, 0, index, buy_number, this.friend_id);
+        this.cartList[index].goods_price = price;
+        this.$apply();
+      }
+      if (buy_number == 0) {
+        var id = [];
+        id.push(this.cartList[index].id);
+        this.$parent.$pages['/Shop/pages/shopCart'].delCartGoods(id);
+        this.cartList.splice(index, 1);
+        this.cartNum();
+        this.$apply();
+      }
+    },
+    // 选择
+    statusTap(index, evt) {
+      switch (parseInt(index)) {
+        case 0:
+          this.isasc = true;
+          this.initdata.order = '';
+          this.initdata.sort = '';
+          break;
+        case 1:
+          // 销量
+          this.isasc = true;
+          this.initdata.order = '';
+          this.data.sort = 'salenum';
+          break;
+        case 2:
+          // 价格
+          this.initdata.sort = 'shop_price';
+          this.isasc = !this.isasc;
+          this.initdata.order = this.isasc ? 'asc' : 'desc';
+          break;
+        default:
+          break;
+      }
+      this.initdata.page = 1;
+      this.getGoodsList(this.initdata);
+    },
+    // 商品详情
+    toGoodDetailsTap(id, evt) {
+      wx.navigateTo({
+        url: 'goodDetail?id=' + id+'&suppliers_id='+this.initdata.suppliers_id
+      });
+    },
+    // 点击确定 搜索商品
+    buttonTap(keyword) {
+      this.initdata.keyword = keyword;
+      this.initdata.page = 1;
+      this.getGoodsList(this.initdata);
+    },
+    showCart() {
+      this.isShowCart = true;
+      // this.showCart();
+    },
+    // 改变商品列表样式
+    changeListStyle() {
+      this.is_picture = this.is_picture == 1 ? 0 : 1;
+    }
+  };
+  events = {};
+  // 获取商品列表信息
+  async getGoodsList(data) {
+    let res = await newapi.goodsList(data);
+    if (res.data.code) {
+      wx.hideLoading();
+      if (data.page == 1) {
+        this.goodsList = res.data.data;
+      } else {
+        this.goodsList.push(...res.data.data);
+      }
+      if (res.data.data.length == 0) this.isMoreData = false;
+      else this.isMoreData = true;
+      this.goodsList = this.compareList(this.goodsList, this.cartList);
+      this.isLoading = false;
+      this.$apply();
+      return this.goodsList;
+    }
+  }
+  // 获取购物车数据
+  async showCart() {
+    util.showLoading();
+    let data = {
+      suppliers_id: this.suppliers_id
+    };
+    let res = await newapi.showCart(data);
+    if (res.data.code) {
+      wx.hideLoading();
+      this.cartList =
+        res.data.data.length > 0 ? res.data.data[0].goodsList : [];
+      this.list = res.data.data;
+      if (res.data.data.length > 0) {
+        for (var i = 0; i < this.list[0].goodsList.length; i++) {
+          this.list[0].goodsList[i].active = true;
+        }
+      }
+      this.cartNum();
+      this.compareList(this.goodsList, this.cartList);
+    }
+    this.$apply();
+  }
+  //初始化数据
+  initData() {
+    var initdata = {
+      cat_id: this.cat_id,
+      keyword: this.keyword,
+      order: '', //
+      sort: '', //排序的方式
+      price_max: '', //加个
+      price_min: '',
+      brand: this.brand,
+      attr_value: '',
+      page: 1,
+      suppliers_id: this.suppliers_id,
+      ch_cat_id: '',
+      act_id: this.act_id,
+    };
+    this.isasc = true;
+    return initdata;
+  }
+  // 下拉刷新
+  onReachBottom() {
+    if (this.isMoreData) {
+      util.showLoading();
+      this.initdata.page = this.initdata.page + 1;
+      this.getGoodsList(this.initdata);
+    }
+  }
+  async initF() {
+    await this.$parent.loginInfo();
+    this.initdata = this.initData();
+    await this.showCart();
+    await this.getGoodsList(this.initdata);
+    // this.goodsList = this.compareList(this.goodsList, this.cartList);
+    this.cartNum();
+  }
+  async onLoad(option) {
+    wx.removeStorageSync('pinpainame');
+    wx.removeStorageSync('pinpailist');
+    wx.removeStorageSync('catlist');
+    wx.removeStorageSync('catname');
+    if (option.navigationTitle) {
+      wx.setNavigationBarTitle({
+        title: option.navigationTitle
+      });
+    }
+    // 品牌
+    this.brand = option.brand ? option.brand : '';
+    // 搜索关键词
+    this.keyword = option.keyword ? option.keyword : '';
+    // 分类id
+    this.cat_id = option.cat_id ? option.cat_id : '';
+    // 是否图片模式
+    this.is_picture = this.$parent.globalData.yizhan
+      ? this.$parent.globalData.yizhan.is_picture
+      : (await this.$parent.getYizhanInfo()).is_picture;
+    // 非会员是否可以查看
+     this.is_chakan = this.$parent.globalData.yizhan
+      ? this.$parent.globalData.yizhan.is_chakan
+      :(await this.$parent.getYizhanInfo()).is_chakan;
+    
+    // 分类
+    this.cat_name = option.cat_name ? option.cat_name : '';
+
+    // 店铺
+    this.suppliers_id = option.suppliers_id ? option.suppliers_id : '';
+    // 工长id
+    this.friend_id =
+      this.suppliers_id == this.$parent.globalData.friend_suppliers_id
+        ? this.$parent.globalData.friend_id
+        : 0;
+    this.act_id = option.act_id ? option.act_id : '';
+    this.initF();
+    // 是否是会员
+    this.status = await this.getSheheStauts(
+      '',
+      this.suppliers_id,
+      this.friend_id
+    );
+    if( this.status!=2&&this.is_chakan==0){
+   var mRes= await  util.showModal("该店暂不支持非会员查看，快去申请会员吧~")
+
+   if(mRes.confirm) wx.switchTab({ url: '/pages/home' });
+    }
+    this.$apply();
+  }
+  async onShow() {}
+  //
+  compareList(arr1, arr2) {
+    var thisindex;
+    for (var i = 0; i < arr1.length; i++) {
+      arr1[i].show_buy_number = 0;
+      for (var j = 0; j < arr2.length; j++) {
+        // 有规格的商品
+        // if (arr1[i].properties.length != 0) {
+        //   for (var k = 0; k < arr1[i].properties.length; k++) {
+        //     if (arr1[i].properties[k].goods_attr_id == arr2[j].goods_attr_id) {
+        //       // 相同规格
+        //       arr1[i].properties[k].buy_number = arr2[j].buy_number;
+        //     }
+        //   }
+        // } else
+        if (
+          arr1[i].goods_id == arr2[j].goods_id &&
+          arr1[i].properties.length == 0
+        ) {
+          arr1[i].buy_number = arr2[j].buy_number;
+        } else if (arr1[i].goods_id == arr2[j].goods_id) {
+          arr1[i].show_buy_number += parseInt(arr2[j].buy_number);
+        }
+      }
+      // if (arr1[i].properties.length != 0) {
+      //   arr1[i].buy_number = this.propertiesNum(arr1[i].properties);
+      // }
+    }
+    return arr1;
+  }
+  compareIndex(arr1, goods_id) {
+    var thisindex;
+    for (var i = 0; i < arr1.length; i++) {
+      if (arr1[i].goods_id == goods_id) {
+        return i;
+      }
+    }
+  }
+  //计算总数
+  cartNum() {
+    this.shopNum = 0;
+    for (var i = 0; i < this.cartList.length; i++) {
+      this.shopNum += parseInt(this.cartList[i].buy_number);
+    }
+  }
+  // 计算有规格总数量
+  propertiesNum(properties) {
+    var propertiesNum = 0;
+    properties.forEach(function(item, index) {
+      propertiesNum += item.buy_number;
+    });
+    return propertiesNum;
+  }
+  showProNum(arr, id) {
+    var buy_number = 0;
+    var index = 0;
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i].goods_attr_id == id) {
+        buy_number = arr[i].buy_number;
+        var showproindex = i;
+      }
+    }
+    return {
+      buy_number,
+      showproindex
+    };
+  }
+  // 显示价格
+  showPrice() {
+    var goodsDetail = this.goodsDetail;
+    var property = this.goodsDetail.property;
+    var buy_number = goodsDetail.buy_number;
+    buy_number = buy_number == 0 ? 1 : buy_number;
+    if (goodsDetail.properties.length == 0) {
+      // 没有规格的价格
+      var price =
+        goodsDetail.status == 2 && goodsDetail.qidingliang <= buy_number
+          ? goodsDetail.shop_price
+          : goodsDetail.floor_price;
+      goodsDetail.selectPrice = price;
+    } else if (property && property.goods_attr_id) {
+      // 有规格的
+      var price =
+        goodsDetail.status == 2 && goodsDetail.qidingliang <= buy_number
+          ? property.attr_price
+          : property.floor_price;
+      goodsDetail.selectPrice = price;
+    }
+  }
+}
+</script>

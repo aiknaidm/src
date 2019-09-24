@@ -182,6 +182,11 @@
             url: '/Shop/pages/showCard'
           },
           {
+            icon: '/images/kb.png',
+            text: '我的拼团',
+            url: '/Pt/pages/orderList'
+          },
+          {
             icon: '/images/icon-shopcar.png',
             text: '购物车',
             url: '/Shop/pages/shopCart'
@@ -211,6 +216,11 @@
             icon: '/images/kb.png',
             text: '我的卡包',
             url: '/Shop/pages/showCard'
+          },
+          {
+            icon: '/images/kb.png',
+            text: '我的拼团',
+            url: '/Pt/pages/orderList'
           },
           {
             icon: '/images/icon-shopcar.png',

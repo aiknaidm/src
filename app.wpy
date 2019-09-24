@@ -140,6 +140,16 @@ export default class extends wepy.app {
         ]
       },
       {
+        root: 'Pt/',
+        pages: [
+          'pages/goodDetail',
+          'pages/searchList',
+          'pages/orderList',
+          'pages/orderDetail',
+          'pages/toPayOrder',
+        ]
+      },
+      {
         root: 'Index/',
         pages: ['pages/details', 'pages/newsList']
       }

@@ -56,6 +56,11 @@ const newapi = {
     cardxxpay: (data) => fetch(`${host_chk}/cardxxpay`, 'GET', data),
     yzm: (data) => fetch(`${host_chk}/yzm`, 'GET', data),
     set_unionid: (data) => fetch(`${host_chk}/set_unionid`, 'GET', data),
+    pintuan_search: (data) => fetch(`${host_chk}/pintuan_search`, 'GET', data),
+    pintuan_goodinfo: (data) => fetch(`${host_chk}/pintuan_goodinfo`, 'GET', data),
+    pintuan_order: (data) => fetch(`${host_chk}/pintuan_order`, 'POST', data),
+    pintuan_orderlist: (data) => fetch(`${host_chk}/pintuan_orderlist`, 'GET', data),
+    pintuan_orderinfo: (data) => fetch(`${host_chk}/pintuan_orderinfo`, 'GET', data),
 
 }
 const fetch = async function(url, method, data) {

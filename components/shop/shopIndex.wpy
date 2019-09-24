@@ -702,6 +702,42 @@
           </block>
         </swiper>
         </block>
+
+        <block wx:if="{{pintuan.length>0}}">
+        <view class="activity-title" >
+          <view class="activity-title-left">
+            <image src="/images/index/huo.png" mode="widthFix" lazy-load="false" />
+            团购活动
+          </view>
+          <view class="activity-title-right">
+            去逛逛
+            <image src="/images/index/you.png" mode="widthFix" lazy-load="false" />
+          </view>
+        </view>
+        
+        <swiper wx:if="{{!indexLoading}}"  style="height:880rpx;background:#fff;margin:0 16rpx;padding-top: 20rpx;padding-bottom:20rpx;">
+          <block wx:for="{{pintuan}}" wx:key="{{index}}">
+            <swiper-item wx:key="{{index}}" class="goods-lists">
+              <view class="goods-list" wx:for="{{item}}" wx:key="{{index}}" @tap="toGoodsDetailPt({{item.pt_id}})">
+                <view class="goods-list-img">
+                  <image src="{{item.original_img1?item.original_img1:'http://maijia.jicaizx.com/'+item.original_img}}" lazy-load="true"></image>
+                </view>
+                <view class="goods-name">
+                  {{item.goods_name}}
+                </view>
+                <view class="goods-money">
+                  <view class="goods-money-new"> ￥{{item.pt_price}}</view>
+                  <view class="goods-money-old"> ￥{{item.shop_price}}</view>
+                </view>
+                  <view class="goods-coupon">
+                    <view class="goods-coupon-new" >{{item.group_num}}件成团</view>
+                  </view>
+              </view>
+              <!-- <image src="{{item.original_img1?item.original_img1:item.original_img}}" class="slide-image" width="355" height="150" /> -->
+            </swiper-item>
+          </block>
+        </swiper>
+        </block>
         <!--品牌列表 -->
         <view class="brand-lists" wx:if="{{brands!=-1&&brands.length>0}}">
           <view class="goods-title">
@@ -914,6 +950,11 @@
         default: [],
         twoWay: true
       },
+      pintuan: {
+        type: Array,
+        default: [],
+        twoWay: true
+      },
     };
     methods = {
       // 点击一级分类
@@ -939,6 +980,11 @@
       toGoodsDetails(id) {
         wx.navigateTo({
           url: '/Shop/pages/goodDetail?id=' + id
+        });
+      },
+      toGoodsDetailPt(id) {
+        wx.navigateTo({
+          url: '/Pt/pages/goodDetail?id=' + id
         });
       },
       statusTap(e) {

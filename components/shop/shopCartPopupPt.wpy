@@ -1,0 +1,320 @@
+<style lang="less">
+.show-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 15;
+}
+.popup-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+}
+.popup-contents {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  z-index: 6;
+}
+.pop-goods-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 30rpx 0;
+  padding-left: 30rpx;
+  border-bottom: 1px solid #eee;
+}
+.pop-img-box {
+  width: 120rpx;
+  height: 120rpx;
+  overflow: hidden;
+  margin-right: 26rpx;
+}
+.pop-img-box .goods-thumbnail {
+  width: 120rpx;
+  height: 120rpx;
+}
+.pop-goods-title {
+  width: 484rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 26rpx;
+  color: #000;
+}
+.pop-goods-price {
+  font-size: 26rpx;
+  color: #e64340;
+  line-height: 55rpx;
+}
+.pop-goods-close {
+  width: 36rpx;
+  height: 36rpx;
+  flex: 1;
+  background: url('https://cdn.it120.cc/images/weappshop/popup-close.png')
+    no-repeat center center;
+  background-size: 36rpx auto;
+  align-self: flex-start;
+  margin-top: -10rpx;
+}
+.label {
+  font-size: 26rpx;
+  color: #000;
+  padding-left: 30rpx;
+  padding: 30rpx 0 20rpx 30rpx;
+}
+.label-item-box {
+  display: flex;
+  margin-left: 30rpx;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-height: 250rpx;
+  overflow: scroll;
+}
+.label-item {
+  font-size: 26rpx;
+  color: #000;
+  padding: 14rpx 20rpx;
+  height: 40rpx;
+  border: 1px solid #ddd;
+  border-radius: 6rpx;
+  margin: 0 20rpx 20rpx 0;
+  line-height: auto;
+}
+.label-item.active {
+  color: #e64340;
+  border: 1px solid #e64340;
+}
+.buy-num-box {
+  display: flex;
+  justify-content: space-between;
+  padding: 30rpx 30rpx 48rpx 0;
+  margin-left: 30rpx;
+  /* border-top: 1px solid #eee; */
+  margin-top: 30rpx;
+  align-items: center;
+}
+.num-label {
+  font-size: 26rpx;
+  color: #000;
+}
+.buy-num-box .num-box {
+  display: flex;
+}
+.buy-num-box .num-box .num-jian,
+.buy-num-box .num-box .num-input,
+.buy-num-box .num-box .num-jia {
+  width: 80rpx;
+  height: 64rpx;
+  line-height: 62rpx;
+  text-align: center;
+  border: 1px solid #eee;
+}
+.buy-num-box .num-box .num-input {
+  font-size: 28rpx;
+}
+.buy-num-box .num-box .num-input input {
+  height: 100%;
+}
+.popup-join-btn {
+  width: 100%;
+  height: 89rpx;
+  text-align: center;
+  line-height: 89rpx;
+  font-size: 34rpx;
+  color: #fff;
+  background-color: #e64340;
+}
+.buy-num-box .num-box .hui {
+  background-color: #f5f5f9;
+}
+.goods-txt {
+  font-size: 24rpx;
+  color: #999;
+  line-height: 30rpx;
+}
+.purple {
+  color: #a78dd3;
+  font-weight: bold;
+}
+</style>
+<template>
+  <view class="show-popup">
+    <view class="popup-mask" @tap="closePopupTap"></view>
+    <view class="popup-contents">
+      <view class="pop-goods-info" wx:if="{{thisindex==-1}}">
+        <view class="pop-img-box">
+          <image src="http://maijia.jicaizx.com/{{goodsDetail.original_img}}" class="goods-thumbnail" mode="aspectFit" lazy-load="true" wx:if="{{goodsDetail.original_img1==''}}"/>
+            <image src="{{goodsDetail.original_img1}}" class="goods-thumbnail" mode="aspectFit" lazy-load="true" wx:else/>
+        </view>
+        <view class="pop-goods-des">
+          <view class="pop-goods-title">{{goodsDetail.goods_name}}</view>
+          <view class="pop-goods-price">¥ {{goodsDetail.selectPrice}}</view>
+        </view>
+        <view class="pop-goods-close" @tap="closePopupTap"></view>
+      </view>
+      <view class="size-label-box" wx:if="{{goodsDetail.properties.length!=0}}">
+        <view class="label">规格</view>
+        <view class="label-item-box">
+          <view wx:for="{{goodsDetail.properties}}" wx:for-item="property" wx:key="{{index}}" @tap="labelItemTap({{property}})" class="label-item {{property.goods_attr_id==goodsDetail.property.goods_attr_id?'active':''}}">{{property.attr_value}}</view>
+        </view>
+      </view>
+      <view class="buy-num-box" wx:if="{{goodsDetail.shopType =='tobuy'||goodsDetail.shopType =='addShopCar'}}">
+        <view class="num-label">购买数量</view>
+        <view class="num-box">
+          <view class="num-jian {{goodsDetail.buy_number == 1 ? 'hui': ''}}" @tap="numJianTap">-</view>
+          <view class="num-input">
+            <input type="number" value="{{goodsDetail.buy_number}}" bindinput="shopNumChange"/>
+          </view>
+          <view class="num-jia" @tap="numJiaTap">+</view>
+        </view>
+      </view>
+      <view wx:if="{{thisindex==-1}}">
+        <view class="popup-join-btn" wx:if="{{goodsDetail.shopType =='addShopCar'}}" @tap="addShopCar({{goodsDetail}})">加入购物车</view>
+        <view class="popup-join-btn" wx:elif="{{goodsDetail.shopType =='tobuy'}}" @tap="addShopCar">立即购买</view>
+        <view class="popup-join-btn" wx:else @tap="addShopCar({{goodsDetail}})">确定</view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import util from '../../utils/index';
+export default class shopCart extends wepy.component {
+  props = {
+    goodsDetail: {
+      type: Object,
+      default: {},
+      twoWay: true
+    },
+    thisindex: {
+      type: String,
+      default: '-1'
+    },
+    status: {
+      type: Number,
+      default: -1
+    }
+  };
+  methods = {
+    labelItemTap(property) {
+      this.$emit('labelItemTap', property);
+    },
+    numJiaTap() {
+      var buyNumMax = this.goodsDetail.goods_number; //库存
+      var buy_number = this.goodsDetail.buy_number; //购买数量
+      var qidingliang = this.goodsDetail.qidingliang;
+      if (buy_number < buyNumMax) {
+        buy_number++;
+        this.goodsDetail.buy_number = buy_number;
+        this.showPrice();
+      }
+      if (this.thisindex == -1) this.$emit('numJiaTap', buy_number);
+      else this.$emit('numJiaTap', this.goodsDetail, this.thisindex, 1);
+    },
+    numJianTap() {
+      var buy_number = this.goodsDetail.buy_number; //购买数量
+      if (buy_number > 1) {
+        buy_number--;
+        this.goodsDetail.buy_number = buy_number;
+        this.showPrice();
+      }
+      if (this.thisindex == -1) this.$emit('numJianTap', buy_number);
+      else this.$emit('numJianTap1', this.goodsDetail, this.thisindex, 1);
+    },
+    // 关闭
+    closePopupTap() {
+      this.$emit('closePopupTap');
+    },
+    // 是否可以加入购物车
+    addShopCar() {
+      var buy_number = this.goodsDetail.buy_number; //购买数
+      var goods_number = this.goodsDetail.goods_number; //库存
+      var price = this.goodsDetail.selectSizePrice; //价格
+      var properties = this.goodsDetail.properties; //规则
+      var property = this.goodsDetail.property; //选择的规则
+      if (
+        this.goodsDetail.shopType == 'addShopCar' ||
+        this.goodsDetail.shopType == 'tobuy'
+      ) {
+        if (price == 0) {
+          util.showToast('该商品暂无价格不能购买');
+          return;
+        }
+        if (buy_number > goods_number) {
+          util.showToast('购买量不能大于库存！');
+          return;
+        }
+        if (properties.length != 0 && property && !property.goods_attr_id) {
+          util.showToast('请选择商品规格！');
+          return;
+        }
+      }
+      if (buy_number < 1) {
+        util.showToast('购买数量不能为0！');
+        return;
+      }
+      if (this.goodsDetail.shopType == 'addShopCar') {
+        this.$emit('addShopCar', this.goodsDetail);
+      } else {
+        this.$emit('buyNow', this.goodsDetail);
+      }
+    },
+    // 直接修改数量
+    shopNumChange(e) {
+      var buy_number = e.detail.value;
+
+      var buyNumMax = this.goodsDetail.goods_number; //库存
+      if (buy_number <= 0) {
+        util.showToast('购买数量不能小于1');
+        buy_number = 1;
+      } else if (buy_number <= buyNumMax) {
+        buy_number = buy_number;
+      } else {
+        util.showToast('购买数量不能大于库存');
+        buy_number = buyNumMax;
+      }
+      // this.goodsDetail.buy_number = buy_number;
+
+      this.goodsDetail.buy_number = 1;
+      this.$apply();
+
+      this.goodsDetail.buy_number = buy_number;
+      this.$apply();
+      this.showPrice();
+      // this.setData({
+      //   goodsDetail:this.goodsDetail
+      // })
+      // this.$emit('shopNumChange', 1);
+      //     this.$emit('shopNumChange', buy_number);
+    }
+  };
+  // 显示价格
+  showPrice() {
+    var goodsDetail = this.goodsDetail;
+    var property = this.goodsDetail.property;
+    if (goodsDetail.properties.length == 0) {
+      // 没有规格的价格
+      var price = goodsDetail.pt_price;
+      goodsDetail.selectPrice = price;
+    } else if (property && property.goods_attr_id) {
+      // 有规格的
+      var price =
+        goodsDetail.status == 2 &&
+        goodsDetail.qidingliang <= goodsDetail.buy_number
+          ? property.attr_price
+          : property.floor_price;
+      goodsDetail.selectPrice = price;
+    }
+  }
+  async onLoad() {}
+}
+</script>

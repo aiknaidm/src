@@ -113,6 +113,18 @@ export default class testMixin extends wepy.mixin {
           });
         this.activity = activity;
 
+        var pintuan = res.data.pintuan;
+        var ptList = [];
+        pintuan.forEach(function(item2, index2) {
+            var i = Math.floor(index2/4);
+            var j = index2%4;
+            if(j==0){
+                ptList[i] = []
+            }
+            ptList[i][j] = item2;
+        });
+        this.pintuan = ptList;
+
         wx.setNavigationBarTitle({
             title: res.data.yizhan.suppliers_name
         });

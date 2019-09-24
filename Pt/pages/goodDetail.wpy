@@ -269,18 +269,13 @@
       </view>
     </view>
     <view class="goods-info">
-      <view class="goods-title">{{goodsDetail.goods_name}}<text wx:if="{{goodsDetail.hdky==1&&status>1}}">支持会员卡</text><text wx:if="{{goodsDetail.vip_level>=1&&status>1}}">{{goodsDetail.vip_level_text}}</text></view>
-      <view class="goods-price2 goods-price " style="fonts-size:46rpx;" wx:if="{{status>1}}">批发价：¥ {{goodsDetail.shop_price}}<view class>销量：{{goodsDetail.salenum}}</view></view>
-      <view class=" {{status>1?'goods-price':'goods-price2'}} ">
-        <text wx:if="{{goodsDetail.floor_price!=0}}">零售价：¥ {{goodsDetail.floor_price}}</text>
-        <view>库存:{{goodsDetail.goods_number}}</view>
+      <view class="goods-title">{{goodsDetail.goods_name}}</view>
+      <view class="goods-price2 goods-price " style="fonts-size:46rpx;" >拼团价：¥ {{goodsDetail.pt_price}}</view>
+      <view class="goods-price">
+        <text wx:if="{{goodsDetail.floor_price!=0}}">零售价：¥ {{goodsDetail.shop_price}}</text>
       </view>
       <view class="goods-txt">
         <view>
-        <view wx:if="{{status>1}}" class="purple">
-          {{goodsDetail.qidingliang}}{{danwei}}可以享受批发价
-          <view>￥{{goodsDetail.shop_price}}</view>
-        </view>
         </view>
         <view class="title" @tap="viewYiZhanDetails({{goodsDetail.suppliers_id}})">{{goodsDetail.suppliers_name}}</view>
       </view>
@@ -299,12 +294,12 @@
       <view class="contact" @tap="callTel">
         <view style="color:'#FFF';opacity:0;position:absolute;" type="default-dark" session-from="shop" size="27"></view>客服
       </view>
-      <view class="shop-cart-btn" @tap="goShopCar">
+      <!-- <view class="shop-cart-btn" @tap="goShopCar">
         <view class="shop-name">购物车</view>
         <view class="shop-num">({{shopNum}})</view>
-      </view>
-      <view class="join-shop-cart" @tap="toAddShopCar({{goodsDetail.goods_id}})">加入购物车</view>
-      <view class="now-buy" @tap.stop="tobuy({{goodsDetail.goods_id}})">立即购买</view>
+      </view> -->
+      <!-- <view class="join-shop-cart" @tap="toAddShopCar({{goodsDetail.goods_id}})">加入购物车</view> -->
+      <view class="now-buy" @tap.stop="tobuy({{goodsDetail.pt_id}})">立即购买</view>
     </view>
     <shopCartPopup :goodsDetail.sync="goodsDetail" :status.sync="status" wx:if="{{ishideShopPopup}}"></shopCartPopup>
     <!-- <canvasdrawer painting="{{painting}}" class="canvasdrawer" bindgetImage="eventGetImage" wx:if="{{goodsDetail.suppliers_id == 76}}" /> -->
@@ -315,7 +310,7 @@
   import wepy from 'wepy';
   import newapi from '../../API/newapi';
   import util from '../../utils/index';
-  import shopCartPopup from '../../components/shop/shopCartPopup';
+  import shopCartPopup from '../../components/shop/shopCartPopupPt';
   import htmlParser from '../../components/htmlParser';
   import shopCart from '../../mixins/shopcart';
   export default class goodDetail extends wepy.page {
@@ -347,7 +342,6 @@
         this.goodsDetail.goods_attr_id = property.goods_attr_id;
         this.goodsDetail.goods_number = property.goods_number;
         this.goodsDetail.property = property;
-        if(property.img_url!='')  this.goodsDetail.original_img1 = property.img_url;
         this.goodsDetail = this.showPrice(this.goodsDetail);
         this.$apply();
       },
@@ -368,7 +362,7 @@
         this.buliduBuyNowInfo();
         this.closePopupTap();
         wx.navigateTo({
-          url: '/Shop/pages/toPayOrder?orderType=buyNow'
+          url: '/Pt/pages/toPayOrder?orderType=buyNow'
         });
       }
     };
@@ -401,10 +395,10 @@
     // 获取商品详情
     async getGoodsInfo(id,suppliers_id) {
       let data = {
-        goods_id: id,
+        pt_id: id,
         suppliers_id
       };
-      let res = await newapi.GoodsInfo(data);
+      let res = await newapi.pintuan_goodinfo(data);
       
       wx.hideLoading();
       if(res.data.code!=0){
@@ -437,8 +431,10 @@
         res.data.data.suppliers_id == this.$parent.globalData.friend_suppliers_id ?
         this.$parent.globalData.friend_id :
         0;
+      this.goodsDetail.floor_price = this.goodsDetail.pt_price;
       this.goodsInit(this.goodsDetail, friend_id);
       this.goodsDetail.buy_number = 1;
+      console.log(this.goodsDetail,"this.goodsDetailthis.goodsDetailthis.goodsDetailthis.goodsDetail")
       var img = [{}];
       img[0].img_url = this.goodsDetail.original_img ?
         'http://maijia.jicaizx.com/' + this.goodsDetail.original_img :
@@ -537,7 +533,7 @@
     // 分享
     onShareAppMessage(res) {
 
-      var path = '/Shop/pages/goodDetail?id=' + this.goodsDetail.goods_id+'&suppliers_id='+this.suppliers_id;
+      var path = '/Pt/pages/goodDetail?id=' + this.goodsDetail.pt_id+'&suppliers_id='+this.suppliers_id;
       return {
         title: this.goodsDetail.goods_name,
         path: path,

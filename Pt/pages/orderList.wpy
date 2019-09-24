@@ -1,0 +1,152 @@
+
+<style lang="less">
+</style>
+<template>
+  <view class="container">
+    <view class="status-box search-title">
+      <block wx:for="{{statusType}}" wx:key="{{index}}">
+        <view class="status-label {{statusIndex[index] == thisindex ? 'active' : ''}} {{isclick?'down':'up'}}" @tap="statusTap({{index}})">
+          {{item}}<text class='goodsListnum' wx:if="{{goodsListnum[index]&&goodsListnum[index]!=0}}">{{goodsListnum[index]}}</text>
+        </view>
+      </block>
+    </view>
+    <noorder show="2" wx:if="{{orderList.length==0}}" text="暂无订单"></noorder>
+    <!-- 订单列表  -->
+    <repeat for="{{orderList}}" wx:key="{{index}}">
+      <orderList :orderList.sync="item" :goodsMap.sync="goodsMap[index]" @orderDetail.user="orderDetail">
+        <view slot="btn">
+          <orderbutton :orderDetail.sync="item"></orderbutton>
+        </view>
+      </orderList>
+    </repeat>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import newapi from '../../API/newapi';
+import statusTap from '../../components/statusTap';
+import noorder from '../../components/noOrder';
+import orderList from '../../components/shop/orderList';
+import orderbutton from '../../components/shop/orderbutton';
+import util from '../../utils/index';
+export default class orderlist extends wepy.page {
+  config = {
+    navigationBarTitleText: '订单列表'
+  };
+  components = {
+    statusTap,
+    noorder,
+    orderList,
+    orderbutton
+  };
+  data = {
+    statusType: ['全部', '进行中', '成功', '失败'],
+    statusIndex: ['0', '2', '3', '4'],
+    orderList: [],
+    goodsMap: [],
+    currentType: '0',
+    goodsListnum: [],
+    thisindex: '0'
+  };
+  computed = {};
+  events = {
+    // 取消订单
+    cancelOrderTap: res => {
+      this.page = 1;
+      this.isMoreData = true;
+      this.getOrderList(this.thisindex, 1);
+    },
+    // 确认订单
+    confirmBtnTap: res => {
+      this.page = 1;
+      this.isMoreData = true;
+      this.getOrderList(this.thisindex, 1);
+    }
+  };
+  methods = {
+    // 选择
+    statusTap(index) {
+      util.showLoading();
+      this.thisindex = this.statusIndex[index];
+      this.page = 1;
+      this.isMoreData = true;
+      this.getOrderList(this.thisindex, this.page);
+    },
+    // 订单详情
+    orderDetail(id, evt) {
+      wx.navigateTo({
+        url: 'orderDetail?id=' + id
+      });
+    }
+  };
+  //  订单列表
+  async getOrderList(order_status = '0', page = 1) {
+    util.showLoading();
+    let data = {
+      order_status,
+      page
+    };
+    var res0 = await newapi.pintuan_orderlist(data);
+    wx.hideLoading();
+    var orderList = res0.data.data.orderList;
+    var goodsMap = res0.data.data.goodsMap;
+    orderList.forEach((item, index) => {
+      orderList[index].add_time = util.formatDate(item.add_time);
+    });
+    if (page == 1) {
+      this.orderList = orderList;
+      this.goodsMap = goodsMap;
+    } else {
+      this.orderList.push(...orderList);
+      this.goodsMap.push(...goodsMap);
+    }
+    if (orderList.length < 10) {
+      this.isMoreData = false;
+    }
+    //this.$apply();
+
+    // let res = await newapi.orderNum();
+    // if (res.data.data.daishenhe != 0) {
+    //   this.statusType = [
+    //     '全部',
+    //     '待审核',
+    //     '待付款',
+    //     '待发货',
+    //     '待收货',
+    //     '已完成'
+    //   ];
+    //   this.statusIndex = ['0', '9', '1', '2', '3', '4'];
+    //   this.goodsListnum[0] = 0;
+    //   this.goodsListnum[1] = res.data.data.daishenhe;
+    //   this.goodsListnum[2] = res.data.data.daifukuan;
+    //   this.goodsListnum[3] = res.data.data.daifahuo;
+    //   this.goodsListnum[4] = res.data.data.yifahuo;
+    //   this.goodsListnum[5] = 0;
+    // } else {
+    //   this.goodsListnum[0] = 0;
+    //   this.goodsListnum[1] = res.data.data.daifukuan;
+    //   this.goodsListnum[2] = res.data.data.daifahuo;
+    //   this.goodsListnum[3] = res.data.data.yifahuo;
+    //   this.goodsListnum[4] = 0;
+    // }
+    this.$apply();
+  }
+  async onLoad(option) {
+    util.showLoading();
+    await this.$parent.loginInfo();
+    this.thisindex = option.order_status;
+    this.isMoreData = true;
+    this.page = 1;
+    this.getOrderList(this.thisindex, this.page);
+  }
+  onReachBottom() {
+    if (this.isMoreData) {
+      util.showLoading();
+      this.page = this.page + 1;
+      this.getOrderList(this.thisindex, this.page);
+    }
+  }
+}
+</script>
+ 

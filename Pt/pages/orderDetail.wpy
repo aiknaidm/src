@@ -1,0 +1,70 @@
+
+<style lang="less">
+</style>
+<template>
+  <view class="container">
+    <orderDetail
+      :orderDetail.sync="orderDetail"
+      :goodsMap.sync="goodsMap"
+      :is_friend.sync="is_friend"
+      @cancelOrderTap.user="cancelOrderTap"
+      @confirmBtnTap.user="confirmBtnTap"
+    ></orderDetail>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import newapi from '../../API/newapi';
+import orderDetail from '../../components/shop/orderDetail';
+import util from '../../utils/index';
+
+export default class orderDetails extends wepy.page {
+  config = {
+    navigationBarTitleText: '订单详情'
+  };
+  components = { orderDetail };
+
+  data = {
+    orderDetail: {},
+    goodsMap: [],
+    is_friend: '0'
+  };
+
+  computed = {};
+  methods = {};
+  events = {
+    cancelOrderTap: res => {
+      this.$parent.$pages['/Shop/pages/orderList'].events.cancelOrderTap(
+        this.id
+      );
+      this.getOrderDetail(this.id);
+    },
+    confirmBtnTap: res => {
+      this.$parent.$pages['/Shop/pages/orderList'].events.confirmBtnTap(
+        this.id
+      );
+      this.getOrderDetail(this.id);
+    }
+  };
+  async getOrderDetail(id) {
+    let data = { id };
+    let res = await newapi.pintuan_orderinfo(data);
+
+    wx.hideLoading();
+    this.orderDetail = res.data.data.orderList;
+    this.goodsMap = res.data.data.goodsMap;
+    this.orderDetail.add_time = util.formatTime(this.orderDetail.add_time);
+    this.orderDetail.pay_time = util.formatTime(this.orderDetail.pay_time);
+    this.orderDetail.confirm_time = util.formatTime(this.orderDetail.confirm_time);
+    this.$apply();
+  }
+
+  async onLoad(option) {
+    this.id = option.id;
+    if (option.is_friend) this.is_friend = option.is_friend;
+    this.getOrderDetail(this.id);
+    util.showLoading();
+  }
+}
+</script>

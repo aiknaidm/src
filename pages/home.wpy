@@ -3,7 +3,7 @@
 <template>
 <view class="container">
 
-  <shopIndexc :goods.sync="goods"  :brands.sync="brands" :yizhan.sync="yizhan" :yizhanBanner.sync="yizhanBanner" :activity.sync="activity" :shenhe.sync="shenhe" :goodsKind.sync="goodsKind" :isguoqi.sync="isguoqi" :isLoading.sync="isLoading" :text.sync="text" :erji.sync="erji"></shopIndexc>
+  <shopIndexc :goods.sync="goods"  :brands.sync="brands" :yizhan.sync="yizhan" :yizhanBanner.sync="yizhanBanner" :activity.sync="activity" :pintuan.sync="pintuan" :shenhe.sync="shenhe" :goodsKind.sync="goodsKind" :isguoqi.sync="isguoqi" :isLoading.sync="isLoading" :text.sync="text" :erji.sync="erji"></shopIndexc>
 
 </view>
 </template>
@@ -33,6 +33,7 @@ export default class home extends wepy.page {
     goods:[],
     brands:[],
     activity:[],
+    pintuan:[],
   };
   components = { shopIndexc };
 
