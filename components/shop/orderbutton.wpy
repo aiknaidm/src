@@ -7,6 +7,7 @@
     <view class="btn cancel-btn" wx:if="{{orderDetail.order_status==1||orderDetail.order_status==9}}" @tap.stop="cancelOrderTap({{orderDetail.id}})">取消订单</view>
     <view class="btn topay-btn" wx:if="{{orderDetail.order_status==1}}" @tap.stop="toPayTap({{orderDetail.id}},{{orderDetail.order_amount}},{{index}})">马上付款</view>
     <view class="btn topay-btn" wx:if="{{orderDetail.order_status==2&&orderDetail.shipping_status==1}}" @tap.stop="confirmBtnTap({{orderDetail.id}})">确认收货</view>
+    <view class="btn topay-btn" wx:if="{{orderDetail.order_status==13&&orderDetail.shipping_status==1}}" @tap.stop="confirmBtnPt({{orderDetail.id}})">确认收货</view>
     <view class="btn topay-btn" wx:if="{{orderDetail.order_status==9&&is_friend==1}}" @tap.stop="payStatusTap({{orderDetail.id}})">付款</view>
   </view>
 </template>
@@ -48,6 +49,14 @@ export default class orderbutton extends wepy.component {
         else util.showToast('确认收货失败');
       }
     },
+    async confirmBtnPt(id) {
+      let mRes = await util.showModalBig('你确定收货吗');
+      if (mRes.confirm) {
+        var res = await this.toConfirmBtnPt(id);
+        if (res.data.code == 0) this.$emit('confirmBtnTap');
+        else util.showToast('确认收货失败');
+      }
+    },
     // 马上付款
     async toPayTap(id) {
       if (this.orderDetail.pay_id == 4) {
@@ -82,6 +91,10 @@ export default class orderbutton extends wepy.component {
   async toConfirmBtn(id) {
     let data = { id };
     return await newapi.confirmOrder(data);
+  }
+  async toConfirmBtnPt(id) {
+    let data = { id };
+    return await newapi.confirmOrderPt(data);
   }
   toPayTap() {
     this.$emit('toPayTap');

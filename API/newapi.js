@@ -31,6 +31,7 @@ const newapi = {
     removeindex: (data) => fetch(`${host_chk}/qxxb`, 'GET', data), //取消店铺首页
     cancelOrder: (data) => fetch(`${host_chk}/cancelorder`, 'GET', data), //取消订单
     confirmOrder: (data) => fetch(`${host_chk}/confirmorder`, 'GET', data), //确认收货
+    confirmOrderPt: (data) => fetch(`${host_chk}/pintuan_shouhuo`, 'GET', data), //确认收货
     orderDetail: (data) => fetch(`${host_chk}/orderinfo`, 'GET', data), //订单详情
     applyMember: (data) => fetch(`${host_chk}/sqhy`, 'GET', data), //申请会员
     SheheStauts: (data) => fetch(`${host_chk}/shenhe`, 'GET', data), //判断审核状态

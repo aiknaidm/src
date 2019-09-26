@@ -292,8 +292,8 @@
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status!=9&&orderDetail.pay_id==0}}">支付方式：微信支付</view>
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status!=9&&orderDetail.pay_id==4}}">支付方式：会员卡支付</view>
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.pay_note}}">备注：{{orderDetail.pay_note}}</view>
-      <view class="wuliu-text wuliu-date " wx:if="{{orderDetail.yujisongda!=''}}">{{orderDetail.yujisongda}}</view>
-      <view class="wuliu-text wuliu-date " wx:if="{{orderDetail.peisongyuan!=''}}">{{orderDetail.peisongyuan}}</view>
+      <view class="wuliu-text wuliu-date " wx:if="{{orderDetail.yujisongda!=''}}">预计送达时间：{{orderDetail.yujisongda}}</view>
+      <view class="wuliu-text wuliu-date " wx:if="{{orderDetail.peisongyuan!=''}}">配送员：{{orderDetail.peisongyuan}}</view>
       <view class="wuliu-text wuliu-date red" @tap="showFahuodan({{orderDetail.fahuodan}})" wx:if="{{orderDetail.fahuodan!=''}}">查看发货单</view>
 
       

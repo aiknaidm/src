@@ -35,13 +35,13 @@ export default class orderDetails extends wepy.page {
   methods = {};
   events = {
     cancelOrderTap: res => {
-      this.$parent.$pages['/Shop/pages/orderList'].events.cancelOrderTap(
+      this.$parent.$pages['/Pt/pages/orderList'].events.cancelOrderTap(
         this.id
       );
       this.getOrderDetail(this.id);
     },
     confirmBtnTap: res => {
-      this.$parent.$pages['/Shop/pages/orderList'].events.confirmBtnTap(
+      this.$parent.$pages['/Pt/pages/orderList'].events.confirmBtnTap(
         this.id
       );
       this.getOrderDetail(this.id);
