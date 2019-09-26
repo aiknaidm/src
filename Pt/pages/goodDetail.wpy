@@ -91,7 +91,7 @@
     justify-content: space-between;
   }
   .goods-price view {
-    font-size:26rpx;
+    font-size: 26rpx;
     color: #333;
     font-weight: 100;
   }
@@ -205,7 +205,7 @@
   .footer-box .now-buy {
     text-align: center;
     height: 100%;
-    width: 250rpx;
+    width: 100%;
     line-height: 100rpx;
     background-color: #e64340;
     color: #fff;
@@ -252,6 +252,69 @@
     margin-left: 5rpx;
     color: #aaa;
   }
+  .price {
+    font-size: 30rpx;
+    line-height: 80rpx;
+    overflow: hidden;
+    background: #fff;
+    >div {
+      padding: 0 60rpx;
+    }
+    .label1 {
+      display: flex;
+      flex-wrap: wrap; //   justify-content: space-between;
+      padding: 20rpx 40rpx 0 40rpx;
+      .label2 {
+        margin-right: 40rpx;
+      }
+      .img {
+        width: 100rpx;
+        height: 100rpx;
+        background: #ff6600;
+        border-radius: 50%;
+        margin-bottom: 20rpx;
+        overflow: hidden;
+        image {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .img:nth-of-type(5) {
+        margin-right: 0;
+      }
+      border-bottom: 8rpx solid #e4e4e4;
+      .ptjs {
+        display: flex;
+        justify-content: center;
+        line-height: 30rpx;
+        height: 40rpx;
+      }
+    }
+    .line-title {
+      line-height: 85rpx;
+      border-bottom: 1px solid #e4e4e4;
+      padding-left: 40rpx;
+      overflow: hidden;
+      span:first-child {
+        border-left: 4px solid #ff6600;
+        padding-left: 20rpx;
+      }
+      span:last-child {
+        font-size: 25rpx;
+        float: right;
+        i {
+          display: inline;
+        }
+      }
+    }
+    border-bottom: 8rpx solid #e4e4e4;
+    .label2 {
+      border-bottom: 1px solid #e4e4e4;
+    }
+    .line {
+      display: flex;
+    }
+  }
 </style>
 <template>
   <view class="container {{ishideShopPopup?'hidden':''}}">
@@ -270,7 +333,7 @@
     </view>
     <view class="goods-info">
       <view class="goods-title">{{goodsDetail.goods_name}}</view>
-      <view class="goods-price2 goods-price " style="fonts-size:46rpx;" >拼团价：¥ {{goodsDetail.pt_price}}</view>
+      <view class="goods-price2 goods-price " style="fonts-size:46rpx;">拼团价：¥ {{goodsDetail.pt_price}}</view>
       <view class="goods-price">
         <text wx:if="{{goodsDetail.floor_price!=0}}">零售价：¥ {{goodsDetail.shop_price}}</text>
       </view>
@@ -278,6 +341,28 @@
         <view>
         </view>
         <view class="title" @tap="viewYiZhanDetails({{goodsDetail.suppliers_id}})">{{goodsDetail.suppliers_name}}</view>
+      </view>
+    </view>
+    <view class="price">
+      <view class="line-title">
+        <span>拼购记录</span>
+        <view class="line">
+          已有
+          <view class="orange">{{ptjl.length}}</view>人参与拼购，已拼
+          <view class="orange">{{goodsDetail.salenum}}</view>件，
+          <view class="orange">{{goodsDetail.group_num}}</view>件成团
+        </view>
+        <view class="line">
+          团购结束时间：{{goodsDetail.end_time}}
+        </view>
+      </view>
+      <view class="label1" @click="tohistory">
+        <view class="label2" wx:for="{{ptjl}}" wx:key="{{index}}">
+          <view class="img">
+            <image src="{{item.avatar}}" />
+          </view>
+          <view class="ptjs">{{item.goods_number}}件</view>
+        </view>
       </view>
     </view>
     <view class="goods_brief" wx:if="{{goodsDetail.goods_brief}}">
@@ -295,9 +380,9 @@
         <view style="color:'#FFF';opacity:0;position:absolute;" type="default-dark" session-from="shop" size="27"></view>客服
       </view>
       <!-- <view class="shop-cart-btn" @tap="goShopCar">
-        <view class="shop-name">购物车</view>
-        <view class="shop-num">({{shopNum}})</view>
-      </view> -->
+              <view class="shop-name">购物车</view>
+              <view class="shop-num">({{shopNum}})</view>
+            </view> -->
       <!-- <view class="join-shop-cart" @tap="toAddShopCar({{goodsDetail.goods_id}})">加入购物车</view> -->
       <view class="now-buy" @tap.stop="tobuy({{goodsDetail.pt_id}})">立即购买</view>
     </view>
@@ -334,7 +419,8 @@
       buy_number: 1,
       status: 1,
       danwei: '件',
-      articleDetail: {}
+      articleDetail: {},
+      ptjl: []
     };
     events = {
       // 规格被点击
@@ -393,48 +479,48 @@
     };
     mixins = [shopCart];
     // 获取商品详情
-    async getGoodsInfo(id,suppliers_id) {
+    async getGoodsInfo(id, suppliers_id) {
       let data = {
         pt_id: id,
         suppliers_id
       };
       let res = await newapi.pintuan_goodinfo(data);
-      
       wx.hideLoading();
-      if(res.data.code!=0){
+      if (res.data.code != 0) {
         util.showToast(res.data.message)
         return
       }
       this.goodsDetail = res.data.data;
-
+      this.ptjl = this.goodsDetail.ptjl;
       switch (this.goodsDetail.vip_level) {
-            case 1:
-                this.goodsDetail.vip_level_text = '一级会员'
-                break;
-            case 2:
-                this.goodsDetail.vip_level_text = '二级会员'
-                break;
-            case 3:
-                this.goodsDetail.vip_level_text = '三级会员'
-                break;
-            case 4:
-                this.goodsDetail.vip_level_text = '四级会员'
-                break;
-            case 5:
-                this.goodsDetail.vip_level_text = '五级会员'
-                break;
-            default:
-                break;
-        }
+        case 1:
+          this.goodsDetail.vip_level_text = '一级会员'
+          break;
+        case 2:
+          this.goodsDetail.vip_level_text = '二级会员'
+          break;
+        case 3:
+          this.goodsDetail.vip_level_text = '三级会员'
+          break;
+        case 4:
+          this.goodsDetail.vip_level_text = '四级会员'
+          break;
+        case 5:
+          this.goodsDetail.vip_level_text = '五级会员'
+          break;
+        default:
+          break;
+      }
       this.shopNum = res.data.data.gouwuche;
       var friend_id =
         res.data.data.suppliers_id == this.$parent.globalData.friend_suppliers_id ?
         this.$parent.globalData.friend_id :
         0;
       this.goodsDetail.floor_price = this.goodsDetail.pt_price;
+      this.goodsDetail.end_time = util.formatTime(this.goodsDetail.end_time);
       this.goodsInit(this.goodsDetail, friend_id);
       this.goodsDetail.buy_number = 1;
-      console.log(this.goodsDetail,"this.goodsDetailthis.goodsDetailthis.goodsDetailthis.goodsDetail")
+      console.log(this.goodsDetail, "this.goodsDetailthis.goodsDetailthis.goodsDetailthis.goodsDetail")
       var img = [{}];
       img[0].img_url = this.goodsDetail.original_img ?
         'http://maijia.jicaizx.com/' + this.goodsDetail.original_img :
@@ -445,9 +531,11 @@
       this.goodsDetail.img_url.forEach((item, index) => {
         this.url.push(item.img_url)
       })
-      if(this.goodsDetail.floor_price==0&&this.goodsDetail.shop_price==0){
-         var mRes= await  util.showModal("该商品不支持查看")
-          if(mRes.confirm) wx.switchTab({ url: '/pages/home' });
+      if (this.goodsDetail.floor_price == 0 && this.goodsDetail.shop_price == 0) {
+        var mRes = await util.showModal("该商品不支持查看")
+        if (mRes.confirm) wx.switchTab({
+          url: '/pages/home'
+        });
       }
       if (this.goodsDetail.suppliers_id == 76) {
         wx.showShareMenu();
@@ -459,14 +547,13 @@
     }
     async onLoad(option) {
       util.showLoading();
-      var res=await this.$parent.loginInfo();
+      var res = await this.$parent.loginInfo();
       // 非会员是否可以查看
-      console.log("await this.$parent.getYizhanInfo()",await this.$parent.getYizhanInfo())
-     this.is_chakan = this.$parent.globalData.yizhan
-      ? this.$parent.globalData.yizhan.is_chakan
-      :(await this.$parent.getYizhanInfo()).is_chakan;
-
-      this.suppliers_id=option.suppliers_id?option.suppliers_id:''
+      console.log("await this.$parent.getYizhanInfo()", await this.$parent.getYizhanInfo())
+      this.is_chakan = this.$parent.globalData.yizhan ?
+        this.$parent.globalData.yizhan.is_chakan :
+        (await this.$parent.getYizhanInfo()).is_chakan;
+      this.suppliers_id = option.suppliers_id ? option.suppliers_id : ''
       this.getGoodsInfo(option.id, this.suppliers_id);
     }
     // async eventDraw() {
@@ -532,8 +619,7 @@
     // }
     // 分享
     onShareAppMessage(res) {
-
-      var path = '/Pt/pages/goodDetail?id=' + this.goodsDetail.pt_id+'&suppliers_id='+this.suppliers_id;
+      var path = '/Pt/pages/goodDetail?id=' + this.goodsDetail.pt_id + '&suppliers_id=' + this.suppliers_id;
       return {
         title: this.goodsDetail.goods_name,
         path: path,

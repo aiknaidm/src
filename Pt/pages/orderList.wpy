@@ -42,7 +42,7 @@ export default class orderlist extends wepy.page {
   };
   data = {
     statusType: ['全部', '进行中', '成功', '失败'],
-    statusIndex: ['0', '2', '3', '4'],
+    statusIndex: ['0', '12', '13', '14'],
     orderList: [],
     goodsMap: [],
     currentType: '0',

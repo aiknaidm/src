@@ -463,9 +463,9 @@
       }], //支付方式
       itemList: ["线下支付"],
       payIndex: 0,
-      pay_id: 0,
+      pay_id: 2,
       friend_id: 0,
-      payId:0
+      payId:2
     };
     computed = {};
     methods = {
@@ -621,8 +621,8 @@
             util.showModal(res.data.message);
             return;
           }
-          // 刷新购物车
-          this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo();
+          // // 刷新购物车
+          // this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo();
           // this.$parent.$pages['/Shop/pages/searchList'].initF();
           if (res.data.data == '' || res.data.data == null) {
             wx.redirectTo({
@@ -630,6 +630,7 @@
             });
             return;
           }
+          console.log("pay_id",pay_id);
           if (pay_id == 2) {
             wx.redirectTo({
               url: '/Pt/pages/orderList?order_status=2'
@@ -662,21 +663,21 @@
             }
             return;
           }
-          // 调起支付
-          var payResult = await util.wxpay1(res.data.data);
-          util.showToast(payResult.msg);
-          // 取消支付
-          if (payResult.code == 2) {
-            wx.redirectTo({
-              url: '/Pt/pages/orderList?order_status=1'
-            });
-          }
-          // 支付成功
-          if (payResult.code == 1) {
-            wx.redirectTo({
-              url: '/Pt/pages/orderList?order_status=2'
-            });
-          }
+          // // 调起支付
+          // var payResult = await util.wxpay1(res.data.data);
+          // util.showToast(payResult.msg);
+          // // 取消支付
+          // if (payResult.code == 2) {
+          //   wx.redirectTo({
+          //     url: '/Pt/pages/orderList?order_status=1'
+          //   });
+          // }
+          // // 支付成功
+          // if (payResult.code == 1) {
+          //   wx.redirectTo({
+          //     url: '/Pt/pages/orderList?order_status=2'
+          //   });
+          // }
         } catch (error) {
           util.showToast('错误' + error);
         }
@@ -738,7 +739,6 @@
     // }
     async onLoad() {
       await this.$parent.loginInfo();
-      this.payId = '0';
       var shopCarList = wx.getStorageSync('shopCarInfo');
       this.shopCarList = shopCarList;
       this.suppliers_id = shopCarList[0].suppliers_id;

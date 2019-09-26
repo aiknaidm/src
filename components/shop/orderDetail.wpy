@@ -211,6 +211,10 @@
             <view wx:elif="{{orderDetail.order_status==2&&orderDetail.shipping_status==0}}" class="order-status-bg">待发货</view>
             <view wx:elif="{{orderDetail.order_status==2&&orderDetail.shipping_status==1}}" class="order-status-bg">待收货</view>
             <view wx:elif="{{orderDetail.order_status==3&&orderDetail.shipping_status==1}}" class="order-status-bg">已完成</view>
+            <view wx:elif="{{orderDetail.order_status==12}}" class="order-status-bg">未成团</view>
+            <view wx:elif="{{orderDetail.order_status==13&&orderDetail.shipping_status==0}}" class="order-status-bg">待发货</view>
+            <view wx:elif="{{orderDetail.order_status==13&&orderDetail.shipping_status==1}}" class="order-status-bg">待收货</view>
+            <view wx:elif="{{orderDetail.order_status==13&&orderDetail.shipping_status==2}}" class="order-status-bg">已完成</view>
             <view wx:elif="{{orderDetail.order_status==9}}" class="order-status-bg">待审核</view>
             <!-- <view wx:else class="order-status-bg">已取消</view> -->
           </slot>
