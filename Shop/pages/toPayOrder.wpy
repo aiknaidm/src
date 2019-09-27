@@ -625,6 +625,9 @@
             util.showModal(res.data.message);
             return;
           }
+          var xiaoxi=res.data.xiaoxi;
+          let data2 = {xiaoxi};
+          newapi.faxiaoxi(data2);
           // 刷新购物车
           this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo();
           // this.$parent.$pages['/Shop/pages/searchList'].initF();

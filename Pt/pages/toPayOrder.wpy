@@ -621,31 +621,34 @@
             util.showModal(res.data.message);
             return;
           }
+          var xiaoxi=res.data.xiaoxi;
+          let data2 = {xiaoxi};
+          newapi.faxiaoxi(data2);
           // // 刷新购物车
           // this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo();
           // this.$parent.$pages['/Shop/pages/searchList'].initF();
           if (res.data.data == '' || res.data.data == null) {
             wx.redirectTo({
-              url: '/Pt/pages/orderList?order_status=1'
+              url: '/Pt/pages/orderList?order_status=0'
             });
             return;
           }
           console.log("pay_id",pay_id);
           if (pay_id == 2) {
             wx.redirectTo({
-              url: '/Pt/pages/orderList?order_status=2'
+              url: '/Pt/pages/orderList?order_status=0'
             });
             return;
           }
           if (this.shopCarList.length > 1) {
             wx.redirectTo({
-              url: '/Pt/pages/orderList?order_status=1'
+              url: '/Pt/pages/orderList?order_status=0'
             });
             return;
           }
           if (this.friend_id != 0) {
             wx.redirectTo({
-              url: '/Pt/pages/orderList?order_status=9'
+              url: '/Pt/pages/orderList?order_status=0'
             });
             return;
           }
@@ -653,12 +656,12 @@
             var cardPayRes = await this.cardPay(res.data.data);
             if (cardPayRes.data.code == 0) {
               wx.redirectTo({
-                url: '/Pt/pages/orderList?order_status=2'
+                url: '/Pt/pages/orderList?order_status=0'
               });
             } else {
               await util.showModal(cardPayRes.data.message);
               wx.redirectTo({
-                url: '/Pt/pages/orderList?order_status=1'
+                url: '/Pt/pages/orderList?order_status=0'
               });
             }
             return;

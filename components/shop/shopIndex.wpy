@@ -402,7 +402,7 @@
   .goods-list {
     width: calc(100% / 2 - 80rpx);
     float: left;
-    margin:20rpx 40rpx;
+    margin:10rpx 40rpx;
     line-height: 40rpx;
     image {
       width: 100%;
@@ -556,6 +556,20 @@
     color: rgba(136, 136, 136, 1);
     line-height: 45rpx;
     margin-top: 20rpx;
+  }
+  
+  .goods-coupon {
+    display: inline-flex;
+    border: 1px solid #E50012;
+    color: #E50012;
+    font-size: 23rpx;
+    margin-bottom: 2rpx;
+  }
+  .goods-coupon-new {
+    margin: 0 10rpx;
+  }
+  .goods-coupon-old {
+    margin: 0 10rpx;
   }
 </style>
 <template>
