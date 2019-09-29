@@ -723,7 +723,7 @@
             <image src="/images/index/huo.png" mode="widthFix" lazy-load="false" />
             团购活动
           </view>
-          <view class="activity-title-right">
+          <view class="activity-title-right" @tap.stop="toSearchList_pt">
             去逛逛
             <image src="/images/index/you.png" mode="widthFix" lazy-load="false" />
           </view>
@@ -1061,6 +1061,14 @@
             this.yizhan.suppliers_name +
             '-' + brand_name +
             "&brand=" + brand_id
+        });
+      },
+      toSearchList_pt() {
+        wx.navigateTo({
+          url: '/Pt/pages/searchList?suppliers_id=' +
+            this.yizhan.suppliers_id +
+            '&navigationTitle=' +
+            this.yizhan.suppliers_name
         });
       },
       // 点击确定 搜索商品

@@ -215,6 +215,8 @@
             <view wx:elif="{{orderDetail.order_status==13&&orderDetail.shipping_status==0}}" class="order-status-bg">待发货</view>
             <view wx:elif="{{orderDetail.order_status==13&&orderDetail.shipping_status==1}}" class="order-status-bg">待收货</view>
             <view wx:elif="{{orderDetail.order_status==13&&orderDetail.shipping_status==2}}" class="order-status-bg">已完成</view>
+            <view wx:elif="{{orderDetail.order_status==14&&orderDetail.tuikuan_status==0}}" class="order-status-bg">退款中</view>
+            <view wx:elif="{{orderDetail.order_status==14&&orderDetail.tuikuan_status==1}}" class="order-status-bg">已退款</view>
             <view wx:elif="{{orderDetail.order_status==9}}" class="order-status-bg">待审核</view>
             <!-- <view wx:else class="order-status-bg">已取消</view> -->
           </slot>
@@ -288,6 +290,7 @@
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status>=1}}">创建时间：{{orderDetail.add_time}}</view>
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status>=2&&orderDetail.order_status!=9}}">付款时间：{{orderDetail.pay_time}}</view>
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status>=2&&orderDetail.shipping_status==1}}">发货时间：{{orderDetail.confirm_time}}</view>
+      <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status==14&&orderDetail.tuikuan_status==1}}">退款时间：{{orderDetail.tuikuan_time}}</view>
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status!=9&&orderDetail.pay_id==2}}">支付方式：线下支付</view>
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status!=9&&orderDetail.pay_id==0}}">支付方式：微信支付</view>
       <view class="wuliu-text wuliu-date" wx:if="{{orderDetail.order_status!=9&&orderDetail.pay_id==4}}">支付方式：会员卡支付</view>

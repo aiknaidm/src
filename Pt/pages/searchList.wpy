@@ -138,19 +138,19 @@
   <view class="container">
     <search :keyword.sync="keyword" @buttonTap.user="buttonTap">
     </search>
-    <statusTap :statusType.sync="statusType" @statusTap.user="statusTap" type="shop">
+    <!-- <statusTap :statusType.sync="statusType" @statusTap.user="statusTap" type="shop">
       <view slot="other" class="status-label" @tap="shaixuan">筛选
         <text class="iconfont icon-shaixuan1"></text>
       </view>
       <view slot="other" class="status-label" @tap="changeListStyle">
         <text class="iconfont icon-hengshuqiehuanshu {{is_picture?'active':''}}"></text>
       </view>
-    </statusTap>
+    </statusTap> -->
     <loadingOrder wx:if="{{isLoading}}" show="2"></loadingOrder>
     <noOrder text="暂无商品" wx:elif="{{goodsList.length==0&&!isLoading}}" show="2"></noOrder>
     <repeat for="{{goodsList}}" key="{{index}}">
-      <searchList1 :goods.sync="item" :index.sync="index" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==1}}" @numJianTap1.user="numJianTap" @numJiaTap1.user="numJiaTap"></searchList1>
-      <searchList2 :goods.sync="item" :index.sync="index" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==0}}" @numJianTap1.user="numJianTap" @numJiaTap1.user="numJiaTap"></searchList2>
+      <searchList1 :goods.sync="item" :index.sync="index" :status.sync="status" @goodDetail.user="toGoodDetailsTap"></searchList1>
+      <!-- <searchList2 :goods.sync="item" :index.sync="index" :status.sync="status" @goodDetail.user="toGoodDetailsTap" wx:if="{{is_picture==0}}" @numJianTap1.user="numJianTap" @numJiaTap1.user="numJiaTap"></searchList2> -->
     </repeat>
     <shopCartPopup :goodsDetail.sync="goodsDetail" :status.sync="status" :thisindex.sync="goodsListIndex" isshowbtn="0" @numJiaTap1.user="numJiaTap" @numJianTap1.user="numJianTap" @labelItemTap.user="labelItemTap" wx:if="{{ishideShopPopup}}"></shopCartPopup>
     <!-- <suppliersCart></suppliersCart> -->
@@ -168,11 +168,11 @@
           </view>
         </view>
       </view>
-      <view class="shop-cart-num" wx:if="{{cartList.length}}">
+      <!-- <view class="shop-cart-num" wx:if="{{cartList.length}}">
         <view class="cart" @tap="showCart"><text class="iconfont icon-gouwuche1"></text>
           <text class="num">{{shopNum}}</text></view>
         <view class="topay" @tap="toPayOrder">去结算</view>
-      </view>
+      </view> -->
     </view>
     <mask wx:if="{{isShowCart&&shopNum!=0}}" @tap.stop="hiddenCart" @touchmove.stop="stop"></mask>
   </view>
@@ -184,7 +184,7 @@ import newapi from '../../API/newapi';
 import util from '../../utils/index';
 import search from '../../components/search';
 import statusTap from '../../components/statusTap';
-import searchList1 from '../../components/searchList';
+import searchList1 from '../../components/searchListPt';
 import searchList2 from '../../components/searchList1';
 import noOrder from '../../components/noOrder';
 import loadingOrder from '../../components/loadingOrder';
@@ -434,10 +434,10 @@ export default class searchlist extends wepy.page {
       this.initdata.page = 1;
       this.getGoodsList(this.initdata);
     },
-    showCart() {
-      this.isShowCart = true;
-      // this.showCart();
-    },
+    // showCart() {
+    //   this.isShowCart = true;
+    //   // this.showCart();
+    // },
     // 改变商品列表样式
     changeListStyle() {
       this.is_picture = this.is_picture == 1 ? 0 : 1;
@@ -446,7 +446,7 @@ export default class searchlist extends wepy.page {
   events = {};
   // 获取商品列表信息
   async getGoodsList(data) {
-    let res = await newapi.goodsList(data);
+    let res = await newapi.pintuan_search(data);
     if (res.data.code) {
       wx.hideLoading();
       if (data.page == 1) {
@@ -463,27 +463,27 @@ export default class searchlist extends wepy.page {
     }
   }
   // 获取购物车数据
-  async showCart() {
-    util.showLoading();
-    let data = {
-      suppliers_id: this.suppliers_id
-    };
-    let res = await newapi.showCart(data);
-    if (res.data.code) {
-      wx.hideLoading();
-      this.cartList =
-        res.data.data.length > 0 ? res.data.data[0].goodsList : [];
-      this.list = res.data.data;
-      if (res.data.data.length > 0) {
-        for (var i = 0; i < this.list[0].goodsList.length; i++) {
-          this.list[0].goodsList[i].active = true;
-        }
-      }
-      this.cartNum();
-      this.compareList(this.goodsList, this.cartList);
-    }
-    this.$apply();
-  }
+  // async showCart() {
+  //   util.showLoading();
+  //   let data = {
+  //     suppliers_id: this.suppliers_id
+  //   };
+  //   let res = await newapi.showCart(data);
+  //   if (res.data.code) {
+  //     wx.hideLoading();
+  //     this.cartList =
+  //       res.data.data.length > 0 ? res.data.data[0].goodsList : [];
+  //     this.list = res.data.data;
+  //     if (res.data.data.length > 0) {
+  //       for (var i = 0; i < this.list[0].goodsList.length; i++) {
+  //         this.list[0].goodsList[i].active = true;
+  //       }
+  //     }
+  //     this.cartNum();
+  //     this.compareList(this.goodsList, this.cartList);
+  //   }
+  //   this.$apply();
+  // }
   //初始化数据
   initData() {
     var initdata = {
@@ -514,7 +514,7 @@ export default class searchlist extends wepy.page {
   async initF() {
     await this.$parent.loginInfo();
     this.initdata = this.initData();
-    await this.showCart();
+    // await this.showCart();
     await this.getGoodsList(this.initdata);
     // this.goodsList = this.compareList(this.goodsList, this.cartList);
     this.cartNum();
