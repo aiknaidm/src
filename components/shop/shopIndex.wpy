@@ -571,6 +571,13 @@
   .goods-coupon-old {
     margin: 0 10rpx;
   }
+  .index-title-qiandao{
+    background: #f7bf30;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 24rpx;
+    padding:5rpx 20rpx;
+  }
 </style>
 <template>
   <view class="container">
@@ -591,7 +598,7 @@
             </image>
           </view>
           <view class="index-title-name">
-            <view>{{yizhan.suppliers_name}}</view>
+            <view>{{yizhan.suppliers_name}} <text class="index-title-qiandao" @tap="toQiandao" wx:if="{{yizhan.suppliers_id==76}}">签到拿积分</text></view>
           </view>
         </view>
         <view class="index-title-info" wx:else>
@@ -971,6 +978,9 @@
       },
     };
     methods = {
+      toQiandao(){
+        wx.navigateTo({ url: '/Index/pages/qiandao' });
+      },
       // 点击一级分类
       select(item, index) {
         console.log("item", item, index)

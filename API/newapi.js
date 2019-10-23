@@ -63,6 +63,9 @@ const newapi = {
     pintuan_orderlist: (data) => fetch(`${host_chk}/pintuan_orderlist`, 'GET', data),
     pintuan_orderinfo: (data) => fetch(`${host_chk}/pintuan_orderinfo`, 'GET', data),
     faxiaoxi: (data) => fetch(`${host_chk}/faxiaoxi`, 'POST', data),
+    signin: (data) => fetch(`${host_chk}/signin`, 'POST', data),
+    signin_list: (data) => fetch(`${host_chk}/signin_list`, 'POST', data),
+
 
 }
 const fetch = async function(url, method, data) {
