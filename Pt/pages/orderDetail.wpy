@@ -57,6 +57,7 @@ export default class orderDetails extends wepy.page {
     this.orderDetail.add_time = util.formatTime(this.orderDetail.add_time);
     this.orderDetail.pay_time = util.formatTime(this.orderDetail.pay_time);
     this.orderDetail.confirm_time = util.formatTime(this.orderDetail.confirm_time);
+    this.orderDetail.tuikuan_time = util.formatTime(this.orderDetail.tuikuan_time);
     this.$apply();
   }
 

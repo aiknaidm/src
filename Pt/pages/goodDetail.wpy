@@ -263,7 +263,7 @@
     .label1 {
       display: flex;
       flex-wrap: wrap; //   justify-content: space-between;
-      padding: 20rpx 40rpx 0 40rpx;
+      padding: 20rpx 0 0 40rpx;
       .label2 {
         margin-right: 40rpx;
       }
@@ -308,9 +308,9 @@
       }
     }
     border-bottom: 8rpx solid #e4e4e4;
-    .label2 {
-      border-bottom: 1px solid #e4e4e4;
-    }
+    // .label2 {
+    //   border-bottom: 1px solid #e4e4e4;
+    // }
     .line {
       display: flex;
     }

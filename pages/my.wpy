@@ -182,7 +182,7 @@
             url: '/Shop/pages/showCard'
           },
           {
-            icon: '/images/kb.png',
+            icon: '/images/pt.png',
             text: '我的拼团',
             url: '/Pt/pages/orderList'
           },
@@ -218,7 +218,7 @@
             url: '/Shop/pages/showCard'
           },
           {
-            icon: '/images/kb.png',
+            icon: '/images/pt.png',
             text: '我的拼团',
             url: '/Pt/pages/orderList'
           },

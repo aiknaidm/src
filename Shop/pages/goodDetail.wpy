@@ -393,7 +393,7 @@
         });
         let mRes = await util.showActionSheet(phoneList);
         wx.makePhoneCall({
-          phoneNumber: phoneList[mRes.tapIndex]
+          phoneNumber: kefu[mRes.tapIndex].mobile
         });
       }
     };
