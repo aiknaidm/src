@@ -314,6 +314,9 @@
     .line {
       display: flex;
     }
+    .line_count{
+      line-height: 30rpx;
+    }
   }
 </style>
 <template>
@@ -353,7 +356,15 @@
           <view class="orange">{{goodsDetail.group_num}}</view>件成团
         </view>
         <view class="line">
-          团购结束时间：{{goodsDetail.end_time}}
+          距离结束时间：
+          <block wx:if="{{targetTime1}}">
+          <i-count-down  class="line_count"
+            target="{{targetTime1}}"
+            show-day="{{true}}"
+            format="{{myFormat1}}"
+            clear-timer="{{clearTimer}}"
+          ></i-count-down>
+          </block>
         </view>
       </view>
       <view class="label1" @click="tohistory">
@@ -402,7 +413,8 @@
     config = {
       navigationBarTitleText: '商品详情',
       usingComponents: {
-        canvasdrawer: '/components/canvasdrawer/canvasdrawer'
+        canvasdrawer: '/components/canvasdrawer/canvasdrawer',
+        'i-count-down': '/count-down/index'
       }
     };
     components = {
@@ -420,7 +432,10 @@
       status: 1,
       danwei: '件',
       articleDetail: {},
-      ptjl: []
+      ptjl: [],
+      targetTime1: 0,
+      clearTimer: false,
+      myFormat1: ['日', '时', '分', '秒'],
     };
     events = {
       // 规格被点击
@@ -517,6 +532,7 @@
         this.$parent.globalData.friend_id :
         0;
       this.goodsDetail.floor_price = this.goodsDetail.pt_price;
+      this.targetTime1 = this.goodsDetail.end_time*1000;
       this.goodsDetail.end_time = util.formatTime(this.goodsDetail.end_time);
       this.goodsInit(this.goodsDetail, friend_id);
       this.goodsDetail.buy_number = 1;
@@ -543,6 +559,10 @@
       } else {
         wx.hideShareMenu();
       }
+      this.$apply();
+    }
+    onUnload() {
+      this.clearTimer=true;
       this.$apply();
     }
     async onLoad(option) {
