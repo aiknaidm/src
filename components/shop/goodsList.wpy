@@ -1,110 +1,113 @@
 
-  <style lang="less">
-.goods-list {
-  width: 100%;
-  background-color: #fff;
-}
-.goods-list .list-title {
-  font-size: 28rpx;
-  color: #000;
-  padding: 30rpx 0 25rpx 30rpx;
-  border-top: 16rpx solid #f0f0f0;
-  display: flex;
-}
-.goods-list .list-title text {
-  color: #e50012;
-  font-size: 45rpx;
-  margin-right: 10rpx;
-}
-.goods-list .a-goods {
-  /* width: 720rpx; */
-  /* margin-left: 30rpx; */
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid #eee;
-  padding: 30rpx 30rpx 30rpx 0;
-  background-color: #f0f0f0;
-}
-.goods-list .a-goods .img-box {
-  width: 160rpx;
-  height: 160rpx;
-  /* overflow: hidden; */
-  margin-right: 20rpx;
-  /* background-color: #d8d8d8; */
-  padding-left: 30rpx;
-}
-
-.goods-list .img-box .img {
-  width: 160rpx;
-  height: 160rpx;
-}
-.goods-list .a-goods .text-box {
-  /* width: 510rpx; */
-  display: flex;
-  box-sizing: border-box;
-  padding-top: 10rpx;
-  flex: 10;
-}
-.a-goods .text-box .arow02 {
-  font-size: 23rpx;
-  color: #888;
-  width: 150rpx;
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.goods-name {
-  text {
-    background: #e50012;
-    color: #fff;
-    padding: 4rpx 8rpx;
-    margin-left: 10rpx;
-    font-size: 20rpx;
-    border-radius: 5rpx;
-    font-weight: 100;
+<style lang="less">
+  .goods-list {
+    width: 100%;
+    background-color: #fff;
   }
-}
-.a-goods .text-box .arow01 {
-  flex: 1;
-  color: #333;
-  font-size: 30rpx;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.a-goods .text-box .arow02 .goods-price {
-  font-size: 26rpx;
-  color: #000000;
-}
-.a-goods .text-box .arow01 .goods-label {
-  font-size: 26rpx;
-  color: #999;
-}
-.a-goods .text-box .arow .goods-num {
-  font-size: 26rpx;
-  color: #999;
-}
-.wuliu{
-  color: #e50012;
-}
-.peisong-way{
-  position: fixed;
-  width: 500rpx;
-  min-height: 200rpx;
-  top: 50%;
-  left: 50%;
-  margin-top: -100rpx;
-  margin-left: -250rpx;
-  background: #fff;
-  padding: 20rpx;
-}
-.peisong-way image{
-  width: 200rpx;
-
-}
+  .goods-list .list-title {
+    font-size: 28rpx;
+    color: #000;
+    padding: 30rpx 0 25rpx 30rpx;
+    border-top: 16rpx solid #f0f0f0;
+    display: flex;
+  }
+  .goods-list .list-title text {
+    color: #e50012;
+    font-size: 45rpx;
+    margin-right: 10rpx;
+  }
+  .goods-list .a-goods {
+    /* width: 720rpx; */
+    /* margin-left: 30rpx; */
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #eee;
+    padding: 30rpx 30rpx 30rpx 0;
+    background-color: #f0f0f0;
+  }
+  .goods-list .a-goods .img-box {
+    width: 160rpx;
+    height: 160rpx;
+    /* overflow: hidden; */
+    margin-right: 20rpx;
+    /* background-color: #d8d8d8; */
+    padding-left: 30rpx;
+  }
+  .goods-list .img-box .img {
+    width: 160rpx;
+    height: 160rpx;
+  }
+  .goods-list .a-goods .text-box {
+    /* width: 510rpx; */
+    display: flex;
+    box-sizing: border-box;
+    padding-top: 10rpx;
+    flex: 10;
+  }
+  .a-goods .text-box .arow02 {
+    font-size: 23rpx;
+    color: #888;
+    width: 150rpx;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .goods-name {
+    text {
+      background: #e50012;
+      color: #fff;
+      padding: 4rpx 8rpx;
+      margin-left: 10rpx;
+      font-size: 20rpx;
+      border-radius: 5rpx;
+      font-weight: 100;
+    }
+  }
+  .a-goods .text-box .arow01 {
+    flex: 1;
+    color: #333;
+    font-size: 30rpx;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .a-goods .text-box .arow02 .goods-price {
+    font-size: 26rpx;
+    color: #000000;
+  }
+  .a-goods .text-box .arow01 .goods-label {
+    font-size: 26rpx;
+    color: #999;
+  }
+  .a-goods .text-box .arow .goods-num {
+    font-size: 26rpx;
+    color: #999;
+  }
+  .wuliu {
+    color: #e50012;
+  }
+  .peisong-way {
+    position: fixed;
+    width: 500rpx;
+    min-height: 200rpx;
+    top: 50%;
+    left: 50%;
+    margin-top: -100rpx;
+    margin-left: -250rpx;
+    background: #fff;
+    padding: 20rpx;
+  }
+  .peisong-way image {
+    width: 200rpx;
+  }
+  .goods-list .a-goods.gift-goods{
+    background: #fff;
+  }
+ .goods-list .a-goods.gift-goods .img-box,.goods-list .gift-goods .img-box .img {
+    width: 100rpx;
+    height: 100rpx;
+  }
 </style>
 <template>
   <view>
@@ -112,79 +115,87 @@
       <!-- <view class="list-title">商品信息</view> -->
       <form bindsubmit="submitReputation">
         <view class="list-title">
-           <text class="iconfont icon-dianpu"></text> 
+          <text class="iconfont icon-dianpu"></text>
           <slot name="suppliers">
-          {{goodsMap[0].suppliers_name}}
+            {{goodsMap[0].suppliers_name}}
           </slot>
         </view>
         <block wx:for-items="{{goodsMap}}" wx:key="{{index}}">
           <view class="a-goods" @tap="toGoodDetailsTap({{item.goods_id}})">
             <view class="img-box">
-              <image src="{{item.goods_imgs}}" class="img"/>
+              <image src="{{item.goods_imgs}}" class="img" />
             </view>
             <view class="text-box">
               <view class="arow01">
                 <view class="goods-name">{{item.goods_name}}<text wx:if="{{item.hdky}}">可用会员卡</text></view>
                 <view class="goods-label">{{item.goods_attr}}</view>
                 <view class="goods-label" wx:if="{{item.shipping_status==1}}">已发货</view>
-                 <view class="wuliu"  wx:if="{{item.shipping_status==1}}" @tap.stop="showPeisong({{item}})">查看物流</view>
+                <view class="wuliu" wx:if="{{item.shipping_status==1}}" @tap.stop="showPeisong({{item}})">查看物流</view>
               </view>
               <view class="arow02">
                 <view class="goods-price">¥ {{item.goods_price}}</view>
                 <view class="goods-num">x {{item.buy_number}}</view>
               </view>
-             
+            </view>
+          </view>
+           <view class="a-goods gift-goods" @tap="toGoodDetailsTap('zeng',{{item.goods_id}})" wx:for="{{item.gift}}" wx:key="index">
+            <view class="img-box">
+              <image src="{{item.original_img?item.original_img:item.original_img1}}" class="img" />
+            </view>
+            <view class="text-box">
+              <view class="arow01">
+                <view class="goods-name">{{item.goods_name}}<text wx:if="{{item.hdky}}">可用会员卡</text></view>
+              </view>
+              <view class="arow02">
+                <view class="goods-num">x {{item.goods_num}}</view>
+              </view>
             </view>
           </view>
         </block>
       </form>
     </view>
-    <view class="body-bg" wx:if="{{isshow_peisong}}" @tap.stop="hiddenPeisong" @scroll.stop="stop" ></view>
-    <view class="peisong-way" wx:if="{{isshow_peisong}}" >
-    <view >
-      <view >预计送达时间：{{wuliu.yujisongda}}</view>
-      <view >配送员信息：{{wuliu.peisongyuan}}</view>
-      <image src="{{wuliu.fahuodan}}" wx:if="{{wuliu.fahuodan}}" mode="widthFix">
-
-      </image>
-    </view>
-
+    <view class="body-bg" wx:if="{{isshow_peisong}}" @tap.stop="hiddenPeisong" @scroll.stop="stop"></view>
+    <view class="peisong-way" wx:if="{{isshow_peisong}}">
+      <view>
+        <view>预计送达时间：{{wuliu.yujisongda}}</view>
+        <view>配送员信息：{{wuliu.peisongyuan}}</view>
+        <image src="{{wuliu.fahuodan}}" wx:if="{{wuliu.fahuodan}}" mode="widthFix">
+        </image>
+      </view>
     </view>
   </view>
 </template>
 <script>
-import wepy from 'wepy';
-
-export default class goodslist extends wepy.component {
-  props = {
-    goodsMap: {
-      type: Array,
-      default: []
-    }
-  };
-  data = {
-    isshow_peisong:false,
-    wuliu:''
-  };
-
-  events = {};
-
-  methods = {
-    stop(){
-      return
-    },
-    showPeisong(item){
-      this.isshow_peisong=true;
-      this.wuliu=item
-    },
-    toGoodDetailsTap(goods_id) {
-      wx.navigateTo({ url: '/Shop/pages/goodDetail?id=' + goods_id });
-    },
-    hiddenPeisong(){
-        this.isshow_peisong=false;
-    }
-  };
-
-  async onLoad() {}
-}
+  import wepy from 'wepy';
+  export default class goodslist extends wepy.component {
+    props = {
+      goodsMap: {
+        type: Array,
+        default: []
+      }
+    };
+    data = {
+      isshow_peisong: false,
+      wuliu: ''
+    };
+    events = {};
+    methods = {
+      stop() {
+        return
+      },
+      showPeisong(item) {
+        this.isshow_peisong = true;
+        this.wuliu = item
+      },
+      toGoodDetailsTap(type,goods_id) {
+        wx.navigateTo({
+          url: '/Shop/pages/goodDetail?id=' + goods_id+"&type="+type
+        });
+      },
+      hiddenPeisong() {
+        this.isshow_peisong = false;
+      }
+    };
+    async onLoad() {}
+  }
 </script>

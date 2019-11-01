@@ -271,6 +271,13 @@
         border-radius: 10rpx;
         font-size: 30rpx;
     }
+    .tiaozhuan{
+padding: 5rpx 20rpx;
+background: #e50012;
+color: #fff;
+font-size: 25rpx;
+margin-left: 10rpx;
+    }
 </style>
 <template>
     <view>
@@ -304,6 +311,7 @@
                 <view class='gs_sign_day'>
                     <!-- <image  src='../../image/sign_icon.png'></image> -->
                     <view>积分 <text>{{userinfo.pay_points}}</text>分</view>
+                    <text class="tiaozhuan" @tap="toApp">积分商城</text>
                 </view>
                 <view class='gs_sign_content'>
                     <view class='gs_week'>
@@ -448,6 +456,21 @@
         };
         computed = {};
         methods = {
+            toApp(){
+                 console.log("this.userInfo.user_id",this.userinfo.user_id)
+                wx.navigateToMiniProgram({
+                    appId:"wxf48cdd6a7dae8c21",
+                    path:"pages/home?duijie_user_id="+this.userinfo.user_id,
+                    // extraData: {
+                    //     duijie_user_id: this.userInfo.user_id
+                    // },
+                    envVersion: 'develop',
+                    // envVersion: 'trial',
+                    success(res) {
+                        // 打开成功
+                    }
+                });
+            },
             async toDaka() {
                 //                 console.log("this.nowIndex",this.nowIndex)
                 // console.log("this.nowIndex2",this.todayIndex-1,this.day[this.nowIndex],this.days[this.todayIndex-1])
@@ -686,6 +709,8 @@ this.days[i - 1].icon = 'icon-qiandao'
                 util.showToast(res.data.message)
                 return false
             } else {
+                this.userinfo.pay_points=res.data.data
+                this.count+=1
                 return true
             }
         }
@@ -705,7 +730,7 @@ this.days[i - 1].icon = 'icon-qiandao'
         async onLoad(options) {
             var that = this;
             if(this.$parent.globalData.userinfo)
-            this.userinfo=this.$parent.globalData.friend_id
+            this.userinfo=this.$parent.globalData.userinfo
             else  this.userinfo=await this.$parent.getUserInfo()
 
             this.signinList = await this.getSigninList();

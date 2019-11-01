@@ -223,8 +223,16 @@ export default class extends wepy.app {
     this.use('requestfix');
   }
 
-  async onLaunch() {
+  async onLaunch(options) {
     this.upData();
+  
+     var duijie_user_id = wx.getLaunchOptionsSync().query.duijie_user_id
+     console.log("duijie_user_id",duijie_user_id,wx.getLaunchOptionsSync())
+    if(duijie_user_id) this.setUser(duijie_user_id);
+  }
+   async setUser(user_id) {
+      let res = await newapi.duijie({user_id});
+      console.log("setUser",res.data)
   }
   upData() {
     // 获取小程序更新机制兼容

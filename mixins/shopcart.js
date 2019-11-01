@@ -10,11 +10,7 @@ export default class shopcart extends wepy.mixin {
         /**
          * 加入购物车
          */
-        "addShopCar": (goodsDetail) => {
 
-            that.addShopCar3(goodsDetail);
-
-        },
         "addShopCar2": async(goodsDetail, index) => {
             var goodsDetail = await that.goodsInit(goodsDetail, that.friend_id);
             that.goodsListIndex = index;
@@ -67,6 +63,7 @@ export default class shopcart extends wepy.mixin {
          * 立即购买
          */
         buyNow(goodsDetail) {
+            console.log("goodsDetail", goodsDetail)
             var goodsDetail = goodsDetail;
             this.buliduBuyNowInfo();
             this.closePopupTap();
@@ -76,6 +73,7 @@ export default class shopcart extends wepy.mixin {
         },
         // 添加购物车
         toAddShopCar() {
+            console.log("toAddShopCar", goodsDetail)
             var goodsDetail = this.goodsDetail;
             console.log("goodsDetail", goodsDetail);
             if (goodsDetail.selectPrice == 0) {
@@ -129,7 +127,7 @@ export default class shopcart extends wepy.mixin {
     buliduBuyNowInfo() {
             var shopCarInfo = [{}];
             var goodsList = [{}];
-            goodsList[0] = this.goodsDetail;
+            // goodsList[0] = this.goodsDetail;
             goodsList[0].goods_id = this.goodsDetail.goods_id;
             if (
                 this.goodsDetail.original_img == '' &&
@@ -158,10 +156,17 @@ export default class shopcart extends wepy.mixin {
             goodsList[0].suppliers_name = this.goodsDetail.suppliers_name;
             goodsList[0].yunfei = this.goodsDetail.yunfei;
             goodsList[0].hdky = this.goodsDetail.hdky;
+            if (this.goodsDetail.buy_number >= this.goodsDetail.goods_num) {
+                goodsList[0].gift = this.goodsDetail.gift;
+            } else {
+                goodsList[0].gift = []
+            }
             shopCarInfo[0].suppliers_id = this.goodsDetail.suppliers_id;
             shopCarInfo[0].suppliers_name = this.goodsDetail.suppliers_name;
             shopCarInfo[0].goodsList = goodsList;
             shopCarInfo[0].yunfei = this.goodsDetail.yunfei;
+            console.log("this.goodsDetail", this.goodsDetail, this.goodsDetail.buy_number >= this.goodsDetail.goods_num)
+
             wx.setStorageSync('shopCarInfo', shopCarInfo);
         }
         // 列表页面加入购物车

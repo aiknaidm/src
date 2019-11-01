@@ -211,6 +211,15 @@
     color: #fff;
     font-size: 30rpx;
   }
+  .footer-box2{
+    height: 80rpx;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ff6850;
+    color: #fff;
+  }
   .body {
     padding: 0 !important;
   }
@@ -252,6 +261,10 @@
     margin-left: 5rpx;
     color: #aaa;
   }
+  .goods_gift{
+    display: inline-block;
+    margin-right: 10rpx;
+  }
 </style>
 <template>
   <view class="container {{ishideShopPopup?'hidden':''}}">
@@ -268,7 +281,7 @@
         </block>
       </view>
     </view>
-    <view class="goods-info">
+    <view class="goods-info" wx:if="{{type!='zeng'}}">
       <view class="goods-title">{{goodsDetail.goods_name}}<text wx:if="{{goodsDetail.hdky==1&&status>1}}">支持会员卡</text><text wx:if="{{goodsDetail.vip_level>=1&&status>1}}">{{goodsDetail.vip_level_text}}</text></view>
       <view class="goods-price2 goods-price " style="fonts-size:46rpx;" wx:if="{{status>1}}">批发价：¥ {{goodsDetail.shop_price}}<view class>销量：{{goodsDetail.salenum}}</view></view>
       <view class=" {{status>1?'goods-price':'goods-price2'}} ">
@@ -285,17 +298,23 @@
         <view class="title" @tap="viewYiZhanDetails({{goodsDetail.suppliers_id}})">{{goodsDetail.suppliers_name}}</view>
       </view>
     </view>
-    <view class="goods_brief" wx:if="{{goodsDetail.goods_brief}}">
+    <view class="goods_brief" wx:if="{{goodsDetail.goods_brief&&type!='zeng'}}">
       商品活动：{{goodsDetail.goods_brief}}
+    </view> 
+    <view class="goods_brief" wx:if="{{goodsDetail.gift.length>0}}">
+      商品赠品：
+      <view class="goods_gift" wx:for="{{goodsDetail.gift}}"  wx:key="{{index}}" @tap="toDetail('zeng',{{item.goods_id}})">
+          {{item.goods_name}}*{{item.goods_num}} 
+      </view>
     </view>
     <view wx:if="{{hasMoreSelect}}" class="row-arrow">{{selectSize}}</view>
     <view class="goods-des-info">
-      <view class="label-title">商品介绍</view>
+      <view class="label-title">商品介绍1</view>
       <view class="goods-text">
         <htmlParser :parserContent.sync="articleDetail" />
       </view>
     </view>
-    <view class="footer-box">
+    <view class="footer-box" wx:if="{{type!='zeng'}}">
       <view class="contact" @tap="callTel">
         <view style="color:'#FFF';opacity:0;position:absolute;" type="default-dark" session-from="shop" size="27"></view>客服
       </view>
@@ -306,9 +325,13 @@
       <view class="join-shop-cart" @tap="toAddShopCar({{goodsDetail.goods_id}})">加入购物车</view>
       <view class="now-buy" @tap.stop="tobuy({{goodsDetail.goods_id}})">立即购买</view>
     </view>
+      <view class="footer-box footer-box2" wx:if="{{type=='zeng'}}">
+        赠品不能购买
+      </view>
     <shopCartPopup :goodsDetail.sync="goodsDetail" :status.sync="status" wx:if="{{ishideShopPopup}}"></shopCartPopup>
     <!-- <canvasdrawer painting="{{painting}}" class="canvasdrawer" bindgetImage="eventGetImage" wx:if="{{goodsDetail.suppliers_id == 76}}" /> -->
   </view>
+
 </template>
 
 <script>
@@ -339,9 +362,11 @@
       buy_number: 1,
       status: 1,
       danwei: '件',
-      articleDetail: {}
+      articleDetail: {},
+      type:"",
     };
     events = {
+     
       // 规格被点击
       labelItemTap: (property, $event) => {
         this.goodsDetail.goods_attr_id = property.goods_attr_id;
@@ -370,9 +395,19 @@
         wx.navigateTo({
           url: '/Shop/pages/toPayOrder?orderType=buyNow'
         });
-      }
+      },
+       addShopCar: (goodsDetail) => {
+            console.log("addShopCar goodsDetail", goodsDetail)
+            this.addShopCar3(goodsDetail);
+
+        },
     };
     methods = {
+       toDetail(type,id){
+if(type=='zeng'){
+  wx.navigateTo({ url: '/Shop/pages/goodDetail?id='+id+'&type='+type });
+}
+      },
       toImgDetail(index) {
         wx.previewImage({
           current: this.url[index], // 当前显示图片的http链接
@@ -471,6 +506,7 @@
       :(await this.$parent.getYizhanInfo()).is_chakan;
 
       this.suppliers_id=option.suppliers_id?option.suppliers_id:''
+      this.type=option.type
       this.getGoodsInfo(option.id, this.suppliers_id);
     }
     // async eventDraw() {

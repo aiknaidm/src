@@ -509,6 +509,7 @@ export default class shopCart extends wepy.page {
         friend_id
       );
       list[x].goodsList[y].goods_price = goods_price;
+      this.allPrice();
       this.$apply();
     },
     async jiaBtnTap(x, y, buy_number) {
@@ -531,6 +532,7 @@ export default class shopCart extends wepy.page {
         friend_id
       );
       list[x].goodsList[y].goods_price = goods_price;
+      this.allPrice();
       this.$apply();
     },
     // 直接修改数量
@@ -565,6 +567,7 @@ export default class shopCart extends wepy.page {
         buy_number
       ) {
         list[x].goodsList[y].goods_price = goods_price;
+        this.allPrice();
         that.$apply();
         that.setData({
           list: list
@@ -701,6 +704,11 @@ export default class shopCart extends wepy.page {
             goodsList[index].suppliers_name = list[i].suppliers_name;
             goodsList[index].suppliers_id = list[i].suppliers_id;
             goodsList[index].yunfei = list[i].yunfei ? list[i].yunfei : 0;
+            console.log(list[i].goodsList[j])
+            if(!list[i].goodsList[j].goods_num||list[i].goodsList[j].goods_num>list[i].goodsList[j].buy_number)
+           goodsList[index].goodsList[goodsList[index].goodsList.length-1].gift =  []
+            
+
           }
         }
         if (goodsList[index]) {
@@ -781,6 +789,7 @@ export default class shopCart extends wepy.page {
     };
     let res = await newapi.updateCart(data);
     if (res.data.code == 0) {
+      
       this.$apply();
       if (back) back(res.data.data, buy_number);
       return res.data.data;
