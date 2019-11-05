@@ -100,25 +100,25 @@ export default class testMixin extends wepy.mixin {
         var activity = res.data.activity
         activity.forEach(function(item, index) {
             var actList = [];
-            var goods= item.goods;
+            var goods = item.goods;
             goods.forEach(function(item2, index2) {
-                var i = Math.floor(index2/4);
-                var j = index2%4;
-                if(j==0){
+                var i = Math.floor(index2 / 4);
+                var j = index2 % 4;
+                if (j == 0) {
                     actList[i] = []
                 }
                 actList[i][j] = item2;
             });
             activity[index].actList = actList;
-          });
+        });
         this.activity = activity;
 
         var pintuan = res.data.pintuan;
         var ptList = [];
         pintuan.forEach(function(item2, index2) {
-            var i = Math.floor(index2/4);
-            var j = index2%4;
-            if(j==0){
+            var i = Math.floor(index2 / 4);
+            var j = index2 % 4;
+            if (j == 0) {
                 ptList[i] = []
             }
             ptList[i][j] = item2;

@@ -699,7 +699,7 @@
           </view>
         </view>
         
-        <swiper wx:if="{{!indexLoading}}"  style="min-height:440rpx;background:#fff;margin:0 16rpx;padding-top: 20rpx;padding-bottom:20rpx;">
+        <swiper wx:if="{{!indexLoading}}"  style="min-height:{{item_activity.actList[0].length>2?'880rpx':'440rpx'}};background:#fff;margin:0 16rpx;padding-top: 20rpx;padding-bottom:20rpx;">
           <block wx:for="{{item_activity.actList}}" wx:key="{{index}}">
             <swiper-item wx:key="{{index}}" class="goods-lists">
               <view class="goods-list" wx:for="{{item}}" wx:key="{{index}}" @tap="toGoodsDetails({{item.goods_id}})">
@@ -736,7 +736,7 @@
           </view>
         </view>
         
-        <swiper wx:if="{{!indexLoading}}"  style="height:880rpx;background:#fff;margin:0 16rpx;padding-top: 20rpx;padding-bottom:20rpx;">
+        <swiper wx:if="{{!indexLoading}}"  style="height:{{pintuan[0].length>2?'880rpx':'440rpx'}};background:#fff;margin:0 16rpx;padding-top: 20rpx;padding-bottom:20rpx;">
           <block wx:for="{{pintuan}}" wx:key="{{index}}">
             <swiper-item wx:key="{{index}}" class="goods-lists">
               <view class="goods-list" wx:for="{{item}}" wx:key="{{index}}" @tap="toGoodsDetailPt({{item.pt_id}})">
