@@ -264,7 +264,44 @@
   .goods_gift{
     display: inline-block;
     margin-right: 10rpx;
+    width: 100%;
   }
+  
+.img-box1 {
+  display: flex;
+  /* align-items: center; */
+  font-size: 30rpx;
+  justify-content: space-between;
+  // padding: 20rpx 30rpx;
+  // border-bottom: 1px solid #f0f0f0;
+  // background: #f0f0f0;
+}
+
+.img-box1 .goods-img {
+  width: 120rpx;
+  height: 120rpx;
+  /* padding-left: 30rpx; */
+  margin-right: 30rpx;
+  padding: 20rpx 0 20rpx 0;
+}
+
+.img-box1-2 {
+  font-size: 24rpx;
+  color: #797979;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 140rpx;
+}
+
+.img-box1-1 {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
 </style>
 <template>
   <view class="container {{ishideShopPopup?'hidden':''}}">
@@ -298,18 +335,30 @@
         <view class="title" @tap="viewYiZhanDetails({{goodsDetail.suppliers_id}})">{{goodsDetail.suppliers_name}}</view>
       </view>
     </view>
+    <view class="goods-info" wx:else>
+      <view class="goods-title">{{goodsDetail.goods_name}}
+      </view>
+    </view>
     <view class="goods_brief" wx:if="{{goodsDetail.goods_brief&&type!='zeng'}}">
       商品活动：{{goodsDetail.goods_brief}}
     </view> 
     <view class="goods_brief" wx:if="{{goodsDetail.gift.length>0}}">
-      商品赠品：
+      <view>满{{goodsDetail.goods_num}}件可获赠：</view>
       <view class="goods_gift" wx:for="{{goodsDetail.gift}}"  wx:key="{{index}}" @tap="toDetail('zeng',{{item.goods_id}})">
-          {{item.goods_name}}*{{item.goods_num}} 
+        <view class="img-box1">
+          <image src="{{item.original_img1}}" class="goods-img"/>
+          <view class="img-box1-1">
+            <view>{{item.goods_name}}</view>
+          </view>
+          <view class="img-box1-2">
+            <view>x{{item.goods_num}}</view>
+          </view>
+        </view>
       </view>
     </view>
     <view wx:if="{{hasMoreSelect}}" class="row-arrow">{{selectSize}}</view>
     <view class="goods-des-info">
-      <view class="label-title">商品介绍1</view>
+      <view class="label-title">商品介绍</view>
       <view class="goods-text">
         <htmlParser :parserContent.sync="articleDetail" />
       </view>
