@@ -116,6 +116,10 @@ margin-bottom: 40rpx;
     30rpx center;
   background-size: 40rpx auto;
 }
+.a-goods-conts.noactive {
+  background: none;
+  background-size: 40rpx auto;
+}
 .goods-info {
   display: flex;
   justify-content: space-between;
@@ -365,19 +369,22 @@ margin-bottom: 40rpx;
             <text class='huiyuanlabel' wx:if="{{item1.suppliers_id==friend_suppliers_id}}">代下单商品</text>
           </view>
           <view class="a-gooods" wx:for="{{item1.goodsList}}" wx:key="{{indexy}}" wx:for-item="item" wx:for-index="indexy"  bindlongpress='delGoods({{item.id}})'>
-            <view class="a-goods-conts {{item.active? 'active':''}}" @tap="selectTap({{indexx}},{{indexy}})">
+           <view class="a-goods-conts {{item.active? 'active':''}} {{item.properties.length!=0&&item.goods_attr==''?'noactive':''}}" @tap="selectTap({{indexx}},{{indexy}})">
+          
               <view class="goods-info">
                 <view class="img-box" @tap.stop="toGoodDetailsTap({{item.goods_id}})">
                   <image src='http://maijia.jicaizx.com/{{item.original_img}}' wx:if="{{item.original_img!=''}}" class="img" mode="aspectFit"/>
                   <image src='{{item.original_img1}}' wx:elif="{{item.original_img1!=''}}" class="img" mode="aspectFit"/>
-                  <image src="http://wsc.jicaizx.com/images/no_picture.gif" wx:else class="img" mode="aspectFit" wx:else/>
+                  <image src="http://wsc.jicaizx.com/images/no_picture.gif" wx:else class="img" mode="aspectFit" />
                 </view>
                 <view class="text-box">
                   <view class="goods-title" @tap.stop="toGoodDetailsTap({{item.goods_id}})">
                     {{item.goods_name}}
                     <text wx:if="{{item.hdky==1}}">支持会员卡</text>
                   </view>
-                  <view @tap.stop='toAddShopCar({{indexx}},{{indexy}})' class="{{item.properties.length>0 ? 'xunze':''}}" wx:if="{{item.properties.length}}"> {{item.properties.length!=0&&item.goods_attr==""?"请选择商品规格": item.goods_attr}} <text class="iconfont icon-xiala"></text>
+                  <view @tap.stop='toAddShopCar({{indexx}},{{indexy}})' class="{{item.properties.length>0 ? 'xunze':''}}" wx:if="{{item.properties.length}}"> 
+                    {{item.properties.length!=0&&item.goods_attr==""?"请选择商品规格": item.goods_attr}}
+                    <text class="iconfont icon-xiala"></text>
                   </view>
                   <view hidden="{{item.properties.length>0?true:false}}" class='nolist'></view>
                   <view class="goods-price" catchtap="noclick">
