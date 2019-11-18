@@ -138,7 +138,7 @@
               </view>
             </view>
           </view>
-           <view class="a-goods gift-goods" @tap="toGoodDetailsTap('zeng',{{item.goods_id}})" wx:for="{{item.gift}}" wx:key="index">
+           <view class="a-goods gift-goods" @tap="toGoodDetailsTap({{item.goods_id}},'zeng')" wx:for="{{item.gift}}" wx:key="index">
             <view class="img-box">
               <image src="{{item.original_img?item.original_img:item.original_img1}}" class="img" />
             </view>
@@ -147,6 +147,7 @@
                 <view class="goods-name">{{item.goods_name}}<text wx:if="{{item.hdky}}">可用会员卡</text></view>
               </view>
               <view class="arow02">
+                <view class="goods-price"></view>
                 <view class="goods-num">x {{item.goods_num}}</view>
               </view>
             </view>
@@ -187,7 +188,7 @@
         this.isshow_peisong = true;
         this.wuliu = item
       },
-      toGoodDetailsTap(type,goods_id) {
+      toGoodDetailsTap(goods_id,type="") {
         wx.navigateTo({
           url: '/Shop/pages/goodDetail?id=' + goods_id+"&type="+type
         });
