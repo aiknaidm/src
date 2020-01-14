@@ -609,7 +609,7 @@
           <view class="index-title-name">
             <view>{{yizhan.suppliers_name}}</view>
             <view class="from">
-              <text class="sales" wx:if="{{sales_name!=''}}">业务员：{{sales_name}}</text><text class="sales" wx:if="{{friend_name!=''}}">来自工长：{{friend_name}}</text>
+              <!-- <text class="sales" wx:if="{{sales_name!=''}}">业务员：{{sales_name}}</text><text class="sales" wx:if="{{friend_name!=''}}">来自工长：{{friend_name}}</text> -->
             </view>
           </view>
         </view>
@@ -646,7 +646,10 @@
     <block wx:else>
       <block wx:if="{{status==0}}">
         <view class="swiper-container" wx:if="{{yizhanBanner.length>0}}">
-          <swiper class="swiper_box" autoplay="true" interval="3000" duration="1000">
+          <swiper class="swiper_box" autoplay="true" interval="5000" duration="1000" circular="true">
+              <swiper-item>
+                <image bindtap="toJipincang" src="https://lmbge.com/upload/1234/jifenbanner.jpg" class="slide-image" />
+              </swiper-item>
             <block wx:for="{{yizhanBanner}}" wx:key="{{index}}" wx:if="{{item.content!=''}}">
               <swiper-item>
                 <image bindtap="toBannerDetail({{item.url}})" data-adid="{{item.ad_id}}" src="{{item.content}}" class="slide-image" />
@@ -820,7 +823,7 @@
     </view>
     <block wx:if="{{status==2}}">
       <view class="about" wx:if="{{yizhan.jianjie!=''}}">
-        <rich-text type="node" nodes="{{yizhan.jianjie}}"></rich-text>
+        <rich-text type="node" nodes="{{yizhan.jianjie}}" bindtap="tapPic"></rich-text>
       </view>
       <view class="about" wx:else>商家很懒啥都没有写</view>
     </block>
@@ -850,12 +853,12 @@
         </block>
         <view wx:else>{{yizhan.mobile}}</view>
       </view>
-      <view class="contect-list">
+      <!-- <view class="contect-list">
         <view class="contect-list-name">
           <image src="/images/index/people.png"></image>联系人
         </view>
         <view>{{yizhan.username}}</view>
-      </view>
+      </view> -->
       <view class="map" style="width:90%;margin:auto;padding-top:30rpx; height: 600rpx;">
         <map id="map" style="width:100%;height:100%" longitude="{{yizhan.longitude}}" latitude="{{yizhan.latitude}}" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{yizhan.markers}}" bindmarkertap="markertap" polyline="{{polyline}}"
           bindregionchange="regionchange" show-location></map>
@@ -981,6 +984,23 @@
       toQiandao(){
         wx.navigateTo({ url: '/Index/pages/qiandao' });
       },
+      tapPic(e) {
+        let that = this;
+        let arr = [];
+        let reg = /(?<=(src="))[^"]*?(?=")/ig;
+        let allSrc = that.yizhan.jianjie.match(reg)
+        for (let i = 0; i < allSrc.length; i++) {
+          arr.push(allSrc[i]);
+        }
+        var thispic = arr[0];
+        if(allSrc.length>1){
+          thispic = arr[1];
+        }
+        wx.previewImage({
+          current: thispic, // 当前显示图片的http链接  
+          urls: arr // 需要预览的图片http链接列表  
+        })
+      },
       // 点击一级分类
       select(item, index) {
         console.log("item", item, index)
@@ -997,6 +1017,16 @@
             url
           });
         }
+      },
+      toJipincang(){
+      wx.navigateToMiniProgram({
+        appId: 'wxf48cdd6a7dae8c21',
+        path: '',
+        envVersion: 'release',
+        success(res) {
+          // 打开成功
+        }
+      });
       },
       toBBmai() {
         wx.navigateTo({ url: '/Shop/pages/searchList?cat_id=4555&suppliers_id=76&navigationTitle=吉采企业购-帮帮卖&cat_name=帮帮卖'});
