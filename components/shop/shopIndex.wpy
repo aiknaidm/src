@@ -985,17 +985,9 @@
         wx.navigateTo({ url: '/Index/pages/qiandao' });
       },
       tapPic(e) {
-        let that = this;
-        let arr = [];
-        let reg = /(?<=(src="))[^"]*?(?=")/ig;
-        let allSrc = that.yizhan.jianjie.match(reg)
-        for (let i = 0; i < allSrc.length; i++) {
-          arr.push(allSrc[i]);
-        }
-        var thispic = arr[0];
-        if(allSrc.length>1){
-          thispic = arr[1];
-        }
+        var arr = [];
+        var thispic = "https://lmbge.com/upload/20190612/6449bda848c1a7f881e235162819e987.jpg";
+        arr.push(thispic);
         wx.previewImage({
           current: thispic, // 当前显示图片的http链接  
           urls: arr // 需要预览的图片http链接列表  
