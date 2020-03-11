@@ -136,7 +136,8 @@ export default class extends wepy.app {
           'pages/showCard',
           'pages/cardDetail',
           'pages/cardPay',
-          'pages/brandList'
+          'pages/brandList',
+          'pages/toPayShareOrder'
         ]
       },
       {

@@ -67,9 +67,11 @@ const newapi = {
     signin: (data) => fetch(`${host_chk}/signin`, 'POST', data),
     signin_list: (data) => fetch(`${host_chk}/signin_list`, 'POST', data),
     duijie: (data) => fetch(`${host_chk}/duijie`, 'POST', data),
+    orderinfo1: (data) => fetch(`${host_chk}/orderinfo1`, 'POST', data),
 
 
     pintuan_search: (data) => fetch(`${host_chk}/pintuan_search`, 'GET', data), //
+    share_log: (data) => fetch(`${host_chk}/share_log`, 'GET', data), //
 
 
 }

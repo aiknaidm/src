@@ -626,7 +626,7 @@
             return;
           }
           var xiaoxi=res.data.xiaoxi;
-          let data2 = {xiaoxi};
+          let data2 = {xiaoxi,order_id:res.data.data};
           newapi.faxiaoxi(data2);
           // 刷新购物车
           this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo();

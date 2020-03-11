@@ -623,7 +623,9 @@ if(type=='zeng'){
     onShareAppMessage(res) {
 
       var path = '/Shop/pages/goodDetail?id=' + this.goodsDetail.goods_id+'&suppliers_id='+this.suppliers_id;
-      return {
+      newapi.share_log({suppliers_id:this.suppliers_id,goods_id:this.goodsDetail.goods_id})
+   
+   return {
         title: this.goodsDetail.goods_name,
         path: path,
         // imageUrl: this.shareImage

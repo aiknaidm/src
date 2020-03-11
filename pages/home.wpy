@@ -73,6 +73,8 @@ export default class home extends wepy.page {
           '&friend_name=' +
           this.nickName;
     }
+      newapi.share_log({suppliers_id:this.suppliers_id})
+
     return {
       title: this.yizhan.suppliers_name,
       path: path

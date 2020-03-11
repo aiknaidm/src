@@ -1,6 +1,6 @@
 <style lang="less">
   .container {
-    background-color: #f2f2f2;
+    background-color: #f0f0f0;
     padding-bottom: 100rpx;
   }
   .address-box {
@@ -188,13 +188,13 @@
     width: 500rpx;
     justify-content: flex-end;
     line-height: 100rpx;
-    padding: 0 30rpx 0 0;
     font-size: 28rpx;
     box-sizing: border-box;
   }
   .jiesuan-box .total {
     color: #e64340;
     text-align: right;
+    padding: 0 30rpx 0 0;
   }
   /*地址信息  */
   // .address-group {
@@ -353,8 +353,9 @@
         <view class="goods-list goods-list2">
           <view class="list-title">商品列表</view>
           <repeat class="shopList" for="{{shopCarList}}" wx:key="{{index}}">
-            <goodsList :goodsMap.sync="item.goodsList">
-              <view slot="suppliers">{{item.suppliers_name}} </view>
+            <goodsList :goodsMap.sync="item.goodsList" :suppliers_id.sync="item.suppliers_id">
+              <view slot="suppliers">{{item.suppliers_name}}
+              </view>
             </goodsList>
             <!-- <goodsList :goodsMap.sync="item"></goodsList> -->
             <view class="address-group beizhu">
@@ -365,6 +366,22 @@
                 </view>
               </view>
             </view>
+            <view class="address-group beizhu">
+              <view class="row-box">
+                <view class="row-label">延伸服务费</view>
+                <view class="right-text">
+                  <input name="fwfamount" type="text" class="liuyan" placeholder="延伸服务费" @input="changefwf({{index}})"/>
+                </view>
+              </view>
+            </view>
+            <view class="address-group beizhu">
+              <view class="row-box">
+                <view class="row-label">延伸服务费备注</view>
+                <view class="right-text">
+                  <input name="fwfremark" type="text" class="liuyan" placeholder="如需备注请输入" @input="changefwfremark({{index}})"/>
+                </view>
+              </view>
+            </view>
           </repeat>
         </view>
         <view class="goods-info">
@@ -372,15 +389,23 @@
             <view class="row-label">商品金额</view>
             <view class="right-text">¥ {{allGoodsPrice}}</view>
           </view>
-          <!-- <view class="row-box">
+          <view class="row-box">
             <view class="row-label">运费</view>
             <view class="right-text">+ ¥ {{yunPrice}}</view>
-          </view> -->
-          <view class="row-box row-box2" @tap="selectPayStyle" wx:if="{{friend_id==0}}">
+          </view>
+          <view class="row-box" wx:if="{{discount>0}}">
+            <view class="row-label">满减优惠</view>
+            <view class="right-text">- ¥ {{discount}}</view>
+          </view>
+          <view class="row-box" wx:if="{{zhekou>0}}">
+            <view class="row-label">限时折扣</view>
+            <view class="right-text">-{{youhui}}</view>
+          </view>
+          <view class="row-box row-box2" wx:if="{{friend_id==0}}">
             <view class="row-label">支付方式</view>
             <view class="right-text">
               {{itemList[payIndex]}}
-              <text class="iconfont icon-arrow-right"></text>
+              <!-- <text class="iconfont icon-arrow-right"></text> -->
             </view>
           </view>
           <view class="row-box row-box2" wx:if="{{payId!=0}}">
@@ -423,9 +448,10 @@
         </view>
         <view class="jiesuan-box">
           <view class="left-price">
-            <view class="total">合计：¥ {{zongji}}</view>
+            <view class="total">合计：¥ {{heji?heji:zongji}}</view>
           </view>
-          <button class="to-pay-btn" formType="submit" disabled="{{isclick}}">提交订单</button>
+          <button class="to-pay-btn" form-type="submit" wx:if="{{type=='buy'}}">去购买</button>
+          <button class="to-pay-btn" open-type="share" wx:if="{{type=='share'}}">去分享</button>
         </view>
       </form>
     </view>
@@ -461,16 +487,30 @@
         name: '会员卡支付',
         val: '3'
       }], //支付方式
-      itemList: ["线下支付"],
+      itemList: ["微信支付"],
       payIndex: 0,
-      pay_id: 2,
+      pay_id: 0,
       friend_id: 0,
-      payId:2
+      discount: 0,
+      promotion_ids: [],
+      payId: 0,
+      zhekou: 0,
+      youhui: 0,
+      heji:0,
+      type:'share'
     };
     computed = {};
     methods = {
       changeRemark(index, e) {
         this.shopCarList[index].remark = e.detail.value;
+      },
+         changefwf(index, e) {
+        this.shopCarList[index].fwfamount = e.detail.value;
+        this.heji=parseFloat(this.zongji)  +parseFloat(e.detail.value);
+         this.heji= this.heji.toFixed(2)
+      },
+         changefwfremark(index, e) {
+        this.shopCarList[index].fwfremark = e.detail.value;
       },
       //   获取微信地址
       async getWxAddress() {
@@ -535,30 +575,29 @@
       async selectPayStyle() {
         try {
           if (this.itemList.length == 1)
-           var  thisItem = this.itemList[0]
+            var thisItem = this.itemList[0]
           else {
-            var res = await util.showActionSheet(this.itemList);         
+            var res = await util.showActionSheet(this.itemList);
             if (!res)
               return;
-            else  var thisItem = this.itemList[res.tapIndex]
+            else var thisItem = this.itemList[res.tapIndex]
           }
           // 0是线上 2是线下 4会员卡
-         
           if (thisItem == "微信支付") this.payId = 0;
           if (thisItem == "线下支付") this.payId = 2;
-          if (thisItem == "会员卡支付") {
-            // if()
-            var is_hdky = true;
-            this.shopCarList[0].goodsList.forEach((item, index) => {
-              if (item.hdky == 0) is_hdky = false;
-            });
-            if (!is_hdky) {
-              util.showModal(
-                '您提交的订单中有不支持会员卡支付的商品，请单独提交支持会员卡支付的商品。'
-              );
-              return;
-            } else this.payId = 4;
-          }
+          // if (thisItem == "会员卡支付") {
+          // // if()
+          // var is_hdky = true;
+          // this.shopCarList[0].goodsList.forEach((item, index) => {
+          //   if (item.hdky == 0) is_hdky = false;
+          // });
+          // if (!is_hdky) {
+          //   util.showModal(
+          //     '您提交的订单中有不支持会员卡支付的商品，请单独提交支持会员卡支付的商品。'
+          //   );
+          //   return;
+          // } else this.payId = 4;
+          // }
           this.payIndex = res.tapIndex;
           this.$apply();
         } catch (error) {
@@ -567,13 +606,13 @@
       },
       // 提交订单
       async createOrder(e) {
-        if (this.friend_id == 0) {
-          var msg = this.itemList[this.payIndex];
-          let mRes = await util.showModalBig('你确定使用' + msg + '吗？');
-          if (mRes.cancel) {
-            return;
-          }
-        }
+        // if (this.friend_id == 0) {
+        //   var msg = this.itemList[this.payIndex];
+        //   let mRes = await util.showModalBig('你确定使用' + msg + '吗？');
+        //   if (mRes.cancel) {
+        //     return;
+        //   }
+        // }
         var that = this;
         var form_id = e.detail.formId;
         var consignee = that.address ? that.data.address.consignee : '';
@@ -587,6 +626,11 @@
         var goodsList = that.shopCarList;
         var pay_note = pay_id == 2 ? e.detail.value.paynote1 : '';
         var friend_id = this.friend_id;
+        var promotion_ids = this.promotion_ids;
+        var manjian = this.discount;
+        // var fwfremark = e.detail.value.fwfremark;
+        // var fwfamount = e.detail.value.fwfamount;
+        // console.log("fwfamount",  e.detail.value,fwfamount);
         if (consignee == '' || mobile == undefined) {
           util.showModal('请填写联系人姓名');
           return;
@@ -600,8 +644,11 @@
           return;
         }
         util.showLoading('提交订单中...');
+        var share_user_id = wx.getStorageSync('share_user_id');
+        var share_suppliers_id = wx.getStorageSync('share_suppliers_id');
         try {
           let data = {
+            id:this.order_id,
             form_id,
             consignee,
             region,
@@ -613,42 +660,53 @@
             pay_id,
             goodsList,
             pay_note,
-            friend_id
+            friend_id,
+            promotion_ids,
+            manjian,
+            // fwfremark,
+            // fwfamount
           };
-          let res = await newapi.pintuan_order(data);
-          wx.hideLoading();
+          if (share_user_id && share_suppliers_id)
+            data = {
+              ...data,
+              share_user_id,
+              share_suppliers_id
+            }
+          let res = await newapi.jieshou_order(data);
           if (res.data.code != 0) {
             util.showModal(res.data.message);
             return;
           }
-          var xiaoxi=res.data.xiaoxi;
-          let data2 = {xiaoxi,order_id:res.data.data};
-          newapi.faxiaoxi(data2);
-          // // 刷新购物车
-          // this.$parent.$pages['/Shop/pages/shopCart'].getShopCartInfo();
+          // var xiaoxi = res.data.xiaoxi;
+          // let data2 = {
+          //   xiaoxi
+          // };
+          // newapi.faxiaoxi(data2);
+          // 刷新购物车
+          // this.$parent.$pages['/pages/shopCart'].getShopCartInfo();
           // this.$parent.$pages['/Shop/pages/searchList'].initF();
-          if (res.data.data == '' || res.data.data == null) {
-            wx.redirectTo({
-              url: '/Pt/pages/orderList?order_status=0'
-            });
-            return;
-          }
-          console.log("pay_id",pay_id);
+          // if (res.data.data == '' || res.data.data == null) {
+          //   wx.redirectTo({
+          //     url: '/Shop/pages/orderList?order_status=1'
+          //   });
+          //   return;
+          // }
           if (pay_id == 2) {
             wx.redirectTo({
-              url: '/Pt/pages/orderList?order_status=0'
+              url: '/Shop/pages/orderList?order_status=2'
             });
             return;
           }
+        
           if (this.shopCarList.length > 1) {
             wx.redirectTo({
-              url: '/Pt/pages/orderList?order_status=0'
+              url: '/Shop/pages/orderList?order_status=1'
             });
             return;
           }
           if (this.friend_id != 0) {
             wx.redirectTo({
-              url: '/Pt/pages/orderList?order_status=0'
+              url: '/Shop/pages/orderList?order_status=9'
             });
             return;
           }
@@ -656,54 +714,87 @@
             var cardPayRes = await this.cardPay(res.data.data);
             if (cardPayRes.data.code == 0) {
               wx.redirectTo({
-                url: '/Pt/pages/orderList?order_status=0'
+                url: '/Shop/pages/orderList?order_status=2'
               });
             } else {
               await util.showModal(cardPayRes.data.message);
               wx.redirectTo({
-                url: '/Pt/pages/orderList?order_status=0'
+                url: '/Shop/pages/orderList?order_status=1'
               });
             }
             return;
           }
-          // // 调起支付
-          // var payResult = await util.wxpay1(res.data.data);
-          // util.showToast(payResult.msg);
-          // // 取消支付
-          // if (payResult.code == 2) {
-          //   wx.redirectTo({
-          //     url: '/Pt/pages/orderList?order_status=1'
-          //   });
-          // }
-          // // 支付成功
-          // if (payResult.code == 1) {
-          //   wx.redirectTo({
-          //     url: '/Pt/pages/orderList?order_status=2'
-          //   });
-          // }
+          var paydata={
+            id:this.order_id,
+            fwforderId:res.data.fwforderId
+          }
+         
+
+          // 调起支付
+          var payResult = await util.wxpay1(this.order_id,res.data.fwforderId);
+          util.showToast(payResult.msg);
+          // 取消支付
+          if (payResult.code == 2) {
+            wx.redirectTo({
+              url: '/Shop/pages/orderList?order_status=1'
+            });
+          }
+          // 支付成功
+          if (payResult.code == 1) {
+            wx.redirectTo({
+              url: '/Shop/pages/orderList?order_status=2'
+            });
+          }
         } catch (error) {
           util.showToast('错误' + error);
         }
+        wx.hideLoading();
       }
     };
     events = {};
     //   计算总价和运费
     count(shopCarList) {
+      var discount = 0
+      this.discount = 0
       shopCarList.forEach((item, index) => {
         this.shopCarList[index].order_amount = 0;
         this.yunPrice += parseFloat(item.yunfei);
         item.goodsList.forEach((item2, index2) => {
+          discount = this.getDiscount(item2);
+
+          this.shopCarList[index].goodsList[index2].discount = discount
           this.allGoodsPrice +=
             parseFloat(item2.goods_price) * parseFloat(item2.buy_number);
-          this.shopCarList[index].order_amount =
+          this.discount += discount;
+          this.shopCarList[index].goods_amount =
             parseFloat(this.shopCarList[index].order_amount) +
             parseFloat(item2.goods_price) * parseFloat(item2.buy_number);
+          this.shopCarList[index].order_amount = this.shopCarList[index].goods_amount - discount;
         });
       });
-      this.allGoodsPrice = this.allGoodsPrice.toFixed(2);
+      this.allGoodsPrice = (this.allGoodsPrice).toFixed(2);
+      if (this.allGoodsPrice < 50) {
+        this.yunPrice += 8; //不满50，加收50运费
+      }
+      this.youhui = parseFloat(this.zhekou * this.allGoodsPrice).toFixed(2);
       this.zongji = (
-        parseFloat(this.allGoodsPrice) + parseFloat(this.yunPrice)
+        parseFloat(this.allGoodsPrice) + parseFloat(this.yunPrice) - parseFloat(this.discount) - this.youhui
       ).toFixed(2);
+    }
+    getDiscount(item2) {
+      var discount = 0
+      if (item2.youhuiquan&&item2.youhuiquan.length > 0) {
+        item2.youhuiquan.forEach((item3, index3) => {
+          if (item2.goods_price * item2.buy_number - item3.buy_money >= 0) {
+            // 满减
+            discount = discount < parseFloat(item3.rebate_money) ? parseFloat(item3.rebate_money) : discount;
+            this.promotion_ids.push(item3.promotion_id);
+          }
+        })
+        return discount
+      } else {
+        return discount
+      }
     }
     // 获取地址信息
     async getAddress() {
@@ -724,27 +815,41 @@
         suppliers_id: this.suppliers_id
       };
       let res = await newapi.yizhanBanner(data);
-      this.payStyle = res.data.yizhan.zhifu.split(',');
-      // this.itemList = [];
-      // for (var i = 0; i < this.payStyle.length; i++) {
-      //   if (this.itemLists[parseInt(this.payStyle[i] - 1)].name) this.itemList[i] = this.itemLists[parseInt(this.payStyle[i] - 1)].name
-      //   console.log("---------------", i, this.itemList);
-      // }
-      if (this.shopCarList.length > 1) {
-        return
-      }
+      this.zhekou = 1 - parseFloat(res.data.yizhan.zhekou)
+      // this.payStyle = res.data.yizhan.zhifu.split(',');
+      //   this.itemList = [];
+      //   for (var i = 0; i < this.payStyle.length; i++) {
+      //     if (this.itemLists[parseInt(this.payStyle[i] - 1)].name) this.itemList[i] = this.itemLists[parseInt(this.payStyle[i] - 1)].name
+      //   }
+      //   if (this.shopCarList.length > 1) {
+      //     return
+      //   }
       // if (res.data.yizhan.is_kthy == 1) {
-      //   this.itemList.push("会员卡支付")
-      // }
-      console.log(this.itemList);
+      //    this.itemList.push("会员卡支付")
+      // } 
+      this.$apply();
     }
     // init(){
     // }
-    async onLoad() {
+    async onLoad(option) {
       await this.$parent.loginInfo();
-      var shopCarList = wx.getStorageSync('shopCarInfo');
-      this.shopCarList = shopCarList;
-      this.suppliers_id = shopCarList[0].suppliers_id;
+      this.payId = '0';
+      this.order_id=option.order_id
+      this.type=option.type
+      var res = await  newapi.orderinfo1({id: this.order_id})
+       var shopCarList=res.data.data;
+      this.shopCarList[0] = shopCarList;
+      console.log('shopCarList',this.shopCarList)
+      if(this.shopCarList[0].order_status>=2){
+        util.showToast('订单已经被支付过了~');
+      }
+      this.suppliers_id = this.shopCarList[0].suppliers_id;
+      if (this.shopCarList[0].suppliers_id) {
+        this.suppliers_id = this.shopCarList[0].suppliers_id
+      } else {
+        util.showToast("订单错误")
+      }
+      var res = await this.getYizhanInfo();
       if (
         this.suppliers_id == this.$parent.globalData.friend_suppliers_id &&
         shopCarList.length > 1
@@ -759,10 +864,17 @@
         this.suppliers_id == this.$parent.globalData.friend_suppliers_id ?
         this.$parent.globalData.friend_id :
         0;
-      this.count(shopCarList);
+      this.count(this.shopCarList);
       this.getAddress();
-      this.getYizhanInfo();
       this.$apply();
+    }
+     onShareAppMessage(res) {
+      var path = '/pages/toPayShareOrder?order_id='+this.order_id+'&type=buy';
+      return {
+        title: "装饰材料一站购",
+        path: path,
+        // imageUrl: this.shareImage
+      };
     }
   }
 </script>
