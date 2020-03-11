@@ -165,6 +165,9 @@ export default class shopcart extends wepy.mixin {
             shopCarInfo[0].suppliers_name = this.goodsDetail.suppliers_name;
             shopCarInfo[0].goodsList = goodsList;
             shopCarInfo[0].yunfei = this.goodsDetail.yunfei;
+            shopCarInfo[0].pt_id = this.goodsDetail.pt_id;
+            if (this.goodsDetail.pt_id)
+                shopCarInfo[0].goodsList[0].pt_id = this.goodsDetail.pt_id;
             console.log("this.goodsDetail", this.goodsDetail, this.goodsDetail.buy_number >= this.goodsDetail.goods_num)
 
             wx.setStorageSync('shopCarInfo', shopCarInfo);
