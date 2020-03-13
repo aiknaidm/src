@@ -18,6 +18,10 @@
     overflow: hidden;
     height: 748rpx;
   }
+  .swiper_box video {
+    width: 100%;
+    height: 748rpx;
+  }
   .swiper-container .dots {
     position: absolute;
     left: 0;
@@ -307,6 +311,9 @@
   <view class="container {{ishideShopPopup?'hidden':''}}">
     <view class="swiper-container">
       <swiper class="swiper_box" autoplay="{{autoplay}}" interval="{{interval}}" indicator-active-color="#666666" duration="{{duration}}" indicator-dots="true" circular="true">
+        <swiper-item wx:if="{{goodsDetail.goods_video}}" >
+          <video id="myVideo" src="{{goodsDetail.goods_video}}" binderror="videoErrorCallback"></video>
+        </swiper-item>
         <swiper-item wx:for="{{goodsDetail.img_url}}" wx:key="{{index}}" @tap="toImgDetail({{index}})">
           <image src="{{item.img_url}}" class="image" mode="aspectFit" lazy-load="true" />
           <!-- <image src="{{goodsDetail.original_img1}}" class="image" mode="aspectFit" lazy-load="true" wx:else> -->
@@ -402,7 +409,7 @@
       htmlParser
     };
     data = {
-      autoplay: true,
+      autoplay: false,
       interval: 3000,
       duration: 1000,
       goodsDetail: {},
