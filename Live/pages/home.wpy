@@ -1,0 +1,349 @@
+<style lang="less">
+    .live-list {
+        padding: 25rpx;
+        display: flex;
+        height: 345rpx; // padding-bottom: 0;
+        background: #fff;
+        margin-bottom: 10rpx;
+        overflow: hidden;
+        image {
+            flex: 1;
+            height: 100%
+        }
+        .live-text {
+            flex: 1;
+            padding: 30rpx;
+            border-radius: 10rpx;
+            position: relative;
+            overflow: hidden;
+        }
+        .live-title {
+            padding-bottom: 20rpx;
+        }
+        .live-status {
+            display: inline-block;
+            padding: 5rpx 10rpx;
+            color: #fff;
+            font-size: 26rpx;
+            border-radius: 4rpx;
+        }
+        .live-status2,
+        .live-status3,
+        .live-status4 {
+            width: 130rpx;
+            display: inline-block;
+            padding: 0 10rpx;
+            height: 40rpx;
+            line-height: 40rpx;
+            color: #fff;
+            font-size: 26rpx;
+            border-radius: 4rpx;
+            border: 1px solid rgba(16, 127, 218, 1);
+            border-radius: 10rpx;
+            color: rgba(16, 127, 218, 1);
+            text-align: center;
+            position: relative;
+            z-index: 100;
+        }
+        .live-status3 {
+            width: 140rpx;
+            border: 1px solid rgba(125, 125, 125, 1);
+            border-radius: 10rpx;
+            color: rgba(125, 125, 125, 1)
+        }
+        .live-status4 {
+            width: 130rpx;
+            border: 1px solid rgba(250, 173, 40, 1);
+            border-radius: 10rpx;
+            color: rgba(250, 173, 40, 1);
+        }
+    }
+    .live-status1 {
+        position: absolute;
+        right: 20rpx;
+        top: 90rpx;
+        width: 170rpx;
+        height: 64rpx;
+        overflow: hidden; //  opacity: 0
+    }
+    // subscribe {
+    //     opacity: 0
+    // }
+    .live-goodslists {
+        height: 110rpx;
+        position: absolute;
+        bottom: 10rpx;
+        color: #BFBFBF;
+        font-size: 28rpx;
+        white-space:nowrap;
+        
+        // width: 100%;
+    }
+    .live-goodslist {
+        display: inline-block;
+        width: 92rpx;
+        height: 92rpx;
+        // background: rgba(125, 125, 125, 1);
+        overflow: hidden;
+        margin-right: 10rpx; // display: flex;
+    
+        // align-items: center;
+        // justify-content: center;
+        image {
+            width: 100%
+        }
+    }
+     .live-goodslist:last-child{
+padding-right: 20rpx;
+     }
+    
+     .subscribe--live-player-subscribe__btn {
+       
+          width: 130rpx !important;
+            display: inline-block !important;
+            padding: 0 10rpx !important;
+            height: 40rpx !important;
+            line-height: 40rpx !important;
+            color: #fff !important;
+            font-size: 26rpx !important;
+            border-radius: 4rpx !important;
+            border: 1px solid rgba(16, 127, 218, 1) !important;
+            border-radius: 10rpx !important;
+            color: rgba(16, 127, 218, 1) !important;
+            text-align: center !important;
+            position: relative !important;
+            background: #fff!important;
+            z-index: 100 ;
+
+     }
+     .subscribe--live-player-hasSubscribe{
+          width: 130rpx;
+            display: inline-block;
+            padding: 0 10rpx;
+            height: 40rpx;
+            line-height: 40rpx;
+            color: #fff;
+            font-size: 26rpx;
+            border-radius: 4rpx;
+            border: 1px solid rgba(125, 125, 125, 1)!important;
+            border-radius: 10rpx;
+            color: rgba(125, 125, 125, 1)!important;
+            text-align: center;
+            background: #fff!important;
+
+     }
+</style>
+<template>
+    <view>
+        <view wx:for="{{zhibo_list}}" wx:key="{{item}}" @tap="toZhibo({{item.roomid}})">
+            <view class="live-list">
+                <image src="{{item.cover_img}}" mode="aspectFill"></image>
+                <view class="live-text">
+                    <view class="live-title">{{item.name}}</view>
+                    <view class="live-status" wx:if="{{item.status_style}}" style="{{item.status_style}}">{{item.status_text}}</view>
+                    <view class="live-status1" wx:if="{{item.status==102}}" @tap.stop="stop">
+                        <!-- <subscribe room-id="{{item.roomid}}"  @tap.stop="stop" class="kaibo">开播提醒</subscribe>
+                        <view class="live-status2" @tap="tixing({{index}})" wx:if="{{item.remind==0}}">开播提醒</view>
+                        <view class="live-status3" @tap="quxiao({{index}})" wx:if="{{item.remind==1}}">取消提醒</view> -->
+                        <subscribe room-id="{{item.roomid}}"  @tap.stop="stop" >开播提醒</subscribe>
+                    </view>
+                     
+                     <!-- <subscribe room-id="{{item.roomid}}" class="kaibo1" >开播提醒</subscribe> -->
+                    <view class="live-status1" wx:if="{{item.status==103}}" @tap.stop="stop">
+                        <view class="live-status4" @tap="toHuifang({{item.roomid}})">视频回放</view>
+                    </view>
+                    <scroll-view class="live-goodslists" scroll-x="true" >
+                        <view class="live-goodslist" wx:for="{{item.goods}}" wx:key="{{index}}" @tap.stop="toDetail({{item.url}})">
+                            <image src="{{item.cover_img}}" @tap="toGoodsDetail({{item.url}})" mode="aspectFill"></image>
+                        </view>
+                       
+                        <view class="live-noorder" wx:if="{{item.goods.length==0}}">
+                            该直播暂无商品
+                        </view>
+                    </scroll-view>
+                </view>
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import newapi from '../../API/newapi';
+    import util from '../../utils/index';
+    let livePlayer = requirePlugin('live-player-plugin') // 引入获取直播状态接口
+    export default class my extends wepy.page {
+        config = {
+            navigationBarTitleText: '直播列表',
+            "usingComponents": {
+                "subscribe": "plugin-private://wx2b03c6e691cd7370/components/subscribe/subscribe"
+            }
+        };
+        components = {};
+        data = {
+            isMoreData: true,
+            page: 1,
+            zhibo_list: [],
+            status: {
+                '101': {
+                    text: '直播中',
+                    style: 'background:linear-gradient(63deg,rgba(255,25,133,1) 0%,rgba(251,43,83,1) 100%);'
+                },
+                '102': {
+                    text: '未开始',
+                    style: 'background:linear-gradient(63deg,rgba(47,148,228,1) 0%,rgba(15,127,218,1) 100%);'
+                },
+                '103': {
+                    text: '已结束',
+                    style: 'background:linear-gradient(63deg,rgba(247,202,90,1) 0%,rgba(250,173,40,1) 100%);'
+                },
+                '104': {
+                    text: '禁播',
+                    style: 'background:linear-gradient(63deg,rgba(247,202,90,1) 0%,rgba(250,173,40,1) 100%);'
+                },
+                '105': {
+                    text: '暂停中',
+                    color: 'background:linear-gradient(63deg,rgba(247,202,90,1) 0%,rgba(250,173,40,1) 100%);'
+                },
+                '106': {
+                    text: '异常',
+                    color: 'background:linear-gradient(63deg,rgba(247,202,90,1) 0%,rgba(250,173,40,1) 100%);'
+                },
+                '107': {
+                    text: '已过期',
+                    color: 'background:linear-gradient(63deg,rgba(247,202,90,1) 0%,rgba(250,173,40,1) 100%);'
+                }
+            },
+            goods: [{
+                "cover_img": "http://mmbiz.qpic.cn/mmbiz_png/FVribAGdErI2PmyST9ZM0JLbNM48I7TH2FlrwYOlnYqGaej8qKubG1EvK0QIkkwqvicrYTzVtjKmSZSeY5ianc3mw/0?wx_fmt=png",
+                "url": "pages/index/index.html",
+                "price": 1100,
+                "name": "fdgfgf"
+            }, {
+                "cover_img": "http://mmbiz.qpic.cn/mmbiz_png/FVribAGdErI2PmyST9ZM0JLbNM48I7TH2FlrwYOlnYqGaej8qKubG1EvK0QIkkwqvicrYTzVtjKmSZSeY5ianc3mw/0?wx_fmt=png",
+                "url": "pages/index/index.html",
+                "price": 1100,
+                "name": "fdgfgf"
+            }]
+        };
+        computed = {};
+        methods = {
+            toHuifang(roomid) {
+                wx.navigateTo({
+                    url: "history_vid?roomid=" + roomid
+                })
+            },
+            toZhibo(roomid) {
+                wx.navigateTo({
+                    url: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=' + roomid
+                });
+            },
+            quxiao(index){
+                var item = this.zhibo_list[index]
+                var roomid = item.roomid
+                newapi.cancel_remind({
+                    roomid
+                }).then(res => {
+                    item.remind = 0
+                    this.$apply()
+                })
+                
+            },
+            tixing(index) {
+                console.log("index",index)
+                var item = this.zhibo_list[index]
+                var roomid = item.roomid
+                newapi.zhibo_remind({
+                    roomid
+                }).then(res => {
+                    item.remind = 1
+                    this.$apply()
+                })
+            },
+            toDetail(url){
+                // console.log("url",url)
+                var url=url.replace(/.html/g,"")
+wx.navigateTo({
+                    url:"/"+url
+                });
+            }
+        };
+        events = {};
+        getZhiboList() {
+            var that = this
+            newapi.zhibo_list({
+                suppliers_id: this.suppliers_id,
+                page: this.page
+            }).then(res => {
+                if (this.page == 1)
+                    this.zhibo_list = res.data.data
+                // this.$apply()
+                else
+                    this.zhibo_list.push(...res.data.dat);
+                if (this.zhibo_list.length < 10) {
+                    this.isMoreData = false;
+                }
+                this.zhibo_list.forEach((item, index) => {
+                    // 首次获取立马返回直播状态，往后间隔1分钟或更慢的频率去轮询获取直播状态
+                    var roomId = item.roomid // 房间id
+                    // console.log("livePlayer", livePlayer)
+                    // if (!item.isGet)
+                    //     livePlayer.getLiveStatus({
+                    //         room_id: roomId
+                    //     })
+                    //     .then(res => {
+                    //         // 101: 直播中, 102: 未开始, 103: 已结束, 104: 禁播, 105: 暂停中, 106: 异常, 107：已过期 
+                            console.log(item)
+                    that.zhibo_list[index].status = item.live_status
+                    that.zhibo_list[index].status_text = that.status[item.live_status].text
+                    that.zhibo_list[index].status_style = that.status[item.live_status].style
+                    that.zhibo_list[index].isGet = true
+                    // console.log(that.zhibo_list.status_text)
+                    that.$apply()
+                    // })
+                    // .catch(err => {
+                    //     that.$apply()
+                    //     console.log("cuowu")
+                    // })
+                    livePlayer.getLiveStatus({
+                            room_id: roomId
+                        })
+                        .then(res => {
+                            //         // 101: 直播中, 102: 未开始, 103: 已结束, 104: 禁播, 105: 暂停中, 106: 异常, 107：已过期 
+                                    console.log("直播状态6",res)
+                            that.zhibo_list[index].status = res.liveStatus
+                            that.zhibo_list[index].status_text = that.status[res.liveStatus].text
+                            that.zhibo_list[index].status_style = that.status[res.liveStatus].style
+                            that.zhibo_list[index].isGet = true
+                            newapi.zhibo_update({roomid:roomId,live_status:res.liveStatus})
+                            // console.log(that.zhibo_list.status_text)
+                            that.$apply()
+                        })
+                        .catch(err => {
+                            that.$apply()
+                            console.log("cuowu")
+                        })
+                })
+                // this.$apply()
+            })
+        }
+        async onLoad(option) {
+            var suppliers_id = option.suppliers_id
+            var roomid = option.roomid
+            this.suppliers_id = suppliers_id
+            if (roomid) {
+                wx.navigateTo({
+                    url: 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=' + roomid
+                });
+            }
+            this.getZhiboList();
+        }
+        onReachBottom() {
+            if (this.isMoreData) {
+                util.showLoading();
+                this.page = this.page + 1;
+                this.getOrderList();
+            }
+        }
+    }
+</script>

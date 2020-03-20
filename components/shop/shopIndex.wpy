@@ -578,6 +578,14 @@
     font-size: 24rpx;
     padding:5rpx 20rpx;
   }
+.live{
+  width: 718rpx;
+  height: 200rpx;
+  margin: 20rpx auto;
+  image{
+    width: 100%
+  }
+}
 </style>
 <template>
   <view class="container">
@@ -660,6 +668,9 @@
             </block>
           </swiper>
         </view>
+        <view class="live" @tap="toLive">
+         <image src="https://lmbge.com/upload/1234/5d118fbe8a389.png" mode="widthFix"></image>
+       </view>
         <view class="gonggao {{isclick?'active':'no-active'}}" wx:if="{{yizhan.gonggao&&yizhan.gonggao!==''}}">
           <view class="left">
             公告栏：<text>{{yizhan.gonggao}}</text>
@@ -981,6 +992,9 @@
       },
     };
     methods = {
+      toLive(){
+        wx.navigateTo({ url: '/Live/pages/home?suppliers_id='+this.yizhan.suppliers_id });
+      },
       toQiandao(){
         wx.navigateTo({ url: '/Index/pages/qiandao' });
       },

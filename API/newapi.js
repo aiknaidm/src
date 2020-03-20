@@ -72,6 +72,9 @@ const newapi = {
 
     pintuan_search: (data) => fetch(`${host_chk}/pintuan_search`, 'GET', data), //
     share_log: (data) => fetch(`${host_chk}/share_log`, 'GET', data), //
+    zhibo_list: (data) => fetch(`${host_chk}/zhibo_list`, 'GET', data), //
+    huifang_list: (data) => fetch(`${host_chk}/huifang_list`, 'GET', data), //
+    zhibo_remind: (data) => fetch(`${host_chk}/zhibo_remind`, 'GET', data), //
 
 
 }

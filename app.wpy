@@ -153,7 +153,20 @@ export default class extends wepy.app {
       {
         root: 'Index/',
         pages: ['pages/details', 'pages/newsList','pages/qiandao']
+      },
+      {
+      "root": "Live",
+      "pages": [
+        "pages/home",
+        "pages/history_vid"
+      ],
+      "plugins": {
+        "live-player-plugin": {
+          "version": "1.0.2", // 填写该直播组件最新版本号，微信开发者工具调试时可获取最新版本号
+          "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid，该示例值即为直播组件appid
+        }
       }
+    }
     ],
 
     window: {

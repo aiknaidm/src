@@ -1,0 +1,48 @@
+<style lang="less">
+    .history_vid{
+        width: 100%;
+    }
+</style>
+<template>
+    <view>
+        <view wx:for="{{huifang_list}}" wx:key="{{item}}" @tap="toZhibo({{item.roomid}})">
+            <video id="myVideo" src="{{item.media_url}}" class="history_vid"  controls></video>
+        </view>
+        <noOrder wx:if="{{huifang_list.length==0}}" text="暂无回放" show="2">
+            
+        </noOrder>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import newapi from '../../API/newapi';
+    import util from '../../utils/index';
+    import noOrder from '../../components/noOrder';
+    // let livePlayer = requirePlugin('live-player-plugin') // 引入获取直播状态接口
+    export default class my extends wepy.page {
+        config = {
+            navigationBarTitleText: '直播回放',
+            
+        };
+        components = {noOrder};
+        data = {
+            huifang_list:[]
+        };
+        computed = {};
+        methods = {
+           
+        };
+        events = {};
+        async onLoad(option) {
+            var roomid=option.roomid
+           newapi.huifang_list({
+                room_id: roomid
+            }).then(res => {
+                console.log(JSON.parse(res.data.data))
+                this.huifang_list=JSON.parse(res.data.data).live_replay
+                this.$apply();
+            })
+        }
+    }
+</script>
