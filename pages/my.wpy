@@ -48,6 +48,7 @@
         <view class="info_list">
           <myList :tabItem="myRenzheng"></myList>
         </view>-->
+    <kefu></kefu>
   </view>
 </template>
 
@@ -59,6 +60,7 @@
   import myList from '../components/myList';
   import myOrderList from '../components/myOrderList';
   import prompt from '../components/prompt';
+  import kefu from '../components/kefu';
   export default class my extends wepy.page {
     config = {
       navigationBarTitleText: '我的'
@@ -67,7 +69,8 @@
       userInfo,
       myList,
       myOrderList,
-      prompt
+      prompt,
+      kefu
     };
     data = {
       userInfo: {},
