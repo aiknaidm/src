@@ -26,12 +26,12 @@
   <view class="container">
     <userInfo :userData.sync="userInfo" @upTouxiang.user="upTouxiang"></userInfo>
     <view class="tab_list">
-      <repeat for="{{orderList}}" wx:key="{{index}}">
+      <repeat for="{{orderList}}" wx:key="index">
         <myList :tabItem="item"></myList>
       </repeat>
     </view>
     <view class="info_list">
-      <repeat for="{{tabList}}" wx:key="{{index}}">
+      <repeat for="{{tabList}}" wx:key="index">
         <myList :tabItem="item"></myList>
       </repeat>
     </view>

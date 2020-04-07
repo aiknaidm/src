@@ -211,12 +211,15 @@
             <view wx:elif="{{orderDetail.order_status==2&&orderDetail.shipping_status==0}}" class="order-status-bg">待发货</view>
             <view wx:elif="{{orderDetail.order_status==2&&orderDetail.shipping_status==1}}" class="order-status-bg">待收货</view>
             <view wx:elif="{{orderDetail.order_status==3&&orderDetail.shipping_status==1}}" class="order-status-bg">已完成</view>
+            <view wx:elif="{{orderDetail.order_status==10}}" class="order-status-bg">已取消</view>
+            <view wx:elif="{{orderDetail.order_status==11}}" class="order-status-bg">待付款</view>
             <view wx:elif="{{orderDetail.order_status==12}}" class="order-status-bg">未成团</view>
             <view wx:elif="{{orderDetail.order_status==13&&orderDetail.shipping_status==0}}" class="order-status-bg">待发货</view>
             <view wx:elif="{{orderDetail.order_status==13&&orderDetail.shipping_status==1}}" class="order-status-bg">待收货</view>
             <view wx:elif="{{orderDetail.order_status==13&&orderDetail.shipping_status==2}}" class="order-status-bg">已完成</view>
-            <view wx:elif="{{orderDetail.order_status==14&&orderDetail.tuikuan_status==0}}" class="order-status-bg">退款中</view>
-            <view wx:elif="{{orderDetail.order_status==14&&orderDetail.tuikuan_status==1}}" class="order-status-bg">已退款</view>
+            <view wx:elif="{{orderDetail.order_status==14}}" class="order-status-bg">拼团失败</view>
+            <view wx:elif="{{orderDetail.order_status==15}}" class="order-status-bg">退款中</view>
+            <view wx:elif="{{orderDetail.order_status==16}}" class="order-status-bg">已退款</view>
             <view wx:elif="{{orderDetail.order_status==9}}" class="order-status-bg">待审核</view>
             <!-- <view wx:else class="order-status-bg">已取消</view> -->
           </slot>

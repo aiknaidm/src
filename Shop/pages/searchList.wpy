@@ -156,7 +156,7 @@
     <!-- <suppliersCart></suppliersCart> -->
     <view class="shop-cart">
       <view class="shop-cart-list" wx:if="{{isShowCart}}">
-        <view wx:for="{{cartList}}" wx:key="{{index}}" class="buy-num-box">
+        <view wx:for="{{cartList}}" wx:key="index" class="buy-num-box">
           <view class="buy-num-title">
             <view class="buy-num-title-top"><text class="name">{{item.goods_name}}</text><text class="card" wx:if="{{item.hdky==1}}">支持会员卡</text><text class="attr" wx:if="{{item.goods_attr!=''}}">{{item.goods_attr}}</text></view>
             <view><text class="red">￥{{item.goods_price}} </text> <text class="purple">\t{{item.qidingliang}}件享受批发价￥{{item.shop_price}}</text></view>

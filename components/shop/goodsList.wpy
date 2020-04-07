@@ -120,7 +120,7 @@
             {{goodsMap[0].suppliers_name}}
           </slot>
         </view>
-        <block wx:for-items="{{goodsMap}}" wx:key="{{index}}">
+        <block wx:for-items="{{goodsMap}}" wx:key="index">
           <view class="a-goods" @tap="toGoodDetailsTap({{item.goods_id}})">
             <view class="img-box">
               <image src="{{item.goods_imgs}}" class="img" />
@@ -190,7 +190,7 @@
       },
       toGoodDetailsTap(goods_id,type="") {
         wx.navigateTo({
-          url: '/Shop/pages/goodDetail?id=' + goods_id+"&type="+type
+          url: 'goodDetail?id=' + goods_id+"&type="+type
         });
       },
       hiddenPeisong() {

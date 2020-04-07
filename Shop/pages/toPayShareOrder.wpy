@@ -352,7 +352,7 @@
                           </view>-->
         <view class="goods-list goods-list2">
           <view class="list-title">商品列表</view>
-          <repeat class="shopList" for="{{shopCarList}}" wx:key="{{index}}">
+          <repeat class="shopList" for="{{shopCarList}}" wx:key="index">
             <goodsList :goodsMap.sync="item.goodsList" :suppliers_id.sync="item.suppliers_id">
               <view slot="suppliers">{{item.suppliers_name}}
               </view>
@@ -815,7 +815,7 @@
         suppliers_id: this.suppliers_id
       };
       let res = await newapi.yizhanBanner(data);
-      this.zhekou = 1 - parseFloat(res.data.yizhan.zhekou)
+     if(res.data.yizhan.zhekou) this.zhekou = 1 - parseFloat(res.data.yizhan.zhekou)
       // this.payStyle = res.data.yizhan.zhifu.split(',');
       //   this.itemList = [];
       //   for (var i = 0; i < this.payStyle.length; i++) {

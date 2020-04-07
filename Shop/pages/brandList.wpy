@@ -33,7 +33,7 @@
 <template>
   <view class="container">
     <view class="brand-lists" wx:if="{{brands!=-1&&brands.length>0}}">
-      <view class="brand-new" wx:for="{{brands}}" wx:key="{{index}}" @tap="toSearchList({{item.brand_id}},{{item.brand_name}})">
+      <view class="brand-new" wx:for="{{brands}}" wx:key="index" @tap="toSearchList({{item.brand_id}},{{item.brand_name}})">
         <view class="brand-list">
           <image src="{{item.brand_logo}}" wx:if="{{item.brand_logo}}" />
           <image src="https://lmbge.com/upload/1234/moren2.png" wx:else />

@@ -4,7 +4,7 @@
 <template>
   <view class="container">
     <view class="status-box search-title">
-      <block wx:for="{{statusType}}" wx:key="{{index}}">
+      <block wx:for="{{statusType}}" wx:key="index">
         <view class="status-label {{statusIndex[index] == thisindex ? 'active' : ''}} {{isclick?'down':'up'}}" @tap="statusTap({{index}})">
           {{item}}<text class='goodsListnum' wx:if="{{goodsListnum[index]&&goodsListnum[index]!=0}}">{{goodsListnum[index]}}</text>
         </view>
@@ -12,7 +12,7 @@
     </view>
     <noorder show="2" wx:if="{{orderList.length==0}}" text="暂无订单"></noorder>
     <!-- 订单列表  -->
-    <repeat for="{{orderList}}" wx:key="{{index}}">
+    <repeat for="{{orderList}}" wx:key="index">
       <orderList :orderList.sync="item" :goodsMap.sync="goodsMap[index]" @orderDetail.user="orderDetail">
         <view slot="btn">
           <orderbutton :orderDetail.sync="item"></orderbutton>
@@ -41,8 +41,8 @@ export default class orderlist extends wepy.page {
     orderbutton
   };
   data = {
-    statusType: ['全部', '进行中', '成功', '失败'],
-    statusIndex: ['0', '12', '13', '14'],
+    statusType: ['全部','待付款','进行中', '成功', '失败'],
+    statusIndex: ['0','11', '12', '13', '14'],
     orderList: [],
     goodsMap: [],
     currentType: '0',
@@ -62,6 +62,19 @@ export default class orderlist extends wepy.page {
       this.page = 1;
       this.isMoreData = true;
       this.getOrderList(this.thisindex, 1);
+    },
+    cancelOrderTapPt:res=>{
+        this.page = 1;
+        this.isMoreData = true;
+        this.getOrderList(this.thisindex, 1);
+        
+    },
+  // 退款
+  confirmBtnTapPttk:res=>{
+        this.page = 1;
+        this.isMoreData = true;
+        this.getOrderList(this.thisindex, 1);
+        
     }
   };
   methods = {

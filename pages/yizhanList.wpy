@@ -35,7 +35,7 @@
 <template>
   <view class="container">
     <noorder show="1" src="/images/no-order.png" wx:if="{{orderList.length==0&&otherList.length==0}}"></noorder>
-    <repeat for="{{orderList}}" wx:key="{{index}}">
+    <repeat for="{{orderList}}" wx:key="index">
       <orderList :orderList.sync="item" :goodsMap.sync="goodsMap[index]" @orderDetail.user="orderDetail">
         <view slot="btn">
           <view class="price-box">
@@ -44,7 +44,7 @@
         </view>
       </orderList>
     </repeat>
-    <repeat if="{{orderList.length==0}}" for="{{otherList}}" wx:key="{{index}}">
+    <repeat if="{{orderList.length==0}}" for="{{otherList}}" wx:key="index">
       <orderList :orderList.sync="item" :goodsMap.sync="otherMap[index]" @orderDetail.user="orderDetail">
         <view slot="btn">
           <view class="price-box">
@@ -57,7 +57,7 @@
     <view class='body-bg' bindtap='hiddenShopList' touchstart='hiddenbg' touchmove="hiddenbg" wx:if="{{ishowList}}">
       <view class='list'>
         <view style="color:red" @tap.stop="stop"> 选择工长</view>
-        <view wx:for="{{friendList}}" wx:key="{{index}}" @tap='changeList({{item.user_id}})'>
+        <view wx:for="{{friendList}}" wx:key="index" @tap='changeList({{item.user_id}})'>
           {{item.user_name}}
         </view>
       </view>

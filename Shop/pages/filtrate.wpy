@@ -101,7 +101,7 @@ checkbox-group.pinpai-check {
   </view>
   <view class='gongzhong-active'>已选择：{{pinpainame}}</view>
   <checkbox-group name="brand" > 
-    <label class="checkbox" wx:for="{{pinpailist}}" wx:key="{{index}}" @tap="getName({{index}})">
+    <label class="checkbox" wx:for="{{pinpailist}}" wx:key="index" @tap="getName({{index}})">
       <checkbox checked='{{item.active}}' value="{{item.brand_id}}" /> {{item.brand_name}}
      
     </label>
@@ -112,7 +112,7 @@ checkbox-group.pinpai-check {
   </view>
   <view class='gongzhong-active'>已选择：{{catname}}</view>
   <radio-group name="cat" > 
-    <label class="checkbox" wx:for="{{catlist}}" wx:key="{{index}}" @tap="getCatName({{index}})">
+    <label class="checkbox" wx:for="{{catlist}}" wx:key="index" @tap="getCatName({{index}})">
       <radio checked='{{item.cat_name==catname}}' value="{{item.cat_id}}" />{{item.cat_name}}
 
     </label>

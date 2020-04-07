@@ -71,7 +71,7 @@
       <image src="/images/help.gif" mode="aspectFill"/>
     </view>
     <view class="droplist">
-      <block wx:for="{{helpList}}" wx:key="{{index}}">
+      <block wx:for="{{helpList}}" wx:key="index">
         <view class="droplist-title"  @tap="clickTitle({{index}})">
           <view class="rotate {{thisindex==index?'active':''}}">
             <text class="iconfont icon-zhankai"></text>

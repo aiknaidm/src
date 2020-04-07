@@ -21,7 +21,7 @@
 <template>
   <view class="container">
     <noorder show="2" wx:if="{{orderList.length==0}}" text="暂无订单"></noorder>
-    <repeat for="{{orderList}}" wx:key="{{index}}">
+    <repeat for="{{orderList}}" wx:key="index">
       <orderList
         :orderList.sync="item"
         :goodsMap.sync="goodsMap[index]"

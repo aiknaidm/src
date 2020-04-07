@@ -319,14 +319,14 @@ button::after {
       <!-- <swiper-item @tap="toBannerDetail2">
         <image src="http://wsc.jicaizx.com/images/ad2.jpg?{{date}}" mode="aspectFill"/>
       </swiper-item> -->
-      <block wx:for="{{carousel}}" wx:key="{{index}}">
+      <block wx:for="{{carousel}}" wx:key="index">
         <swiper-item bindtap="toBannerDetail({{item.url}})">
           <image src="http://maijia.jicaizx.com/{{item.content}}?{{date}}" mode="aspectFill"/>
         </swiper-item>
       </block>
     </swiper>
     <view class="tab_list">
-      <block wx:for="{{tabList}}" wx:key="{{index}}">
+      <block wx:for="{{tabList}}" wx:key="index">
         <navigator url="{{item.url}}">
           <view class="weui_cell">
             <view class="weui_cell_hd" style="background:{{item.color}}">
@@ -345,7 +345,7 @@ button::after {
       <view class="title">最新资讯</view>
       <view
         class="content"
-        wx:key="{{index}}"
+        wx:key="index"
         wx:for-items="{{message}}"
         @tap="toZiXunDetailTap({{item.id}})"
       >

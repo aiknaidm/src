@@ -138,7 +138,7 @@
     <view
       class="promotion-activity-list {{item.state==2?'promotion-activity-list2':''}}"
       wx:for="{{activitylist}}"
-      wx:key="{{index}}"
+      wx:key="index"
       data-id="{{item.card_id}}"
       data-index="{{index}}"
     >

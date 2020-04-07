@@ -559,7 +559,7 @@
   }
   
   .goods-coupon {
-    display: inline-flex;
+    display: inline-block;
     border: 1px solid #E50012;
     color: #E50012;
     font-size: 23rpx;
@@ -658,9 +658,9 @@
               <swiper-item>
                 <image bindtap="toJipincang" src="https://lmbge.com/upload/1234/jifenbanner.jpg" class="slide-image" />
               </swiper-item>
-            <block wx:for="{{yizhanBanner}}" wx:key="{{index}}" wx:if="{{item.content!=''}}">
+            <block wx:for="{{yizhanBanner}}" wx:key="index" wx:if="{{item.content!=''}}">
               <swiper-item>
-                <image bindtap="toBannerDetail({{item.url}})" data-adid="{{item.ad_id}}" src="{{item.content}}" class="slide-image" />
+                <image bindtap="toBannerDetail({{item.url}})"  mode="aspectFill" data-adid="{{item.ad_id}}" src="{{item.content}}" class="slide-image" />
                 <!-- <view class="yizhan-name">
                       <view class="yizhan-name-txt" wx:if="{{(!friend_name||friend_name=='')&&shenhe!=2}}">您还不是该店的会员，暂不能享受该店的会员权益</view>
                     </view> -->
@@ -688,7 +688,7 @@
           <view class="goods-title">
             活动商品
           </view>
-          <view class="goods-list" wx:for="{{goods}}" wx:key="{{index}}" @tap="toGoodsDetails({{item.goods_id}})">
+          <view class="goods-list" wx:for="{{goods}}" wx:key="index" @tap="toGoodsDetails({{item.goods_id}})">
             <view class="goods-list-img">
               <image src="{{item.original_img1?item.original_img1:item.original_img2}}" lazy-load="true"></image>
             </view>
@@ -700,7 +700,7 @@
             </view>
           </view>
         </view> -->
-        <block wx:for="{{activity}}" wx:for-item="item_activity" wx:for-index="index_activity" wx:key="{{index-a}}">
+        <block wx:for="{{activity}}" wx:for-item="item_activity" wx:for-index="index_activity" wx:key="index_activity">
         <view class="activity-title" >
           <view class="activity-title-left">
             <image src="/images/index/huo.png" mode="widthFix" lazy-load="false">
@@ -714,9 +714,9 @@
         </view>
         
         <swiper wx:if="{{!indexLoading}}"  style="min-height:{{item_activity.actList[0].length>2?'880rpx':'440rpx'}};background:#fff;margin:0 16rpx;padding-top: 20rpx;padding-bottom:20rpx;">
-          <block wx:for="{{item_activity.actList}}" wx:key="{{index}}">
-            <swiper-item wx:key="{{index}}" class="goods-lists">
-              <view class="goods-list" wx:for="{{item}}" wx:key="{{index}}" @tap="toGoodsDetails({{item.goods_id}})">
+          <block wx:for="{{item_activity.actList}}" wx:key="index">
+            <swiper-item wx:key="index" class="goods-lists">
+              <view class="goods-list" wx:for="{{item}}" wx:key="index" @tap="toGoodsDetails({{item.goods_id}})">
                 <view class="goods-list-img">
                   <image src="{{item.original_img1?item.original_img1:'http://maijia.jicaizx.com/'+item.original_img}}" lazy-load="true"></image>
                 </view>
@@ -750,10 +750,10 @@
           </view>
         </view>
         
-        <swiper wx:if="{{!indexLoading}}"  style="height:{{pintuan[0].length>2?'880rpx':'440rpx'}};background:#fff;margin:0 16rpx;padding-top: 20rpx;padding-bottom:20rpx;">
-          <block wx:for="{{pintuan}}" wx:key="{{index}}">
-            <swiper-item wx:key="{{index}}" class="goods-lists">
-              <view class="goods-list" wx:for="{{item}}" wx:key="{{index}}" @tap="toGoodsDetailPt({{item.pt_id}})">
+        <swiper wx:if="{{!indexLoading}}"  style="height:{{pintuan[0].length>2?'885rpx':'445rpx'}};background:#fff;margin:0 16rpx;padding-top: 20rpx;padding-bottom:20rpx;">
+          <block wx:for="{{pintuan}}" wx:key="index">
+            <swiper-item wx:key="index" class="goods-lists">
+              <view class="goods-list" wx:for="{{item}}" wx:key="index" @tap="toGoodsDetailPt({{item.pt_id}})">
                 <view class="goods-list-img">
                   <image src="{{item.original_img1?item.original_img1:'http://maijia.jicaizx.com/'+item.original_img}}" lazy-load="true"></image>
                 </view>
@@ -780,7 +780,7 @@
             <!-- {{yizhan.suppliers_id==76?"易站专属品牌":"合作品牌"}} -->
           </view>
           
-          <view class="brand-list" wx:for="{{brands}}" wx:key="{{index}}" @tap="toSearchList({{item.brand_id}},{{item.brand_name}})">
+          <view class="brand-list" wx:for="{{brands}}" wx:key="index" @tap="toSearchList({{item.brand_id}},{{item.brand_name}})">
             <image src="{{item.brand_logo}}" wx:if="{{item.brand_logo}}"></image>
             <text wx:else>{{item.brand_name}}</text>
           </view>
@@ -803,7 +803,7 @@
                 {{goodsKind[thisindex].cat_name}}
                 <image src="/images/more.png"></image>
               </view>
-              <view class='' wx:for-index='key' wx:for-item='item2' wx:key="{{key}}" wx:for-items="{{cat_item==-1?goodsKind[0].ch_cats:cat_item}}" @tap="toFenLeiTap({{item2.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item2.cat_name}})">
+              <view class='' wx:for-index='key' wx:for-item='item2' wx:key="key" wx:for-items="{{cat_item==-1?goodsKind[0].ch_cats:cat_item}}" @tap="toFenLeiTap({{item2.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item2.cat_name}})">
                 {{item2.cat_name}}
               </view>
               <view class="no-order" wx:if="{{goodsKind[thisindex].ch_cats.length==0}}">
@@ -814,13 +814,13 @@
         </view>
         <!-- <block wx:elif="{{erji==0}}">
               <view class="materials-list">
-                <view wx:for="{{goodsKind}}" wx:key="{{index}}" @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})">
+                <view wx:for="{{goodsKind}}" wx:key="index" @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})">
                   {{item.cat_name}}
                 </view>
               </view>
             </block>
             <block wx:else>
-              <view wx:for-items="{{goodsKind}}" wx:key="{{index}}">
+              <view wx:for-items="{{goodsKind}}" wx:key="index">
                 <view class="goods-title" @tap="toFenLeiTap({{item.cat_id}},{{yizhan.suppliers_id}},{{yizhan.suppliers_name}},{{item.cat_name}})">{{item.cat_name}}
                   <view class="more">更多<image src="/images/index/more.png"></image></view>
                 </view>
@@ -858,7 +858,7 @@
           <image src="/images/index/phone.png"></image>电话
         </view>
         <block wx:if="{{yizhan.kefu.length>0}}">
-          <view wx:for="{{yizhan.kefu}}" wx:key="{{index}}">
+          <view wx:for="{{yizhan.kefu}}" wx:key="index">
             {{item.kefu_name}}:{{item.mobile}}
           </view>
         </block>

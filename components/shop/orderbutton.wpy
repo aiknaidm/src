@@ -7,7 +7,14 @@
     <view class="btn cancel-btn" wx:if="{{orderDetail.order_status==1||orderDetail.order_status==9}}" @tap.stop="cancelOrderTap({{orderDetail.id}})">取消订单</view>
     <view class="btn topay-btn" wx:if="{{orderDetail.order_status==1}}" @tap.stop="toPayTap({{orderDetail.id}},{{orderDetail.order_amount}},{{index}})">马上付款</view>
     <view class="btn topay-btn" wx:if="{{orderDetail.order_status==2&&orderDetail.shipping_status==1}}" @tap.stop="confirmBtnTap({{orderDetail.id}})">确认收货</view>
+    <view class="btn topay-btn" wx:if="{{orderDetail.order_status==10}}">已取消</view>
+    <view class="btn topay-btn" wx:if="{{orderDetail.order_status==11}}" @tap.stop="toPayTapPt({{orderDetail.id}},{{orderDetail.order_amount}},{{index}})">马上付款</view>
+    <view class="btn topay-btn" wx:if="{{orderDetail.order_status==11}}" @tap.stop="cancelOrderTapPt({{orderDetail.id}})">取消订单</view>
     <view class="btn topay-btn" wx:if="{{orderDetail.order_status==13&&orderDetail.shipping_status==1}}" @tap.stop="confirmBtnPt({{orderDetail.id}})">确认收货</view>
+    <view class="btn topay-btn" wx:if="{{orderDetail.order_status==14}}" @tap.stop="confirmBtnPttk({{orderDetail.id}})">申请退款</view>
+    <view class="btn topay-btn" wx:if="{{orderDetail.order_status==14&&orderDetail.pay_status==0}}" >已取消</view>
+    <view class="btn topay-btn" wx:if="{{orderDetail.order_status==15}}" >申请中</view>
+    <view class="btn topay-btn" wx:if="{{orderDetail.order_status==16}}" >已退款</view>
     <view class="btn topay-btn" wx:if="{{orderDetail.order_status==9&&is_friend==1}}" @tap.stop="payStatusTap({{orderDetail.id}})">付款</view>
   </view>
 </template>
@@ -40,6 +47,15 @@ export default class orderbutton extends wepy.component {
         else util.showToast('取消失败');
       }
     },
+    // 取消订单
+    async cancelOrderTapPt(id) {
+      let mRes = await util.showModalBig('你确定要取消订单吗');
+      if (mRes.confirm) {
+        var res = await this.toCancelOrderPt(id);
+        if (res.data.code == 0) this.$emit('cancelOrderTapPt');
+        else util.showToast('取消失败');
+      }
+    },
     // 确认收货
     async confirmBtnTap(id) {
       let mRes = await util.showModalBig('你确定收货吗');
@@ -55,6 +71,19 @@ export default class orderbutton extends wepy.component {
         var res = await this.toConfirmBtnPt(id);
         if (res.data.code == 0) this.$emit('confirmBtnTap');
         else util.showToast('确认收货失败');
+      }
+    },
+    async confirmBtnPttk(id) {
+      let mRes = await util.showModalBig('你确定要申请退款吗');
+      if (mRes.confirm) {
+       
+        let data = { id };
+        let res = await newapi.confirmOrderPttk(data);
+        if (res.data.code == 0) {
+            util.showToast('已为您申请退款');
+            this.$emit('confirmBtnTapPttk');
+        }
+        else util.showToast('申请退款失败');
       }
     },
     // 马上付款
@@ -80,13 +109,32 @@ export default class orderbutton extends wepy.component {
         wx.hideLoading();
         util.showToast(res.msg);
       }
-    }
-  };
+    },
+    // 马上付款拼团
+    async toPayTapPt(id) {
+    
+      util.showLoading('支付中...');
+        var res = await util.wxpay2(
+          id,
+          '/Pt/pages/orderList?order_status=12',
+        );
+        wx.hideLoading();
+        util.showToast(res.msg);
+      }
+      
+  
+    
+  }
   // 取消订单
   async toCancelOrder(id) {
     let data = { id };
     return await newapi.cancelOrder(data);
   }
+  async toCancelOrderPt(id) {
+    let data = { id };
+    return await newapi.cancelOrderPt(data);
+  }
+  
   // 确认收货
   async toConfirmBtn(id) {
     let data = { id };

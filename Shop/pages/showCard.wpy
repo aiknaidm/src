@@ -90,7 +90,7 @@ font-weight: bold;
  <view class='container'>
    <noOrder text="暂无会员卡"  show="2" wx:if="{{list.length==0}}"></noOrder>
     <view class='listBox' wx:else>
-        <view class='shopName' wx:for="{{list}}" wx:key="{{index}}" @tap='toDetail({{item.suppliers_id}},{{index}})' style="{{item.card_img?'background:url(' + item.card_img + ') no-repeat;background-size:cover':'background-color:#008080;'}}">
+        <view class='shopName' wx:for="{{list}}" wx:key="index" @tap='toDetail({{item.suppliers_id}},{{index}})' style="{{item.card_img?'background:url(' + item.card_img + ') no-repeat;background-size:cover':'background-color:#008080;'}}">
             <view class='shopList'>
               <view class='left'>
                 <view class="imgBox">

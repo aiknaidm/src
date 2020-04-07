@@ -4,7 +4,7 @@
 <template>
   <view class="container">
     <view class="status-box search-title">
-      <block wx:for="{{statusType}}" wx:key="{{index}}">
+      <block wx:for="{{statusType}}" wx:key="index">
         <view class="status-label {{statusIndex[index] == thisindex ? 'active' : ''}} {{isclick?'down':'up'}}" @tap="statusTap({{index}})">
           {{item}}<text class='goodsListnum' wx:if="{{goodsListnum[index]&&goodsListnum[index]!=0}}">{{goodsListnum[index]}}</text>
         </view>
@@ -12,7 +12,7 @@
     </view>
     <noorder show="2" wx:if="{{orderList.length==0}}" text="暂无订单"></noorder>
     <!-- 订单列表  -->
-    <repeat for="{{orderList}}" wx:key="{{index}}">
+    <repeat for="{{orderList}}" wx:key="index">
       <orderList :orderList.sync="item" :goodsMap.sync="goodsMap[index]" @orderDetail.user="orderDetail">
         <view slot="btn">
           <orderbutton :orderDetail.sync="item"></orderbutton>

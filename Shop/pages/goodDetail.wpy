@@ -314,7 +314,7 @@
         <swiper-item wx:if="{{goodsDetail.goods_video}}" >
           <video id="myVideo" src="{{goodsDetail.goods_video}}" binderror="videoErrorCallback"></video>
         </swiper-item>
-        <swiper-item wx:for="{{goodsDetail.img_url}}" wx:key="{{index}}" @tap="toImgDetail({{index}})">
+        <swiper-item wx:for="{{goodsDetail.img_url}}" wx:key="index" @tap="toImgDetail({{index}})">
           <image src="{{item.img_url}}" class="image" mode="aspectFit" lazy-load="true" />
           <!-- <image src="{{goodsDetail.original_img1}}" class="image" mode="aspectFit" lazy-load="true" wx:else> -->
         </swiper-item>
@@ -351,7 +351,7 @@
     </view> 
     <view class="goods_brief" wx:if="{{goodsDetail.gift.length>0}}">
       <view>满{{goodsDetail.goods_num}}件可获赠：</view>
-      <view class="goods_gift" wx:for="{{goodsDetail.gift}}"  wx:key="{{index}}" @tap="toDetail('zeng',{{item.goods_id}})">
+      <view class="goods_gift" wx:for="{{goodsDetail.gift}}"  wx:key="index" @tap="toDetail('zeng',{{item.goods_id}})">
         <view class="img-box1">
           <image src="{{item.original_img1}}" class="goods-img"/>
           <view class="img-box1-1">

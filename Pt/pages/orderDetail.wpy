@@ -7,8 +7,7 @@
       :orderDetail.sync="orderDetail"
       :goodsMap.sync="goodsMap"
       :is_friend.sync="is_friend"
-      @cancelOrderTap.user="cancelOrderTap"
-      @confirmBtnTap.user="confirmBtnTap"
+    
     ></orderDetail>
   </view>
 </template>
@@ -45,7 +44,22 @@ export default class orderDetails extends wepy.page {
         this.id
       );
       this.getOrderDetail(this.id);
-    }
+    },
+    cancelOrderTapPt:res=>{
+         this.$parent.$pages['/Pt/pages/orderList'].events.cancelOrderTapPt(
+           this.id
+         );
+         this.getOrderDetail(this.id);
+          
+      },
+    // 退款
+    confirmBtnTapPttk:res=>{
+         this.$parent.$pages['/Pt/pages/orderList'].events.confirmBtnTapPttk(
+           this.id
+         );
+         this.getOrderDetail(this.id);
+          
+      }
   };
   async getOrderDetail(id) {
     let data = { id };

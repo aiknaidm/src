@@ -352,7 +352,7 @@
                           </view>-->
         <view class="goods-list goods-list2">
           <view class="list-title">商品列表</view>
-          <repeat class="shopList" for="{{shopCarList}}" wx:key="{{index}}">
+          <repeat class="shopList" for="{{shopCarList}}" wx:key="index">
             <goodsList :goodsMap.sync="item.goodsList">
               <view slot="suppliers">{{item.suppliers_name}} </view>
             </goodsList>
@@ -461,11 +461,11 @@
         name: '会员卡支付',
         val: '3'
       }], //支付方式
-      itemList: ["线下支付"],
+      itemList: ["线上支付"],
       payIndex: 0,
-      pay_id: 2,
+      pay_id: 0,
       friend_id: 0,
-      payId:2
+      payId:0
     };
     computed = {};
     methods = {
@@ -666,21 +666,21 @@
             }
             return;
           }
-          // // 调起支付
-          // var payResult = await util.wxpay1(res.data.data);
-          // util.showToast(payResult.msg);
-          // // 取消支付
-          // if (payResult.code == 2) {
-          //   wx.redirectTo({
-          //     url: '/Pt/pages/orderList?order_status=1'
-          //   });
-          // }
-          // // 支付成功
-          // if (payResult.code == 1) {
-          //   wx.redirectTo({
-          //     url: '/Pt/pages/orderList?order_status=2'
-          //   });
-          // }
+          // 调起支付
+          var payResult = await util.wxpay2(res.data.data);
+          util.showToast(payResult.msg);
+          // 取消支付
+          if (payResult.code == 2) {
+            wx.redirectTo({
+              url: '/Pt/pages/orderList?order_status=1'
+            });
+          }
+          // 支付成功
+          if (payResult.code == 1) {
+            wx.redirectTo({
+              url: '/Pt/pages/orderList?order_status=2'
+            });
+          }
         } catch (error) {
           util.showToast('错误' + error);
         }
@@ -761,7 +761,7 @@
         0;
       this.count(shopCarList);
       this.getAddress();
-      this.getYizhanInfo();
+      // this.getYizhanInfo();
       this.$apply();
     }
   }
